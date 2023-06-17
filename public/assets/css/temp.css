@@ -1,0 +1,14 @@
+/* area.php */
+@media (max-width: 767px) {
+    .f-text-right {
+        text-align: right;
+    }
+}
+.no-pointer {
+    pointer-events: none;
+}
+#contenttable_wrapper .dataTables_scroll #cell-context .dropdown-menu .dropdown-item .sub-text {
+    margin-left: 7px;
+    font-size: 12px;
+    font-style: italic;
+}

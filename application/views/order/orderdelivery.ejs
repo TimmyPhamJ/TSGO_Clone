@@ -1,0 +1,380 @@
+<!-- START PAGE CONTENT-->
+<link href="https://gtos-csg.cehsoft.com/assets/vendors/bootstrap-select/dist/css/bootstrap-select.min.css"
+    rel="stylesheet" />
+<!-- Socket -->
+<script src="https://gtos-csg.cehsoft.com/sockets/node_modules/socket.io-client/dist/socket.io.js"></script>
+
+<script type="text/javascript">
+    var socket = io.connect('https://demororo.cehsoft.com/');
+</script>
+
+<style>
+    #contenttable_wrapper .dataTables_scroll #cell-context-1 .dropdown-menu .dropdown-item .sub-text,
+    #contenttable_wrapper .dataTables_scroll #cell-context-2 .dropdown-menu .dropdown-item .sub-text,
+    #contenttable_wrapper .dataTables_scroll #cell-context-3 .dropdown-menu .dropdown-item .sub-text,
+    #contenttable_wrapper .dataTables_scroll #cell-context-4 .dropdown-menu .dropdown-item .sub-text,
+    #contenttable_wrapper .dataTables_scroll #cell-context-5 .dropdown-menu .dropdown-item .sub-text,
+    #contenttable2_wrapper .dataTables_scroll #cell-context-12 .dropdown-menu .dropdown-item .sub-text,
+    #contenttable2_wrapper .dataTables_scroll #cell-context-22 .dropdown-menu .dropdown-item .sub-text,
+    #contenttable2_wrapper .dataTables_scroll #cell-context-32 .dropdown-menu .dropdown-item .sub-text,
+    #contenttable2_wrapper .dataTables_scroll #cell-context-42 .dropdown-menu .dropdown-item .sub-text,
+    #contenttable2_wrapper .dataTables_scroll #cell-context-52 .dropdown-menu .dropdown-item .sub-text {
+        margin-left: 7px;
+        font-size: 12px;
+        font-style: italic;
+    }
+</style>
+
+<div class="row">
+    <div class="col-xl-12" style="font-size: 12px;">
+        <div class="ibox collapsible-box">
+            <i class="la la-angle-double-up dock-right"></i>
+            <div class="ibox-head">
+                <div class="ibox-title">Thông tin lệnh</div>
+                <div class="button-bar-group mr-3">
+                    <a class="btn mt-2" id="downloadFileForImport">
+                        <i style="color: #365899;"><u>Tải file import mẫu...</u></i>
+                    </a>
+
+                    <label id="imgLabel" for="import" class="btn btn-outline-info btn-sm mt-2">
+                        <span class="btn-icon"><i class="ti-import"></i>Import</span>
+                    </label>
+                    <input id="import" name="import" style="visibility: hidden; width: 1px" type="file">
+
+                    <button id="Export" class="btn btn-outline-dark btn-sm btn-loading mr-1"
+                        data-loading-text="<i class='la la-spinner spinner'></i>Export" title="Export">
+                        <span class="btn-icon"><i class="ti-export"></i>Export</span>
+                    </button>
+
+                    <button id="search" class="btn btn-outline-warning btn-sm btn-loading mr-1"
+                        data-loading-text="<i class='la la-spinner spinner'></i>Nạp dữ liệu" title="Nạp dữ liệu">
+                        <span class="btn-icon"><i class="ti-search"></i>Nạp dữ liệu</span>
+                    </button>
+                    <button id="addrow" class="btn btn-outline-success btn-sm mr-1" title="Thêm dòng mới">
+                        <span class="btn-icon"><i class="fa fa-plus"></i>Thêm dòng</span>
+                    </button>
+                    <button id="save" class="btn btn-outline-primary btn-sm mr-1"
+                        data-loading-text="<i class='la la-spinner spinner'></i>Lưu dữ liệu" title="Lưu dữ liệu">
+                        <span class="btn-icon"><i class="fa fa-save"></i>Lưu</span>
+                    </button>
+
+                    <button id="delete" class="btn btn-outline-danger btn-sm mr-1"
+                        data-loading-text="<i class='la la-spinner spinner'></i>Xóa dòng"
+                        title="Xóa những dòng đang chọn">
+                        <span class="btn-icon"><i class="fa fa-trash"></i>Xóa dòng</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="ibox-body pt-0 pb-0 bg-f9 border-e">
+                <div class="row ibox mb-0 border-e pb-1 pt-3">
+
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                        <div class="row" style="margin-left: 0px;">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 mb-3">
+                                <div class="row">
+                                    <div class="ml-3 mt-2 form-inline">
+                                        <label class="col-form-label" style="width: 95px; margin-left: -40px;">Ngày
+                                            lệnh</label>
+                                        <input id="Info1" class="form-control form-control-sm" placeholder="Ngày lệnh"
+                                            type="text"
+                                            style="height: 25px; width: 175px; margin-left: 10px; margin-right: 10px; margin-top: 2px;border-radius: 5px;">
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <input id="VoyageKey" class="form-control form-control-sm" type="text" hidden>
+                            <div class="row" style="margin-left: -350px;">
+                                <label class="ml-3" style="width: 5.5rem; margin-top: 0.4rem">Thông tin tàu</label>
+                                <input id="VesselName" placeholder="Tên tàu | Chuyến nhập | Chuyến xuất"
+                                    style="border-radius: 5px; margin-left: 1rem; padding-left: 7.5px; border-color: rgba(0, 0, 0, .1); border-width: 1px; height: 2rem; width: 16.5rem"
+                                    type="text">
+
+                                <!-- -->
+                                <button id="chooseVessel"
+                                    class="btn btn-success btn-icon-only btn-circle btn-sm btn-air ml-2"
+                                    style="height: 1.65rem; width: 1.65rem" title="Chọn tàu">
+                                    <i class="ti-plus"></i>
+                                </button>
+
+                                <button id="nochooseVessel"
+                                    class="btn btn-danger btn-icon-only btn-circle btn-sm btn-air ml-2"
+                                    style="height: 1.65rem; width: 1.65rem" title="Bỏ chọn">
+                                    <i class="ti-close"></i>
+                                </button>
+
+                            </div>
+
+
+                            <div class="row form-group"
+                                style="border-bottom: 1px solid #eee; position: relative; left: 40px;">
+                                <div class="col-12 col-form-label">
+                                    <label class="checkbox checkbox-blue">
+                                        <input type="checkbox" name="chkServiceAttach" id="chkServiceAttach">
+                                        <span class="input-span"></span>
+                                        Đính kèm dịch vụ
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row pl-1" id="row-transfer-right" style="margin-left: 650px">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 mt-1" id="col-transfer">
+
+                                <div class="row form-group">
+                                    <label class="col-sm-2 col-form-label pr-0">Đại diện</label>
+                                    <div class="col-sm-10 input-group">
+                                        <input class="form-control form-control-sm mr-1" id="cmnd" type="text"
+                                            placeholder="Số CMND/ Số ĐT">
+                                        <input class="form-control form-control-sm mr-1" id="personal-name" type="text"
+                                            placeholder="Tên người đại diện">
+                                        <input class="form-control form-control-sm" id="Email" type="text"
+                                            placeholder="Địa chỉ Email *" style="width: 5rem">
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <label class="col-sm-2 col-form-label" title="Chủ hàng">Ghi chú</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control form-control-sm input-required" id="Note" type="text"
+                                            placeholder="Ghi chú">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-left: 0px;">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 mb-3">
+                                <div class="row" style="margin-top: -100px;">
+                                    <div class="ml-3 mt-2 form-inline">
+                                        <label class="col-form-label" style="width: 95px; margin-left: -40px;">Hạn
+                                            lệnh</label>
+                                        <input id="Info2" class="form-control form-control-sm" placeholder="Hạn lệnh"
+                                            type="text"
+                                            style="height: 25px; width: 175px; margin-left: 10px; margin-right: 10px; margin-top: 2px;border-radius: 5px;">
+                                    </div>
+                                    <div class="ml-3 mt-2 form-inline">
+                                        <label class="col-form-label" style="width: 95px; margin-left: 0px;">Số vận
+                                            đơn</label>
+                                        <input id="Move" class="form-control form-control-sm" placeholder="SỐ VẬN ĐƠN"
+                                            type="text"
+                                            style="height: 25px; width: 175px; margin-left: 10px; margin-right: 10px; margin-top: 2px;border-radius: 5px;">
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="ibox-body pt-0 pb-0 bg-f9 border-e">
+                <div class="row ibox mb-0 border-e pb-0 pt-0">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 mt-2">
+                        <div class="row">
+                            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3 pb-0">
+
+                                <div class="row form-group align-items-center">
+                                    <label class="col-sm-4 col-form-label" title="Đ.tượng thanh toán"
+                                        style="width: 95px; white-space: nowrap; margin-left: -10px;">Đối tượng TT
+                                        *</label>
+                                    <div class="col-sm-8 input-group">
+                                        <input class="form-control form-control-sm input-required" id="CusID"
+                                            placeholder="Đối tượng thanh toán" type="text" style="width: 350px;">
+                                        <span class="input-group-addon bg-white btn mobile-hiden text-warning"
+                                            style=" margin-left: 0px;" title="Chọn đối tượng thanh toán"
+                                            data-toggle="modal" data-target="#payer-modal" id="chooseCustomer">
+                                            <i class="ti-search"></i>
+                                        </span>
+                                    </div>
+                                    <input class="hiden-input" id="cusID" readonly="">
+                                    <input class="hiden-input" id="PaymentTypeID" hidden>
+                                    <input class="hiden-input" id="CusTypeID" hidden>
+                                </div>
+
+                                <div class="row" style="margin-top: 20px; ">
+                                    <div class="ml-3 mt-2 form-inline">
+                                        <label class="col-form-label"
+                                            style="width: 95px; margin-left: -20px; margin-top: -20px;">Hình thức TT
+                                            *</label>
+                                        <input id="TT" class="form-control form-control-sm" placeholder="THU NGAY"
+                                            type="text"
+                                            style="height: 25px; width: 175px; margin-left: 20px; margin-right: 10px; margin-top: -20px;border-radius: 5px;">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-xs-2 col-form-label mt-1"
+                                style="margin-right: 30px; margin-left:30px ;">
+                                <div style="display: flex; align-items: center;">
+                                    <div style="margin-right: 15px; margin-top: -5px ;"><i class="fa fa-id-card"
+                                            style="font-size: 15px!important;"></i></div>
+                                    <div style="flex: 1;margin-top: -5px ;"><span id="CusName"> [Tên đối tượng thanh
+                                            toán]</span></div>
+                                </div>
+                                <div style="display: flex; align-items: center;">
+                                    <div style="margin-right: 15px;margin-top:  25px ;"><i class="fa fa-home"
+                                            style="font-size: 15px!important;"></i></div>
+                                    <div style="flex: 1;margin-top:  25px ;"><span id="Address"> [Địa chỉ]</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6 col-form-label mt-1"
+                                style="margin-right: 30px; margin-left:830px; position: relative; top: -80px;">
+                                <div class="row" style="margin-left: -320px;">
+                                    <div class="ml-3 mt-2 form-inline">
+                                        <label class="col-form-label"
+                                            style="width: 95px; margin-left: 0px; margin-top: -10px;">Số hợp
+                                            đồng</label>
+                                        <input id="Move" class="form-control form-control-sm" placeholder="Số hợp đồng"
+                                            type="text"
+                                            style="height: 25px; width: 175px; margin-left: 10px; margin-right: 10px; margin-top: -15px;border-radius: 5px;">
+                                    </div>
+                                    <label class="col-sm-1 col-form-label" title="Đơn vị tính"
+                                        style="font-weight: bold;margin-top: -5px;padding-left: 0px;padding-right: 0px;">Đơn
+                                        vị tính</label>
+                                    <div class="col-md-3" style="
+                                padding-left: 0px;
+                            ">
+                                        <label class="radio radio-outline-primary pr-4" style="margin-left: -5px;">
+                                            <input name="view-opt" id="chk-view-cont" value="bulkList" type="radio">
+                                            <span class="input-span"></span>
+                                            Số lượng
+                                        </label>
+                                    </div>
+                                    <div class="col-md-3" style="
+                                margin-left: -100px;
+                            ">
+                                        <label class="radio radio-outline-primary pr-4" style="margin-left: -60px;">
+                                            <input name="view-opt" id="chk-view-ret" value="retList" type="radio">
+                                            <span class="input-span"></span>
+                                            Trọng lượng </label>
+                                    </div>
+
+                                    <div class="col-md-2" style=" margin-left: -80px;
+">
+                                        <label class="radio radio-outline-primary pr-4" style="margin-left: -100px;">
+                                            <input name="view-opt" id="chk-view-ord" value="ordList" type="radio">
+                                            <span class="input-span"></span>
+                                            Mét khối
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="ibox-body pt-0 pb-0 bg-f9 border-e">
+                <div class="row ibox mb-0 border-e pb-0 pt-0">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 mt-2">
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <div class="row form-group ml-auto">
+                                    <button id="addRow" class="btn btn-outline-success btn-sm mr-1"
+                                        title="Thêm dòng mới">
+                                        <span class="btn-icon"><i class="fa fa-plus"></i>Thêm dòng</span>
+                                    </button>
+
+                                    <button id="removeRow" class="btn btn-outline-danger btn-sm mr-1"
+                                        title="Xóa những dòng đang chọn">
+                                        <span class="btn-icon"><i class="fa fa-trash"></i>Xóa dòng</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <div class="row form-group" style="display: inline-block; float: right; margin: 0 auto">
+                                    <label class="radio radio-outline-success pr-4">
+                                        <input name="view-opt" type="radio" id="chk-view-cont" value="bulkList"
+                                            checked="">
+                                        <span class="input-span"></span>
+                                        Danh sách hàng
+                                    </label>
+                                    <label class="radio radio-outline-success pr-4">
+                                        <input name="view-opt" id="chk-view-cont" value="tariffList" type="radio">
+                                        <span class="input-span"></span>
+                                        Tính cước
+                                    </label>
+                                    <button id="show-payment-modal" class="btn btn-warning btn-sm"
+                                        title="Thông tin thanh toán" data-toggle="modal">
+                                        <i class="fa fa-print"></i>
+                                        Thanh toán
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row ibox-footer border-top-0">
+                <div class="col-md-12 col-sm-12 col-xs-12 table-responsive" id="tableIn">
+                    <table id="contenttable" class="table table-striped display nowrap" cellspacing="0">
+                        <thead>
+
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-12 col-sm-12 col-xs-12 table-responsive" id="tableOut">
+                    <table id="contenttable2" class="table table-striped display nowrap" cellspacing="0">
+                        <thead>
+
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var _columns = [
+            { width: "80px", data: "STT", name: "STT", title: "STT", className: "text-center  editor-cancel", targets: 0 },
+            { data: "ClassID", name: "ClassID", title: "Nhập/ Xuất", className: "text-center", targets: 1 },
+            { data: "ClassID", name: "ClassID", title: "BL/ BK", className: "text-center ", targets: 2 },
+            { data: "IsLocalForeign", name: "IsLocalForeign", title: "Hàng hóa", className: "text-center ", targets: 3 },
+            { data: "POL", name: "POL", title: "Nhóm hàng", className: "text-center ", targets: 4 },
+            { data: "POD", name: "POD", title: "Số lượng khai báo", className: "text-center ", targets: 5 },
+            { data: "FPOD", name: "FPOD", title: "Trọng lượng khai báo", className: "text-center ", targets: 6 },
+            { data: "TransitID", name: "Thể tích khai báo", title: "Thể tích khai báo", className: "text-center ", targets: 7 },
+            { data: "CargoWeight", name: "CargoWeight", title: "Số lượng thực tế", className: "text-center ", targets: 8 },
+            { data: "UnitID", name: "UnitID", title: "Trọng lượng thực tế", className: "text-center ", targets: 9 },
+            { data: "CommodityDescription", name: "CommodityDescription", title: "Thể tích thực tế", className: "text-center ", targets: 10 },
+            { data: "CommodityDescription", name: "CommodityDescription", title: "ĐVT", className: "text-center ", targets: 11 },
+            { data: "CommodityDescription", name: "CommodityDescription", title: "Loại hình", className: "text-center ", targets: 12 },
+            { data: "CommodityDescription", name: "CommodityDescription", title: "Phương án vào", className: "text-center ", targets: 13 },
+            { data: "CommodityDescription", name: "CommodityDescription", title: "Phương thức vào", className: "text-center ", targets: 14 },
+            { data: "rowguid", name: "rowguid", title: "rowguid", visible: false, targets: 15 },
+        ],
+            tbl = $('#contenttable'),
+            dataList = <% - JSON.stringify(locals.dataList || []) %>;
+        var dataTbl = tbl.newDataTable({
+            scrollY: '55vh',
+            columnDefs: _columns,
+            data: dataList.map((itm, ii) => { return { ...itm, STT: ii + 1 } }),
+            order: [[0, 'asc']],
+            paging: false,
+            keys: true,
+            autoFill: {
+                focus: 'focus',
+            },
+            select: true,
+            rowReorder: false
+        });
+    });
+</script>

@@ -1,0 +1,1936 @@
+<link rel="stylesheet" href="/public/assets/css/bootstrap-select.min.css" />
+<style>
+  #MainScreemTable_wrapper
+    .dataTables_scroll
+    #cell-context-1
+    .dropdown-menu
+    .dropdown-item
+    .sub-text,
+  #MainScreemTable_wrapper
+    .dataTables_scroll
+    #cell-context-2
+    .dropdown-menu
+    .dropdown-item
+    .sub-text,
+  #MainScreemTable_wrapper
+    .dataTables_scroll
+    #cell-context-3
+    .dropdown-menu
+    .dropdown-item
+    .sub-text,
+  #MainScreemTable_wrapper
+    .dataTables_scroll
+    #cell-context-4
+    .dropdown-menu
+    .dropdown-item
+    .sub-text,
+  #MainScreemTable_wrapper
+    .dataTables_scroll
+    #cell-context-5
+    .dropdown-menu
+    .dropdown-item
+    .sub-text {
+    margin-left: 7px;
+    font-size: 12px;
+    font-style: italic;
+  }
+</style>
+
+<!-- main screem -->
+<div class="row">
+  <div class="col-xl-12" style="font-size: 12px">
+    <div class="ibox collapsible-box">
+      <i class="la la-angle-double-up dock-right"></i>
+      <div class="ibox-head">
+        <div class="ibox-title">BIÊN BẢN KẾT TOÁN TÀU</div>
+        <div class="button-bar-group mr-3">
+          <button
+            id="Export"
+            class="btn btn-outline-dark btn-sm btn-loading mr-1"
+            data-loading-text="<i class='la la-spinner spinner'></i>Export"
+            title="Export">
+            <span class="btn-icon"><i class="ti-export"></i>Export</span>
+          </button>
+
+          <button
+            id="importFile"
+            class="btn btn-outline-warning btn-sm btn-loading mr-1"
+            data-loading-text="<i class='la la-spinner spinner'></i>Nạp dữ liệu"
+            title="Nạp dữ liệu">
+            <span class="btn-icon"><i class="ti-search"></i>Nạp dữ liệu</span>
+          </button>
+        </div>
+      </div>
+      <div class="ibox-body pt-0 pb-0 bg-f9 border-e">
+        <div class="row ibox mb-0 border-e pb-1 pt-3">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="row">
+              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 mb-3">
+                <div class="row">
+                  <input
+                    id="VoyageKey"
+                    class="form-control form-control-sm"
+                    type="text"
+                    hidden />
+
+                  <label class="ml-3" style="width: 5.5rem; margin-top: 0.4rem"
+                    >Thông tin tàu:</label
+                  >
+                  <input
+                    id="VesselName"
+                    placeholder="Tên tàu | Chuyến nhập | Chuyến xuất"
+                    style="
+                      border-radius: 5px;
+                      margin-left: 1rem;
+                      padding-left: 7.5px;
+                      border-color: rgba(0, 0, 0, 0.1);
+                      border-width: 1px;
+                      height: 2rem;
+                      width: 16.5rem;
+                    "
+                    type="text" />
+
+                  <button
+                    id="chooseVessel"
+                    class="btn btn-success btn-icon-only btn-circle btn-sm btn-air ml-2"
+                    style="height: 1.65rem; width: 1.65rem"
+                    title="Chọn tàu">
+                    <i class="ti-plus"></i>
+                  </button>
+
+                  <button
+                    id="nochooseVessel"
+                    class="btn btn-danger btn-icon-only btn-circle btn-sm btn-air ml-2"
+                    style="height: 1.65rem; width: 1.65rem"
+                    title="Bỏ chọn">
+                    <i class="ti-close"></i>
+                  </button>
+                </div>
+                <div class="row">
+                  <div class="ml-3 mt-2">
+                    <label class="mt-1 radio radio-info">
+                      <input
+                        type="radio"
+                        name="ClassID"
+                        class="css-checkbox"
+                        value=""
+                        onclick="setCombinedValue()" />
+                      <span class="input-span"></span>Cả hai
+                    </label>
+                    <label class="mt-1 ml-3 radio radio-info">
+                      <input
+                        checked
+                        type="radio"
+                        name="ClassID"
+                        class="css-checkbox"
+                        value="1" />
+                      <span class="input-span"></span>Nhập tàu
+                    </label>
+                    <label class="mt-1 ml-3 radio radio-info">
+                      <input
+                        type="radio"
+                        name="ClassID"
+                        class="css-checkbox"
+                        value="2" />
+                      <span class="input-span"></span>Xuất tàu
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 mb-3">
+                <div class="row justify-content-center">
+                  <label class="ml-3" style="width: 5.5rem; margin-top: 0.4rem"
+                    >ETA/ETD:</label
+                  >
+                  <input
+                    id="ETA"
+                    placeholder="ETA"
+                    style="
+                      border-radius: 5px;
+                      margin-left: 1rem;
+                      padding-left: 7.5px;
+                      border-color: rgba(0, 0, 0, 0.1);
+                      border-width: 1px;
+                      height: 2rem;
+                      width: 16.5rem;
+                    "
+                    type="text" />
+                  <input
+                    id="ETD"
+                    placeholder="ETD"
+                    style="
+                      border-radius: 5px;
+                      margin-left: 1rem;
+                      padding-left: 7.5px;
+                      border-color: rgba(0, 0, 0, 0.1);
+                      border-width: 1px;
+                      height: 2rem;
+                      width: 16.5rem;
+                    "
+                    type="text" />
+                </div>
+                <div class="row justify-content-center">
+                  <div class="ml-3 mt-2">
+                    <button
+                      id="ExportReport"
+                      class="btn btn-danger btn-sm btn-loading mr-1"
+                      data-loading-text="<i class='la la-spinner spinner'></i>Xuất Báo Cáo"
+                      title="ExportReport"
+                      style="border-radius: 80px">
+                      <span class="btn-icon"
+                        ><i class="ti-back-right"></i>Xuất kết toán</span
+                      >
+                    </button>
+
+                    <button
+                      id="Completed"
+                      class="btn btn-outline-success btn-sm btn-loading mr-1"
+                      data-loading-text="<i class='la la-spinner spinner'></i>Hoàn tất khai thác"
+                      title="Completed"
+                      style="border-radius: 80px">
+                      <span class="btn-icon"
+                        ><i class="ti-check"></i>Hoàn tất khai thác</span
+                      >
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row ibox-footer border-top-0">
+        <!-- Bảng hiển thị -->
+        <div
+          class="col-md-12 col-sm-12 col-xs-12 table-responsive"
+          id="TableMain">
+          <table
+            id="MainScreemTable"
+            class="table table-striped display nowrap"
+            cellspacing="0"
+            style="min-width: 100%">
+            <thead>
+              <tr style="width: 100%">
+                <th col-name="STT">STT</th>
+                <th col-name="VoyageKey"></th>
+                <th col-name="ClassID"></th>
+                <th col-name="BillOfLanding">Số vấn đơn/Booking</th>
+                <th col-name="ClassName">Nhập/Xuất tàu</th>
+                <th col-name="JobModeName">Phương thức vào</th>
+                <th col-name="JobModeNameOut">Phương thức ra</th>
+                <th col-name="ATA">Ngày đến</th>
+                <th col-name="ATD">Ngày rời</th>
+                <th col-name="Sequence">Sequence</th>
+                <th col-name="McWeightIn">TL Hàng nhập</th>
+                <th col-name="McWeightOut">TL Hàng xuất</th>
+                <th col-name="McWeight">TL Hàng tồn</th>
+                <th col-name="UnitName">Đơn vị tính</th>
+                <th col-name="Quantity"></th>
+                <th col-name="NationName"></th>
+                <th col-name="POL"></th>
+                <th col-name="POD"></th>
+                <th col-name="CargoTypeName"></th>
+              </tr>
+            </thead>
+          </table>
+          <input id="editor-input1" style="display: none" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- bảng chọn tàu -->
+<div
+  class="modal fade"
+  id="vessel-modal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="groups-modalLabel-1"
+  aria-hidden="true"
+  data-whatever="id"
+  style="padding-left: 2%; padding-top: 2%">
+  <div
+    class="modal-dialog"
+    role="document"
+    style="min-width: 1024px !important">
+    <div class="modal-content" style="border-radius: 4px">
+      <div class="modal-header">
+        <h5 class="modal-title text-primary" id="groups-modalLabel-1">
+          Danh mục tàu
+        </h5>
+        <button
+          id="VesselSearch"
+          class="btn btn-outline-warning btn-sm btn-loading mr-1"
+          data-loading-text="<i class='la la-spinner spinner'></i>Nạp dữ liệu"
+          title="Nạp dữ liệu">
+          <span class="btn-icon"><i class="ti-search"></i>Nạp dữ liệu</span>
+        </button>
+      </div>
+      <div class="modal-body" style="padding: 0px 15px 15px 15px">
+        <div class="row mb-0 border-e border-top-0 pb-1 pt-3">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="row">
+              <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                <div class="row form-group">
+                  <label class="col-md-2 col-sm-4 col-xs-4 col-form-label"
+                    >Tàu</label
+                  >
+                  <input
+                    id="VesselNameFilter"
+                    class="col-md-8 col-sm-10 col-xs-10 form-control form-control-sm"
+                    placeholder="Tên tàu"
+                    type="text" />
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                <div class="row form-group">
+                  <label class="col-md-2 col-sm-2 col-xs-2 col-form-label"
+                    >Năm</label
+                  >
+                  <div
+                    class="col-md-8 col-sm-10 col-xs-10 input-group input-group-sm">
+                    <select
+                      id="YearFilter"
+                      data-width="100%"
+                      data-style="btn-default btn-sm"
+                      title="Năm"
+                      style="
+                        width: 80%;
+                        border-radius: 2px;
+                        border-color: rgba(0, 0, 0, 0.1);
+                      ">
+                      <% for (let i = 2016; i < 2026; i++){ %>
+                      <option value="<%= i %>"><%= i %></option>
+                      <% } %>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                <div class="row form-group">
+                  <label class="radio radio-success ml-5 mt-1">
+                    <input
+                      type="radio"
+                      checked
+                      name="VesselFilter"
+                      class="css-checkbox"
+                      value="1" />
+                    <span class="input-span"></span>Đến cảng
+                  </label>
+
+                  <label class="radio radio-success ml-3 mt-1 mr-3">
+                    <input
+                      type="radio"
+                      name="VesselFilter"
+                      class="css-checkbox"
+                      value="2" />
+                    <span class="input-span"></span>Rời cảng
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row ibox-footer border-top-0 mt-3">
+          <div class="col-md-12 col-sm-12 col-xs-12 table-responsive">
+            <table
+              id="VesselTable"
+              class="table table-striped display nowrap"
+              cellspacing="0"
+              style="width: 99.5%">
+              <thead>
+                <tr style="width: 100%">
+                  <th col-name="STT">STT</th>
+                  <th col-name="VoyageKey"></th>
+                  <th col-name="VesselID">Mã tàu</th>
+                  <th col-name="VesselName">Tên tàu</th>
+                  <th col-name="InboundVoyage">Chuyến nhập</th>
+                  <th col-name="OutboundVoyage">Chuyến xuất</th>
+                  <th col-name="ETA">ETA</th>
+                  <th col-name="ETD">ETD</th>
+                  <th col-name="Status">Status</th>
+                  <th col-name="InLane">Lane nhập</th>
+                  <th col-name="OutLane">Lane xuất</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div style="margin: 0 auto !important">
+          <button
+            class="btn btn-sm btn-rounded btn-gradient-blue btn-labeled btn-labeled-left btn-icon"
+            id="apply-vessel"
+            data-dismiss="modal">
+            <span class="btn-label"><i class="ti-check"></i></span>Xác nhận
+          </button>
+          <button
+            class="btn btn-sm btn-rounded btn-gradient-peach btn-labeled btn-labeled-left btn-icon"
+            data-dismiss="modal">
+            <span class="btn-label"><i class="ti-close"></i></span>Đóng
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- xem thử bảng báo cáo -->
+<div
+  class="modal fade"
+  id="report-modal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="groups-modalLabel-1"
+  aria-hidden="true"
+  data-whatever="id"
+  style="padding-left: 2%; padding-top: 2%">
+  <div
+    class="modal-dialog"
+    role="document"
+    style="min-width: 1366px !important">
+    <div class="modal-content" style="border-radius: 4px">
+      <div class="modal-header">
+        <h5 class="modal-title text-primary" id="groups-modalLabel-1">
+          Kết Toán Tàu
+        </h5>
+      </div>
+      <div
+        id="exportreport"
+        class="modal-body"
+        style="padding: 0px 15px 15px 15px">
+        <div>
+          <table
+            id="ReportTable"
+            class="display"
+            cellspacing="0"
+            style="width: 99.5%">
+            <table
+              id="HeaderReport"
+              style="
+                page-break-inside: avoid;
+                width: 100%;
+                border-collapse: collapse;
+              ">
+              <tr>
+                <td colspan="2" height="25" align="center" valign="top">
+                  <b
+                    ><font color="#000000">CẢNG SÀI GÒN<br /></font
+                  ></b>
+                </td>
+                <td colspan="4" align="center" valign="bottom">
+                  <b
+                    ><font size="4" color="#000000"
+                      >CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</font
+                    ></b
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" height="22" align="center" valign="top">
+                  <font color="#000000">Direction of Habour Saigon</font>
+                </td>
+                <td colspan="4" align="center" valign="bottom">
+                  <b
+                    ><font color="#000000">Độc lập - Tự do - Hạnh phúc</font></b
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" height="22" align="center" valign="top">
+                  <b><font color="#000000">PHÒNG KHO HÀNG</font></b>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" height="22" align="center" valign="top">
+                  <font color="#000000">Docks Office</font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+              </tr>
+              <tr>
+                <td height="27" align="left" valign="middle">
+                  <font color="#000000">Số: 01/KT</font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Arial" size="2"><br /></font>
+                </td>
+                <td colspan="4" align="center" valign="bottom">
+                  <b
+                    ><font size="4" color="#000000"
+                      >BIÊN BẢN KẾT TOÁN NHẬN HÀNG VỚI TÀU</font
+                    ></b
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td height="27" align="left" valign="top">
+                  <font color="#000000">No</font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Arial" size="2"><br /></font>
+                </td>
+                <td colspan="4" align="center" valign="bottom">
+                  <font size="4" color="#000000"
+                    >REPORT ON RECEIPT OF CARGO</font
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td height="21" align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+              </tr>
+              <tr>
+                <td height="44" align="left" valign="middle">
+                  <b><font color="#000000">Tên tàu/ Vesel:</font></b>
+                </td>
+                <td align="left" valign="middle">
+                  <font color="#000000" id="ShipName"></font>
+                </td>
+                <td align="center" valign="middle">
+                  <font color="#000000"></font>
+                </td>
+                <td align="left" valign="middle">
+                  <b><font color="#000000">Quốc tịch/ Nationality:</font></b>
+                </td>
+                <td align="left" valign="middle">
+                  <font color="#000000" id="NationName"></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+              </tr>
+              <tr>
+                <td height="44" align="left" valign="middle">
+                  <b
+                    ><font color="#000000"
+                      >Cảng xếp hàng/ Port of loading:</font
+                    ></b
+                  >
+                </td>
+                <td align="left" valign="middle">
+                  <font color="#000000" id="POL"></font>
+                </td>
+                <td align="center" valign="middle">
+                  <font color="#000000"></font>
+                </td>
+                <td align="left" valign="middle">
+                  <b><font color="#000000">Ngày đến/ Date Arr:</font></b>
+                </td>
+                <td align="left" valign="middle">
+                  <font color="#000000" id="DateArr"></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+              </tr>
+              <tr>
+                <td height="66" align="left" valign="middle">
+                  <b>
+                    <font color="#000000"
+                      >Cảng bốc dở hàng/ Port of discharging:</font
+                    >
+                  </b>
+                </td>
+                <td align="left" valign="middle">
+                  <font color="#000000" id="POD"></font>
+                </td>
+                <td align="center" valign="middle">
+                  <font color="#000000"></font>
+                </td>
+                <td align="left" valign="middle">
+                  <b><font color="#000000">Ngày Đi/ Date Dep:</font></b>
+                </td>
+                <td align="left" valign="middle">
+                  <font color="#000000" id="DateDep"></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+              </tr>
+              <tr>
+                <td height="22" align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+              </tr>
+            </table>
+
+            <table id="BodyReport" style="width: 99.5%">
+              <tr>
+                <td
+                  style="
+                    border-top: 1px solid #000000;
+                    border-bottom: 1px solid #000000;
+                    border-left: 1px solid #000000;
+                    border-right: 1px solid #000000;
+                  "
+                  colspan="4"
+                  height="45"
+                  align="center"
+                  valign="bottom">
+                  <b
+                    ><font color="#000000"
+                      >SỐ LƯỢNG HÀNG GHI TRONG LƯỢC KHAI<br />Number of packages
+                      mentioned in manifest</font
+                    ></b
+                  >
+                </td>
+                <td
+                  style="
+                    border-top: 1px solid #000000;
+                    border-bottom: 1px solid #000000;
+                    border-left: 1px solid #000000;
+                    border-right: 1px solid #000000;
+                  "
+                  colspan="2"
+                  align="center"
+                  valign="bottom">
+                  <b>
+                    <font color="#000000"
+                      >SỐ LƯỢNG HÀNG THỰC NHẬN<br />Number of packages
+                      received</font
+                    >
+                  </b>
+                </td>
+              </tr>
+              <tr>
+                <td
+                  style="
+                    border-top: 1px solid #000000;
+                    border-bottom: 1px solid #000000;
+                    border-left: 1px solid #000000;
+                    border-right: 1px solid #000000;
+                  "
+                  height="44"
+                  align="center"
+                  valign="middle">
+                  <b>
+                    <font color="#000000"
+                      >Cảng xếp hàng<br />Port of loading</font
+                    >
+                  </b>
+                </td>
+                <td
+                  style="
+                    border-top: 1px solid #000000;
+                    border-bottom: 1px solid #000000;
+                    border-left: 1px solid #000000;
+                    border-right: 1px solid #000000;
+                  "
+                  align="center"
+                  valign="middle">
+                  <b
+                    ><font color="#000000">Số ĐHVT<br />No. B/L</font></b
+                  >
+                </td>
+                <td
+                  style="
+                    border-top: 1px solid #000000;
+                    border-bottom: 1px solid #000000;
+                    border-left: 1px solid #000000;
+                    border-right: 1px solid #000000;
+                  "
+                  align="center"
+                  valign="middle">
+                  <b
+                    ><font color="#000000">Số lượng<br />Quantity</font></b
+                  >
+                </td>
+                <td
+                  style="
+                    border-top: 1px solid #000000;
+                    border-bottom: 1px solid #000000;
+                    border-left: 1px solid #000000;
+                    border-right: 1px solid #000000;
+                  "
+                  align="center"
+                  valign="middle">
+                  <b
+                    ><font color="#000000"
+                      >Trọng lượng (Tấn)<br />Weight (MTS)</font
+                    ></b
+                  >
+                </td>
+                <td
+                  style="
+                    border-top: 1px solid #000000;
+                    border-bottom: 1px solid #000000;
+                    border-left: 1px solid #000000;
+                    border-right: 1px solid #000000;
+                  "
+                  align="center"
+                  valign="middle">
+                  <b
+                    ><font color="#000000">Số lượng<br />Quantity</font></b
+                  >
+                </td>
+                <td
+                  style="
+                    border-top: 1px solid #000000;
+                    border-bottom: 1px solid #000000;
+                    border-left: 1px solid #000000;
+                    border-right: 1px solid #000000;
+                  "
+                  align="center"
+                  valign="middle">
+                  <b
+                    ><font color="#000000">Loại hàng<br />Description</font></b
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td
+                  style="
+                    border-top: 1px solid #000000;
+                    border-bottom: 1px solid #000000;
+                    border-left: 1px solid #000000;
+                    border-right: 1px solid #000000;
+                  "
+                  height="22"
+                  align="left"
+                  valign="bottom">
+                  <font color="#000000" id="POLTable"></font>
+                </td>
+                <td
+                  style="
+                    border-top: 1px solid #000000;
+                    border-bottom: 1px solid #000000;
+                    border-left: 1px solid #000000;
+                    border-right: 1px solid #000000;
+                  "
+                  align="left"
+                  valign="bottom">
+                  <font color="#000000" id="No"></font>
+                </td>
+                <td
+                  style="
+                    border-top: 1px solid #000000;
+                    border-bottom: 1px solid #000000;
+                    border-left: 1px solid #000000;
+                    border-right: 1px solid #000000;
+                  "
+                  align="left"
+                  valign="bottom">
+                  <font color="#000000" id="Quantity"></font>
+                </td>
+                <td
+                  style="
+                    border-top: 1px solid #000000;
+                    border-bottom: 1px solid #000000;
+                    border-left: 1px solid #000000;
+                    border-right: 1px solid #000000;
+                  "
+                  align="left"
+                  valign="bottom">
+                  <font color="#000000" id="Weight"></font>
+                </td>
+                <td
+                  style="
+                    border-top: 1px solid #000000;
+                    border-bottom: 1px solid #000000;
+                    border-left: 1px solid #000000;
+                    border-right: 1px solid #000000;
+                  "
+                  align="left"
+                  valign="bottom">
+                  <font color="#000000" id="QuantityA"></font>
+                </td>
+                <td
+                  style="
+                    border-top: 1px solid #000000;
+                    border-bottom: 1px solid #000000;
+                    border-left: 1px solid #000000;
+                    border-right: 1px solid #000000;
+                  "
+                  align="left"
+                  valign="bottom">
+                  <font color="#000000" id="Item"></font>
+                </td>
+              </tr>
+            </table>
+            <table>
+              <tr>
+                <td colspan="6" height="109" align="left" valign="bottom">
+                  <font color="#000000"
+                    ><b>**Note:</b> <br />- Before discharge operation, we have
+                    found the damaged cargo: Some coils were rusted, oil
+                    stained; some coids had no marks, some coils: scractched,
+                    band-off, edges folded &amp; torn; Some coils were rusted,
+                    oil stained; had no marks, some coils: scractched, tangled,
+                    wraped, band-off.<br />
+                    - All the cargo was discharged by the shore cranes</font
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3" height="22" align="center" valign="middle">
+                  <b><font color="#000000">ĐIỀU KIỆN NHẬN HÀNG</font></b>
+                </td>
+                <td colspan="3" align="center" valign="middle">
+                  <b
+                    ><font color="#000000"
+                      >CONDITIONS AND EXCEPTION OF RECEIPT</font
+                    ></b
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3" height="43" align="left" valign="middle">
+                  <font size="2" color="#000000"
+                    >- Hàng nhận theo số lượng kiện, bao bì nguyên vẹn không
+                    chịu trách nhiệm bên trong.</font
+                  >
+                </td>
+                <td colspan="3" align="left" valign="middle">
+                  <font size="2" color="#000000"
+                    >- Cargo received as per number of packages in apparent good
+                    condition without liability for contents.</font
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3" height="45" align="left" valign="middle">
+                  <font size="2" color="#000000"
+                    >- Trọng lượng ghi theo lượng khai của Tàu (kể cả hàng rời)
+                    không chịu trách nhiệm hao hụt.</font
+                  >
+                </td>
+                <td colspan="3" align="left" valign="middle">
+                  <font size="2" color="#000000"
+                    >- Weight as per manifest (including cargo in bulk) without
+                    liability for discrepancy.</font
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td height="21" align="left" valign="middle">
+                  <font size="2" color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Arial" size="2"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Arial" size="2"><br /></font>
+                </td>
+                <td align="left" valign="middle">
+                  <font size="2" color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="middle">
+                  <font size="2" color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="middle">
+                  <font size="2" color="#000000"><br /></font>
+                </td>
+              </tr>
+              <tr>
+                <td height="21" align="left" valign="middle">
+                  <font size="2" color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Arial" size="2"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Arial" size="2"><br /></font>
+                </td>
+                <td align="left" valign="middle">
+                  <font size="2" color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="middle">
+                  <font size="2" color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="middle">
+                  <font size="2" color="#000000"><br /></font>
+                </td>
+              </tr>
+              <tr>
+                <td height="22" align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td colspan="2" align="center" valign="bottom" id="Nt">
+                  <font color="#000000">Tp.HCM, Ngày 01 tháng 01 năm 2023</font>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" height="22" align="center" valign="middle">
+                  <b><font color="#000000">Người giao hàng</font></b>
+                </td>
+                <td colspan="2" align="center" valign="top">
+                  <b
+                    ><font color="#000000"><br /></font
+                  ></b>
+                </td>
+                <td colspan="2" align="center" valign="bottom">
+                  <b><font color="#000000">Người nhận hàng</font></b>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" height="22" align="center" valign="middle">
+                  <font size="2" color="#000000">The deliverer of goods</font>
+                </td>
+                <td colspan="2" align="center" valign="top">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td colspan="2" align="center" valign="bottom">
+                  <font color="#000000">The receiver of goods</font>
+                </td>
+              </tr>
+              <tr>
+                <td height="22" align="center" valign="middle">
+                  <font size="2" color="#000000"><br /></font>
+                </td>
+                <td align="center" valign="middle">
+                  <font size="2" color="#000000"><br /></font>
+                </td>
+                <td align="center" valign="top">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Arial" size="2"><br /></font>
+                </td>
+                <td align="center" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="center" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+              </tr>
+              <tr>
+                <td height="22" align="center" valign="middle">
+                  <font size="2" color="#000000"><br /></font>
+                </td>
+                <td align="center" valign="middle">
+                  <font size="2" color="#000000"><br /></font>
+                </td>
+                <td align="center" valign="top">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Arial" size="2"><br /></font>
+                </td>
+                <td align="center" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="center" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+              </tr>
+              <tr>
+                <td height="22" align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+              </tr>
+              <tr>
+                <td height="22" align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" height="22" align="center" valign="middle">
+                  <b><font color="#000000">Thuyền trưởng</font></b>
+                </td>
+                <td colspan="2" align="center" valign="top">
+                  <b
+                    ><font color="#000000"><br /></font
+                  ></b>
+                </td>
+                <td colspan="2" align="center" valign="bottom">
+                  <b><font color="#000000">Trưởng phòng kho hàng</font></b>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" height="22" align="center" valign="middle">
+                  <font size="2" color="#000000"
+                    >The Master / Chief Officer</font
+                  >
+                </td>
+                <td colspan="2" align="center" valign="top">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td colspan="2" align="center" valign="bottom">
+                  <font color="#000000">Chief Docks Office</font>
+                </td>
+              </tr>
+              <tr>
+                <td height="22" align="center" valign="middle">
+                  <font size="2" color="#000000"><br /></font>
+                </td>
+                <td align="center" valign="middle">
+                  <font size="2" color="#000000"><br /></font>
+                </td>
+                <td align="center" valign="top">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Arial" size="2"><br /></font>
+                </td>
+                <td align="center" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="center" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+              </tr>
+              <tr>
+                <td height="22" align="center" valign="middle">
+                  <font size="2" color="#000000"><br /></font>
+                </td>
+                <td align="center" valign="middle">
+                  <font size="2" color="#000000"><br /></font>
+                </td>
+                <td align="center" valign="top">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Arial" size="2"><br /></font>
+                </td>
+                <td align="center" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="center" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+              </tr>
+              <tr>
+                <td height="22" align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+              </tr>
+              <tr>
+                <td height="22" align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font color="#000000"><br /></font>
+                </td>
+              </tr>
+            </table>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div style="margin: 0 auto !important">
+          <button
+            class="btn btn-sm btn-rounded btn-gradient-blue btn-labeled btn-labeled-left btn-icon"
+            id="export"
+            data-dismiss="modal">
+            <span class="btn-label"><i class="ti-check"></i></span>Export
+          </button>
+          <button
+            class="btn btn-sm btn-rounded btn-gradient-peach btn-labeled btn-labeled-left btn-icon"
+            data-dismiss="modal">
+            <span class="btn-label"><i class="ti-close"></i></span>Đóng
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  // gộp value của radio nhập và xuất tàu và value radio cả hai
+  $('input[value=""]').on("click", function () {
+    var input2 = $('input[value="1"]');
+    var input3 = $('input[value="2"]');
+    var combinedValue = "";
+
+    if (input1.prop("checked")) {
+      combinedValue += input2.val();
+    }
+
+    if (input3.prop("checked")) {
+      if (combinedValue !== "") {
+        combinedValue += ",";
+      }
+      combinedValue += input3.val();
+    }
+
+    $('input[value=""]').val(combinedValue);
+  });
+
+  //   Nút chọn tàu
+  $("#chooseVessel").on("click", function () {
+    $("#vessel-modal").modal("show");
+    $("#VesselSearch").trigger("click");
+    sumNumRows = 0;
+    $("#YearFilter").val(new Date().getFullYear());
+  });
+
+  //   Nút xóa dữ liệu thông tin tàu
+  $("#nochooseVessel").on("click", function () {
+    $("#VesselName").val("");
+    $("#ETA").val("");
+    $("#ETD").val("");
+  });
+
+  // làm màng hình chọn tàu
+  $(document).ready(function () {
+    var _vesselColumns = [
+        "STT",
+        "VoyageKey",
+        "VesselID",
+        "VesselName",
+        "InboundVoyage",
+        "OutboundVoyage",
+        "ETA",
+        "ETD",
+        "Status",
+        "InLane",
+        "OutLane",
+      ],
+      tblVessel = $("#VesselTable"),
+      vesselModal = $("#vessel-modal");
+
+    /* Initial vessel table */
+    tblVessel.newDataTable({
+      scrollY: "30vh",
+      columnDefs: [
+        {
+          type: "num",
+          className: "text-center",
+          targets: _vesselColumns.indexOf("STT"),
+        },
+        {
+          className: "text-center",
+          targets: _vesselColumns.getIndexs([
+            "VesselName",
+            "InboundVoyage",
+            "OutboundVoyage",
+            "ETA",
+            "ETD",
+            "InLane",
+            "OutLane",
+          ]),
+        },
+        {
+          className: "hiden-input",
+          targets: _vesselColumns.getIndexs([
+            "VoyageKey",
+            "VesselID",
+            "Status",
+          ]),
+        },
+      ],
+      order: [[_vesselColumns.indexOf("STT"), "asc"]],
+      paging: false,
+      keys: true,
+      autoFill: {
+        focus: "focus",
+      },
+      select: {
+        style: "single",
+        info: false,
+      },
+      buttons: [],
+      rowReorder: false,
+      arrayColumns: _vesselColumns,
+    });
+
+    $("#vessel-modal").on("shown.bs.modal", function (e) {
+      $($.fn.dataTable.tables(true)).DataTable().columns.adjust();
+    });
+
+    $("#VesselSearch").on("click", function () {
+      tblVessel.waitingLoad();
+      var formData = {
+        filter: {
+          Status: $("input[type='radio'][name='VesselFilter']:checked").val(),
+          VesselName: {
+            operation: "like",
+            value: $("#VesselNameFilter").val(),
+          },
+        },
+      };
+
+      $.ajax({
+        url: "/Report/BienBan_kettoantau/loadVesselVisit",
+        dataType: "json",
+        data: formData,
+        type: "POST",
+        success: function (data) {
+          var rows = [];
+          tblVessel.dataTable().fnClearTable();
+          if (data.data.length > 0) {
+            for (i = 0; i < data.data.length; i++) {
+              var rData = data.data[i],
+                r = [];
+              $.each(_vesselColumns, function (idx, colname) {
+                var val = "";
+                switch (colname) {
+                  case "STT":
+                    val = i + 1;
+                    break;
+                  case "ETA":
+                  case "ETD":
+                    val = getDateTime(rData[colname]);
+                    break;
+                  default:
+                    val = rData[colname] ? rData[colname] : "";
+                    break;
+                }
+                r.push(val);
+              });
+              rows.push(r);
+            }
+          }
+          tblVessel.dataTable().fnClearTable();
+          if (rows.length > 0) {
+            tblVessel.dataTable().fnAddData(rows);
+          }
+        },
+        error: function (err) {
+          tblVessel.dataTable().fnClearTable();
+          console.log(err);
+        },
+      });
+    });
+
+    // điền dữ liệu vào trong các trường khi nhấn 2 lần vào bảng
+    $(document).on("dblclick", function () {
+      var tblVesselSelectedRows = tblVessel
+        .getSelectedRows()
+        .data()
+        .toArray()[0];
+      (VoyageKey = tblVesselSelectedRows[_vesselColumns.indexOf("VoyageKey")]),
+        (VesselName =
+          tblVesselSelectedRows[_vesselColumns.indexOf("VesselName")]),
+        (InboundVoyage =
+          tblVesselSelectedRows[_vesselColumns.indexOf("InboundVoyage")]),
+        (OutboundVoyage =
+          tblVesselSelectedRows[_vesselColumns.indexOf("OutboundVoyage")]),
+        (InLane = tblVesselSelectedRows[_vesselColumns.indexOf("InLane")]),
+        (OutLane = tblVesselSelectedRows[_vesselColumns.indexOf("OutLane")]),
+        (ETA = tblVesselSelectedRows[_vesselColumns.indexOf("ETA")]),
+        (ETD = tblVesselSelectedRows[_vesselColumns.indexOf("ETD")]),
+        $("#VoyageKey").val(VoyageKey);
+      $("#VesselName").val(
+        VesselName + " | " + InboundVoyage + " | " + OutboundVoyage
+      );
+      $("#ETA").val(ETA);
+      $("#ETD").val(ETD);
+      $("#search").trigger("click");
+      vesselModal.modal("hide");
+    });
+
+    //Nhấn xác nhận trong bảng chọn tàu sẽ điền dữ liệu vào các trường
+    $("#apply-vessel").on("click", function () {
+      var tblVesselSelectedRows = tblVessel
+        .getSelectedRows()
+        .data()
+        .toArray()[0];
+      (VoyageKey = tblVesselSelectedRows[_vesselColumns.indexOf("VoyageKey")]),
+        (VesselName =
+          tblVesselSelectedRows[_vesselColumns.indexOf("VesselName")]),
+        (InboundVoyage =
+          tblVesselSelectedRows[_vesselColumns.indexOf("InboundVoyage")]),
+        (OutboundVoyage =
+          tblVesselSelectedRows[_vesselColumns.indexOf("OutboundVoyage")]),
+        (InLane = tblVesselSelectedRows[_vesselColumns.indexOf("InLane")]),
+        (OutLane = tblVesselSelectedRows[_vesselColumns.indexOf("OutLane")]),
+        (ETA = tblVesselSelectedRows[_vesselColumns.indexOf("ETA")]),
+        (ETD = tblVesselSelectedRows[_vesselColumns.indexOf("ETD")]),
+        $("#VoyageKey").val(VoyageKey);
+      $("#VesselName").val(
+        VesselName + " | " + InboundVoyage + " | " + OutboundVoyage
+      );
+      $("#ETA").val(ETA);
+      $("#ETD").val(ETD);
+    });
+  });
+
+  //Bảng tại màng hình trang chính
+  $(document).ready(function () {
+    var _columns = [
+        {
+          name: "STT",
+          title: "STT",
+          className: "text-center editor-cancel",
+          targets: 0,
+          render: function (data, type, row, meta) {
+            return meta.row + 1;
+          },
+        },
+        {
+          data: "VoyageKey",
+          name: "VoyageKey",
+          title: "VoyageKey",
+          visible: false,
+          targets: 1,
+        },
+        {
+          data: "ClassID",
+          name: "ClassID",
+          title: "ClassID",
+          visible: false,
+          targets: 2,
+        },
+        {
+          data: "BillOfLading",
+          name: "BillOfLading",
+          title: "Số vấn đơn/Booking",
+          className: "text-center",
+          targets: 3,
+          render: (data, type, row) => {
+            return row.BillOfLading || row.BookingNo;
+          },
+        },
+        {
+          data: "ClassName",
+          name: "ClassName",
+          title: "Nhập/Xuất tàu",
+          className: "text-center",
+          targets: 4,
+        },
+        {
+          data: "JobModeName",
+          name: "JobModeName",
+          title: "Phương thức vào",
+          className: "text-center",
+          targets: 5,
+        },
+        {
+          name: "JobModeNameOut",
+          title: "Phương thức ra",
+          className: "text-center",
+          targets: 6,
+        },
+        {
+          data: "ATA",
+          name: "ATA",
+          title: "Ngày đến",
+          className: "text-center",
+          targets: 7,
+          render: function (data, type, row) {
+            if (type === "display" || type === "filter") {
+              if (data) {
+                var formattedDate = moment(data).format("DD-MM-YYYY HH:mm:ss");
+                return formattedDate;
+              } else {
+                return "";
+              }
+            }
+            return data;
+          },
+        },
+        {
+          data: "ATD",
+          name: "ATD",
+          title: "Ngày rời",
+          className: "text-center",
+          targets: 8,
+          render: function (data, type, row) {
+            if (type === "display" || type === "filter") {
+              if (data) {
+                var formattedDate = moment(data).format("DD-MM-YYYY HH:mm:ss");
+                return formattedDate;
+              } else {
+                return "";
+              }
+            }
+            return data;
+          },
+        },
+        {
+          name: "Sequence",
+          title: "Sequence",
+          className: "text-center",
+          targets: 9,
+          render: function (data, type, row, meta) {
+            var sequence = 1;
+            for (var i = 0; i < meta.row; i++) {
+              if (dataTbl.row(i).data().ClassID === row.ClassID) {
+                sequence++;
+              }
+            }
+            return sequence;
+          },
+        },
+        {
+          data: "McWeight",
+          name: "McWeightIn",
+          title: "TL Hàng nhập",
+          className: "text-center",
+          targets: 10,
+          render: function (data, type, row) {
+            if (row.ClassID === 1) {
+              return row.McWeight;
+            } else {
+              return "";
+            }
+          },
+        },
+        {
+          data: "McWeight",
+          name: "McWeightOut",
+          title: "TL Hàng xuất",
+          className: "text-center",
+          targets: 11,
+          render: function (data, type, row) {
+            if (row.ClassID === 2) {
+              return row.McWeight;
+            } else {
+              return "";
+            }
+          },
+        },
+        {
+          data: "McWeight",
+          name: "McWeight",
+          title: "TL Hàng tồn",
+          className: "text-center",
+          targets: 12,
+          render: function (data, type, row) {
+            if (row.ClassID === 1) {
+              return row.McWeight;
+            } else {
+              return "";
+            }
+          },
+        },
+        {
+          data: "UnitName",
+          name: "UnitName",
+          title: "Đơn vị tính",
+          className: "text-center",
+          targets: 13,
+          render: function (data, type, row) {
+            if (row.ClassID === 1) {
+              return row.UnitName;
+            } else {
+              return row.UnitName;
+            }
+          },
+        },
+        {
+          data: "Quantity",
+          name: "Quantity",
+          title: "Quantity",
+          visible: false,
+          targets: 14,
+        },
+        {
+          data: "NationName",
+          name: "NationName",
+          title: "NationName",
+          visible: false,
+          targets: 15,
+        },
+        {
+          data: "POL",
+          name: "POL",
+          title: "POL",
+          visible: false,
+          targets: 16,
+        },
+        {
+          data: "POD",
+          name: "POD",
+          title: "POD",
+          visible: false,
+          targets: 17,
+        },
+        {
+          data: "CargoTypeName",
+          name: "CargoTypeName",
+          title: "CargoTypeName",
+          visible: false,
+          targets: 18,
+        },
+      ],
+      TblMain = $("#MainScreemTable");
+
+    var dataTbl = TblMain.newDataTable({
+      scrollY: "55vh",
+      columnDefs: _columns,
+      order: [
+        [0, "asc"],
+        [9, "asc"],
+      ],
+      paging: false,
+      keys: true,
+      autoFill: {
+        focus: "focus",
+      },
+      select: true,
+      rowReorder: false,
+    });
+
+    $("#importFile").on("click", function () {
+      var VoyageKey = $("#VoyageKey").val();
+      if (VoyageKey === "") {
+        toastr["error"]("Vui lòng chọn tàu trước khi load dữ liệu");
+        return;
+      }
+
+      var fromData = {
+        VoyageKey: $("#VoyageKey").val(),
+        filter: {
+          ClassID: $("input[type='radio'][name='ClassID']:checked").val(),
+        },
+      };
+      enter(fromData);
+      $("#MainScreemTable").waitingLoad();
+    });
+    let enter = (fromData) => {
+      $("#MainScreemTable").dataTable().fnClearTable();
+      $.ajax({
+        url: "/Report/BienBan_kettoantau/get",
+        dataType: "json",
+        data: fromData,
+        type: "POST",
+        success: function (data) {
+          var rows = [];
+          if (data.data.length > 0) {
+            for (var i = 0; i < data.data.length; i++) {
+              var rData = data.data[i];
+              rows.push({ ...rData });
+            }
+          }
+          if (rows.length > 0) {
+            $("#MainScreemTable").dataTable().fnAddData(rows);
+          }
+        },
+        error: function (err) {
+          console.log(err);
+        },
+      });
+    };
+  });
+
+  // Nút xuất báo cáo
+  // $("#ExportReport").on("click", function () {
+  //   var voyageKey = $("#VoyageKey").val();
+  //   var allRowData = $("#MainScreemTable").DataTable().data().toArray();
+
+  //   console.log("dòng đã chọn", allRowData);
+
+  //   if (voyageKey && allRowData.length > 0) {
+  //     $("#report-modal").modal("show");
+  //   } else {
+  //     if (!voyageKey) {
+  //       toastr["error"]("Vui lòng chọn tàu trước khi kết toán!");
+  //       return;
+  //     } else {
+  //       toastr.error("Vui lòng chọn dữ liệu để kết toán!");
+  //       return;
+  //     }
+  //   }
+
+  //   var shipName = $("#VesselName").val();
+
+  //   var dateArr = "";
+  //   var dateDep = "";
+  //   var dataNo = "";
+  //   var dataWeight = "";
+  //   var dataQuantity = "";
+
+  //   // Lặp qua toàn bộ dữ liệu của bảng
+  //   for (var i = 0; i < allRowData.length; i++) {
+  //     var rowData = allRowData[i];
+  //     dateArr = rowData.ATA;
+  //     dateDep = rowData.ATD;
+  //     dataNo = rowData.BillOfLading || rowData.BookingNo;
+  //     dataWeight = rowData.YardMcWeight;
+  //     dataQuantity = rowData.Quantity;
+
+  //     if (dateArr) {
+  //       var formattedDate = moment(dateArr).format("DD-MM-YYYY HH:mm:ss");
+  //       dateArr = formattedDate;
+  //     }
+  //     if (dateDep) {
+  //       var formattedDate = moment(dateDep).format("DD-MM-YYYY HH:mm:ss");
+  //       dateDep = formattedDate;
+  //     }
+
+  //     // Sử dụng dữ liệu trong vòng lặp tùy theo nhu cầu của bạn
+  //     console.log("Dòng " + (i + 1) + ":");
+  //     console.log("DateArr:", dateArr);
+  //     console.log("DateDep:", dateDep);
+  //     console.log("No:", dataNo);
+  //     console.log("Weight:", dataWeight);
+  //     console.log("Quantity:", dataQuantity);
+  //   }
+
+  //   $("#ShipName").text(shipName);
+  //   $("#DateArr").text(dateArr);
+  //   $("#DateDep").text(dateDep);
+  //   $("#No").text(dataNo);
+  //   $("#QuantityA").text(dataQuantity);
+  //   $("#Weight").text(dataWeight);
+  // });
+
+  $("#ExportReport").on("click", function () {
+    var voyageKey = $("#VoyageKey").val();
+    var allRowData = $("#MainScreemTable").DataTable().data().toArray();
+
+    if (voyageKey && allRowData.length > 0) {
+      $("#report-modal").modal("show");
+    } else {
+      if (!voyageKey) {
+        toastr["error"]("Vui lòng chọn tàu trước khi kết toán!");
+        return;
+      } else {
+        toastr.error("Vui lòng chọn dữ liệu để kết toán!");
+        return;
+      }
+    }
+
+    var shipName = $("#VesselName").val();
+    var nationName = allRowData[0].NationName;
+    var pol = allRowData[0].POL;
+    var dateArr = allRowData[0].ATA;
+    var pod = allRowData[0].POD;
+    var dateDep = allRowData[0].ATD;
+
+    if (dateArr) {
+      var formattedDate = moment(dateArr).format("DD-MM-YYYY HH:mm:ss");
+      dateArr = formattedDate;
+    }
+    if (dateDep) {
+      var formattedDate = moment(dateDep).format("DD-MM-YYYY HH:mm:ss");
+      dateDep = formattedDate;
+    }
+
+    $("#ShipName").text(shipName);
+    $("#NationName").text(nationName);
+    $("#POL").text(pol);
+    $("#DateArr").text(dateArr);
+    $("#POD").text(pod);
+    $("#DateDep").text(dateDep);
+
+    // Lấy số lượng dòng trong bảng
+    var rowCount = allRowData.length;
+
+    // Xóa các dòng hiện tại trong bảng
+    $("#BodyReport tr").slice(2).remove();
+
+    // Duyệt qua các dòng và điền giá trị vào các ô tương ứng
+    var sumQuantity = 0;
+    var sumWeight = 0;
+    var sumQuantityA = 0;
+
+    // Duyệt qua các dòng và điền giá trị vào các ô tương ứng
+    for (var i = 0; i < rowCount; i++) {
+      var row = allRowData[i];
+      // Tạo một dòng mới
+      var newRow = $("<tr>");
+
+      // Tạo các ô và điền giá trị vào
+      var polCell = $("<td>")
+        .attr({
+          style:
+            "border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000;",
+          height: "22",
+          align: "center",
+          valign: "middle",
+        })
+        .html(
+          "<font color='#000000'>" +
+            (row.POL != null ? row.POL : "") +
+            "</font>"
+        );
+
+      var noCell = $("<td>")
+        .attr({
+          style:
+            "border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000;",
+          align: "center",
+          valign: "middle",
+        })
+        .html(
+          "<font color='#000000'>" +
+            (row.BillOfLading || row.BookingNo) +
+            "</font>"
+        );
+
+      var quantityCell = $("<td>")
+        .attr({
+          style:
+            "border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000;",
+          align: "center",
+          valign: "middle",
+        })
+        .html("<font color='#000000'>" + row.Quantity + "</font>");
+
+      var weightCell = $("<td>")
+        .attr({
+          style:
+            "border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000;",
+          align: "center",
+          valign: "middle",
+        })
+        .html("<font color='#000000'>" + row.McWeight + "</font>");
+
+      var quantityACell = $("<td>")
+        .attr({
+          style:
+            "border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000;",
+          align: "center",
+          valign: "middle",
+        })
+        .html("<font color='#000000'>" + row.Quantity + "</font>");
+
+      var itemCell = $("<td>")
+        .attr({
+          style:
+            "border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000;",
+          align: "center",
+          valign: "middle",
+        })
+        .html("<font color='#000000'>" + row.CargoTypeName + "</font>");
+
+      // Thêm các ô vào dòng mới
+      newRow.append(
+        polCell,
+        noCell,
+        quantityCell,
+        weightCell,
+        quantityACell,
+        itemCell
+      );
+
+      // Thêm dòng mới vào bảng
+      $("#BodyReport").append(newRow);
+      // Tính toán giá trị tổng
+      sumQuantity += row.Quantity;
+      sumWeight += parseFloat(row.McWeight);
+      sumQuantityA += row.Quantity;
+    }
+
+    // Thêm dòng tổng vào bảng
+    var totalRow = $("<tr>");
+
+    var emptyCell = $("<td>")
+      .attr({
+        height: "22",
+        align: "center",
+        valign: "middle",
+      })
+      .html("<font color='#000000'><br /></font>");
+
+    var totalLabelCell = $("<td>")
+      .attr({
+        align: "center",
+        valign: "middle",
+      })
+      .html("<b><font color='#000000'>TOTAL:</font></b>");
+
+    var sumQuantityCell = $("<td>")
+      .attr({
+        align: "center",
+        valign: "middle",
+        sdval: "0",
+      })
+      .html("<b><font color='#000000' id='SumSL'></font></b>");
+
+    var sumWeightCell = $("<td>")
+      .attr({
+        align: "center",
+        valign: "middle",
+        sdval: "0",
+      })
+      .html("<b><font color='#000000' id='SumW'></font></b>");
+
+    var sumQuantityACell = $("<td>")
+      .attr({
+        align: "center",
+        valign: "middle",
+        sdval: "0",
+      })
+      .html("<b><font color='#000000' id='SumsL'></font></b>");
+
+    totalRow.append(
+      emptyCell,
+      totalLabelCell,
+      sumQuantityCell,
+      sumWeightCell,
+      sumQuantityACell
+    );
+
+    // Thêm dòng tổng vào bảng
+    $("#BodyReport").append(totalRow);
+
+    // Đặt giá trị tổng vào các phần tử HTML
+    $("#SumSL").text(sumQuantity);
+    $("#SumW").text(sumWeight.toFixed(2));
+    $("#SumsL").text(sumQuantityA);
+
+    // Tạo ngày tháng
+    var currentDate = new Date();
+    var day = currentDate.getDate();
+    var month = currentDate.getMonth() + 1;
+    var year = currentDate.getFullYear();
+    var formattedDate =
+      "TP.HCM, Ngày " + day + " tháng " + month + " năm " + year;
+
+    $("#Nt").html("<font color='#000000'>" + formattedDate + "</font>");
+  });
+
+  $("#export").on("click", function () {
+    //lấy nội dung của thẻ div có class"modal-body"
+    var modalContent = $("#exportreport").html();
+
+    //tạo một đối tượng Blob từ nội dung để tạo file
+    var blob = new Blob([modalContent], { type: "application/vnd.ms-excel" });
+
+    //tạo URL đối tượng Blob
+    var url = URL.createObjectURL(blob);
+
+    //tạo tên file dựa trên ngày giờ hiện tại
+    var currentDate = new Date();
+    var day = ("0" + currentDate.getDate()).slice(-2);
+    var month = ("0" + (currentDate.getMonth() + 1)).slice(-2);
+    var year = currentDate.getFullYear();
+    var hours = ("0" + currentDate.getHours()).slice(-2);
+    var minutes = ("0" + currentDate.getMinutes()).slice(-2);
+    var seconds = ("0" + currentDate.getSeconds()).slice(-2);
+    var fileName =
+      "BB_KET_TOAN_" +
+      $("#VesselName").val().replace(" | ", "_") +
+      "_" +
+      day +
+      month +
+      year +
+      "_" +
+      hours +
+      minutes +
+      seconds +
+      ".xls";
+
+    //tạo một thẻ a để tải xuống file
+    var a = $("<a>")
+      .attr("href", url)
+      .attr("download", fileName)
+      .css("display", "none");
+
+    //thêm thẻ a vào body và kích hoạt sự kiện click tự động để tải xuống
+    $("body").append(a);
+    a[0].click();
+
+    //xóa thẻ a sau khi đã tải xuống
+    a.remove();
+
+    //giải phóng Url đối tượng Blob
+    URL.revokeObjectURL(url);
+  });
+</script>

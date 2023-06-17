@@ -1,0 +1,1752 @@
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1" />
+	<title>GATE [CEH]</title>
+	<!-- REQUIRED STYLES -->
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic" rel="stylesheet" type="text/css" />
+	<link href="assets/vendors/themify-icons/css/themify-icons.css" rel="stylesheet" />
+	<!-- <link href="/assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" /> -->
+	<link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+	<!-- REQUIRED PLUGINS -->
+	<link rel="stylesheet" type="text/css" href="/assets/css/manes.css" />
+	<link href="/assets/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+	<link href="/assets/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+	<link href="/assets/css/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
+	<link href="/assets/css/select2.min.css" rel="stylesheet" type="text/css" />
+	<link href="/assets/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
+	<link href="/assets/css/daterangepicker.css" rel="stylesheet" type="text/css" />
+	<!-- <link href="/assets/css/all.css" rel="stylesheet" type="text/css"> -->
+	<link href="/assets/css/dataTables.min.css" rel="stylesheet" type="text/css" />
+	<link href="/assets/css/flag-css.min.css" rel="stylesheet" type="text/css" />
+	<link href="/assets/css/fullcalendar.min.css" rel="stylesheet" type="text/css" />
+	<!-- main.min.css - WISEBOARD CORE CSS -->
+	<link href="/assets/css/main.min-1.css" rel="stylesheet" type="text/css" />
+	<!-- plugins.min.css - ALL PLUGINS CUSTOMIZATIONS -->
+	<link href="/assets/css/plugins.min.css" rel="stylesheet" type="text/css" />
+	<link href="/assets/css/toastr.min.css" rel="stylesheet" type="text/css" />
+	<!-- admin.min.css - ADMIN LAYOUT -->
+	<!-- theme-default.min.css - DEFAULT THEME -->
+	<!-- <link href="https://hientruongtest.sp-itc.com.vn/assets/css/theme-default.min.css" rel="stylesheet" type="text/css"> -->
+	<!-- custom css -->
+	<link href="/assets/css/gate-custom.css" media="screen and (min-width: 601px)" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" media="screen and (max-width: 600px)" href="/assets/css/gate-mobile.css" />
+	<link rel="stylesheet" type="text/css" href="/assets/css/jquery-ui.css" />
+	<script src="/assets/js/socket.io.js"></script>
+	<!-- <script src="https://hientruongtest.sp-itc.com.vn/assets/js/ContainerValidator.js"></script> -->
+	<style type="text/css">
+		.activeHover {
+			opacity: 0.5;
+		}
+
+		.table-floating-box-infor {
+			float: right !important;
+			padding-right: 15px !important;
+		}
+
+		.panel-body {
+			padding: 1vh 2vh !important;
+		}
+
+		.panel.panel-primary {
+			margin-bottom: 5px;
+			border-radius: 0.5vh;
+		}
+
+		.content {
+			min-height: auto !important;
+			height: calc(100% - 200px) !important;
+			padding-bottom: 3px !important;
+		}
+
+		.page-title-wrapper {
+			margin-bottom: 5px !important;
+		}
+
+		.panel-heading {
+			background: #337ab7 !important;
+		}
+
+		.panel-heading:after {
+			height: 0 !important;
+		}
+
+		.panel-title>b {
+			font-size: 1.65rem;
+		}
+
+		.form-group label {
+			/*font-size: 1.4rem;*/
+			font-weight: bold;
+		}
+
+		body {
+			height: 100vh;
+			border: 3px inset;
+			/*overflow-y: hidden;*/
+		}
+
+		.form-control {
+			color: #000;
+		}
+
+		#orderInfo-content label {
+			margin-bottom: 1vh !important;
+		}
+
+		.m-table-fixed th {
+			font-size: 1vw;
+		}
+
+		/*#row1{
+        height: 85vh!important;
+    }*/
+
+		#printOutModal_New {
+			width: 300px;
+			height: 500px;
+			display: none;
+			background: red;
+			position: fixed;
+			top: 30%;
+			left: 30%;
+		}
+
+		#changeSearch {
+			color: #fff;
+			transition: color ease-in-out 0.2s;
+		}
+
+		#changeSearch:hover {
+			color: burlywood;
+		}
+	</style>
+	<style type="text/css">
+		.jqstooltip {
+			position: absolute;
+			left: 0px;
+			top: 0px;
+			visibility: hidden;
+			background: rgb(0, 0, 0) transparent;
+			background-color: rgba(0, 0, 0, 0.6);
+			filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);
+			-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)";
+			color: white;
+			font: 10px arial, san serif;
+			text-align: left;
+			white-space: nowrap;
+			padding: 5px;
+			border: 1px solid white;
+			z-index: 10000;
+		}
+
+		.jqsfield {
+			color: white;
+			font: 10px arial, san serif;
+			text-align: left;
+		}
+	</style>
+</head>
+
+<body class="page-dashboard bg-grey">
+	<!-- CONTENT WRAPPER STARTS ( INCLUDES LEFT SIDEBAR AND CONTENT PART OF THE PAGE ) -->
+	<div class="content-wrapper" style="background: #e9ebee; height: -webkit-fill-available;">
+		<div class="m-header">
+			<div class="m-titleinfo-lg" style="padding-top: 0.6vh;">
+				<b id="userName" class="hidden-xs-down">GIÁM SÁT CỔNG</b>
+				<div id="mobile-menu" data-toggle="modal" data-target="#menu-modal">
+					<img src="/assets/img/icons/mobile-menu.png" />
+				</div>
+			</div>
+			<div class="m-titleinfo-content">
+				<button class="btn border-inset" id="GateSelected" style="min-width: 75px; color: #fff">/</button>
+				<div class="DivChooseGate" id="btnGate" style="align-items: center; justify-content: center; display: flex;">
+					<!-- <button type="button" style="margin-right: 5px; margin-left: 5px; margin-bottom: 0px;  color: #fff" 
+                    class="btn border-inset" value="I">IN</button>
+                <button type="button" style="margin-right: 5px; margin-left: 5px; margin-bottom: 0px;  color: #fff" 
+                    class="btn border-inset" value="O">OUT</button> -->
+				</div>
+			</div>
+			<!-- sidebar -->
+			<div id="gate-sidebar">
+				<div id="btnClean" title="Làm mới" class="m-sidebar-btn">
+					<img src="/assets/img/icons/clean.png" />
+				</div>
+				<div id="btnPassGate" title="Qua cổng" class="m-sidebar-btn">
+					<img src="/assets/img/icons/gatepass.png" />
+				</div>
+				<div id="btnPrintQuery" title="In lại" class="m-sidebar-btn" data-toggle="modal" data-target="#rePrinting">
+					<img src="/assets/img/icons/query.png">
+				</div>
+				<div id="btnBlackList" title="Thêm BlackList" class="m-sidebar-btn" data-toggle="modal" data-target="#BlackList">
+					<img src="/assets/img/icons/block_truck.png" />
+				</div>
+				<div id="logout" title="Đăng xuất" class="m-sidebar-btn">
+					<img src="/assets/img/icons/logout.png" />
+				</div>
+			</div>
+		</div>
+
+		<!-- CONTENT STARTS -->
+		<div class="content" style="visibility: hidden">
+			<div id="gate-maincontent">
+				<!-- /.page-titile-wrapper -->
+				<div class="row" id="row1">
+					<div class="col-sm-12 col-md-4 col-lg-4">
+						<div class="panel panel-primary" id="orderInfo-panel">
+							<div class="panel-heading">
+								<div class="panel-title">
+									<b>THÔNG TIN LỆNH</b>
+								</div>
+							</div>
+							<div class="panel-body" id="orderInfo-content" style="height: 75.7vh;">
+								<div class="row">
+									<div class="form-group col-xs-6 col-sm-6 col-md-6">
+										<label for="txtShipName">Tên tàu</label>
+										<input type="text" class="form-control rounded" id="txtShipName" readonly="" placeholder="Tên tàu" />
+									</div>
+									<div class="form-group col-xs-6 col-sm-6 col-md-6">
+										<label for="txtShipVoy">Chuyến nhập/xuất</label>
+										<input type="text" class="form-control rounded" id="txtShipVoy" readonly="" placeholder="Chuyến nhập/xuất" />
+									</div>
+								</div>
+								<div class="row">
+									<div class="form-group col-xs-6 col-sm-6 col-md-6">
+										<label for="dtpETA">ETB</label>
+										<input type="text" class="form-control rounded" id="dtpETA" readonly="" placeholder="ETB" />
+									</div>
+									<div class="form-group col-xs-6 col-sm-6 col-md-6">
+										<label for="dtpETD">ETD</label>
+										<input type="text" class="form-control rounded" id="dtpETD" readonly="" placeholder="ETD" />
+									</div>
+								</div>
+								<div class="row">
+									<div class="form-group col-sm-12">
+										<label for="txtShipperName">Chủ hàng</label>
+										<input type="text" class="form-control rounded" id="txtShipperName" readonly="" placeholder="Chủ hàng" />
+									</div>
+								</div>
+								<div class="row">
+									<div class="form-group col-xs-6 col-sm-6 col-md-6">
+										<label for="txtBLNo">Số vận đơn/Booking</label>
+										<input type="text" class="form-control rounded" id="txtBLNo" readonly="" placeholder="Số vận đơn/Booking" />
+									</div>
+									<div class="form-group col-xs-6 col-sm-6 col-md-6">
+										<label for="txtInvNo">Số hóa đơn</label>
+										<input type="text" class="form-control rounded" id="txtInvNo" readonly="" placeholder="Số hóa đơn" />
+									</div>
+								</div>
+								<div class="row">
+									<div class="form-group col-xs-6 col-sm-6 col-md-6">
+										<label for="txtCJMode_CD">Phương án</label>
+										<input type="text" class="form-control rounded" id="txtCJMode_CD" readonly="" placeholder="Phương án" />
+									</div>
+									<div class="form-group col-xs-6 col-sm-6 col-md-6">
+										<label for="txtDMethod_CD">Phương thức</label>
+										<input type="text" class="form-control rounded" id="txtDMethod_CD" readonly="" placeholder="Phương thức" />
+									</div>
+								</div>
+								<div class="row">
+									<div class="form-group col-xs-6 col-sm-6 col-md-6">
+										<label for="dtpIssueDate">Ngày tạo lệnh</label>
+										<input type="text" class="form-control rounded" id="dtpIssueDate" readonly="" placeholder="Ngày tạo lệnh" />
+									</div>
+									<div class="form-group col-xs-6 col-sm-6 col-md-6">
+										<label for="dtpExpDate">Ngày hạn lệnh</label>
+										<input type="text" style="color: #f00" class="form-control rounded" id="dtpExpDate" readonly="" placeholder="Ngày hạn lệnh" />
+									</div>
+								</div>
+								<div class="row">
+									<div class="form-group col-xs-6 col-sm-6 col-md-6">
+										<label for="txtPOD">POD/FPOD</label>
+										<input type="text" class="form-control rounded" id="txtPOD" readonly="" placeholder="POD/FPOD" />
+									</div>
+									<div class="form-group col-xs-6 col-sm-6 col-md-6">
+										<label for="txtTransitMode">Transit Mode</label>
+										<input type="text" class="form-control rounded" id="txtTransitMode" readonly="" placeholder="Transit Mode" />
+									</div>
+								</div>
+							</div>
+							<!-- /.panel-body -->
+						</div>
+						<!--/.panel-->
+					</div>
+					<div class="col-sm-12 col-md-8 col-lg-8">
+						<div class="row" id="row1A">
+							<div class="col-sm-12 col-md-6 col-lg-6">
+								<div class="panel panel-primary" id="queryInfo-panel" style="height: 35.5vh;">
+									<div class="panel-heading">
+										<div class="panel-title">
+											<b>TRUY VẤN THÔNG TIN LỆNH</b>
+										</div>
+										<!-- /.panel-title -->
+									</div>
+									<!-- /.panel-heading -->
+									<div class="panel-body">
+										<div class="row">
+											<div class="form-group col-sm-12">
+												<label for="txtSoPin">Số Pin</label>
+												<input maxlength="20" type="text" class="form-control rounded" id="txtSoPin" tabindex="1" required="" autofocus="" placeholder="Số Pin" />
+											</div>
+										</div>
+										<div class="row">
+											<div class="form-group col-xs-6 col-sm-6 col-md-6">
+												<label for="txtEIRNo">Số lệnh</label>
+												<input maxlength="20" type="text" class="form-control rounded" id="txtEIRNo" tabindex="2" placeholder="Số lệnh" />
+											</div>
+											<div class="form-group col-xs-6 col-sm-6 col-md-6">
+												<label for="txtTurn">Lượt xe</label>
+												<input type="text" class="form-control rounded" id="txtTurn" readonly="" placeholder="Số lượt" />
+											</div>
+										</div>
+										<div class="row">
+											<div class="form-group col-xs-6 col-sm-6 col-md-6">
+												<label for="txtBLNo">Số vận đơn/Booking</label>
+												<input type="text" style="color: #f00" class="form-control rounded" id="txtBLNo" readonly="" placeholder="Số vận đơn/Booking" />
+											</div>
+											<div class="form-group col-xs-6 col-sm-6 col-md-6">
+												<label for="txtPostion">Vị trí</label>
+												<input type="text" class="form-control rounded" id="txtPostion" readonly="" placeholder="Vị trí" />
+											</div>
+										</div>
+										<div class="row">
+											<div class="form-group col-xs-6 col-sm-6 col-md-6">
+												<label for="txtQuantity">Số lượng</label>
+												<input type="text" style="color: #f00" class="form-control rounded" id="txtQuantity" readonly="" placeholder="Số lượng" />
+											</div>
+											<div class="form-group col-xs-6 col-sm-6 col-md-6">
+												<label for="txtCargoWeight">Trọng lượng</label>
+												<input type="text" style="color: #f00" class="form-control rounded" id="txtCargoWeight" readonly="" placeholder="Trọng lượng" />
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-primary" id="tractorInfo-panel" style="height: 45vh;">
+									<div class="panel-heading">
+										<div class="panel-title">
+											<b>THÔNG TIN PHƯƠNG TIỆN</b>
+										</div>
+										<!-- /.panel-title -->
+									</div>
+									<!-- /.panel-heading -->
+									<div class="panel-body">
+										<div class="row">
+											<div class="form-group col-xs-6 col-sm-6 col-md-6">
+												<label for="txtTTTX">Thông tin tài xế</label>
+												<input maxlength="20" type="text" class="form-control rounded" id="txtTTTX" tabindex="6" placeholder="Thông tin tài xế" />
+											</div>
+											<div class="form-group col-xs-6 col-sm-6 col-md-6">
+												<label for="txtDriver_PhoneNo">Số điện thoại</label>
+												<input maxlength="20" type="text" class="form-control rounded" id="txtDriver_PhoneNo" tabindex="7" placeholder="Số điện thoại" />
+											</div>
+										</div>
+										<div class="row">
+											<div class="form-group col-xs-6 col-sm-6 col-md-6">
+												<label for="txtTruckNo">Số xe</label>
+												<input maxlength="20" type="text" class="form-control rounded" id="txtTruckNo" tabindex="8" placeholder="Số xe" />
+											</div>
+											<div class="form-group col-xs-3 col-md-3 col-sm-3">
+												<label for="txtTLDK">TLDK</label>
+												<input maxlength="10" type="text" class="form-control rounded numberOnly" id="txtTLDK" tabindex="9" placeholder="TLDK" />
+											</div>
+											<div class="form-group col-xs-3 col-md-3 col-sm-3">
+												<label for="txtTTCPDK">TTCP DK</label>
+												<input maxlength="10" type="text" class="form-control rounded numberOnly" id="txtTTCPDK" tabindex="10" placeholder="TTCP DK" />
+											</div>
+										</div>
+										<div class="row">
+											<div class="form-group col-xs-6 col-sm-6 col-md-6">
+												<label for="txttrailers_number">Số Remooc</label>
+												<input maxlength="15" type="text" class="form-control rounded" id="txttrailers_number" tabindex="11" placeholder="Số Remooc" />
+											</div>
+											<div class="form-group col-xs-3 col-md-3 col-sm-3">
+												<label for="txtTLRM">TL Remooc</label>
+												<input maxlength="10" type="text" class="form-control rounded numberOnly" id="txtTLRM" tabindex="12" placeholder="TL Remooc" />
+											</div>
+											<div class="form-group col-xs-3 col-md-3 col-sm-3">
+												<label for="txtTTCPRM">TTCP Remooc</label>
+												<input maxlength="10" type="text" class="form-control rounded numberOnly" id="txtTTCPRM" tabindex="13" placeholder="TTCP Remooc" />
+											</div>
+										</div>
+										<div class="row">
+											<div class="form-group col-sm-12">
+												<label for="txtRemark">Ghi chú</label>
+												<textarea class="form-control rounded" id="txtRemark" maxlength="500" type="text" tabindex="14" placeholder="Ghi chú" style="height: 72px!important; resize: none;"></textarea>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-6 col-lg-6">
+								<div class="panel panel-primary" id="contList-panel">
+									<div class="panel-heading" style="padding: 0 !important">
+										<div class="panel-title" style="
+                          display: flex;
+                          flex-direction: row;
+                          align-content: center;
+                          width: 100%;
+                          height: 100%;
+                          align-items: center;
+                          justify-content: space-between;
+                        ">
+											<b id="changeSearch" style="
+                            cursor: pointer;
+                            display: inline-block;
+                            text-align: center;
+                            flex-basis: 40%;
+                          ">
+												<span class="ti-search"></span> TÌM KIẾM ❱
+											</b>
+											<input type="text" name="" id="search-engine" class="m-search-input" placeholder="Thông tin tìm kiếm..." style="padding-left: 0.5em; background: #0b4660; 
+                          border-top-left-radius: 0.2em; 
+                          border-bottom-left-radius: 0.2em;
+                          border-top-right-radius: 0.2em;" />
+										</div>
+										<!-- /.panel-title -->
+									</div>
+									<!-- /.panel-body -->
+									<div class="panel panel-default-light border-default">
+										<div class="panel-body">
+											<table class="m-table-fixed listDLGate" id="datatable-vertical" cellspacing="0" style="min-width: 99.8%; border-collapse: collapse; border-radius: 0.3em; overflow: hidden;">
+												<thead>
+													<tr>
+														<th style="width: 10%">I/O</th>
+														<th style="width: 25%">Số Xe</th>
+														<th style="width: 45%">Số vận đơn/Booking</th>
+														<th style="width: 20%">Thời gian</th>
+													</tr>
+												</thead>
+												<tbody style="height: 69vh">
+
+												</tbody>
+											</table>
+											<!-- /.table-responsive -->
+										</div>
+										<!-- /.panel-body -->
+									</div>
+								</div>
+							</div>
+						</div>
+						<button id="btnChoose" type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-large-square" style="display: none"></button>
+					</div>
+					<!-- Thoilc(*Note)-Template in phiếu vận chuyển -->
+					<div id="printOutModal" style="position: relative;">
+						<table style="width: 960px;">
+							<tr>
+								<td colspan="25" style="padding-left: 5px;">
+									<div style="height: 15px;">
+										<span>
+											<img src="/assets/img/logos/logo-csg.png" width="120px" height="120px" alt="Cảng Sài Gòn | Kết nối | Chia sẻ | Phục vụ" style="margin-left: 4px;" />
+										</span>
+										<span>&#xa0;</span>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="25" style="padding-left: 130px">
+									<p style="font-size: 15pt;">
+										<span style="font-weight: bold; margin-right: 260px;">CN CÔNG TY CP CẢNG SÀI GÒN</span>
+										<span style="font-weight: bold;">GIẤY VẬN CHUYỂN</span>
+									</p>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="25" style="padding-left: 165px;">
+									<p style="font-size: 15pt;">
+										<span style="font-weight: bold; margin-right: 335px;">CẢNG TÂN THUẬN</span>
+										<span>Số: </span><span id="mOutPinSeq"></span>
+									</p>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="25">
+									<span style="margin-left: 185px;">-----------------------</span>
+								</td>
+							</tr>
+							<tr>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+							</tr>
+							<tr>
+								<td colspan="18">
+									<p style="font-size: 13pt;">
+										<span>Căn cứ lệnh xuất kho/giao thẳng số: <span id="mOutEirNo"></span></span>
+									</p>
+								</td>
+								<td colspan="7">
+									<p style="font-size: 13pt;">
+										<span>Ngày lệnh: <span id="mOutIssueDate"></span></span>
+									</p>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="25">
+									<p style="font-size: 13pt;"><span>Xuất cho đơn vị: <span id="mOutShipperName"></span></span></p>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<p style="font-size: 13pt;">
+										<span>Máng/kho: </span>
+									</p>
+								</td>
+								<td colspan="18">
+									<p style="font-size: 13pt;">
+										<span>Tàu: <span id="mOutVesselName"></span></span>
+									</p>
+								</td>
+								<td colspan="4">
+									<p style="font-size: 13pt;">
+										<span>Cập bến ngày: <span id="mOutATB"></span></span>
+									</p>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="6">
+									<p style="font-size: 13pt;">
+										<span style="margin-right: 245px;">Tổ GN/kho: </span>
+									</p>
+								</td>
+								<td colspan="8">
+									<p style="font-size: 13pt;">
+										<span>Ca: </span>
+									</p>
+								</td>
+								<td colspan="11">
+									<p style="font-size: 13pt;">
+										<span>Ngày: <span id="mCurrenDate"></span></span>
+									</p>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="6">
+									<p style="font-size: 13pt;">
+										<span style="margin-right: 240px;">Hàng chở từ: </span>
+									</p>
+								</td>
+								<td colspan="10">
+									<p style="font-size: 13pt;">
+										<span>Đến: </span>
+									</p>
+								</td>
+								<td colspan="9">
+									<p style="font-size: 13pt;">
+										<span>Số phương tiện: <span id="mOutTruckNo"></span></span>
+									</p>
+								</td>
+							</tr>
+						</table>
+						<table class="tblInPhieuVC" style="width: 920px; margin-top: 10px;">
+							<tr style="background-color: #e8eaed; -webkit-print-color-adjust: exact;">
+								<td colspan="3" style="width: 140pt;
+								border-left-style: solid;
+								border-right-style: solid;
+								border-top-style: solid;
+								border-bottom-style: solid;
+								border-top-width: 0.75pt;
+								border-right-width: 0.75pt;
+								border-left-width: 0.75pt;
+								border-bottom-width: 0.75pt;
+								padding-right: 5pt;
+								padding-left: 5pt;
+								vertical-align: middle;">
+									<p style="text-align: center; font-size: 13pt;"><span style="font-weight: bold;">LOẠI HÀNG</span></p>
+								</td>
+								<td colspan="5" style="width: 80pt;
+								border-right-style: solid;
+								border-top-style: solid;
+								border-bottom-style: solid;
+								border-top-width: 0.75pt;
+								border-right-width: 0.75pt;
+								border-bottom-width: 0.75pt;
+								padding-right: 5pt;
+								padding-left: 5pt;
+								vertical-align: middle;">
+									<p style="text-align: center; font-size: 13pt;"><span style="font-weight: bold;">SỐ LƯỢNG</span></p>
+								</td>
+								<td colspan="5" style="width: 90pt;
+								border-right-style: solid;
+								border-top-style: solid;
+								border-bottom-style: solid;
+								border-top-width: 0.75pt;
+								border-right-width: 0.75pt;
+								border-bottom-width: 0.75pt;
+								padding-right: 5pt;
+								padding-left: 5pt;
+								vertical-align: middle;">
+									<p style="text-align: center; font-size: 13pt;"><span style="font-weight: bold;">TRỌNG LƯỢNG</span></p>
+								</td>
+								<td colspan="12" style="width: 170pt;
+								border-right-style: solid;
+								border-top-style: solid;
+								border-bottom-style: solid;
+								border-top-width: 0.75pt;
+								border-right-width: 0.75pt;
+								border-bottom-width: 0.75pt;
+								padding-right: 5pt;
+								padding-left: 5pt;
+								vertical-align: middle;">
+									<p style="text-align: center; font-size: 13pt;"><span style="font-weight: bold;">HIỆN TRẠNG HÀNG HÓA</span></p>
+								</td>
+							</tr>
+							<tr id="dataInPhieuVC">
+								<td colspan="3" style="width: 140pt;
+								border-left-style: solid;
+								border-right-style: solid;
+								border-bottom-style: solid;
+								border-top-width: 0.75pt;
+								border-right-width: 0.75pt;
+								border-left-width: 0.75pt;
+								border-bottom-width: 0.75pt;
+								padding-right: 5pt;
+								padding-left: 5pt;
+								vertical-align: middle;">
+									<p style="text-align: center; font-size: 11pt;">
+										<span id="mOutItemCode"></span>
+									</p>
+								</td>
+								<td colspan="5" style="width: 80pt;
+								border-right-style: solid;
+								border-bottom-style: solid;
+								border-top-width: 0.75pt;
+								border-right-width: 0.75pt;
+								border-bottom-width: 0.75pt;
+								padding-right: 5pt;
+								padding-left: 5pt;
+								vertical-align: middle;">
+									<p style="text-align: center; font-size: 10pt;">
+										<span id="mOutQuantity"></span>
+									</p>
+								</td>
+								<td colspan="5" style="width: 90pt;
+								border-right-style: solid;
+								border-bottom-style: solid;
+								border-top-width: 0.75pt;
+								border-right-width: 0.75pt;
+								border-bottom-width: 0.75pt;
+								padding-right: 5pt;
+								padding-left: 5pt;
+								vertical-align: middle;">
+									<p style="text-align: center; font-size: 10pt;">
+										<span id="mOutMcWeight"></span>
+									</p>
+								</td>
+								<td colspan="12" style="width: 170pt;
+								border-right-style: solid;
+								border-bottom-style: solid;
+								border-top-width: 0.75pt;
+								border-right-width: 0.75pt;
+								border-bottom-width: 0.75pt;
+								padding-right: 5pt;
+								padding-left: 5pt;
+								vertical-align: middle;">
+									<p style="text-align: center; font-size: 10pt;">
+										<span id="mOutRemark"></span>
+									</p>
+								</td>
+							</tr>
+						</table>
+						<table style="width: 920px; margin-top: 130px;">
+							<tr style="height: 30px;">
+								<td colspan="2">
+									<p style="margin-bottom: 0px; text-align: center; font-size: 13pt;">
+										<span style="font-weight: bold;">NGƯỜI NHẬN</span><br />
+										<span>(Ký, ghi rõ họ tên)</span>
+									</p>
+								</td>
+								<td colspan="11">
+									<p style="margin-bottom: 0px; text-align: center; font-size: 13pt;">
+										<span style="font-weight: bold;">ĐẠI DIỆN PHƯƠNG TIỆN</span><br />
+										<span>(Ký, ghi rõ họ tên)</span>
+									</p>
+								</td>
+								<td colspan="11">
+									<p style="margin-bottom: 0px; text-align: center; font-size: 13pt;">
+										<span style="font-weight: bold;">NGƯỜI GIAO</span><br />
+										<span>(Ký, ghi rõ họ tên)</span>
+									</p>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2"></td>
+								<td colspan="11"></td>
+								<td colspan="11">
+									<p style="text-align: center; font-size: 13pt; margin-top: 50pt;">
+										<span style="font-weight: bold;" id="mOutUserName"></span><br />
+									</p>
+								</td>
+							</tr>
+						</table>
+						<div style="text-align: center; position: absolute; bottom: 1px; width: 100%;">
+							<span style="font-weight: bold; font-style: italic; text-decoration: underline;">Ghi chú:</span><span> Đại diện phương tiện chịu trách nhiệm trọng tải thực chở hàng hóa so với trọng tải cho phép của phương tiện</span>
+						</div>
+					</div>
+
+					<!-- Thoilc(*Note)-Template in phiếu vị trí -->
+					<div id="printInModal">
+						<div style="height: calc(100% - 2em);width: 100%; padding: .2em">
+							<div style="display: flex; flex-direction: row;" class="print-header">
+								<img style="width: 2.5em; height: 2.5em;" src="/assets/img/logos/logo-csg.png">
+								<div style="display: flex; flex-direction: column;width: 70%; text-align: center;">
+									<span style="font-weight: bold;font-size: 4.5vw">
+										TÂN THUẬN PORT
+									</span>
+									<span style="font-size: 3vw">
+										LOCATION SLIP
+									</span>
+								</div>
+							</div>
+							<div style="text-align: center;margin: 0 1.5em 1em 1.5em">
+							</div>
+							<div style="display: flex; flex-direction: row; justify-content: flex-start;align-items: center;">
+								<div style="font-size: 0.65em; width: 40%; display: flex;flex-direction: column;">
+									<span>Số xe : </span>
+									<span>TruckNo</span>
+								</div>
+								<span style=" font-weight: bold;width: 60%;display: block;text-align: left;" id="pInTruckNo"></span>
+							</div>
+							<div style="display: flex; flex-direction: row; justify-content: flex-start;align-items: center;">
+								<div style="font-size: 0.65em; width: 40%; display: flex;flex-direction: column;">
+									<span>Vị trí bãi : </span>
+									<span>(Yard Location)</span>
+								</div>
+								<span style=" font-weight: bold;width: 60%;display: block;text-align: left;" id="pInBlock"></span>
+							</div>
+							<div style="display: flex; flex-direction: row; justify-content: flex-start;align-items: center;">
+								<div style="font-size: 0.65em; width: 40%; display: flex;flex-direction: column;">
+									<span>Phương án thực hiện : </span>
+									<span>(Transaction mode)</span>
+								</div>
+								<span style="width: 60%;display: block;text-align: left;" id="pInJobModeName"></span>
+							</div>
+							<div style="display: flex; flex-direction: row; justify-content: flex-start;align-items: center;">
+								<div style="font-size: 0.65em; width: 40%; display: flex;flex-direction: column;">
+									<span>Số vận đơn/Booking : </span>
+									<span>(BL/Booking No)</span>
+								</div>
+								<span style=" font-weight: bold;width: 60%;display: block;text-align: left; font-size: .9em;" id="pInBBNo"></span>
+							</div>
+							<div style="display: flex; flex-direction: row; justify-content: flex-start;align-items: center;">
+								<div style="font-size: 0.65em; width: 40%; display: flex;flex-direction: column;">
+									<span>Loại hàng hoá : </span>
+									<span>(Item Code)</span>
+								</div>
+								<span style=" width: 60%;display: block;text-align: left;" id="pInItemCode"></span>
+							</div>
+							<div style="display: flex; flex-direction: row; justify-content: flex-start;align-items: center;">
+								<div style="font-size: 0.65em; width: 40%; display: flex;flex-direction: column;">
+									<span>Chủ hàng : </span>
+									<span>(Consignee)</span>
+								</div>
+								<span style=" width: 60%;display: block;text-align: left; font-weight: bold;" id="pInConsignee"></span>
+							</div>
+							<div style="display: flex; flex-direction: row; justify-content: flex-start;align-items: center;">
+								<div style="font-size: 0.65em; width: 40%; display: flex;flex-direction: column;">
+									<span>Tên tàu/Số chuyến : </span>
+									<span>(Vessel/Voy)</span>
+								</div>
+								<span style=" width: 60%;display: block;text-align: left;" id="pInVessel"></span>
+							</div>
+							<div style="display: flex; flex-direction: row; justify-content: flex-start;align-items: center;">
+								<div style="font-size: 0.65em; width: 40%; display: flex;flex-direction: column;">
+									<span>Cảng dỡ : </span>
+									<span>(POD)</span>
+								</div>
+								<span style="font-weight: bold; width: 60%;display: block;text-align: left;" id="pInPOD"> </span>
+							</div>
+							<div style="display: flex; flex-direction: row; justify-content: flex-start;align-items: center;">
+								<div style="font-size: 0.6em; width: 40%; display: flex;flex-direction: row;">
+									<span>In lúc</span>
+									<span>(Printed on) : </span>
+								</div>
+								<span style=" width: 60%;display: block;text-align: left;" id="pInPrintOn"></span>
+							</div>
+							<div style="display: flex; flex-direction: row; justify-content: flex-start;align-items: center;">
+								<div style="font-size: 0.65em; width: 40%; display: flex;flex-direction: row;">
+									<span>In bởi</span>
+									<span>(Printed by) : </span>
+								</div>
+								<span style=" width: 60%;display: block;text-align: left;" id="pInPrintBy"></span>
+							</div>
+							<div style="display: flex; flex-direction: row; justify-content: flex-start;align-items: center;">
+								<!-- <div style="font-size: 0.8em; width: 100%; display: flex;flex-direction: row;">
+									<span>Tải eEIR tại <a style="font-size: 1.2em;" href="https://eport.sp-itc.com.vn/">https://vietnamhub.vn</a></span>
+								</div> -->
+							</div>
+							<div style="display: flex; flex-direction: row; justify-content: flex-start;align-items: center; padding-top: 10pt; margin-left: 15pt;">
+								<div style="font-size: 0.65em; width: 40%; display: flex;flex-direction: row;">
+									<span></span>
+									<span></span>
+								</div>
+								<span style="font-weight: bold; width: 68%;display: block;text-align: left; font-size: .8em;" id="pInHotline"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- query Cont modal -->
+		<div class="modal fade in" id="BlackList">
+			<div class="modal-dialog" style="width: 60%; height: 60%; max-width: 80%">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Thêm Black List</h4>
+					</div>
+					<div class="modal-body">
+						<div class="panel panel-primary">
+							<div class="row">
+								<div class="col-lg-4">
+									<div class="form-group">
+										<label for="blTruckNo">Số xe</label>
+										<input type="text" class="form-control rounded" id="blTruckNo" />
+									</div>
+								</div>
+								<div class="col-lg-8">
+									<div class="form-group">
+										<label for="blReason">Lý do</label>
+										<input type="text" class="form-control rounded" id="blReason" />
+									</div>
+								</div>
+								<div class="col-lg-12">
+									<button style="float: right" type="button" class="btn btn-primary border-inset" id="btnblAdd">
+										Thêm
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- reprinting modal -->
+		<div class="modal fade in" id="rePrinting">
+			<div class="modal-dialog modal-lg" style="width: 90%; max-width: 90%">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">In lại phiếu</h4>
+					</div>
+					<div class="modal-body">
+						<div id="rePrintHeader">
+							<div style="display: flex;font-size: 1.3rem; height: 28px;">
+								<p style="margin-bottom: 0px">Từ ngày: <input value="" style="width: auto" type="date" name="print_date" id="reprint_fromdate"></p>
+								<p style="margin-bottom: 0px">Đến ngày: <input style="width: auto" type="date" name="print_date" id="reprint_todate"></p>
+								<p style="margin-bottom: 0px">Tìm theo lệnh: <input style="width: auto" type="text" name="" id="search-reprint_order"></p>
+								<p style="margin-bottom: 0px">Tìm theo vận đơn/booking: <input style="width: auto" type="text" name="" id="search-reprint_bbno"></p>
+								<div style="text-align: right;">
+									<button style="float: right;" class="btn btn-primary" id="submit_reprint">Nạp dữ liệu</button>
+								</div>
+							</div>
+							<!-- <label for="loadReprint">Nạp dữ liệu</label>
+                      <input type="text" name="datetimes" id="loadReprint">
+                      <label for="search-reprint">Tìm theo Container</label>
+                      <input type="text" name="" id="search-reprint"> -->
+						</div>
+						<div style="width: 100%">
+							<p style="text-align: right;margin-top: 6px; padding-top: 6px; border-top: 1px solid #ccc"><span>Số dòng: </span><b id="reprint_rowcount">0</b></p>
+							<table class="table table-striped table-bordered" id="rePrintTable" cellspacing="0">
+								<thead>
+									<tr>
+										<!-- <th style="width: 10%">I/O</th> -->
+										<th>Số Lệnh</th>
+										<th>Số Pin</th>
+										<th>Số Vận đơn/booking</th>
+										<th>Số lượng</th>
+										<th>Trọng lượng</th>
+										<th>Phương Án</th>
+										<th>Số xe</th>
+										<th>Vị trí</th>
+										<th>Time In</th>
+										<th>Time Out</th>
+										<th style="display: none"></th>
+										<th style="display: none"></th>
+										<th style="display: none"></th>
+										<th style="display: none"></th>
+										<th style="display: none"></th>
+										<th style="display: none"></th>
+										<th style="display: none"></th>
+										<th style="display: none"></th>
+										<th style="display: none"></th>
+										<th style="display: none"></th>
+										<th style="display: none"></th>
+										<th style="display: none"></th>
+										<th style="display: none"></th>
+										<th style="display: none"></th>
+										<th style="display: none"></th>
+										<th style="display: none"></th>
+										<th style="display: none"></th>
+										<th style="display: none"></th>
+										<th style="display: none"></th>
+										<th style="display: none"></th>
+										<th style="display: none"></th>
+										<th style="display: none"></th>
+										<th style="display: none"></th>
+										<th style="display: none"></th>
+									</tr>
+								</thead>
+								<tbody style="height: calc(60vh - 100px)">
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button style="display: none;" type="button" class="btn btn-primary border-left-bold rounded" id="btnGetDataRePrint">Nạp dữ liệu</button>
+						<button type="button" class="btn btn-primary border-left-bold rounded" id="btnRePrintIn">Phiếu vị trí</button>
+						<button type="button" class="btn btn-primary border-left-bold rounded" id="btnRePrintOut">Phiếu vận chuyển</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- query Infor modal -->
+		<div class="modal fade in" id="txtTruckNoDiaLog">
+			<div class="modal-dialog" style="width: 60%; height: 60%; max-width: 80%">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Thông báo</h4>
+					</div>
+					<div class="modal-body">
+						<div class="panel panel-primary" style="border: 0px;">
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="form-group">
+										<div id="chk-dialog"></div>
+									</div>
+								</div>
+								<div class="col-lg-12">
+									<button style="float: right" type="button" class="btn btn-primary" data-dismiss="modal" id="btnblClose">
+										Thoát
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- CONTENT ENDS -->
+	<!-- CONTENT WRAPPER ENDS -->
+	<!-- FOOTER STARTS -->
+	<!-- <div class="footer">&copy; Copyright 2016 <span class="divider">|</span> <span class="hidden-xs">Wiseboard theme by The Next Theme</span> <span class="divider hidden-xs">|</span> All rights reserved.</div> -->
+	<!-- style="position: fixed;left: 0;bottom: 0; width: 100%" -->
+	<!-- FOOTER ENDS -->
+	<!-- REQUIRED SCRIPTS -->
+	<!-- <script src="https://hientruongtest.sp-itc.com.vn/assets/js/jquery.min.js"></script> -->
+	<script src="/assets/js/jquery.min.js"></script>
+	<script src="/assets/js/bootstrap.min.js"></script>
+	<script src="/assets/js/jquery-ui.min.js"></script>
+	<!-- REQUIRED PLUGINS -->
+	<script src="/assets/js/jquery.slimscroll.min.js"></script>
+	<script src="/assets/js/basil.min.js"></script>
+	<script src="/assets/js/bootstrap-switch.min.js"></script>
+	<script src="/assets/js/jquery.succinct.min.js"></script>
+	<script src="/assets/js/bootstrap-select.min.js"></script>
+	<script src="/assets/js/select2.full.min.js"></script>
+	<script src="/assets/js/moment.min.js"></script>
+	<script src="/assets/js/daterangepicker.js"></script>
+	<script src="/assets/js/jquery.searchable.js"></script>
+	<script src="/assets/js/jquery.flot.js"></script>
+	<script src="/assets/js/jquery.flot.resize.js"></script>
+	<script src="/assets/js/jquery.flot.pie.js"></script>
+	<script src="/assets/js/jquery.flot.time.js"></script>
+	<script src="/assets/js/jquery.flot.orderBars.js"></script>
+	<script src="/assets/js/jquery.flot.tooltip.min.js"></script>
+	<script src="/assets/js/jquery.sparkline.min.js"></script>
+	<script src="/assets/js/icheck.min.js"></script>
+	<script src="/assets/js/datatables.min.js"></script>
+	<script type="text/javascript" src="/assets/js/key_table.min.js"></script>
+	<script type="text/javascript" src="/assets/js/autofill.min.js"></script>
+	<script type="text/javascript" src="/assets/js/scroller.min.js"></script>
+	<script type="text/javascript" src="/assets/js/select.min.js"></script>
+	<script type="text/javascript" src="/assets/js/buttons.min.js"></script>
+	<script src="/assets/js/jquery.easypiechart.min.js"></script>
+	<script src="/assets/js/fullcalendar.min.js"></script>
+	<script type="text/javascript" src="/assets/js/toastr.min.js"></script>
+	<script type="text/javascript" src="/assets/js/main.js"></script>
+	<!-- main.min.js - WISEBOARD CORE SCRIPT -->
+	<!-- admin.min.js - GENERAL CONFIGURATION SCRIPT FOR THE PAGES -->
+	</script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			let GateList = <%- JSON.stringify(locals.GateList || []) %>;
+			var gbGateType = "";
+			var gbGateName = "";
+			var gbRFOnOff = false;
+			var dataGlobal = {};
+			var iLoadTruckRM = false;
+			var isSearchContainer = true;
+			var dataTruckFill = null;
+			var GateNewData = GateList.iPayload;
+			// var arrTimer = [];
+			//Thoilc(*Note)-Load ds cổng
+			for (i = 0; i < GateNewData.length; i++) {
+				$('.DivChooseGate').append(
+					`<button type="button" style="margin-right: 5px; margin-left: 5px; margin-bottom: 0px;  color: #fff;" 
+                    class="btn border-inset" value="${GateNewData[i].InOut}">${GateNewData[i].GateID}</button>`
+				)
+			}
+
+			//Thoilc(*Note)-In lại theo table
+			$("#submit_reprint").click(() => {
+				$('#rePrintTable tbody').html('');
+				//Thoilc(*Note)-Get từ ngày đến ngày
+				let dataSend = ({
+					time: moment($('#reprint_fromdate').val()).format('YYYY-MM-DD') + " - " + moment($('#reprint_todate').val()).format('YYYY-MM-DD')
+				});
+				//Thoilc(*Note)-Get số lệnh 
+				if ($("#search-reprint_order").val().length > 0) {
+					dataSend["EIRNo"] = $("#search-reprint_order").val();
+				}
+				//Thoilc(*Note)-Get số vận đơn / booking
+				if ($("#search-reprint_bbno").val().length > 0) {
+					dataSend["BBNo"] = $("#search-reprint_bbno").val();
+				}
+				Load_RePrint_List(dataSend);
+			});
+
+			//Thoilc(*Note)-Load dữ liệu từ phía BE theo số pin || eir
+			function getDataView(mySoPin, myEIRNo, isCntrPress) {
+				var dataSend = {
+					EIRNo: myEIRNo,
+					SoPin: mySoPin,
+					// TypeGate: gbGateType
+				};
+				$.ajax({
+					type: "POST",
+					dataType: "json",
+					data: dataSend,
+					url: "/gate/getView",
+					success: function(data) {
+						if (data.data.iStatus) {
+							fillData(data.data.iPayload[0]);
+							return true;
+						} else {
+							toastr["error"](data.data.iMessage);
+						}
+					},
+					error: function(dataGet) {
+						toastr["error"]("Phát sinh lỗi! Xem Log");
+						return false;
+					},
+				});
+				return true;
+			}
+
+			//Thoilc(*Note)-Gán dữ liệu lên lưới
+			function fillData(iData) {
+				if (iData) {
+					dataGlobal = iData;
+					$("#txtSoPin").val(iData.PinCode);
+					document.getElementById('txtSoPin').readOnly = true;
+					$("#txtEIRNo").val(iData.EirNo);
+					document.getElementById('txtEIRNo').readOnly = true;
+					$("#txtShipName").val(iData.VesselName);
+					$("#txtShipperName").val(iData.ShipperName ? iData.ShipperName : iData.CusID);
+					$("#txtShipVoy").val(
+						(iData.InboundVoyage ? iData.InboundVoyage : "....") +
+						"/" +
+						(iData.OutboundVoyage ? iData.OutboundVoyage : "....")
+					);
+					$("#dtpETA").val(iData.ETB ? iData.ETB : gbGateType === "O" ? moment(iData.ETB).format("YYYY-MM-DD HH:mm:ss") : "");
+					$("#dtpETD").val(iData.ETD ? iData.ETD : gbGateType === "O" ? moment(iData.ETD).format("YYYY-MM-DD HH:mm:ss") : "");
+					$("#dtpIssueDate").val(iData.IssueDate ? moment(iData.IssueDate).format("YYYY-MM-DD HH:mm:ss") : gbGateType === "O" ? moment(iData.IssueDate).format("YYYY-MM-DD HH:mm:ss") : "");
+					$("#dtpExpDate").val(iData.ExpDate ? iData.ExpDate : gbGateType === "O" ? moment(iData.ExpDate).format("YYYY-MM-DD HH:mm:ss") : "");
+					$("*[id*=txtBLNo]:visible").each(function() {
+						$(this).val(iData.BillOfLading ? iData.BillOfLading : iData.BookingNo);
+					});
+					$("#txtInvNo").val(iData.InvNo ? iData.InvNo : iData.InvDraftNo);
+					$("#txtTransitMode").val(iData.TransitID);
+					$("#txtPOD").val(
+						(iData.POD ? iData.POD : "....") +
+						"/" +
+						(iData.FPOD ? iData.FPOD : "....")
+					);
+					$("#txtCJMode_CD").val(iData.JobModeID);
+					$("#txtDMethod_CD").val(iData.MethodID);
+					$("#txtPostion").val(iData.Block ? iData.Block : iData.CombinedBlocks);
+					$("#txtQuantity").val(iData.Quantity ? iData.Quantity : 0);
+					$("#txtCargoWeight").val(iData.McWeight ? iData.McWeight : 0);
+					$("#txtDriver_PhoneNo").val(iData.Phone_Number);
+					$("#txtTruckNo").val(iData.TruckNo);
+					$("#txtTLDK").val(iData.trailer_weight ? iData.trailer_weight : "");
+					$("#txtTTCPDK").val(iData.allowed_trailer_weight);
+					$("#txttrailers_number").val(iData.RM_No);
+					$("#txtTLRM").val(iData.romooc_weight ? iData.romooc_weight : "");
+					$("#txtTTCPRM").val(iData.allowed_romooc_weight);
+					$("#txtRemark").val(iData.Remark);
+					$("#txtTurn").val(iData.Sequence);
+				} else {
+					$("#txtSoPin").val("");
+					$("#txtEIRNo").val("");
+				}
+			}
+
+			//Thoilc(*Note)-Nhập thông tin xe lấy trọng lượng
+			$("#txtTruckNo").keydown(function(e) {
+				//Thoilc(*Note)-Lấy keyCode của bàn phím trên keyboard
+				//Link: https://www.toptal.com/developers/keycode
+				if (e.keyCode == 13) {
+					layTLXe();
+				}
+			});
+
+			$("#txtTruckNo").change(function(e) {
+				layTLXe();
+			});
+
+			$("#txttrailers_number").keydown(function(e) {
+				if (e.keyCode == 13) {
+					layTLRm();
+				}
+			});
+
+			$("#txttrailers_number").change(function(e) {
+				layTLRm();
+			});
+
+			//Thoilc(*Note)-Bắt sự kiện keypress load dữ liệu từ BE lên form theo số lệnh
+			$("#txtEIRNo").keydown(function(e) {
+				if (e.key == "Enter") {
+					var iEIRNo = $(this).val().trim();
+					var iSoPin = $("#txtSoPin").val().trim();
+					if (iEIRNo.length >= 13) {
+						getDataView(iSoPin, iEIRNo, "no");
+					} else {
+						toastr["error"]("Nhập sai định dạng Số Lệnh");
+						$(this).focus();
+						return;
+					}
+				}
+			});
+
+			//Thoilc(*Note)-Bắt sự kiện keypress load dữ liệu từ BE lên form theo số pin
+			$("#txtSoPin").keydown(function(e) {
+				if (e.key == "Enter") {
+					var iSoPin = $(this).val().trim();
+					var iEIRNo = $("#txtEIRNo").val().trim();
+					if (iSoPin.length >= 15) {
+						getDataView(iSoPin, iEIRNo, "no");
+					} else {
+						toastr["error"]("Nhập sai định dạng Số Pin");
+						$(this).focus();
+						return;
+					}
+				}
+			});
+
+			//Thoilc(*Note)-Reset lưới dữ liệu
+			$("#changeSearch").click(function() {
+				// arrTimer = null;
+				$.ajax({
+					type: "POST",
+					dataType: "json",
+					url: "/gate/RefData",
+					success: function(dataGet) {
+						if (dataGet.data.iStatus) {
+							toastr["success"](dataGet.data.iMessage);
+							var dataAll = dataGet.data.iPayload;
+							// arrTimer = dataAll.map(item => {
+							// 	return {
+							// 		TruckNo: item.TruckNo,
+							// 		startTime: Math.floor(Math.abs(moment() - moment(item.StartDate, 'YYYY-MM-DD HH:mm:ss')) / 1000)
+							// 	}
+							// });
+							for (var i = 0; i < dataAll.length; i++) {
+								var row, cell;
+								$('.listDLGate tbody').each(function() {
+									cell =
+										'<td style="width: 10%' + (dataAll[i].InOut == "I" ? '; color: #f00!important' : '') + '" class="col_IsInOut">' + dataAll[i].InOut + '</td>' +
+										'<td style="width: 25%" id="' + (dataAll[i].TruckNo ? dataAll[i].TruckNo : '') + '" class="col_TruckNo">' + (dataAll[i].TruckNo ? dataAll[i].TruckNo : '') + '</td>' +
+										'<td style="width: 45%" id="' + (dataAll[i].ClassID === 1 ? dataAll[i].BillOfLading : dataAll[i].BookingNo) + '" class="col_BBNo">' + (dataAll[i].ClassID === 1 ? dataAll[i].BillOfLading : dataAll[i].BookingNo) + '</td>' +
+										'<td style="width: 20%" class="col_dateTimer" startdate="' + dataAll[i].StartDate + '"></td>' +
+										// '<td style="width: 20%" class="col_dateTimer">' + moment((dataAll[i].StartDate ? dataAll[i].StartDate : '')).format('YYYY-MM-DD HH:mm:ss') + '</td>' +
+										'<td class="col_EIRNo" style="display: none">' + (dataAll[i].EirNo ? dataAll[i].EirNo : '') + '</td>'
+									row = '<tr id="' + (dataAll[i].rowguid) + '">' + cell + '</tr>';
+									return row;
+								});
+							};
+							// myTimer();
+						} else {
+							toastr["error"](dataGet.data.iMessage);
+							return;
+						};
+					},
+					error: function(dataGet) {
+						toastr["error"]("Phát sinh lỗi! Xem Log");
+						return;
+					}
+				});
+			});
+
+			//Thoilc(*Note)-Nơi xe đăng ký qua cổng
+			$("#btnPassGate").click(function() {
+				// arrTimer.length = 0;
+				var dataSend = {
+					...dataGlobal,
+					Block: $("#txtPostion").val(),
+					TTTX: $("#txtTTTX").val(),
+					Driver_PhoneNo: $("#txtDriver_PhoneNo").val(),
+					TruckNo: $("#txtTruckNo").val(),
+					trailer_weight: $("#txtTLDK").val(),
+					allowed_trailer_weight: $("#txtTTCPDK").val(),
+					RemoocNo: $("#txttrailers_number").val(),
+					romooc_weight: $("#txtTLRM").val(),
+					allowed_romooc_weight: $("#txtTTCPRM").val(),
+					GateName: gbGateName,
+					Note: $("#txtRemark").val(),
+					TypeGate: gbGateType,
+				};
+				$.ajax({
+					type: "POST",
+					dataType: "json",
+					data: dataSend,
+					url: "/gate/saveGate",
+					success: function(dataGet) {
+						if (dataGet.data.iStatus) {
+							toastr["success"](dataGet.data.iMessage);
+							if (dataGet.data.iInsert) {
+								cleanDATA();
+								let dataAll = dataGet.data.iPayload;
+								// arrTimer = [{
+								// 	TruckNo: dataAll.TruckNo,
+								// 	startTime: Math.floor(Math.abs(moment() - moment(dataAll.StartDate, 'YYYY-MM-DD HH:mm:ss')) / 1000),
+								// }];
+								var row, cell;
+								$('.listDLGate tbody').append(function() {
+									cell =
+										'<td style="width: 10%' + (dataAll.InOut == "I" ? '; color: #f00!important' : '') + '" class="col_IsInOut">' + dataAll.InOut + '</td>' +
+										'<td style="width: 25%" id="' + (dataAll.TruckNo ? dataAll.TruckNo : '') + '" class="col_TruckNo">' + (dataAll.TruckNo ? dataAll.TruckNo : '') + '</td>' +
+										'<td style="width: 45%" id="' + (dataAll.ClassID === 1 ? dataAll.BillOfLading : dataAll.BookingNo) + '" class="col_BBNo">' + (dataAll.ClassID === 1 ? dataAll.BillOfLading : dataAll.BookingNo) + '</td>' +
+										'<td style="width: 20%" class="col_dateTimer" startdate="' + dataAll.StartDate + '"></td>' +
+										// '<td style="width: 20%" class="col_dateTimer">' + moment((dataAll.StartDate ? dataAll.StartDate : '')).format('YYYY-MM-DD HH:mm:ss') + '</td>' +
+										'<td class="col_EIRNo" style="display: none">' + (dataAll.EirNo ? dataAll.EirNo : '') + '</td>'
+									row = '<tr id="' + dataAll.rowguid + '">' + cell + '</tr>';
+									return row;
+								});
+								$('#pInTruckNo').html(dataSend.TruckNo);
+								$('#pInBlock').html(dataSend.Block ? dataSend.Block : '');
+								$('#pInJobModeName').html(dataSend.JobModeID ? dataSend.JobModeID : '');
+								$('#pInBBNo').html(dataSend.ClassID === 1 ? dataSend.BillOfLading : dataSend.BookingNo);
+								$('#pInItemCode').html(dataSend.ItemID ? dataSend.ItemID : '');
+								$('#pInConsignee').html(dataSend.ShipperName ? dataSend.ShipperName : '');
+								$('#pInVessel').html(dataSend.VesselName ? dataSend.VesselName : '');
+								$('#pInPOD').html(dataSend.POD ? dataSend.POD : '');
+								$('#pInPrintOn').html(moment().format("YYYY-MM-DD HH:mm:ss"));
+								$('#pInPrintBy').html(JSON.parse(localStorage.getItem('user_info')).UserName);
+								$('#pInHotline').html('HOTLINE: 0896466903');
+								PrintElem('printInModal');
+								// myTimer();
+							} else {
+								//Thoilc(*Note)-Remove trên lưới
+								$('.listDLGate tbody').find(`tr#${dataSend.rowguid}`).remove();
+								cleanDATA();
+
+								$('#mOutPinSeq').html(dataSend.PinCode + "/" + dataSend.Sequence);
+								$('#mOutEirNo').html(dataSend.EirNo);
+								$('#mOutIssueDate').html(dataSend.IssueDate ? moment(dataSend.IssueDate).format("DD/MM/YYYY HH:mm:ss") : '');
+								$('#mOutShipperName').html(dataSend.ShipperName ? dataSend.ShipperName : '');
+								$('#mOutVesselName').html(dataSend.VesselName + "/" + dataSend.InboundVoyage + "/" + dataSend.OutboundVoyage);
+								$('#mOutATB').html(dataSend.ATB ? moment(dataSend.ATB).format("DD/MM/YYYY HH:mm:ss") : '');
+								$('#mOutTruckNo').html(dataSend.TruckNo ? dataSend.TruckNo : '');
+								$('#mOutItemCode').html(dataSend.CommodityDescription ? dataSend.CommodityDescription : '');
+								$('#mOutQuantity').html(dataSend.Quantity ? dataSend.Quantity : 0);
+								$('#mOutMcWeight').html(dataSend.McWeight ? dataSend.McWeight : 0);
+								$('#mOutRemark').html(dataSend.Note ? dataSend.Note : '');
+								$('#mCurrenDate').html(moment().format("DD/MM/YYYY"));
+								$('#mOutUserName').html(JSON.parse(localStorage.getItem('user_info')).UserName);
+								PrintElem('printOutModal');
+								// myTimer();
+							}
+						} else {
+							toastr["error"](dataGet.data.iMessage);
+							cleanDATA();
+						}
+					},
+					error: function(dataGet) {
+						toastr["error"]("Phát sinh lỗi! Xem Log");
+						return;
+					},
+				});
+
+			});
+
+			// -------logout-----------
+			//Thoilc(*Note)-Page exits
+			$("#logout").click(function() {
+				if (window.location.hostname === "localhost" || window.location.hostname === '127.0.0.1') {
+					location.href = `/user/logout`;
+				}
+			});
+
+			//Thoilc(*Note)-Clear dữ liệu trên lưới
+			$("#btnClean").click(function() {
+				cleanDATA();
+			});
+
+			//Event click call func
+			function cleanDATA() {
+				document.getElementById('txtSoPin').removeAttribute('readonly');
+				document.getElementById('txtEIRNo').removeAttribute('readonly');
+				$("#row1 input, textarea").val("");
+				dataGlobal = null;
+				dataTruckFill = null;
+				gbRFOnOff = false;
+				iLoadTruckRM = false;
+			}
+
+			//Thoilc(*Note)-Thêm black-list xe không cho vào cổng
+			$("#btnblAdd").click(function() {
+				if (!$("#blTruckNo").val()) {
+					toastr["error"]("Vui lòng nhập số xe!");
+					$("#blTruckNo").focus();
+					return false;
+				}
+				if (!$("#blReason").val()) {
+					toastr["error"]("Vui lòng nhập lý do!");
+					$("#blReason").focus();
+					return false;
+				}
+				var dataSend = {
+					TruckNo: $("#blTruckNo").val(),
+					Reason: $("#blReason").val(),
+				};
+				$.ajax({
+					type: "POST",
+					dataType: "json",
+					data: dataSend,
+					url: "/gate/saveBacklst",
+					success: function(dataGet) {
+						let newData = dataGet.data;
+						if (newData.iStatus) {
+							toastr["success"](newData.iMessage);
+						} else {
+							toastr["error"](newData.iMessage);
+						}
+					},
+					error: function(dataGet) {
+						toastr["error"]("Phát sinh lỗi! Xem Log");
+						return;
+					},
+				});
+			});
+
+			//Thoilc(*Note)-Khi chọn cổng mới load danh sách lưới / chưa chọn hoặc chọn về thì không cho hiển thị
+			$("#GateSelected").click(function() {
+				cleanDATA();
+				gbGateName = "";
+				gbGateType = "";
+				showhiddenMain("hidden");
+			});
+
+			//Thoilc(*Note)-$(parent > child selector)
+			$('.DivChooseGate > button').click(function() {
+				gbGateName = $(this).html();
+				gbGateType = $(this).val();
+				showhiddenMain('show');
+			});
+
+
+			//Thoilc(*Note)-Khi chọn cổng nó sẽ view giao diện/hoặc ko
+			function showhiddenMain(ishow) {
+				if (ishow == "show") {
+					$(".DivChooseGate").hide("slide");
+					$(".content").css("visibility", "visible");
+					$("#GateSelected").html(gbGateType + "/" + gbGateName);
+					$(".listDLGate tbody").html("");
+					LoadGateList();
+				} else if (ishow == "hidden") {
+					$(".DivChooseGate").show("slide");
+					$(".content").css("visibility", "hidden");
+					$("#GateSelected").html(gbGateType + "/" + gbGateName);
+					$(".listDLGate tbody").html("");
+					LoadGateList();
+				}
+			}
+
+			//Thoilc(*Note)-Load danh sách xe đã qua cổng
+			function LoadGateList() {
+				dataTruckFill = null;
+				// arrTimer.length = 0;
+				$.ajax({
+					// data: null,
+					dataType: 'json',
+					type: 'POST',
+					url: '/gate/getCarInfo',
+					success: function(dataGet) {
+						if (dataGet.data.iStatus) {
+							var dataAll = dataGet.data.iPayload;
+							dataTruckFill = dataAll;
+							// arrTimer = dataAll.map(item => {
+							// 	return {
+							// 		TruckNo: item.TruckNo,
+							// 		startTime: Math.floor(Math.abs(moment() - moment(item.StartDate, 'YYYY-MM-DD HH:mm:ss')) / 1000)
+							// 	}
+							// });
+							for (var i = 0; i < dataAll.length; i++) {
+								var row, cell;
+								$('.listDLGate tbody').append(function() {
+									cell =
+										'<td style="width: 10%' + (dataAll[i].InOut == "I" ? '; color: #f00!important' : '') + '" class="col_IsInOut">' + dataAll[i].InOut + '</td>' +
+										'<td style="width: 25%" id="' + (dataAll[i].TruckNo ? dataAll[i].TruckNo : '') + '" class="col_TruckNo">' + (dataAll[i].TruckNo ? dataAll[i].TruckNo : '') + '</td>' +
+										'<td style="width: 45%" id="' + (dataAll[i].ClassID === 1 ? dataAll[i].BillOfLading : dataAll[i].BookingNo) + '" class="col_BBNo">' + (dataAll[i].ClassID === 1 ? dataAll[i].BillOfLading : dataAll[i].BookingNo) + '</td>' +
+										'<td style="width: 20%" class="col_dateTimer" startdate="' + dataAll[i].StartDate + '"></td>' +
+										// '<td style="width: 20%" class="col_dateTimer">' + moment((dataAll[i].StartDate ? dataAll[i].StartDate : '')).format('YYYY-MM-DD HH:mm:ss') + '</td>' +
+										'<td class="col_EIRNo" style="display: none">' + (dataAll[i].EirNo ? dataAll[i].EirNo : '') + '</td>'
+									row = '<tr id="' + (dataAll[i].rowguid) + '">' + cell + '</tr>';
+									return row;
+								});
+							};
+							// myTimer();
+						} else {
+							// toastr["error"](dataGet.data.iMessage);
+							return;
+						};
+					},
+					error: function(dataError) {
+						toastr['error']("Phát sinh lỗi! Xem Log.");
+					}
+				});
+			}
+
+			//Thoilc(*Note)-setTimeout::myTimer thiết lập timeout nội bộ hàm::giải quyết tiến trình bị treo khi mỗi lần thời gian tăng
+			// function myTimer() {
+			// 	if (arrTimer.length == 0) return;
+			// 	setInterval(() => {
+			// 		for (var i = 0; i < arrTimer.length; i++) {
+			// 			var startTime = arrTimer[i].startTime;
+			// 			var hour = Math.floor(startTime / (60 * 60));
+			// 			var minute = Math.floor((startTime - (hour * 3600)) / 60);
+			// 			var seconds = startTime - ((hour * 3600) + (minute * 60));
+			// 			if (hour < 10)
+			// 				hour = "0" + hour;
+			// 			if (minute < 10)
+			// 				minute = "0" + minute;
+			// 			if (seconds < 10)
+			// 				seconds = "0" + seconds;
+			// 			// console.log(`${hour}:${minute}:${seconds}`);
+			// 			arrTimer[i].startTime++;
+			// 			$('#datatable-vertical tbody').find(`tr#${arrTimer[i].TruckNo}`).find("td:eq(3)").text(`${hour}:${minute}:${seconds}`);
+			// 		}
+			// 	}, 1000);
+			// }
+
+			const myInterval = myTimer();
+
+			function myTimer() {
+				$('.col_dateTimer').each(function() {
+					let TimeIn = $(this).attr('startdate').trim();
+					let diff = Math.floor(Math.abs(moment() - moment(TimeIn, "YYYY-MM-DD HH:mm:ss")) / 1000);
+					var hour = Math.floor(diff / (60 * 60));
+					var minute = Math.floor((diff - (hour * 3600)) / 60);
+					var seconds = diff - ((hour * 3600) + (minute * 60));
+					if (hour < 10)
+						hour = "0" + hour;
+					if (minute < 10)
+						minute = "0" + minute;
+					if (seconds < 10)
+						seconds = "0" + seconds;
+					$(this).html(`${hour}:${minute}:${seconds}`);
+				})
+				setTimeout(myTimer, 1000);
+			}
+
+			//Thoilc(*Note)-Tìm kiếm theo danh sách
+			//Link tham khảo: https://insidethediv.com/javascript-filter-table-row-single-and-multiple-columns
+			$('#search-engine').bind('keyup', function(e) {
+				var keyword = this.value;
+				keyword = keyword.toUpperCase();
+				var table_3 = document.getElementById("datatable-vertical");
+				var all_tr = table_3.getElementsByTagName("tr");
+				for (var i = 0; i < all_tr.length; i++) {
+					var all_columns = all_tr[i].getElementsByTagName("td");
+					for (j = 0; j < all_columns.length; j++) {
+						if (all_columns[j]) {
+							var column_value = all_columns[j].textContent || all_columns[j].innerText;
+							column_value = column_value.toUpperCase();
+							if (column_value.indexOf(keyword) > -1) {
+								all_tr[i].style.display = ""; // show
+								break;
+							} else {
+								all_tr[i].style.display = "none"; // hide
+							}
+						}
+					}
+				}
+			});
+
+			//Thoilc(*Note)-Thao tác trên lưới load lại danh sách
+			$('.listDLGate tbody').on('click', 'tr', function() {
+				let dataFilter = null;
+				if (gbGateType === "O") {
+					var TruckNoTemp = $('td:eq(1)', this).html();
+					$.ajax({
+						data: {
+							TruckNo: TruckNoTemp
+						},
+						dataType: 'json',
+						type: 'POST',
+						url: '/gate/loadCarTable',
+						success: function(dataGet) {
+							if (dataGet.data.iStatus) {
+								// console.log(dataGet.data.iPayload);
+								dataFilter = dataGet.data.iPayload.filter(item => item.TruckNo === TruckNoTemp) ?? [];
+								fillData(dataFilter[0]);
+							} else {
+								// toastr["error"](dataGet.data.iMessage);
+								return;
+							};
+						},
+						error: function(dataError) {
+							toastr['error']("Phát sinh lỗi! Xem Log.");
+						}
+					});
+				}
+			});
+
+			//Thoilc(*Note)-Load trọng lượng khi nhập số xe()
+			function layTLXe() {
+				var iGatePlate = $('#txtTruckNo').val();
+				var dataSend = {
+					license_plate: iGatePlate,
+				};
+				$.ajax({
+					type: 'POST',
+					dataType: 'json',
+					data: dataSend,
+					url: '/gate/loadCar_RmNum',
+					success: function(dataGet) {
+						let dataNew = dataGet.data;
+						if (dataNew.iStatus) {
+							$('#txtTLDK').val(dataNew.iPayload[0].trailer_weight);
+							$('#txtTTCPDK').val(dataNew.iPayload[0].allowed_trailer_weight);
+							iLoadTruckRM = true;
+						} else {
+							if (dataNew.iBacklst) {
+								$('#txtTruckNoDiaLog').modal(`show`);
+								$('#chk-dialog').html('');
+								$('#chk-dialog').append(`<label style="color: #b60707; font-size: x-large;">Hiện tại số xe ${dataNew.iPayload[0].TruckNo} bị cấm vào cảng!</br>Lý do: ${dataNew.iPayload[0].Reason}!</label>`)
+								iLoadTruckRM = false;
+							} else {
+								if ($("#txtTruckNo").val()) {
+									$("#txtTLDK").val("");
+									$("#txtTTCPDK").val("");
+								}
+								if ($('#txttrailers_number').val()) {
+									$("#txtTLRM").val("");
+									$("#txtTTCPRM").val("");
+								}
+								toastr['error'](dataNew.iMessage);
+								iLoadTruckRM = false;
+							}
+						};
+						return;
+					},
+					error: function(dataGet) {
+						toastr['error']('Phát sinh lỗi! Xem Log');
+						iLoadTruckRM = false;
+						return;
+					}
+				});
+			}
+
+			function layTLRm() {
+				var iRMNo = $('#txttrailers_number').val();
+				var dataSend = {
+					RM_No: iRMNo,
+				};
+				$.ajax({
+					type: 'POST',
+					dataType: 'json',
+					data: dataSend,
+					url: '/gate/loadCar_RmNum',
+					success: function(dataGet) {
+						let dataNew = dataGet.data;
+						if (dataNew.iStatus) {
+							$('#txtTLRM').val(dataNew.iPayload[0].romooc_weight);
+							$('#txtTTCPRM').val(dataNew.iPayload[0].allowed_romooc_weight);
+							iLoadTruckRM = true;
+						} else {
+							toastr['error'](dataNew.iMessage);
+							iLoadTruckRM = false;
+						};
+						return;
+					},
+					error: function(dataGet) {
+						toastr['error']('Phát sinh lỗi! Xem Log');
+						iLoadTruckRM = false;
+						return;
+					}
+				});
+			}
+
+			//Thoilc(*Note)-Nạp dữ liệu chức năng in lại
+			function Load_RePrint_List(dataSend) {
+				$.ajax({
+					type: 'POST',
+					dataType: 'json',
+					data: dataSend,
+					url: '/gate/loadDataGate',
+					success: function(dataGet) {
+						let dataAll = dataGet.data.iPayload;
+						if (dataAll.length) {
+							$("#reprint_rowcount").html(dataAll.length);
+							let result = '';
+							for (var i = 0; i < dataAll.length; i++) {
+								var row, cell;
+								cell =
+									'<td class="c_EirNo">' + dataAll[i].EirNo + '</td>' +
+									'<td class="c_PinCode">' + dataAll[i].PinCode + '</td>' +
+									'<td class="c_BBNo">' + (dataAll[i].BillOfLading ? dataAll[i].BillOfLading : dataAll[i].BookingNo) + '</td>' +
+									'<td class="c_Quantity">' + (dataAll[i].Quantity ? dataAll[i].Quantity : 0) + '</td>' +
+									'<td class="c_McWeight">' + (dataAll[i].McWeight ? dataAll[i].McWeight : 0) + '</td>' +
+									'<td class="c_JobModeName">' + (dataAll[i].JobModeName ? dataAll[i].JobModeName : '') + '</td>' +
+									'<td class="c_TruckNo">' + (dataAll[i].TruckNo ? dataAll[i].TruckNo : '') + '</td>' +
+									'<td class="c_Block">' + (dataAll[i].Block ? dataAll[i].Block : '') + '</td>' +
+									'<td class="c_CommodityDescription" style="display:none;">' + (dataAll[i].CommodityDescription ? dataAll[i].CommodityDescription : '') + '</td>' +
+									'<td class="c_POD" style="display:none;">' + (dataAll[i].POD ? dataAll[i].POD : '') + '</td>' +
+									'<td class="c_ShipperName" style="display:none;">' + (dataAll[i].ShipperName ? dataAll[i].ShipperName : '') + '</td>' +
+									'<td class="c_Remark" style="display:none;">' + (dataAll[i].Remark ? dataAll[i].Remark : '') + '</td>' +
+									'<td class="c_InboundVoyage" style="display:none;">' + (dataAll[i].InboundVoyage ? dataAll[i].InboundVoyage : '') + '</td>' +
+									'<td class="c_OutboundVoyage" style="display:none;">' + (dataAll[i].OutboundVoyage ? dataAll[i].OutboundVoyage : '') + '</td>' +
+									'<td class="c_ATB" style="display:none;">' + (dataAll[i].ATB ? moment(dataAll[i].ATB).format("DD/MM/YYYY HH:mm:ss") : '') + '</td>' +
+									'<td class="c_Sequence" style="display:none;">' + (dataAll[i].Sequence ? dataAll[i].Sequence : '') + '</td>' +
+									'<td class="c_IssueDate" style="display:none;">' + (dataAll[i].IssueDate ? moment(dataAll[i].IssueDate).format("DD/MM/YYYY HH:mm:ss") : '') + '</td>' +
+									'<td class="c_VesselName" style="display:none;">' + (dataAll[i].VesselName ? dataAll[i].VesselName : '') + '</td>' +
+									'<td class="c_TimeIn">' + (dataAll[i].StartDate ? dataAll[i].StartDate : '') + '</td>' +
+									'<td class="c_TimeOut">' + (dataAll[i].FinishDate ? dataAll[i].FinishDate : '') + '</td>';
+								row = '<tr id="' + dataAll[i].rowguid + '">' + cell + '</tr>';
+								result += row;
+							};
+							$('#rePrintTable tbody').html(result);
+							toastr['success'](dataGet.data.iMessage);
+						} else {
+							$("#reprint_rowcount").html(0);
+							toastr['error'](dataGet.data.iMessage);
+						};
+					},
+					error: function(dataError) {
+						toastr['error']("Phát sinh lỗi! Xem Log.");
+						$("#reprint_rowcount").html(0);
+					}
+				});
+			}
+
+			//Thoilc(*Note)-Event close
+			$("#btnblClose").click(function() {
+				$('#modal').modal('toggle');
+			});
+
+			//Thoilc(*Note)-Select table
+			$(document).on('click', '#rePrintTable tbody tr', function() {
+				$('.m-row-selected').removeClass('m-row-selected');
+				$(this).addClass('m-row-selected');
+				// console.log($('#rePrintTable tbody .m-row-selected').children('td.c_TimeOut').html());
+				//Thoilc(*Note)-Chặn không cho in khi TimeOut = null
+				if (!$('#rePrintTable tbody .m-row-selected').children('td.c_TimeOut').html()) {
+					document.getElementById("btnRePrintOut").setAttribute("disabled", "");
+				}
+			});
+
+			//Thoilc(*Note)-In phiếu vị trí
+			$('#btnRePrintIn').click(function() {
+				if ($('#rePrintTable tbody .m-row-selected').length > 0) {
+					var chooseData = $('#rePrintTable tbody .m-row-selected');
+					$('#pInTruckNo').html(chooseData.children('td.c_TruckNo').html());
+					$('#pInBlock').html(chooseData.children('td.c_Block').html());
+					$('#pInJobModeName').html(chooseData.children('td.c_JobModeName').html());
+					$('#pInBBNo').html(chooseData.children('td.c_BBNo').html());
+					$('#pInItemCode').html(chooseData.children('td.c_CommodityDescription').html());
+					$('#pInConsignee').html(chooseData.children('td.c_CusName').html());
+					$('#pInVessel').html(chooseData.children('td.c_VesselName').html());
+					$('#pInPOD').html(chooseData.children('td.c_POD').html());
+					$('#pInPrintOn').html(moment().format("YYYY-MM-DD HH:mm:ss"));
+					$('#pInPrintBy').html(JSON.parse(localStorage.getItem('user_info')).UserName);
+					$('#pInHotline').html('HOTLINE: 0896466903');
+					PrintElem('printInModal');
+				} else {
+					// document.getElementById("btnRePrintIn").setAttribute("disabled", "");
+					toastr['warning']('Vui lòng chọn dòng cần In phiếu vị trí');
+				}
+			});
+
+			//Thoilc(*Note)-In phiếu vận chuyển
+			$('#btnRePrintOut').click(function() {
+				if ($('#rePrintTable tbody .m-row-selected').length > 0) {
+					var chooseData = $('#rePrintTable tbody .m-row-selected');
+					$('#mOutPinSeq').html(chooseData.children('td.c_PinCode').html() + "/" + chooseData.children('td.c_Sequence').html());
+					$('#mOutEirNo').html(chooseData.children('td.c_EirNo').html());
+					$('#mOutIssueDate').html(chooseData.children('td.c_IssueDate').html());
+					$('#mOutShipperName').html(chooseData.children('td.c_ShipperName').html());
+					$('#mOutVesselName').html(chooseData.children('td.c_VesselName').html() + "/" + chooseData.children('td.c_InboundVoyage').html() + "/" + chooseData.children('td.c_OutboundVoyage').html());
+					$('#mOutATB').html(chooseData.children('td.c_ATB').html());
+					$('#mOutTruckNo').html(chooseData.children('td.c_TruckNo').html());
+					$('#mOutItemCode').html(chooseData.children('td.c_CommodityDescription').html());
+					$('#mOutQuantity').html(chooseData.children('td.c_Quantity').html());
+					$('#mOutMcWeight').html(chooseData.children('td.c_McWeight').html());
+					$('#mOutRemark').html(chooseData.children('td.c_Remark').html());
+					$('#mCurrenDate').html(moment().format("DD/MM/YYYY"));
+					$('#mOutUserName').html(JSON.parse(localStorage.getItem('user_info')).UserName);
+					PrintElem('printOutModal');
+				} else {
+					// document.getElementById("btnRePrintOut").setAttribute("disabled", "");
+					toastr['warning']('Vui lòng chọn dòng cần In phiếu vận chuyển');
+				}
+			});
+
+			//Thoilc(*Note)-PrintElem
+			function PrintElem(elem) {
+				var mywindow = window.open('', 'PRINT');
+				mywindow.document.write('<html><head><title>' + document.title + '</title>');
+				mywindow.document.write('</head><body >');
+				mywindow.document.write(document.getElementById(elem).innerHTML);
+				mywindow.document.write('</body></html>');
+				mywindow.document.close(); // necessary for IE >= 10
+				mywindow.focus(); // necessary for IE >= 10*/
+				mywindow.print();
+				mywindow.close();
+				return true;
+			}
+		});
+
+		//Thoilc(*Note)-Lấy ngày hiện tại 
+		var date = new Date();
+		var day = date.getDate();
+		var month = date.getMonth() + 1;
+		var year = date.getFullYear();
+		if (month < 10) month = "0" + month;
+		if (day < 10) day = "0" + day;
+		var today = year + "-" + month + "-" + day;
+		document.getElementById("reprint_fromdate").value = moment(today).add(-1, "days").format("YYYY-MM-DD");
+		document.getElementById("reprint_todate").value = today;
+	</script>
+	<div id="ui-datepicker-div" class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all"></div>
+</body>
+
+</html>

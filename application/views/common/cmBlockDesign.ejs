@@ -1,0 +1,137 @@
+<script>document.title = 'Định nghĩa sơ đồ bãi'</script>
+<style>
+    #block_cont{
+        min-height: calc(100vh - 180px);
+        overflow: scroll;
+    }
+    .block_box{
+        position: absolute;
+    }
+</style>
+<div class="row">
+	<div class="col-xl-12">
+		<div class="ibox collapsible-box">
+			<div class="ibox-head">
+				<div class="ibox-title">Định nghĩa sơ đồ bãi</div>
+				<div class="button-bar-group">                    
+					<button id="save" class="btn btn-outline-primary btn-sm mr-1"
+						data-loading-text="<i class='la la-spinner spinner'></i>Lưu dữ liệu" title="Lưu dữ liệu">
+						<span class="btn-icon"><i class="fa fa-save"></i>Lưu</span>
+					</button>
+				</div>
+			</div>
+
+			<div class="row ibox-body m-0 p-2">
+				<div class="col-md-12 col-sm-12 col-xs-12 table-responsive p-0">
+					<div id="block_cont">
+                        <div class="block_box">
+                        </div>
+                    </div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function () {
+        
+        function loadBlockData(){
+                        $.ajax({
+                            url: "/yard/loadBlockData",
+                            dataType: 'json',
+                            data: {filter:{ClassID:($('.lx_chose.select').attr('value')!='all'?$('.lx_chose.select').attr('value'):undefined)}},
+                            type: 'POST',
+                            success: function (res) {
+                                if(res.data){
+                                    let html='';
+
+                                    res.data.map(itm=>{
+                                        let detail='';
+                                        let tong=0;
+                                        for (let ix = 0; ix < itm.Details.length; ix++) {
+                                            const dlt = itm.Details[ix];
+                                            detail+=`<div class="block_bill_row" >${dlt.BBNo} - SL: ${dlt.Quantity} - TL: ${dlt.McWeight}</div>`;
+                                            tong+=dlt.McWeight;
+                                        }
+                                        //tong=tong*15;
+                                        html+=`
+                                <div class="block_box" block="${itm.Block}" style="left:${itm.Bleft==null?0:itm.Bleft}px;top:${itm.Btop==null?0:itm.Btop}px;width:${itm.Bwidth==null?350:itm.Bwidth}px;height:${itm.Bheight==null?140:itm.Bheight}px">
+                                    <div class="block_bill">
+                                        ${detail}                                        
+                                    </div>
+                                    <div class="block_letter cg${Math.ceil((tong / itm.Capacity * 100)/10)}">
+                                        ${itm.Block}
+                                    </div>
+                                    <div class="block_capacity">
+                                        Sức chứa : ${numF(tong)} / ${numF(itm.Capacity)}
+                                    </div>
+                                    <div class="block_progess" style="">
+                                        <div class="block_progess_bar cpg${Math.ceil((tong / itm.Capacity * 100)/10)}" style="width:${tong / itm.Capacity * 100}%">
+                                        </div>
+                                    </div>
+                                </div>`;
+                                    })
+                                    $('#block_cont').html(html);
+                                    $('.block_box').draggable({ containment: "#block_cont", scroll: true });
+                                    $('.block_box').resizable({
+                                        minHeight: 140,
+                                        minWidth: 350
+                                    });
+                                }                                
+                            },
+                            error: function (err) {
+                                toastr["error"]("Error!");
+                                console.log(err);
+                            }
+                        });
+                    }
+                    loadBlockData();
+
+
+
+
+
+
+
+                    $(document).on('click','#save',function(){
+                        let datas=[];
+                        $('.block_box').each(function(){
+                            let row={
+                                Bleft:$(this).css('left').substr(0,$(this).css('left').length-2),
+                                Btop:$(this).css('top').substr(0,$(this).css('top').length-2),
+                                Bwidth:$(this).css('width').substr(0,$(this).css('width').length-2),
+                                Bheight:$(this).css('height').substr(0,$(this).css('height').length-2),
+                                Block:$(this).attr('Block'),
+                            }
+                            datas.push(row);
+                        })
+                        $.ajax({
+                            url: "/Common/cmBlockDesign/saveBlockDesign",
+                            dataType: 'json',
+                            data: {data:datas},
+                            type: 'POST',
+                            success: function (res) {
+                                if(res.data){
+                                    toastr["success"]("Thành công !");
+                                }                                
+                            },
+                            error: function (err) {
+                                toastr["error"]("Error!");
+                                console.log(err);
+                            }
+                        });
+                        console.log(datas);
+                    })
+
+
+
+
+
+
+
+
+
+
+	});
+</script>

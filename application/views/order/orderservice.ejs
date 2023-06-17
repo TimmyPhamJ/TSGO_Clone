@@ -1,0 +1,567 @@
+
+
+            <!-- START PAGE CONTENT-->
+            <div class="page-content">
+<link href="https://gtos-csg.cehsoft.com/assets/vendors/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
+<style>
+	@media (max-width: 767px) {
+		.f-text-right    {
+			text-align: right;
+		}
+	}
+	.no-pointer{
+		pointer-events: none;
+	}
+	.ibox .ibox-footer {
+	    padding: 10px 25px 5px 25px;
+	}
+	.modal_input{
+		border-bottom: dotted 1px; 
+		width: 70%;
+	}
+	.cash_input{
+		border-bottom: dotted 1px; 
+		width: 60%;
+	}
+	label{
+		padding-right: 0px!important;
+	}
+</style>
+
+<div class="row">
+	<div class="col-xl-12" style="font-size: 12px;">
+		<div class="ibox collapsible-box">
+			<i class="la la-angle-double-up dock-right"></i>
+			<div class="ibox-head">
+				<div class="ibox-title">LỆNH DỊCH VỤ</div>
+			</div>
+			<div class="ibox-body pt-0 pb-0 bg-f9 border-e">
+				<div class="row ibox mb-0 border-e pb-1 pt-1">
+					<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12 mt-3">
+						<div class="row" id="row-transfer-left">
+							<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
+								<div class="row form-group">
+									<label class="col-sm-4 col-form-label">Phương án</label>
+									<div class="col-sm-8">
+										<select id="JobModeID" class="selectpicker" placeholder="-- Chọn phương án --" data-style="btn-default btn-sm" data-width="100%">
+																																
+													<option value="HBAI">
+														HẠ BÃI		
+													</option>
+																				
+													<option value="KHOBAI-XE">
+														KHO, BÃI - XE		
+													</option>
+																				
+													<option value="LAYN">
+														LẤY NGUYÊN		
+													</option>
+																				
+													<option value="NTAU">
+														NHẬP TÀU		
+													</option>
+																				
+													<option value="TAU-GIAOTHANG">
+														TÀU - GIAO THẲNG		
+													</option>
+																				
+													<option value="XGT">
+														XUẤT GIAO THẲNG		
+													</option>
+																				
+													<option value="XTAU">
+														XUẤT TÀU		
+													</option>
+														
+										</select>
+									</div>
+								</div>
+								<div class="row form-group">
+									<label class="col-sm-4 col-form-label">Phương thức</label>
+									<div class="col-sm-8">
+										<select id="MethodID" class="selectpicker" placeholder="-- Chọn phương thức --" data-style="btn-default btn-sm" data-width="100%">
+																																
+													<option value="BAI-XE">
+														XUẤT BÃI		
+													</option>
+																				
+													<option value="TAU-BAI">
+														TÀU BÃI		
+													</option>
+																				
+													<option value="TAU-XALAN">
+														tàu xà lan		
+													</option>
+																				
+													<option value="TAU-XE">
+														NHẬP GIAO THẲNG		
+													</option>
+																				
+													<option value="XE-TAU">
+														XUẤT GIAO THẲNG		
+													</option>
+																				
+													<option value="BAI-TAU">
+														XUẤT TÀU		
+													</option>
+														
+										</select>
+									</div>
+								</div>
+								<div class="row form-group">
+									<label class="col-sm-4 col-form-label">Ngày lệnh</label>
+									<div class="col-sm-8 input-group input-group-sm">
+										<div class="input-group">
+											<input class="form-control form-control-sm input-required" readonly="readonly" id="IssueDate" type="text" placeholder="Ngày lệnh">
+										</div>
+									</div>
+								</div>
+								<div class="row form-group">
+									<label class="col-sm-4 col-form-label">Hạn lệnh *</label>
+									<div class="col-sm-8 input-group input-group-sm">
+										<div class="input-group">
+											<input class="form-control form-control-sm input-required" id="ExpDate" type="text" placeholder="Hạn lệnh">
+											<span class="input-group-addon bg-white btn text-danger" id="del-ref-exp-date" title="Bỏ chọn ngày" style="padding: 0 .5rem"><i class="fa fa-times"></i></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
+								<div class="row form-group">
+									<label class="col-sm-4 col-form-label">Dịch vụ</label>
+									<div class="col-sm-8 input-group input-group-sm">
+										<select id="ServiceID" class="selectpicker" data-style="btn-default btn-sm" data-width="100%">
+																																
+													<option value="dcm">
+														hi		
+													</option>
+																				
+													<option value="RUA">
+														rua xe		
+													</option>
+																				
+													<option value="VS">
+														Vệ Sinh		
+													</option>
+														
+										</select>
+									</div>
+								</div>
+								<div class="row form-group">
+									<label class="col-sm-4 col-form-label pr-0">Số vận đơn *</label>
+									<div class="col-sm-8 input-group input-group-sm">
+										<input class="form-control form-control-sm input-required" id="BillOfLading" type="text" placeholder="Số vận đơn">
+									</div>
+								</div>
+								<div class="row form-group">
+									<label class="col-sm-4 col-form-label">Số PINCODE</label>
+									<div class="col-sm-8 input-group input-group-sm">
+										<div class="input-group">
+											<input class="form-control form-control-sm" id="VINNoFilter" type="text" placeholder="VIN No.">
+											<span class="input-group-addon bg-white btn text-warning" id="VINNoButton" title="Chọn" data-toggle="modal" data-target="" style="padding: 0 .5rem"><i class="fa fa-search"></i></span>
+										</div>
+									</div>
+								</div>								
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12 mt-3">
+						<div class="row pl-1" id="row-transfer-right">
+							<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 mt-1" id="col-transfer">
+								<div class="row form-group">
+									<label class="col-sm-2 col-form-label" title="Chủ hàng">Chủ hàng *</label>
+									<div class="col-sm-10">
+										<input class="form-control form-control-sm input-required" id="ShipperName" type="text" placeholder="Chủ hàng">
+									</div>
+								</div>
+								<div class="row form-group">
+									<label class="col-sm-2 col-form-label pr-0">Đại diện</label>
+									<div class="col-sm-10 input-group">
+										<input class="form-control form-control-sm mr-1" id="cmnd" type="text" placeholder="Số CMND/ Số ĐT">
+										<input class="form-control form-control-sm mr-1" id="personal-name" type="text" placeholder="Họ tên người đại diện">
+										<input class="form-control form-control-sm" id="Email" type="text" placeholder="Địa chỉ Email *" style="width: 5rem">
+									</div>
+								</div>
+								<div class="row form-group">
+									<label class="col-sm-2 col-form-label">Ghi chú</label>
+									<div class="col-sm-10 input-group input-group-sm">
+										<input class="form-control form-control-sm" id="remark" type="text" placeholder="Ghi chú">
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="ibox-body pt-0 pb-0 bg-f9 border-e">
+				<div class="row ibox mb-0 border-e pb-0 pt-0">
+					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 mt-2">
+						<div class="row">
+							<div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-xs-3 pb-0">
+								<div class="row form-group">
+									<label class="col-sm-4 col-form-label" title="Đ.tượng thanh toán">ĐTTT *</label>
+									<div class="col-sm-8 input-group">
+										<input class="form-control form-control-sm input-required" id="CusID" placeholder="Đối tượng thanh toán" type="text">
+										<span class="input-group-addon bg-white btn mobile-hiden text-warning" style="padding: 0 .5rem" title="Chọn đối tượng thanh toán" data-toggle="modal" data-target="#payer-modal" id="chooseCustomer">
+											<i class="ti-search"></i>
+										</span>
+									</div>
+									<input class="hiden-input" id="cusID" readonly="">
+									<input class="hiden-input" id="PaymentTypeID" hidden>
+								</div>
+							</div>
+							<div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-xs-9 col-form-label mt-1">
+								<i class="fa fa-id-card" style="font-size: 15px!important;"></i> - <span id="CusName"> [Tên đối tượng thanh toán]</span>&emsp;
+								<i class="fa fa-home" style="font-size: 15px!important;"></i> -<span id="Address"> [Địa chỉ]</span>&emsp;
+								<i class="fa fa-tags" style="font-size: 15px!important;"></i> - <span id="PaymentTypeName" data-value="C"> [Hình thức thanh toán]</span>
+							</div>
+						</div>
+					</div>
+				</div>				
+			</div>
+			<div class="ibox-body pt-0 pb-0 bg-f9 border-e">
+				<div class="row ibox mb-0 border-e pb-0 pt-0">
+					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 mt-2">
+						<div class="row">
+							<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+								<div class="row form-group ml-auto">
+									<button id="removeRow" class="btn btn-outline-danger btn-sm mr-1" title="Xóa những dòng đang chọn">
+										<span class="btn-icon"><i class="fa fa-trash"></i>Xóa dòng</span>
+									</button>
+								</div>
+							</div>
+							<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+								<div class="row form-group" style="display: inline-block; float: right; margin: 0 auto">
+									<label class="radio radio-outline-success pr-4">
+										<input name="view-opt" type="radio" id="chk-view-cont" value="cont" checked="">
+										<span class="input-span"></span>
+										Danh sách xe
+									</label>
+									<label class="radio radio-outline-success pr-4">
+										<input name="view-opt" id="chk-view-inv" value="inv" type="radio">
+										<span class="input-span"></span>
+										Tính cước
+									</label>
+									<button id="show-payment-modal" class="btn btn-warning btn-sm" title="Thông tin thanh toán" data-toggle="modal">
+										<i class="fa fa-print"></i>
+										Thanh toán
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row ibox-footer border-top-0">
+				<div class="col-12 table-responsive">
+						<table id="contenttable" class="table table-striped display nowrap" cellspacing="0" style="width: 99.5%">
+							<thead>
+								<tr style="width: 100%">
+									<th class="editor-cancel" col-name="STT">STT</th>
+									<th col-name="VoyageKey">Voyage Key</th>
+									<th col-name="VINNo">Số PINCODE</th>
+									<th col-name="BillOfLading">Số vận đơn</th>
+									<th col-name="BookingNo">Số booking</th>
+									<th col-name="SequenceVIN">Sequence VIN</th>
+									<th col-name="DateIn" class="data-type-datetime">Ngày vào</th>					
+									<th col-name="DateOut" class="data-type-datetime">Ngày ra</th>					
+									<th col-name="InvNo">Số hóa đơn</th>							
+									<th col-name="EirNo">Số lệnh giao nhận</th>							
+									<th col-name="OrderNo">Số lệnh dịch vụ</th>							
+									<th col-name="PinCode">Mã pin</th>							
+									<th col-name="CusID">Khách hàng</th>													
+									<th col-name="CusTypeID">Loại khách hàng</th>													
+									<th col-name="ClassID">Nhập/ xuất tàu</th>	
+									<th col-name="IsLocalForeign">Hàng nội/ ngoại</th>						
+									<th col-name="TransitID">Transit ID</th>											
+									<th col-name="IssueDate">Ngày lệnh</th>											
+									<th col-name="ExpDate">Ngày hết hạn lệnh</th>											
+									<th col-name="FinishDate">Thời gian hoàn tất lệnh</th>												
+									<th col-name="CarWeight">Trọng lượng xe</th>							
+									<th col-name="KeyNo">Mã chìa khóa</th>							
+									<th col-name="Remark">Ghi chú</th>							
+								</tr>
+							</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>		
+	</div>
+</div>
+
+<!-- Customer modal-->
+<div class="modal fade" id="customer-modal" tabindex="-1" role="dialog" aria-labelledby="groups-modalLabel-2" aria-hidden="true" data-whatever="id" style="padding-left: 14%; margin-top: 5em;">
+	<div class="modal-dialog" role="document" style="min-width: 1024px!important">
+		<div class="modal-content" style="border-radius: 4px">
+			<div class="modal-header">
+				<h5 class="modal-title text-primary" id="groups-modalLabel-2">DANH MỤC KHÁCH HÀNG</h5>
+			</div>
+			<div class="modal-body">
+				<table id="tblCustomer" class="table table-striped display nowrap" cellspacing="0" style="width: 99.5%">
+					<thead>
+						<tr style="width: 100%">
+							<th col-name="STT">STT</th>
+							<th col-name="CusID">Mã khách hàng</th>
+							<th col-name="CusName">Tên khách hàng</th>
+							<th col-name="Address">Địa chỉ</th>
+							<th col-name="CusTypeID"></th>
+							<th col-name="CusTypeName">Loại khách</th>
+							<th col-name="PaymentTypeID"></th>
+							<th col-name="PaymentTypeID">Loại hình thanh toán</th>
+						</tr>
+					</thead>
+					<tbody>
+																		<tr>
+								<td>1</td>
+								<td>0800006882</td>
+								<td>FORD VIETNAM LIMITED</td>							
+								<td>TU MINH WARD, HAI DUONG CITY HAI DUONG PROVINCE,</td>							
+								<td>TSAU</td>				
+								<td>Khách hàng thu sau</td>				
+								<td>C</td>				
+								<td></td>				
+							</tr>
+														<tr>
+								<td>2</td>
+								<td>duyna</td>
+								<td>nguyen anh duy</td>							
+								<td>Quận 9</td>							
+								<td>TNGAY</td>				
+								<td>Khách hàng thu ngay</td>				
+								<td>M</td>				
+								<td></td>				
+							</tr>
+														<tr>
+								<td>3</td>
+								<td>KH01</td>
+								<td>Nguyễn Văn A</td>							
+								<td></td>							
+								<td>TSAU</td>				
+								<td>Khách hàng thu sau</td>				
+								<td>C</td>				
+								<td></td>				
+							</tr>
+														<tr>
+								<td>4</td>
+								<td>phongdd</td>
+								<td>duy phong</td>							
+								<td></td>							
+								<td>TNGAY</td>				
+								<td>Khách hàng thu ngay</td>				
+								<td>M</td>				
+								<td></td>				
+							</tr>
+																	</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<div  style="margin: 0 auto!important;">
+					<button class="btn btn-sm btn-rounded btn-gradient-blue btn-labeled btn-labeled-left btn-icon" id="apply-customer" data-dismiss="modal">
+						<span class="btn-label"><i class="ti-check"></i></span>Xác nhận</button>
+					<button class="btn btn-sm btn-rounded btn-gradient-peach btn-labeled btn-labeled-left btn-icon" data-dismiss="modal">
+						<span class="btn-label"><i class="ti-close"></i></span>Đóng</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Stock modal-->
+<div class="modal fade" id="stock-modal" tabindex="-1" role="dialog" aria-labelledby="groups-modalLabel-3" aria-hidden="true" data-whatever="id" style="padding-left: 14%; margin-top: 3em;">
+	<div class="modal-dialog" role="document" style="min-width: 1024px!important">
+		<div class="modal-content" style="border-radius: 4px">
+			<div class="modal-header">
+				<h5 class="modal-title text-primary" id="groups-modalLabel-3">DANH MỤC HÀNG BIẾN ĐỘNG</h5>
+			</div>
+			<div class="modal-body">
+				<table id="tblStock" class="table table-striped display nowrap" cellspacing="0" style="width: 99.5%">
+					<thead>
+						<tr style="width: 100%">
+							<th col-name="STT" class="editor-cancel">STT</th>
+							<th col-name="BillOfLading">Số vận đơn</th>
+							<th col-name="VINNo">Số PINCODE</th>							
+							<th col-name="BookingNo">Số booking</th>
+							<th col-name="VMStatus">Tình trạng xe</th>
+							<th col-name="ClassID">Nhập/ xuất tàu</th>	
+							<th col-name="IsLocalForeign">Hàng nội/ ngoại</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<div  style="margin: 0 auto!important;">
+					<button class="btn btn-sm btn-rounded btn-gradient-blue btn-labeled btn-labeled-left btn-icon" id="apply-stock" data-dismiss="modal">
+						<span class="btn-label"><i class="ti-check"></i></span>Xác nhận</button>
+					<button class="btn btn-sm btn-rounded btn-gradient-peach btn-labeled btn-labeled-left btn-icon" data-dismiss="modal">
+						<span class="btn-label"><i class="ti-close"></i></span>Đóng</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Thanh toán -->
+<div class="modal fade" id="bill-delivery" tabindex="-1" role="dialog" aria-labelledby="groups-modalLabel-1" aria-hidden="true" data-whatever="id" style="padding-left: 3%; margin-top: 5em;">
+	<div class="modal-dialog" role="document" style="min-width: 1250px!important">
+		<div class="modal-content" style="border-radius: 4px">
+			<button type="button" class="close text-right" data-dismiss="modal" style="margin-top: 10px; margin-right: 10px;">×</button>
+			<div class="modal-body px-5">
+				<div class="row">
+					<div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-xs-8">
+						<div class="form-group pb-1">
+							<h5 class="text-primary" style="border-bottom: 1px solid #eee">THÔNG TIN THANH TOÁN</h5>
+						</div>
+						<div class="row form-group">
+							<label class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-form-label" title="Mã KH/ MST">Mã KH/ MST</label>
+							<span class="col-form-label modal_input" id="CusID_Bill"></span>
+						</div>
+						<div class="row form-group">
+							<label class="col-sm-3 col-form-label">Tên</label>
+							<span class="col-form-label modal_input" id="CusName_Bill"></span>
+						</div>
+						<div class="row form-group">
+							<label class="col-sm-3 col-form-label">Địa chỉ</label>
+							<span class="col-form-label modal_input" id="Address_Bill"></span>
+						</div>
+						
+						<div class="row form-group">
+							<label class="col-sm-3 col-form-label">Thanh toán</label>
+							<div class="col-sm-9">
+								<div class="row">
+									<a class="col-form-label pr-5" style="pointer-events: none;">
+										<i class="fa fa-square" id="p-money"></i> THU NGAY
+									</a>
+									<a class="col-form-label" style="pointer-events: none;">
+										<i class="fa fa-square" id="p-credit"></i> THU SAU
+									</a>	
+								</div>
+							</div>
+						</div>
+
+						<div class="row form-group mt-3">
+							<div class="col-9 ml-sm-auto">
+								<div class="row input-group">
+									<label class="col-form-label radio radio-outline-blue text-blue mr-4 mx-auto">
+										<input name="publish-opt" type="radio" value="dft">
+										<span class="input-span" style="margin-top: calc(.5rem - 1px * 2);"></span> PHIẾU TẠM THU
+									</label>
+									<label class="col-form-label radio radio-outline-danger text-danger mr-4 mx-auto">
+										<input name="publish-opt" value="m-inv" type="radio">
+										<span class="input-span" style="margin-top: calc(.5rem - 1px * 2);"></span>
+										HÓA ĐƠN GIẤY
+									</label>
+									<label class="col-form-label radio radio-outline-warning text-warning mx-auto">
+										<input name="publish-opt" value="e-inv" type="radio" checked>
+										<span class="input-span" style="margin-top: calc(.5rem - 1px * 2);"></span>
+										HÓA ĐƠN ĐIỆN TỬ
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4" id="INV_DRAFT_TOTAL">
+						<div class="form-group pb-1">
+							<h5 class="text-primary" style="border-bottom: 1px solid #eee">Tổng tiền thanh toán</h5>
+						</div>
+						<div class="row form-group">
+							<label class="col-sm-3 col-form-label">Thành tiền</label>
+							<span class="col-form-label text-right font-bold text-success cash_input" id="AMOUNT"></span>
+						</div>
+						<div class="row form-group">
+							<label class="col-sm-3 col-form-label">Tiền thuế</label>
+							<span class="col-form-label text-right font-bold text-blue cash_input" id="VAT"></span>
+						</div>
+						<div class="row form-group">
+							<label class="col-sm-3 col-form-label">Tổng tiền</label>
+							<span class="col-form-label text-right font-bold text-danger cash_input" id="TAMOUNT"></span>
+						</div>
+						<div class="row form-group hiden-input">
+							<label class="col-sm-3 col-form-label">Giảm trừ</label>
+							<span class="col-form-label text-right font-bold text-blue" id="DIS_AMT"></span>
+						</div>
+
+						<div class="row form-group mt-3" id="payFormIDDiv">
+							<!--
+							<label class="col-form-label radio radio-outline-secondary mr-5 ml-5">
+								<input name="PayFormID" type="radio" value="M" checked>
+								<span class="input-span" style="margin-top: calc(.5rem - 1px * 2);"></span>TIỀN MẶT
+							</label>
+
+							<label class="col-form-label radio radio-outline-secondary mr-5">
+								<input name="PayFormID" type="radio" value="C">
+								<span class="input-span" style="margin-top: calc(.5rem - 1px * 2);"></span>CHUYỂN KHOẢN
+							</label>
+							-->
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<div id="dv-cash" style="margin: 0 auto">
+					<button class="btn btn-rounded btn-gradient-purple" id="pay-atm">
+						<span class="btn-icon"><i class="fa fa-id-card"></i> Thanh toán bằng thẻ ATM</span>
+					</button>
+					<button class="btn btn-rounded btn-rounded btn-gradient-lime" id="pay-master-visa">
+						<span class="btn-icon"><i class="fa fa-id-card"></i> Thanh toán bằng thẻ MASTER, VISA</span>
+					</button>
+				</div>
+				<div id="dv-credit" class="hiden-input" style="margin: 0 auto">
+					<button id="save-credit" class="btn btn-rounded btn-rounded btn-gradient-lime btn-fix">
+						<span class="btn-icon"><i class="fa fa-save"></i> Lưu dữ liệu </span>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var _columns = [
+                { width: "80px", data: "STT", name: "STT", title: "STT", className: "text-center  editor-cancel", targets: 0 },
+                { data: "VINNo", name: "VINNo", title: "Số PINCODE", className: "text-center", targets: 1 },
+                 { data: "BillOfLading", name: "BillOfLading", title: "Số vận đơn", className: "text-center ", targets:2 },
+                 { data: "BookingNo", name: "BookingNo", title: "Số booking", className: "text-center ", targets:3 },
+                 { data: "SequenceVIN", name: "SequenceVIN", title: "Sequence VIN", className: "text-center ", targets:4 },
+                 { data: "DateIn", name: "DateIn", title: "Ngày vào", className: "text-center ", targets:5 },
+                 { data: "DateOut", name: "DateOut", title: "Ngày ra", className: "text-center ", targets:6 },
+                { data: "InvNo", name: "InvNo", title: "Số hóa đơn", className: "text-center ", targets:7 },
+                { data: "EirNo", name: "EirNo", title: "Số lệnh giao nhận", className: "text-center ", targets:8 },
+                 { data: "OrderNo", name: "OrderNo", title: "Số lệnh dịch vụ",className: "text-center ", targets:9 },
+                 { data: "PinCode", name: "PinCode", title: "Mã pin", className: "text-center ", targets:10 },
+                 { data: "CusID", name: "CusID", title: "Khách hàng", className: "text-center ", targets:11 },
+                 { data: "CusTypeID", name: "CusTypeID", title: "Loại khách hàng", className: "text-center ", targets:12 },
+                 { data: "ClassID", name: "ClassID", title: "Nhập/ xuất tàu", className: "text-center ", targets:13 },
+                 { data: "IsLocalForeign", name: "IsLocalForeign", title: "Hàng nội/ ngoại", className: "text-center ", targets:14 },
+                 { data: "TransitID", name: "TransitID", title: "Transit ID", className: "text-center ", targets:15 },
+                 { data: "IssueDate", name: "IssueDate", title: "Ngày lệnh", className: "text-center ", targets:  16 },
+                 { data: "ExpDate", name: "ExpDate", title: "Ngày hết hạn lệnh", className: "text-center ", targets:17 },
+                 { data: "FinishDate", name: "FinishDate", title: "Thời gian hoàn tất lệnh", className: "text-center ", targets:18 },
+                 { data: "CarWeight", name: "CarWeight", title: "Trọng lượng xe", className: "text-center ", targets:19 },
+                 { data: "KeyNo", name: "KeyNo", title: "Mã chìa khóa", className: "text-center ", targets:20 },
+                 { data: "Remark", name: "Remark", title: "Ghi chú", className: "text-center ", targets:21 },
+                 { data: "rowguid", name: "rowguid", title: "rowguid", visible: false, targets: 22 },
+            ],
+            tbl = $('#contenttable'),
+            dataList = <%- JSON.stringify(locals.dataList || []) %>;
+        var dataTbl = tbl.newDataTable({
+            scrollY: '55vh',
+            columnDefs: _columns,
+            data: dataList.map((itm, ii) => { return { ...itm, STT: ii + 1 } }),
+            order: [[0, 'asc']],
+            paging: false,
+            keys: true,
+            autoFill: {
+                focus: 'focus',
+            },
+            select: true,
+            rowReorder: false
+        });
+    });
+    </script>

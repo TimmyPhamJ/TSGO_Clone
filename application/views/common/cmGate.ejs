@@ -1,0 +1,197 @@
+<script>document.title = 'CỔNG'</script>
+<div class="row">
+	<div class="col-xl-12">
+		<div class="ibox collapsible-box">
+			<div class="ibox-head">
+				<div class="ibox-title">CỔNG</div>
+				<div class="button-bar-group">                    
+					<button id="delete" class="btn btn-outline-danger btn-sm mr-1"
+                        data-loading-text="<i class='la la-spinner spinner'></i>Xóa dữ liệu"
+                        title="Xóa những dòng đang chọn">
+                        <span class="btn-icon"><i class="fa fa-trash"></i>Xóa dòng</span>
+                    </button>
+					<button id="addrow" class="btn btn-outline-success btn-sm mr-1" title="Thêm dòng mới">
+						<span class="btn-icon"><i class="fa fa-plus"></i>Thêm dòng</span>
+					</button>
+					<button id="save" class="btn btn-outline-primary btn-sm mr-1"
+						data-loading-text="<i class='la la-spinner spinner'></i>Lưu dữ liệu" title="Lưu dữ liệu">
+						<span class="btn-icon"><i class="fa fa-save"></i>Lưu</span>
+					</button>
+				</div>
+			</div>
+
+			<div class="row ibox-body">
+				<div class="col-md-12 col-sm-12 col-xs-12 table-responsive">
+					<div id="tablecontent">
+						<table id="contenttable" class="table table-striped display nowrap" cellspacing="0"
+							style="width: 99.8%"></table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function () {
+		var _columns = [
+				{ width: "80px", data: "STT", name: "STT", title: "STT", className: "text-center  editor-cancel", targets: 0 },
+				{ width: "120px", data: "GateID", name: "GateID", title: "Mã cổng", className: "text-center", targets: 1 },
+				{ data: "GateName", name: "GateName", title: "Tên cổng", className: "text-center", targets:2 },
+				{ data: "InOut", name: "InOut", title: "Hướng Vào/ Ra", className: "text-center autocomplete",list:[{value:'I',label:'Vào'},{value:'O',label:'Ra'}], targets:2 },
+				{ data: "ClassID", name: "ClassID", title: "Hướng Nhập/ Xuất", className: "text-center autocomplete",list:[{value:'1',label:'Nhập'},{value:'2',label:'Xuất'}], targets:2 },
+				{ data: "rowguid", name: "rowguid", title: "rowguid", visible: false, targets: 6 },
+			],
+			tbl = $('#contenttable'),
+			dataList = <%- JSON.stringify(locals.dataList || []) %>;
+
+            _columns=_columns.map((itm,ii)=>{return {...itm,targets:ii}});
+
+		var dataTbl = tbl.newDataTable({
+			scrollY: '55vh',
+			columnDefs: _columns,
+			data: dataList.map((itm, ii) => { return { ...itm, STT: ii + 1 } }),
+			order: [[0, 'asc']],
+			paging: false,
+			keys: true,
+			autoFill: {
+				focus: 'focus',
+			},
+			select: true,
+			rowReorder: false
+		});
+
+		tbl.editableTableWidget();
+
+		$('#addrow').on('click', function () {
+			tbl.addRows();
+		});
+
+		$('#delete').on('click', function () {
+			if (tbl.getSelectedRows().length == 0) {
+				$('.toast').remove();
+				toastr["info"]("Vui lòng chọn các dòng dữ liệu để xóa!");
+			} else {
+				tbl.confirmDelete(function (selectedData) {
+					postDel(selectedData);
+				});
+			}
+		});
+
+		$('#save').on('click', function () {
+			if (tbl.DataTable().rows('.addnew, .editing').data().toArray().length == 0) {
+				$('.toast').remove();
+				toastr["info"]("Không có dữ liệu thay đổi!");
+			} else {
+				var newData = tbl.DataTable().rows('.addnew, .editing').data().toArray();
+
+				$.confirm({
+					title: 'Thông báo!',
+					type: 'orange',
+					icon: 'fa fa-warning',
+					content: 'Tất cả các thay đổi sẽ được lưu lại!\nTiếp tục?',
+					buttons: {
+						ok: {
+							text: 'Xác nhận lưu',
+							btnClass: 'btn-warning',
+							keys: ['Enter'],
+							action: function () {
+								saveData();
+							}
+						},
+						cancel: {
+							text: 'Hủy bỏ',
+							btnClass: 'btn-default',
+							keys: ['ESC']
+						}
+					}
+				});
+			}
+		});
+
+
+		//save functions
+		function saveData() {
+			var newData = tbl.DataTable().rows('.addnew, .editing').data().toArray();
+
+			if (newData.length > 0) {
+				var fnew = {
+					'data': newData
+				};
+				postSave(fnew);
+			}
+		}
+
+		function postSave(formData) {
+			var saveBtn = $('#save');
+			saveBtn.button('loading');
+			$('.ibox.collapsible-box').blockUI();
+
+			$.ajax({
+				url: "/Common/cmGate/save",
+				dataType: 'json',
+				data: formData,
+				type: 'POST',
+				success: function (datas) {
+					saveBtn.button('reset');
+					$('.ibox.collapsible-box').unblock();
+					if (!datas.data) {
+						toastr["error"]('Cập nhật dữ liệu thất bại !!');
+						return;
+					}
+					if (datas.data) {
+						toastr["success"]('Cập nhật dữ liệu thành công !!');
+						tbl.DataTable().rows('.addnew').nodes().to$().removeClass("addnew");
+						tbl.DataTable().rows('.editing').nodes().to$().removeClass("editing");
+						tbl.updateSTT(0);
+					}
+
+				},
+				error: function (err) {
+					toastr["error"]("Error!");
+					saveBtn.button('reset');
+					$('.ibox.collapsible-box').unblock();
+					console.log(err);
+				}
+			});
+		}
+
+		function postDel(rows) {
+			$('.ibox.collapsible-box').blockUI();
+			var delBtn = $('#delete');
+			delBtn.button('loading');
+			var delWorker = rows;
+			var formdata = {
+				'data': delWorker,
+			};
+			$.ajax({
+				url: "/Common/cmGate/delete",
+				dataType: 'json',
+				data: formdata,
+				type: 'POST',
+				success: function (output) {
+					delBtn.button('reset');
+					$('.ibox.collapsible-box').unblock();
+					var data = output.data;
+					if (output.error && output.error.length > 0) {
+						for (var i = 0; i < output.error.length; i++) {
+							toastr["error"](output.error[i]);
+						}
+					}
+
+					if (data) {
+						tbl.DataTable().rows('.selected').remove().draw(false);
+						tbl.updateSTT(0);
+					}
+
+				},
+				error: function (err) {
+					delBtn.button('reset');
+					$('.ibox.collapsible-box').unblock();
+					toastr["error"]("Error!");
+					console.log(err);
+				}
+			});
+		}
+	});
+</script>

@@ -1,0 +1,149 @@
+/*author: Manes;
+createdate: 04/04/2018;
+*/
+.form-group {
+    padding-right: 4px !important;
+    padding-left: 4px !important;
+    margin-bottom: 2px !important; }
+    .form-group label {
+      margin-bottom: 2px !important;
+      font-size: 1.2rem; }
+    .form-group .form-control.rounded {
+      padding-top: 2px !important;
+      padding-bottom: 2px !important;
+      height: 3.5vh !important;
+      min-height: 18px; }
+  
+  .panel-heading {
+    padding: 0px 5px !important; }
+  
+  .panel-title {
+    padding: 0px !important; }
+  
+  .content-wrapper {
+    overflow: hidden !important;
+    z-index: -3; }
+  
+  #gate-maincontent {
+    margin-top: 10px;
+    display: inline-block;
+    width: 98vw;
+    float: right;
+    margin-right: 1vw; }
+  
+  #gate-sidebar {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 8vh;
+    z-index: 10;
+    background: #99b3ff;
+    box-shadow: 2px 2px 8px; }
+  
+  .m-sidebar-btn {
+    display: inline-block;
+    border-right: 2px groove;
+    text-align: center;
+    width: 19.2vw; }
+    .m-sidebar-btn:nth-child(1) {
+      border-left: 2px groove;
+      border-right: 2px groove; }
+    .m-sidebar-btn img {
+      width: 70%; }
+  
+  .m-header {
+    height: 45px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    z-index: 10; }
+    .m-header .m-titleinfo-lg {
+      text-align: center;
+      display: inline-block;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      margin-bottom: -15px;
+      height: 100%;
+      width: 20%; }
+      .m-header .m-titleinfo-lg:before {
+        content: '';
+        position: absolute;
+        left: -20%;
+        top: 0;
+        background: #3366ff;
+        width: 120%;
+        min-height: 100%;
+        -ms-transform: skewX(-30deg);
+        -webkit-transform: skewX(-30deg);
+        transform: skewX(-30deg);
+        z-index: -1;
+        box-shadow: 3px 3px 10px; }
+      .m-header .m-titleinfo-lg b {
+        z-index: 1;
+        color: #ffffff;
+        font-size: 2rem;
+        visibility: hidden;
+        display: none; }
+      .m-header .m-titleinfo-lg #mobile-menu {
+        display: block;
+        height: 100%; }
+        .m-header .m-titleinfo-lg #mobile-menu img {
+          width: 50%; }
+    .m-header .m-titleinfo-content {
+      width: 80%;
+      top: 0;
+      left: 0;
+      position: relative;
+      float: right;
+      height: 40px;
+      padding: 2px; }
+      .m-header .m-titleinfo-content:before {
+        content: '';
+        z-index: -2;
+        width: 120%;
+        height: 100%;
+        background: #809fff;
+        position: absolute;
+        top: 0;
+        left: -20%; }
+      .m-header .m-titleinfo-content * {
+        float: right; }
+  
+  #orderInfo-panel {
+    height: calc(100vh - 65px);
+    min-height: 500px; }
+  
+  #queryInfo-panel {
+    height: 40vh;
+    min-height: 220px; }
+  
+  #tractorInfo-panel {
+    height: 40vh;
+    min-height: 220px; }
+  
+  #contList-panel {
+    height: 78vh;
+    min-height: 500px; }
+  
+  #checkInfo-panel {
+    margin-bottom: 8vh;
+    min-height: 50px; }
+  
+  .m-menu-list {
+    text-align: center; }
+    .m-menu-list a {
+      width: 100%; }
+  
+  .DivChooseGate {
+    position: fixed;
+    width: 20vw;
+    right: 0;
+    top: 50px; }
+    .DivChooseGate button {
+      width: 100%;
+      margin-bottom: 5px; }
+  
+  /*# sourceMappingURL=gate-mobile.css.map */

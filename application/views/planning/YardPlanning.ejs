@@ -1,0 +1,1207 @@
+<script>document.title = 'KẾ HOẠCH BÃI'</script>
+<link href="/assets/vendors/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
+<style type="text/css">
+
+	.noBorder{
+		border: none!important;
+	}
+
+	.cellSize{
+		min-width: 35px!important;
+		min-height: 10px!important;
+		max-height: 10px!important;
+	}
+	.bbs_truckno{
+		color: #0078a1 !important;
+	}
+	/*
+	#feedback { font-size: 1.4em; }
+	#contenttable .ui-selecting { background: #FECA40; }
+	*/
+
+	td.selecting {
+	    background-color: rgba(0, 0, 0, .3);
+	}
+	.block_bill_row{
+		display: none;
+	}
+	.planning_row{
+		display: block;
+	}
+    #block_cont{
+        min-height: calc(100vh - 280px);
+        overflow: scroll;
+    }
+    .block_box{
+        position: absolute;
+    }
+	.fright{
+		float: right;
+		width: 130px;
+	}
+	.fright i:last-child{
+		margin-left: 10px;
+	}
+</style>
+<div class="row" style="font-size: 13px;">
+	<div class="col-xl-12">
+		<div class="ibox collapsible-box">
+			<i class="la la-angle-double-up dock-right"></i>
+			<div class="ibox-head">
+				<div class="ibox-title">KẾ HOẠCH BÃI</div>
+				<div class="button-bar-group mr-3">			
+					<button id="search" class="btn btn-outline-warning btn-sm btn-loading mr-1" 
+											data-loading-text="<i class='la la-spinner spinner'></i>Nạp dữ liệu"
+										 	title="Nạp dữ liệu">
+						<span class="btn-icon"><i class="ti-search"></i>Nạp dữ liệu</span>
+					</button>				
+
+
+					<button id="create_booking" class="btn btn-outline-primary btn-sm mr-1"
+										data-loading-text="<i class='la la-spinner spinner'></i>Lưu dữ liệu"
+										title="Lưu dữ liệu">
+						<span class="btn-icon"><i class="fa fa-plus"></i>Tạo kế hoạch hàng xuất</span>
+					</button>
+				</div>
+			</div>
+			<div class="ibox-body pt-0 pb-0 bg-f9 border-e">
+				<div class="row ibox mb-0 border-e pb-1 pt-3">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<div class="row">
+							<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 mb-3">	
+								<div class="row">
+									<input id="VoyageKey" class="form-control form-control-sm" type="text" hidden>
+									<input id="VesselID" class="form-control form-control-sm" type="text" hidden>
+
+									<label class="ml-3" style="width: 3.5rem; margin-top: 0.4rem">Tàu</label>		
+									<input id="VesselInfo" placeholder="Tên tàu | Chuyến nhập | Chuyến xuất" style="border-radius: 5px; margin-left: 1rem; padding-left: 7.5px; border-color: rgba(0, 0, 0, .1); border-width: 1px; height: 2rem; width: 19rem" type="text">
+
+									<!-- -->
+									<button id="chooseVessel" class="btn btn-success btn-icon-only btn-circle btn-sm btn-air ml-2" style="height: 1.65rem; width: 1.65rem" title="Chọn tàu">
+										<i class="ti-plus"></i>
+									</button>
+
+									<button id="nochooseVessel" class="btn btn-danger btn-icon-only btn-circle btn-sm btn-air ml-2" style="height: 1.65rem; width: 1.65rem" title="Bỏ chọn">
+										<i class="ti-close"></i>
+									</button>
+								</div>
+														
+							</div>	
+							<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 mb-3">		
+							<div class="input-group">
+								<input class="form-control form-control-sm input-required" id="taxcode" placeholder="Chủ hàng" type="text" />
+								<span class="input-group-addon bg-white btn mobile-hiden text-warning" style="padding: 0 0.5rem;" title="Chọn đối tượng thanh toán" data-toggle="modal" data-target="#payer-modal" onClick="setTimeout(()=>{$('#search-payer').DataTable().draw()},200)">
+									<i class="ti-search"></i>
+								</span>
+							</div>	
+							</div>		
+							<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 mb-3">		
+							<div class="input-group">
+								<input class="form-control form-control-sm input-required" id="ItemID" placeholder="Hàng hóa" type="text" />
+								<span class="input-group-addon bg-white btn mobile-hiden text-warning" style="padding: 0 0.5rem;" title="Chọn hàng hóa" data-toggle="modal" data-target="#items-modal" onClick="setTimeout(()=>{$('#tbl-items').DataTable().draw()},200)">
+									<i class="ti-search"></i>
+								</span>
+							</div>	
+							</div>
+							<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 mb-3">	
+								<div class="row mt-0">
+									<div class="ml-3 mt-0">
+										<label class="mt-1 radio radio-info">
+			                                <input type="radio" checked name="ClassID" class="css-checkbox" value="1" />
+			                                <span class="input-span"></span>Hàng nhập
+			                            </label>	
+										<label class="mt-1 ml-1 radio radio-info">
+			                                <input type="radio" name="ClassID" class="css-checkbox" value="2" />
+			                             	<span class="input-span"></span>Hàng xuất
+			                            </label>
+			                        </div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row m-0 p-2">
+				<div class="col-md-3 col-sm-3 col-xs-12 table-responsive p-0 pr-1">
+					<div style="border: 1px solid #b6b6b6;border-radius: 4px;margin: 10px;" class="m-0 mr-xs-1">
+					<div style="text-align: center;
+					font-size: 16px;
+					border-bottom: 1px solid #b6b6b6;
+					font-weight: bold;">Danh sách BILL / BOOK</div>
+					<div id="bbs_list" style="height: calc(100vh - 305px);">
+						</div>
+					</div>
+				</div>
+				<div class="col-md-9 col-sm-9 col-xs-12 table-responsive p-0 pl-1" >
+					<div id="block_cont">
+                    </div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--book modal-->
+<div class="modal fade" id="book-modal" tabindex="0" role="dialog" aria-labelledby="groups-modalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-mw" role="document" style="max-width: 660px;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="groups-modalLabel" style="font-weight: bold;">
+					Kế hoạch hàng xuất
+				</h5>
+			</div>
+			<div class="modal-body" style="padding: 10px 3px;">
+				
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<div class="row form-group">
+						<label class="col-md-3 col-sm-3 col-xs-3 col-form-label" style="font-weight: bold;">Số Booking</label>
+						<div class="col-md-8 col-sm-10 col-xs-10">
+							<input id="c-BookingNo" class="form-control form-control-sm" placeholder="Số Booking" type="text">
+						</div>
+					</div>
+				</div>
+
+				
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<div class="row form-group">
+						<label class="col-md-3 col-sm-3 col-xs-3 col-form-label" style="font-weight: bold;">Loại hàng</label>
+						<div class="col-md-8 col-sm-10 col-xs-10">
+							<select id="c-CargoTypeID" class="selectpicker" data-width="100%" data-style="btn-default btn-sm" title="Loại hàng">
+								<% locals.CargoTypes.map(itm=>{ %>
+								<option value="<%=itm.CargoTypeID;%>"><%=itm.CargoTypeName;%></option>
+								<% }) %>			
+							</select>
+						</div>
+					</div>
+				</div>
+				
+				
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<div class="row form-group">
+						<label class="col-md-3 col-sm-3 col-xs-3 col-form-label" style="font-weight: bold;">Hàng Hóa</label>
+						<div class="col-md-8 col-sm-10 col-xs-10">
+							<div class="input-group">
+								<input class="form-control form-control-sm input-required" id="c-ItemID" placeholder="Hàng hóa" type="text">
+								<span class="input-group-addon bg-white btn mobile-hiden text-warning" style="padding: 0 0.5rem;" title="Chọn hàng hóa" data-toggle="modal" data-target="#items-modal" onclick="setTimeout(()=>{$('#tbl-items').DataTable().draw()},200)">
+									<i class="ti-search"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				
+				
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<div class="row form-group">
+						<label class="col-md-3 col-sm-3 col-xs-3 col-form-label" style="font-weight: bold;">POL/POD</label>
+						<div class="col-md-4 col-sm-10 col-xs-10">
+							<select id="c-POL" class="selectpicker" data-width="100%" data-style="btn-default btn-sm" title="POL">
+								<% locals.Ports.map(itm=>{ %>
+								<option value="<%=itm.NationID+itm.PortID;%>"><%=itm.NationID+itm.PortID;%></option>
+								<% }) %>			
+							</select>
+						</div>
+						<div class="col-md-4 col-sm-10 col-xs-10">
+							<select id="c-POD" class="selectpicker" data-width="100%" data-style="btn-default btn-sm" title="POD">
+								<% locals.Ports.map(itm=>{ %>
+								<option value="<%=itm.NationID+itm.PortID;%>"><%=itm.NationID+itm.PortID;%></option>
+								<% }) %>			
+							</select>
+						</div>
+					</div>
+				</div>
+				
+				
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<div class="row form-group">
+						<label class="col-md-3 col-sm-3 col-xs-3 col-form-label" style="font-weight: bold;">Chủ hàng</label>
+						<div class="col-md-8 col-sm-10 col-xs-10">
+							<div class="input-group">
+								<input class="form-control form-control-sm input-required" id="c-CusID" placeholder="Chủ hàng" type="text" />
+								<span class="input-group-addon bg-white btn mobile-hiden text-warning" style="padding: 0 0.5rem;" title="Chọn đối tượng thanh toán" data-toggle="modal" data-target="#payer-modal" onClick="setTimeout(()=>{$('#search-payer').DataTable().draw()},200)">
+									<i class="ti-search"></i>
+								</span>
+							</div>	
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+			<div class="modal-footer" style="position: relative; padding: 22px 15px !important;">
+				<button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">
+					<i class="fa fa-close"></i>
+					Đóng
+				</button>
+				<button type="button" id="create-book" class="btn btn-sm btn-outline-primary">
+					<i class="fa fa-check"></i>
+					Tạo mới
+				</button>
+				
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Vessel modal-->
+<div class="modal fade" id="vessel-modal"  tabindex="1" role="dialog" aria-labelledby="groups-modalLabel-1" aria-hidden="true" data-whatever="id" style="padding-left: 2%; padding-top: 2%">
+	<div class="modal-dialog" role="document" style="min-width: 1024px!important">
+		<div class="modal-content" style="border-radius: 4px">
+			<div class="modal-header">
+				<h5 class="modal-title text-primary" id="groups-modalLabel-1">Danh mục tàu</h5>
+				<button id="VesselSearch" class="btn btn-outline-warning btn-sm btn-loading mr-1" 
+									data-loading-text="<i class='la la-spinner spinner'></i>Nạp dữ liệu"
+								 	title="Nạp dữ liệu">
+					<span class="btn-icon"><i class="ti-search"></i>Nạp dữ liệu</span>
+				</button>
+			</div>
+			<div class="modal-body" style="padding: 0px 15px 15px 15px">
+				<div class="row mb-0 border-e border-top-0 pb-1 pt-3">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+							<div class="row">
+								<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+									<div class="row form-group">
+										<label class="col-md-2 col-sm-4 col-xs-4 col-form-label">Tàu</label>
+										<input id="VesselNameFilter" class="col-md-8 col-sm-10 col-xs-10 form-control form-control-sm" placeholder="Tên tàu" type="text">
+									</div>
+								</div>
+								<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+									<div class="row form-group">
+										<label class="col-md-2 col-sm-2 col-xs-2 col-form-label">Năm</label>
+										<div class="col-md-8 col-sm-10 col-xs-10 input-group input-group-sm">
+											<select id="YearFilter" data-width="100%" data-style="btn-default btn-sm"
+													title="Năm"
+													style="width: 80%; border-radius: 2px; border-color: rgba(0, 0, 0, .1);">
+												<% for (let i = 2016; i < 2026; i++){ %>
+													<option value="<%= i %>">
+														<%= i %>		
+													</option>
+												<% } %>												
+											</select>
+										</div>										
+									</div>
+								</div>
+								<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+									<div class="row form-group">
+										<label class="radio radio-success ml-5 mt-1">
+					                        <input type="radio" checked name="VesselFilter" class="css-checkbox" value="1" />
+					                            <span class="input-span"></span>Đến cảng
+					                    </label>								
+
+										<label class="radio radio-success ml-3 mt-1 mr-3">
+					                       <input type="radio" name="VesselFilter" class="css-checkbox" value="2" />
+					                            <span class="input-span"></span>Rời cảng
+					                    </label>   
+									</div>
+								</div>
+							</div>
+					</div>
+				</div>
+				<div class="row ibox-footer border-top-0 mt-3">
+					<div class="col-md-12 col-sm-12 col-xs-12 table-responsive">
+						<table id="tblVessel" class="table table-striped display nowrap" cellspacing="0" style="width: 99.5%">
+							<thead>
+								<tr style="width: 100%">
+									<th col-name="STT">STT</th>
+									<th col-name="VoyageKey"></th>
+									<th col-name="VesselID">Mã tàu</th>
+									<th col-name="VesselName">Tên tàu</th>
+									<th col-name="InboundVoyage">Chuyến nhập</th>
+									<th col-name="OutboundVoyage">Chuyến xuất</th>
+									<th col-name="ETA">ETA</th>
+									<th col-name="ETD">ETD</th>
+									<th col-name="Status">Status</th>
+									<th col-name="InLane">Lane nhập</th>
+									<th col-name="OutLane">Lane xuất</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<div  style="margin: 0 auto!important;">
+					<button class="btn btn-sm btn-rounded btn-gradient-blue btn-labeled btn-labeled-left btn-icon" id="apply-vessel" data-dismiss="modal">
+						<span class="btn-label"><i class="ti-check"></i></span>Xác nhận</button>
+					<button class="btn btn-sm btn-rounded btn-gradient-peach btn-labeled btn-labeled-left btn-icon" data-dismiss="modal">
+						<span class="btn-label"><i class="ti-close"></i></span>Đóng</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--items modal-->
+<div class="modal fade" id="items-modal"  tabindex="2" data-backdrop="false" role="dialog" aria-labelledby="groups-modalLabel" aria-hidden="true" data-whatever="id" style="padding-left: 14%;">
+	<div class="modal-dialog" role="document" style="width: 550px !important;">
+		<div class="modal-content" style="border-radius: 4px;">
+			<div class="modal-header">
+				<h5 class="modal-title text-primary" id="groups-modalLabel">
+					Danh sách Hàng hóa
+				</h5>
+			</div>
+			<div class="modal-body">
+				<table id="tbl-items" class="table table-striped display nowrap" cellspacing="0" style="width: 99.5%;">
+					<thead>
+						<tr>
+							<th col-name="STT">STT</th>
+							<th col-name="ItemID">Mã hàng</th>
+							<th col-name="ItemName">Tên</th>
+							<th col-name="CargoTypeID">Mã nhóm</th>
+						</tr>
+					</thead>
+					<tbody></tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<div style="margin: 0 auto !important;">
+					<button class="btn btn-sm btn-rounded btn-gradient-blue btn-labeled btn-labeled-left btn-icon" id="apply-items" data-dismiss="modal">
+						<span class="btn-label"><i class="ti-check"></i></span>Xác nhận
+					</button>
+					<button class="btn btn-sm btn-rounded btn-gradient-peach btn-labeled btn-labeled-left btn-icon" data-dismiss="modal">
+						<span class="btn-label"><i class="ti-close"></i></span>Đóng
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--payer modal-->
+<div class="modal fade" id="payer-modal" tabindex="3" role="dialog" aria-labelledby="groups-modalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-mw" role="document" style="min-width: 960px;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="groups-modalLabel">
+					Chọn đối chủ hàng
+				</h5>
+			</div>
+			<div class="modal-body" style="padding: 10px 3px;">
+				<div class="table-responsive">
+					<table id="search-payer" class="table table-striped display nowrap table-popup single-row-select" cellspacing="0" style="width: 99.9%;">
+						<thead>
+							<tr>
+								<th>STT</th>
+								<th>Mã ĐT</th>
+								<th>MST</th>
+								<th>Tên</th>
+								<th>Địa chỉ</th>
+								<th>HTTT</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+			</div>
+			<div class="modal-footer" style="position: relative; padding: 22px 15px !important;">
+				<button type="button" id="select-payer" class="btn btn-sm btn-outline-primary" data-dismiss="modal">
+					<i class="fa fa-check"></i>
+					Chọn
+				</button>
+				<button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">
+					<i class="fa fa-close"></i>
+					Đóng
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+    $(document).ready(()=>{
+		$('#c-CargoTypeID').selectpicker("refresh");
+		$(document).on('click','.clickshow.fa-eye-slash',function(e){
+						e.stopPropagation();
+						e.preventDefault();
+						$(this).removeClass('fa-eye-slash').addClass('fa-eye');
+						$(this).closest('.block_box').find('.block_bill_row').show();
+						$(this).closest('.block_box').find('.block_bill_row.planning_row').show();
+					})
+		$(document).on('click','.clickshow.fa-eye',function(e){
+			e.stopPropagation();
+			e.preventDefault();
+			$(this).removeClass('fa-eye').addClass('fa-eye-slash');
+			$(this).closest('.block_box').find('.block_bill_row').hide();
+			$(this).closest('.block_box').find('.block_bill_row.planning_row').show();
+		})					
+
+		$(document).on('click','#create_booking',function(e){
+
+			$('#book-modal').modal('show');
+			$('#c-CargoTypeID').val('');$('#c-CargoTypeID').selectpicker("refresh");
+			$('#c-POL').val('');$('#c-POL').selectpicker("refresh");
+			$('#c-POD').val('');$('#c-POD').selectpicker("refresh");
+			$('#c-BookingNo').val('');
+			$('#c-ItemID').val('');
+			$('#c-CusID').val('');
+		})
+		$(document).on('click','#create-book',function(e){
+			let ins={
+				BookingNo: $('#c-BookingNo').val(),
+				CargoTypeID: $('#c-CargoTypeID').val(),
+				ItemID: $('#c-ItemID').val(),
+				POL: $('#c-POL').val(),
+				POD: $('#c-POD').val(),
+				CusID: $('#c-CusID').val(),
+				VoyageKey: $('#VoyageKey').val()||undefined,
+			}
+			$.ajax({
+				url: "/Planning/YardPlanning/savePlanBook",
+				dataType: 'json',
+				data: ins,
+				type: 'POST',
+				success: function (res) {         
+					if(res.data){
+						toastr.success('Thành công !');
+						loadBlockData();
+						loadMNFData();
+					}else{
+						toastr.error('Thất bại !');
+					}            
+				},
+				error: function (err) {
+					toastr["error"]("Error!");
+					console.log(err);
+				}
+			});
+		})
+
+		let _vesselColumns 	= ["STT", "VoyageKey", "VesselID", "VesselName", "InboundVoyage", "OutboundVoyage", "ETA", "ETD", "Status", "InLane", "OutLane"];
+		let vesselModal 	= $("#vessel-modal");
+		let tblVessel 		= $("#tblVessel");
+		let _cols = ["STT", "BookingNo", "ItemID", "Quantity", "CargoWeight", "Volume", "UnitID", "POD", "FPOD", "TransitID"];
+		let _colPayer = ["STT", "CusID", "TaxCode", "CusName", "Address", "PaymentTypeID"];
+		var _itemList = <%- JSON.stringify(locals.items || []) %>;
+		tblVessel.newDataTable({
+			scrollY: '30vh',
+			columnDefs: [
+				{ type: "num", className: "text-center", targets: _vesselColumns.indexOf('STT')},		
+				{ className: "text-center", targets: _vesselColumns.getIndexs(["VesselName", "InboundVoyage", "OutboundVoyage", "ETA", "ETD", "InLane", "OutLane"])},
+				{ className: "hiden-input", targets: _vesselColumns.getIndexs(["VoyageKey", "VesselID", "Status"])},
+			],
+			order: [[ _vesselColumns.indexOf('STT'), 'asc' ]],
+			paging: false,
+            keys:true,
+            select: {
+            	style: 'single',
+            	info: false,
+            },
+            buttons: [],
+            rowReorder: false,
+            arrayColumns: _vesselColumns,
+		});
+		$("#tbl-items").DataTable({
+			data: _itemList.map((item, index) => {
+				return [index + 1, item.ItemID, item.ItemName, item.CargoTypeID]
+			}),
+			scrollY: '40vh',
+			columnDefs: [{
+				type: "num",
+				className: "text-center",
+				targets: 0
+			}],
+			order: [
+				[0, 'asc']
+			],
+			paging: false,
+			keys: true,
+			autoFill: {
+				focus: 'focus'
+			},
+			select: {
+				style: 'single',
+				info: false
+			},
+			buttons: [],
+			rowReorder: false
+		});
+		//------APPLY ITEMS FROM MODAL
+		$("#tbl-items").find("tbody tr").on("dblclick", function() {
+			var itemID = $(this).find("td:eq(1)").text();
+			if($('#c-ItemID:visible').length){$('#items-modal').modal('hide');return $('#c-ItemID').val(itemID);}
+			$('#ItemID').val(itemID);
+			$('#items-modal').modal('hide');
+		});
+
+		$("#apply-items").on("click", function() {
+			var itemID = $("#tbl-items").getSelectedRows().data().toArray()[0][1];
+			if($('#c-ItemID:visible').length)return $('#c-ItemID').val(itemID);
+			$('#ItemID').val(itemID);
+		});
+		//------APPLY ITEMS FROM MODAL
+		$('#search-payer').DataTable({
+			paging: true,
+			scroller: {
+				displayBuffer: 12,
+				boundaryScale: 0.5
+			},
+			columnDefs: [{
+					type: "num",
+					className: 'text-center',
+					targets: [0]
+				},
+				{
+					render: function(data, type, full, meta) {
+						return "<div class='wrap-text width-250'>" + data + "</div>";
+					},
+					targets: _colPayer.getIndexs(["CusName", "Address"])
+				}
+			],
+			buttons: [],
+			infor: false,
+			scrollY: '45vh'
+		});
+
+		$('#vessel-modal').on('shown.bs.modal', function(e){
+			$($.fn.dataTable.tables(true)).DataTable().columns.adjust();
+		});
+
+		$("#VesselSearch").on('click', function(){
+			tblVessel.waitingLoad();
+			var formData = {
+				filter:{
+					Status: {
+						operation: 'in',
+						value: $("input[type='radio'][name='VesselFilter']:checked").val()==1?[0,1]:[2,3,4,5,6]
+					},
+					VesselName:{
+						operation: 'like',
+						value: $('#VesselNameFilter').val()
+					}
+				}
+			};			
+
+		    $.ajax({
+				url: "/Planning/YardPlanning/loadVesselVisit",
+				dataType: 'json',
+				data: formData,
+				type: 'POST',
+				success: function (data) {
+					var rows = [];
+					tblVessel.dataTable().fnClearTable();
+					if(data.data.length > 0) {
+						for (i = 0; i < data.data.length; i++) {
+							var rData = data.data[i], r = [];
+							$.each(_vesselColumns, function(idx, colname){
+								var val = "";
+								switch(colname){
+									case "STT": 
+										val = i+1; 
+										break;
+									case "ETA":
+									case "ETD":
+										val = getDateTime(rData[colname]);
+										break;
+									default:
+										val = (rData[colname] ? rData[colname] : '');
+										break;	
+								}
+								r.push(val);
+							});
+							rows.push(r);
+						}
+					}
+					tblVessel.dataTable().fnClearTable();
+				    if(rows.length > 0){
+						tblVessel.dataTable().fnAddData(rows);
+			    	}
+			    
+				},
+				error: function(err){
+					tblVessel.dataTable().fnClearTable();
+					console.log(err);
+				}
+			});
+		});
+		
+		$("#chooseVessel").on('click', function(){
+			$('#vessel-modal').modal("show");
+			$('#VesselSearch').trigger('click');
+			sumNumRows = 0;
+			$("#YearFilter").val(new Date().getFullYear());
+
+		});	
+
+		$("#nochooseVessel").on('click', function(){
+			$('#inputManifestForm').trigger("reset");
+			$("#VoyageKey").val('');
+			$("#VesselInfo").val('');
+			$("#InboundVoyage").val('');
+			$("#OutboundVoyage").val('');
+			$("#ETA").val('');
+			$("#ETD").val('');
+		});
+		
+
+		$(document).on("dblclick", "#tblVessel tbody tr",  function(){
+       		var VesselData 		= tblVessel.getSelectedRows().data().toArray()[0],
+       			VoyageKey		= VesselData[_vesselColumns.indexOf("VoyageKey")],
+       			VesselName 		= VesselData[_vesselColumns.indexOf("VesselName")],
+       			InboundVoyage 	= VesselData[_vesselColumns.indexOf("InboundVoyage")],
+       			OutboundVoyage 	= VesselData[_vesselColumns.indexOf("OutboundVoyage")],
+       			InLane 			= VesselData[_vesselColumns.indexOf("InLane")],
+       			OutLane 		= VesselData[_vesselColumns.indexOf("OutLane")],
+       			ETA 			= VesselData[_vesselColumns.indexOf("ETA")],
+       			ETD 			= VesselData[_vesselColumns.indexOf("ETD")];
+
+       		$("#VoyageKey").val(VoyageKey);
+			load_cancel_plan()
+       		$("#VesselInfo").val(VesselName + " | " + InboundVoyage + " | " + OutboundVoyage);
+       		$("#InboundVoyage").val(InboundVoyage);
+       		$("#OutboundVoyage").val(OutboundVoyage);
+       		$("#ETA").val(ETA);
+       		$("#ETD").val(ETD);
+
+       		$('#search').trigger('click');
+       		vesselModal.modal('hide');
+       	});
+		   $(document).on("click", "#tblVessel tbody tr",  function(){
+       		$('#tblVessel tbody tr.selected').removeClass('selected');
+       		$(this).addClass('selected');
+       	});
+		$("#apply-vessel").on("click", function(){
+       		var tblVesselSelectedRows = tblVessel.getSelectedRows().data().toArray()[0];
+       			VoyageKey		= tblVesselSelectedRows[_vesselColumns.indexOf("VoyageKey")],
+       			VesselName 		= tblVesselSelectedRows[_vesselColumns.indexOf("VesselName")],
+       			InboundVoyage 	= tblVesselSelectedRows[_vesselColumns.indexOf("InboundVoyage")],
+       			OutboundVoyage 	= tblVesselSelectedRows[_vesselColumns.indexOf("OutboundVoyage")],
+       			InLane 			= tblVesselSelectedRows[_vesselColumns.indexOf("InLane")],
+       			OutLane 		= tblVesselSelectedRows[_vesselColumns.indexOf("OutLane")],
+       			ETA 			= tblVesselSelectedRows[_vesselColumns.indexOf("ETA")],
+       			ETD 			= tblVesselSelectedRows[_vesselColumns.indexOf("ETD")];
+
+       		$("#VoyageKey").val(VoyageKey);
+			load_cancel_plan()
+       		$("#VesselInfo").val(VesselName + " | " + InboundVoyage + " | " + OutboundVoyage);
+       		$("#InboundVoyage").val(InboundVoyage);
+       		$("#OutboundVoyage").val(OutboundVoyage);
+       		$("#ETA").val(ETA);
+       		$("#ETD").val(ETD);
+
+       		$('#search').trigger('click');
+			window.seletedRow=tblVesselSelectedRows;
+       		vesselModal.modal('hide');
+       	});
+		
+		   function loadBlockData(){
+                        $.ajax({
+                            url: "/Planning/YardPlanning/loadBlockPlanning",
+                            dataType: 'json',
+                            data: {filter:{
+								ClassID:($('input[name="ClassID"]:checked').attr('value')!='*'?$('input[name="ClassID"]:checked').attr('value'):undefined),
+								CusID:$('#taxcode').val()||undefined,
+								ItemID:$('#ItemID').val()||undefined,
+								VoyageKey: $('#VoyageKey').val(),
+							}},
+                            type: 'POST',
+                            success: function (res) {
+                                if(res.data){
+                                    let html='';
+
+                                    res.data.map(itm=>{
+                                        let detail='';
+                                        let tong=0;
+                                        for (let ix = 0; ix < itm.Details.length; ix++) {
+                                            const dlt = itm.Details[ix];
+											let popup=[];
+											if(dlt.VesselName)
+											popup.push('<b>Tàu chuyến</b>: '+dlt.VesselName+(dlt.InboundVoyage?` [${dlt.InboundVoyage+'/'+dlt.OutboundVoyage}]`:''));
+											if(dlt.CusName)
+											popup.push('<b>Chủ hàng</b>: '+dlt.CusName);
+											if(dlt.BookingNo)
+											popup.push('<b>Số Booking</b>: '+dlt.BookingNo);
+											if(dlt.ItemName)
+											popup.push('<b>Hàng hóa</b>: '+dlt.ItemName+(dlt.CargoTypeName?` [${dlt.CargoTypeName}]`:''));
+											if(dlt.Quantity || dlt.McWeight || dlt.Volume)
+											popup.push(`<table  cellspacing="0" cellpadding="0" width="100%"><tr>
+												${dlt.Quantity?`<td width="50%"><b>Số lượng</b>: ${dlt.Quantity}</td>`:''}
+												${dlt.McWeight?`<td width="50%"><b>Trọng lượng</b>: ${dlt.McWeight}</td>`:''}
+												${dlt.Volume?`<td width="50%"><b>Thể tích</b>: ${dlt.Volume}</td>`:''}
+												</tr></table>`);
+											
+                                            detail+=`<div class="block_bill_row title_row" rowguid="${dlt.rowguid}" voyagekey="${dlt.VoyageKey}">
+												${popup.join('<hr>')}
+												</div>`;
+											
+											
+											tong+=dlt.McWeight;
+                                        }
+										for (let ix = 0; ix < itm.Planning.length; ix++) {
+                                            const dlt = itm.Planning[ix];
+											let popup=[];
+											if(dlt.VesselName)
+											popup.push('<b>Tàu chuyến</b>: '+dlt.VesselName+(dlt.InboundVoyage?` [${dlt.InboundVoyage+'/'+dlt.OutboundVoyage}]`:''));
+											if(dlt.CusName)
+											popup.push('<b>Chủ hàng</b>: '+dlt.CusName);
+											if(dlt.BookingNo)
+											popup.push('<b>Số Booking</b>: '+dlt.BookingNo);
+											if(dlt.ItemName)
+											popup.push('<b>Hàng hóa</b>: '+dlt.ItemName+(dlt.CargoTypeName?` [${dlt.CargoTypeName}]`:''));
+											if(dlt.Quantity || dlt.McWeight || dlt.Volume)
+											popup.push(`<table  cellspacing="0" cellpadding="0" width="100%"><tr>
+												${dlt.Quantity?`<td width="50%"><b>Số lượng</b>: ${dlt.Quantity}</td>`:''}
+												${dlt.McWeight?`<td width="50%"><b>Trọng lượng</b>: ${dlt.McWeight}</td>`:''}
+												${dlt.Volume?`<td width="50%"><b>Thể tích</b>: ${dlt.Volume}</td>`:''}
+												</tr></table>`);
+                                            detail+=`<div class="block_bill_row planning_row title_row" rowguid="${dlt.rowguid}" voyagekey="${dlt.VoyageKey}">
+												${popup.join('<hr>')}
+												</div>`;
+                                            if((dlt.ClassID+'')=='1')
+												tong+=dlt.McWeight;
+											else
+												tong-=dlt.McWeight;
+
+                                        }
+                                        //tong=tong*15;
+                                        html+=`
+                                <div class="block_box" block="${itm.Block}" style="left:${itm.Bleft==null?0:itm.Bleft}px;top:${itm.Btop==null?0:itm.Btop}px;width:${itm.Bwidth==null?350:itm.Bwidth}px;height:${itm.Bheight==null?140:itm.Bheight}px">
+                                    
+									<div class="block_bill">
+                                        ${detail}                                        
+                                    </div>
+                                    <div class="block_letter cg${Math.ceil((tong / itm.Capacity * 100)/10)}">
+                                        ${itm.Block} <i class="clickshow fa fa-eye-slash" style="font-size:20px;color:#f57f23;position:relative;top:-2px"></i>
+                                    </div>
+                                    <div class="block_capacity">
+                                        Sức chứa : ${numF(tong)} / ${numF(itm.Capacity)} <i class="cg${Math.ceil((tong / itm.Capacity * 100)/10)}">( ${numF(tong / itm.Capacity * 100)}% )</i>
+                                    </div>
+                                    <div class="block_progess" style="">
+                                        <div class="block_progess_bar cpg${Math.ceil((tong / itm.Capacity * 100)/10)}" style="width:${tong / itm.Capacity * 100}%">
+                                        </div>
+                                    </div>
+                                </div>`;
+                                    })
+                                    $('#block_cont').html(html);
+									load_cancel_plan();
+                                }                                
+                            },
+                            error: function (err) {
+                                toastr["error"]("Error!");
+                                console.log(err);
+                            }
+                        });
+                    }
+                    loadBlockData();
+					
+                    function loadMNFData(){
+                        $.ajax({
+                            url: "/Planning/YardPlanning/loadMNFData",
+                            dataType: 'json',
+                            data: {
+								filter:{
+									ClassID:($('input[name="ClassID"]:checked').attr('value')!='*'?$('input[name="ClassID"]:checked').attr('value'):undefined),		
+									CusID:$('#taxcode').val()||undefined,	
+									ItemID:$('#ItemID').val()||undefined,						
+									VoyageKey: $('#VoyageKey').val(),
+								}
+							},
+                            type: 'POST',
+                            success: function (res) {
+                                if(res.data){
+                                    let html='';
+                                    res.data.map(itm=>{
+                                        let diff1=moment(moment().format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]')).diff(moment(itm.CreateTime));
+                                        let diff=moment(moment().format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]')).diff(moment(itm.CreateTime));
+                                        let d=parseInt(diff/86400000);
+                                        diff=diff%86400000;
+                                        let h=parseInt(diff/3600000);
+                                        diff=diff%3600000;
+                                        let i=parseInt(diff/60000);
+                                        diff=diff%60000;
+                                        let s=parseInt(diff/1000);
+                                        console.log(itm)
+										if(itm.ClassID==1)
+                                        html+=`<div class="bbs_box ${(itm.ClassID+'')=='1'?'cimport':'cexport'}" itemname="${itm.ItemName}" rowguid="${itm.rowguid}">
+                                        <div class="bbs_left">
+                                            <div>
+                                                <div class="bbs_bname" billoflading="${itm.BillOfLading}" bookingno="${itm.BookingNo}">${itm.BillOfLading?itm.BillOfLading:itm.BookingNo}</div>
+                                                <div class="bbs_iname">${itm.ItemName}</div>                                           
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="bbs_right">
+                                            <div class="bbs_right_content">
+                                                <div class="bbs_truckno" truckno="${itm.CusID}">${itm.CusName||''}</div>
+                                                <div class="bbs_sltl" quantity="${itm.Quantity}" mcweight="${itm.McWeight}"><i class="fa fa-th-large" aria-hidden="true"></i> ${itm.Quantity}  <i class="fa fa-balance-scale" aria-hidden="true"></i> ${itm.CargoWeight}</div>
+                                                <div class="bbs_jobname" classid="${itm.ClassID}">${(itm.ClassID+'')=='1'?'Nhập tàu':'Xuất tàu'}</div>
+                                                <div class="bbs_datetime">${d?d+'d':''} ${h}:${i}:${s}</div>
+                                            </div>
+                                        </div>
+                                </div>`;
+								else
+								html+=`<div class="bbs_box ${(itm.ClassID+'')=='1'?'cimport':'cexport'}" itemname="${itm.ItemName}" rowguid="${itm.rowguid}">
+                                        <div class="bbs_left">
+                                            <div>
+												<div class="bbs_bname" billoflading="${itm.BillOfLading}" bookingno="${itm.BookingNo}">${itm.VesselName||''}</div>
+												<div class="bbs_iname">${(itm.OutboundVoyage|| itm.InboundVoyage) ? itm.InboundVoyage+'/'+itm.OutboundVoyage:''}</div>      
+												<div class="bbs_sltl" style="color: #fff !important;font-weight: normal;">${itm.CargoTypeName?`<b>[${itm.CargoTypeName}]</b>`:''}<br>${itm.ItemName||''}</div>                                 
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="bbs_right">
+                                            <div class="bbs_right_content">
+                                                <div class="bbs_truckno" style="color: #111 !important;">${itm.BookingNo||''}</div>
+                            
+                                                <div class="bbs_sltl" style="color: #111 !important;font-weight: normal;">${itm.CusName||''}</div>
+                                                <i class="del_plan_book fa fa-ban" rowguid="${itm.rowguid}"></i>
+                                            </div>
+                                        </div>
+                                </div>`;
+                                    })
+                                    $('#bbs_list').html(html);
+                                    res.data.map(itm=>{
+                                        $(`.bbs_box[rowguid="${itm.rowguid}"]`).data(itm);
+                                    });
+                                }                                
+                            },
+                            error: function (err) {
+                                toastr["error"]("Error!");
+                                console.log(err);
+                            }
+                        });
+                    }
+					loadMNFData();
+					
+                    $(document).on('click','.bbs_box',function(){
+                        $('.bbs_box').removeClass('active');
+                        $(this).addClass('active');
+                        $('.block_ud').remove();
+                        let select = ($('.bbs_box.active').data()||{});
+                        $('.block_box').each(function(){
+                            $(this).addClass('cslbox');
+                        })
+                    })
+					$(document).on('click','.planning_row',function(){
+						let voyagekey=$(this).attr('voyagekey');
+						let that=this;
+						$.ajax({
+							url: "/Planning/YardPlanning/loadVesselVisit",
+							dataType: 'json',
+							data: {filter:{VoyageKey:voyagekey}},
+							type: 'POST',
+							success: function (data) {
+								if(data.data && data.data[0]){
+									let rowx=data.data[0];
+									console.log(rowx);
+									$("#VoyageKey").val(rowx.VoyageKey);
+									$("#VesselInfo").val(rowx.VesselName + " | " + rowx.InboundVoyage + " | " + rowx.OutboundVoyage);
+									$("#InboundVoyage").val(rowx.InboundVoyage);
+									$("#OutboundVoyage").val(rowx.OutboundVoyage);
+									$("#ETA").val(rowx.ETA);
+									$("#ETD").val(rowx.ETD);
+									loadMNFData();
+									loadBlockData();
+									load_cancel_plan()
+								}
+								else{
+									$(that).prepend(`<span class="cancel_plan fa fa-ban"></span>`);
+									toastr['error']('Không tìm thấy chuyến phù hợp !');
+								}
+							},
+							error: function(err){
+								tblVessel.dataTable().fnClearTable();
+								console.log(err);
+							}
+						});
+					})
+
+					$(document).on('click','.cancel_plan',function(e){
+						e.stopPropagation();
+						e.preventDefault();
+						let rowguid=$(this).closest('.planning_row').attr('rowguid');
+						$.confirm({
+							title: 'Cảnh báo !',
+							type: 'blue',
+							icon: 'fa fa-warning',
+							content: `Xác nhận hủy kế hoạch !`,
+							buttons: {
+								cancel: {
+									text: 'Tắt',
+									btnClass: 'btn-secondary',
+									keys: ['ESC'],
+									action: ()=>{
+									}
+								},
+								ok: {
+									text: 'Xác nhận',
+									btnClass: 'btn-secondary',
+									keys: ['ENTER'],
+									action: ()=>{
+										$.ajax({
+											url: "/Planning/YardPlanning/cancelPlan",
+											dataType: 'json',
+											data: {rowguid:rowguid},
+											type: 'POST',
+											success: function (res) {         
+												if(res.data){
+													toastr.success('Thành công !');
+													loadBlockData();
+													loadMNFData();
+												}else{
+													toastr.error('Thất bại !');
+												}            
+											},
+											error: function (err) {
+												toastr["error"]("Error!");
+												console.log(err);
+											}
+										});
+									}
+								}
+							
+							}
+						})
+					})
+					$(document).on('click','.del_plan_book',function(e){
+						e.stopPropagation();
+						e.preventDefault();
+						let rowguid=$(this).attr('rowguid');
+						$.confirm({
+							title: 'Cảnh báo !',
+							type: 'blue',
+							icon: 'fa fa-warning',
+							content: `Xác nhận hủy kế hoạch hàng xuất !`,
+							buttons: {
+								cancel: {
+									text: 'Tắt',
+									btnClass: 'btn-secondary',
+									keys: ['ESC'],
+									action: ()=>{
+									}
+								},
+								ok: {
+									text: 'Xác nhận',
+									btnClass: 'btn-secondary',
+									keys: ['ENTER'],
+									action: ()=>{
+										$.ajax({
+											url: "/Planning/YardPlanning/deletePlanBook",
+											dataType: 'json',
+											data: {rowguid:rowguid},
+											type: 'POST',
+											success: function (res) {         
+												if(res.data){
+													toastr.success('Thành công !');
+													loadBlockData();
+													loadMNFData();
+												}else{
+													toastr.error('Thất bại !');
+												}            
+											},
+											error: function (err) {
+												toastr["error"]("Error!");
+												console.log(err);
+											}
+										});
+									}
+								}
+							
+							}
+						})
+					})
+					function load_cancel_plan(){
+						$('.cancel_plan').remove();
+						$('.planning_row[voyagekey="'+$("#VoyageKey").val()+'"]').each(function(){
+							$(this).prepend(`<span class="cancel_plan fa fa-ban"></span>`);
+						})
+					}
+					$(document).on('click','#search',function(){
+						loadBlockData();
+						loadMNFData();
+					})
+					$(document).on('click','.cslbox',function(){
+						
+						let Block=$(this).attr('block');
+						let rowguid=$('.bbs_box.active').attr('rowguid');
+						$.confirm({
+							title: 'Cảnh báo !',
+							type: 'blue',
+							icon: 'fa fa-warning',
+							content: `Xác nhận kế hoạch !`,
+							buttons: {
+								cancel: {
+									text: 'Tắt',
+									btnClass: 'btn-secondary',
+									keys: ['ESC'],
+									action: ()=>{
+									}
+								},
+								ok: {
+									text: 'Xác nhận',
+									btnClass: 'btn-secondary',
+									keys: ['ENTER'],
+									action: ()=>{
+										$.ajax({
+											url: "/Planning/YardPlanning/setPlan",
+											dataType: 'json',
+											data: {
+												rowguid:rowguid,
+												Block:Block,
+												ClassID:$('input[name="ClassID"]:checked').attr('value')
+											},
+											type: 'POST',
+											success: function (res) {         
+												if(res.data){
+													toastr.success('Thành công !');
+													loadBlockData();
+													loadMNFData();
+												}else{
+													toastr.error('Thất bại !');
+												}            
+											},
+											error: function (err) {
+												toastr["error"]("Error!");
+												console.log(err);
+											}
+										});
+									}
+								}
+							
+							}
+						})
+					})
+
+
+					$(document).on('mouseenter','.block_bill_row',function(){
+						let title=$(this).attr('title_popup');
+						console.log(title);
+						$('.title_popup').remove();
+						if(!title)return;
+						$('body').append(`<div class="title_popup">${title}</div>`);
+						$('.title_popup').offset({left:$(this).offset().left-3,top:$(this).offset().top-$('.title_popup').outerHeight()});
+					})		
+					$(document).on('mouseleave','.block_bill_row',function(){
+						$('.title_popup').remove();
+					})		
+
+
+					///////// SEARCH PAYER
+		function load_payer() {
+			var tblPayer = $('#search-payer');
+			tblPayer.waitingLoad();
+
+			$.ajax({
+				url: "/Planning/YardPlanning/loadPayer",
+				dataType: 'json',
+				type: 'POST',
+				data: {type:'CNS'},
+				success: function(data) {
+					var rows = [];
+
+					if (data.payers && data.payers.length > 0) {
+						payers = data.payers;
+
+						var i = 0;
+						$.each(payers, function(index, rData) {
+							var r = [];
+							$.each(_colPayer, function(idx, colname) {
+								var val = "";
+								switch (colname) {
+									case "STT":
+										val = i + 1;
+										break;
+									case "PaymentTypeID":
+										val = !rData[colname] ? "" : (rData[colname] == "M" ? "Thu ngay" : "Thu sau");
+										break;
+									default:
+										val = rData[colname] ? rData[colname] : "";
+										break;
+								}
+								r.push(val);
+							});
+							i++;
+							rows.push(r);
+						});
+					}
+
+					console.log(rows);
+					tblPayer.dataTable().fnClearTable();
+					if (rows.length > 0) {
+						tblPayer.dataTable().fnAddData(rows);
+					}
+				},
+				error: function(err) {
+					tblPayer.dataTable().fnClearTable();
+					console.log(err);
+					toastr["error"]("Có lỗi xảy ra! Vui lòng liên hệ với kỹ thuật viên! <br/>Cảm ơn!");
+				}
+			});
+		};
+		load_payer();
+		$(document).on('click', '#search-payer tbody tr', function() {
+			$("#search-payer").DataTable().rows('.m-row-selected').nodes().to$().removeClass("m-row-selected");
+			$($("#search-payer").DataTable().row($(this)).node()).addClass("m-row-selected");
+		});
+
+		$('#select-payer').on('click', function() {
+			var r = $('#search-payer tbody').find('tr.m-row-selected').first();
+			var cid = $(r).find('td:eq(' + _colPayer.indexOf("CusID") + ')').text();
+			if (!cid) {
+				e.preventDefault();
+				return false;
+			}
+			if($('#c-CusID:visible').length)return $('#c-CusID').val(cid);
+			$('#taxcode').val($(r).find('td:eq(' + _colPayer.indexOf("TaxCode") + ')').text());
+			$('#cusID').val(cid);
+
+			fillPayer();
+
+			$('#taxcode').trigger("change");
+		});
+
+		$('#search-payer').on('dblclick', 'tbody tr td', function(e) {
+			var r = $(this).parent();
+			var cid = $(r).find('td:eq(' + _colPayer.indexOf("CusID") + ')').text();
+			if (!cid) {
+				e.preventDefault();
+				return false;
+			}
+			if($('#c-CusID:visible').length)return $('#c-CusID').val(cid);
+			$('#taxcode').val($(r).find('td:eq(' + _colPayer.indexOf("TaxCode") + ')').text());
+			$('#cusID').val(cid);
+
+			fillPayer();
+
+			$('#payer-modal').modal("toggle");
+			$('#taxcode').trigger("change");
+		});
+		function fillPayer() {
+			var py = payers.filter(p => p.TaxCode == $('#taxcode').val() && p.CusID == $("#cusID").val());
+			if (py.length > 0) { //fa-check-square
+				$('#p-taxcode').text($('#taxcode').val());
+				$('#payer-name, #p-payername').text(py[0].CusName);
+				$('#payer-addr, #p-payer-addr').text(py[0].Address);
+				$('#payment-type').val(py[0].PaymentTypeID).selectpicker('refresh').trigger('change');
+				if (py[0].PaymentTypeID == "M") {
+					$('#p-money i').removeClass('fa-square').addClass('fa-check-square');
+					$('#p-credit i').removeClass('fa-check-square').addClass('fa-square');
+				} else {
+					$('#p-money i').removeClass('fa-check-square').addClass('fa-square');
+					$('#p-credit i').removeClass('fa-square').addClass('fa-check-square');
+				}
+
+				$("#cmnd[user-input=0]").val(py[0].PersonalID);
+				$("#personal-name[user-input=0]").val(py[0].NameDD);
+				if (py[0].Email) {
+					$("#mail[user-input=0]").val(py[0].Email);
+				}
+
+				if (py[0].EMAIL_DD && py[0].EMAIL_DD != py[0].Email) {
+					$("#mail").val($("#mail").val() + ',' + py[0].EMAIL_DD);
+				}
+
+				$("#taxcode").removeClass("error");
+			}
+
+			return py.length > 0;
+		}
+		///////// END SEARCH PAYER
+
+
+
+})
+</script>			
+<script src="/assets/vendors/bootstrap-select/dist/js/bootstrap-select.min.js"></script>		

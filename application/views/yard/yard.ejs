@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin-when-crossorigin" id="meta_referrer" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
+    <title>
+        YARD
+    </title>
+    <!--    favicon-->
+    <link rel="icon" href="/assets/img/icons/favicon.ico" type="image/ico">
+    <!-- GLOBAL MAINLY STYLES-->
+    <link href="/assets/vendors/jquery-ui/jquery-ui.css" rel="stylesheet" />
+    <link href="/assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="/assets/vendors/line-awesome/css/line-awesome.min.css" rel="stylesheet" />
+    <link href="/assets/vendors/themify-icons/css/themify-icons.css" rel="stylesheet" />
+
+    <link href="/assets/vendors/jquery-confirm/jquery-confirm.min.css" rel="stylesheet" />
+
+    <!-- PLUGINS STYLES-->
+    <link href="/assets/vendors/dataTables/datatables.min.css" rel="stylesheet" />
+    <link href="/assets/vendors/dataTables/jquery.dataTables.min.css" rel="stylesheet" />
+    <!--    DATATABLES SCROLL-->
+    <link href="/assets/vendors/dataTables/scroller.dataTables.min.css" rel="stylesheet" />
+
+    <link href="/assets/vendors/toastr/toastr.min.css" rel="stylesheet" type="text/css" />
+
+    <!--    CUSTOMIZE FOR DATATABLES-->
+    <link href="/assets/css/custom.datatables.css" rel="stylesheet" />
+
+    <link href="/assets/vendors/select2/css/select2.min.css" rel="stylesheet">
+
+    <!-- THEME STYLES-->
+    <link href="/assets/css/main.min.css" rel="stylesheet" />
+    <link href="/assets/css/ro2.css" rel="stylesheet" />
+    <!-- PAGE LEVEL STYLES-->
+
+    <!-- CORE PLUGINS-->
+    <script src="/assets/vendors/popper.js/dist/umd/popper.min.js"></script>
+
+    <script src="/assets/vendors/jquery/dist/jquery.min.js"></script>
+    <script src="/assets/vendors/jquery/dist/jquery2-1-4.min.js"></script>
+    <script src="/assets/vendors/jquery-ui/jquery-ui.js"></script>
+    <script src="/assets/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/assets/vendors/metisMenu/dist/metisMenu.min.js"></script>
+    <script src="/assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="/assets/vendors/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="/assets/vendors/jquery-confirm/jquery-confirm.min.js"></script>
+    <script src="/assets/js/jquery.inputmask.bundle.min.js"></script>
+    <script src="/assets/vendors/moment/min/moment.min.js"></script>
+
+    <script src="/assets/js/contextmenu.js"></script>
+
+    <link href="/assets/vendors/datetimepicker/jquery-ui-timepicker-addon.css" rel="stylesheet" />
+    <script src="/assets/vendors/datetimepicker/jquery-ui-timepicker-addon.js"></script>
+    <script type="text/javascript" src="/assets/vendors/select2/js/select2.full.min.js"></script>
+    <!--    custom for eblling js-->
+    <script src="/assets/js/ro2.js"></script>
+    <script src="/assets/js/datatables.ext.js"></script>
+
+    <!-- PAGE LEVEL PLUGINS-->
+    <script src="/assets/vendors/dataTables/datatables.min.js"></script>
+
+    <!--    TABLES SCROLL-->
+    <script src="/assets/vendors/dataTables/dataTables.scroller.min.js"></script>
+    <script type="text/javascript" src="/assets/vendors/dataTables/extensions/key_table.min.js"></script>
+    <script type="text/javascript" src="/assets/vendors/dataTables/extensions/mindmup-editabletable.js"></script>
+    <script type="text/javascript" src="/assets/vendors/dataTables/extensions/numeric-input-example.js"></script>
+    <script type="text/javascript" src="/assets/vendors/dataTables/extensions/autofill.min.js"></script>
+    <script type="text/javascript" src="/assets/vendors/dataTables/extensions/scroller.min.js"></script>
+    <script type="text/javascript" src="/assets/vendors/dataTables/extensions/select.min.js"></script>
+    <script type="text/javascript" src="/assets/vendors/dataTables/extensions/buttons.min.js"></script>
+    <script type="text/javascript" src="/assets/vendors/dataTables/extensions/jszip/jszip.min.js"></script>    
+    <script type="text/javascript" src="/assets/vendors/dataTables/extensions/buttons.html5.min.js"></script>
+
+    <!-- Toastr js -->
+    <script src="/assets/vendors/toastr/toastr.min.js"></script>
+
+    <!-- Loader -->
+    <script src="/assets/vendors/loaders/blockui.min.js"></script>
+    <script src="/assets/vendors/loaders/progressbar.min.js"></script>
+
+    <style>
+        #block_cont{
+            min-height: calc(100vh - 280px);
+            overflow: scroll;
+            height: 100%;
+        }
+        .block_box{
+            position: absolute;
+        }
+
+        #user_fullname {
+            display: inherit !important;
+        }
+
+        .app-title {
+            font-family: LineAwesome, serif;
+            /*0 5px 10px rgba(0,0,0,.35),*/
+            /*0 10px 10px rgba(0,0,0,.3),*/
+            background-color: transparent;
+            color: #fc4920;
+        }
+
+        .brand-font {
+            font-family: Helvetica Neue, Helvetica, Arial, serif;
+            text-shadow: 0 1px 1px #bbb,
+                0 2px 0 #999,
+                0 3px 0 #888,
+                0 4px 0 #777,
+                0 5px 0 #666,
+                0 6px 0 #555,
+                0 7px 0 #444,
+                0 8px 0 #333,
+                0 9px 7px #302314;
+            background-color: transparent;
+        }
+
+        .icon-bar-cl {
+            background-color: #fc4920;
+        }
+
+        #alogout {
+            padding-left: 10px;
+        }
+
+        #user-info:hover,
+        #alogout:hover {
+            color: #3300aa;
+        }
+        #editor-input{
+            display: none;
+        }
+        @media (max-width: 960px) {
+            .app-title::before {
+                content: 'GTOS';
+                font-size: 4vw;
+            }
+
+            #right-out {
+                font-size: 2vw;
+            }
+        }
+
+        @media (max-width: 960px) and (orientation: landscape) {
+            .app-title {
+                padding-top: 1.05rem;
+            }
+
+            .app-title::before {
+                content: 'GTOS';
+                font-size: 3vw;
+            }
+
+            #right-out {
+                font-size: 1.75vw;
+            }
+        }
+
+        @media (min-width: 960px) and (max-width: 1280px) {
+            .app-title::before {
+                content: 'GTOS';
+                font-size: 2.1vw;
+            }
+
+            #right-out {
+                font-size: 1.5vw;
+            }
+        }
+
+        @media (min-width: 1366px) {
+            .app-title {
+                padding-top: 1rem;
+            }
+
+            .app-title::before {
+                content: 'GTOS';
+            }
+        }
+
+        .content-wrapper {
+            width: 100%;
+            background: url("/assets/img/register-bgr-3.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            margin:0px;
+            min-height: calc(100vh - 27px);
+        }
+        
+#nav-icon {
+  position: relative;
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  transform: rotate(0deg);
+  -webkit-transition: .5s ease-in-out;
+  -moz-transition: .5s ease-in-out;
+  -o-transition: .5s ease-in-out;
+  transition: .5s ease-in-out;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  margin: 4px;
+}
+
+#nav-icon span {
+  display: block;
+  position: absolute;
+  height: 2px;
+  width: 50%;
+  background: #FFF;
+  opacity: 1;
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  transform: rotate(0deg);
+  -webkit-transition: .25s ease-in-out;
+  -moz-transition: .25s ease-in-out;
+  -o-transition: .25s ease-in-out;
+  transition: .25s ease-in-out;
+}
+
+#nav-icon span:nth-child(even) {
+  left: 50%;
+  border-radius: 0 9px 9px 0;
+}
+
+#nav-icon span:nth-child(odd) {
+  left:0px;
+  border-radius: 9px 0 0 9px;
+}
+
+#nav-icon span:nth-child(1), #nav-icon span:nth-child(2) {
+  top: 5px;
+}
+
+#nav-icon span:nth-child(3), #nav-icon span:nth-child(4) {
+  top: 14px;
+}
+
+#nav-icon span:nth-child(5), #nav-icon span:nth-child(6) {
+  top: 24px;
+}
+
+#nav-icon.open span:nth-child(1),#nav-icon.open span:nth-child(6) {
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+#nav-icon.open span:nth-child(2),#nav-icon.open span:nth-child(5) {
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+
+#nav-icon.open span:nth-child(1) {
+  left: 5px;
+  top: 12px;
+}
+
+#nav-icon.open span:nth-child(2) {
+  left: calc(50% - 5px);
+  top: 12px;
+}
+
+#nav-icon.open span:nth-child(3) {
+  left: -50%;
+  opacity: 0;
+}
+
+#nav-icon.open span:nth-child(4) {
+  left: 100%;
+  opacity: 0;
+}
+
+#nav-icon.open span:nth-child(5) {
+  left: 5px;
+  top: 18px;
+}
+
+#nav-icon.open span:nth-child(6) {
+  left: calc(50% - 5px);
+  top: 18px;
+}
+
+        .header{
+            height:40px;
+            background:#4c6c8b;
+            z-index: 99 !important;
+        }
+        .nav-hambuger{
+            width: 40px;
+        }        
+        .nav-content{
+            width: calc(100% - 40px);
+            padding: 0px 15px;
+        }
+        .lx_full{
+            height: 100%;
+            width: 100%;
+            color: #FFF;
+            background: #0a455f;
+            height: 40px;
+            border: 1px solid #fff;
+            box-shadow: inset 0px 0px 10px #454545;
+            outline: none;
+            padding: 0px 10px;
+        }
+        .lx_full::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+        color: #FFF;
+        opacity: 1; /* Firefox */
+        }
+
+        .lx_full:-ms-input-placeholder { /* Internet Explorer 10-11 */
+        color: #FFF;
+        }
+
+        .lx_full::-ms-input-placeholder { /* Microsoft Edge */
+        color: #FFF;
+        }
+        .lx_full[readonly]{
+            background-color: #0a455f !important;
+        }
+        #menu_box{
+            width: 280px;
+            height: calc(100vh - 40px);
+            background: #ffffff;
+            padding: 0px;
+            position: fixed;
+            left: -290px;
+            top:40px;
+            border-right: 1px solid #b6b6b6;
+            box-shadow: 0px 0px 5px #111;
+            transition: all 0.5s cubic-bezier(0.58, 1.48, 0.44, 0.5);   
+        }
+        #menu_box.open{
+            left:0px;
+        }
+        #menu_box a{
+            display: block;
+            width: 100%;
+            padding: 5px 10px;
+            text-align: center;
+            border-bottom: 1px solid #0a455f;
+        }
+        #menu_box a:hover{
+            background: #0a455f;
+            color: #fff;
+        }
+        #select_box,#select_method_box,#set_value_box{
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
+            left: 0px;
+            top:0px;
+            background-color: rgba(1, 1, 1, 0.3);
+            z-index: 9999999;
+        }
+        .m-tech-table{
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        .m-list-title{
+            color: #ffffff;
+            background: #0a455f;
+        }
+        .m-tech-table tbody {
+        display: block;
+        max-height: calc(100% - 31px);
+        min-height: calc(100% - 31px);
+        overflow-y: scroll;
+        background-color: #86c8e5;
+        }
+
+        .m-tech-table thead,.m-tech-table tbody tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+        }
+        .m-tech-list{
+            background-color: #86c8e5;
+            color: #ffffff;
+            border-bottom: 1px solid #e3e3e3;
+            cursor: pointer;
+        }
+        
+        .m-tech-list.active{
+            background-color: #286c96;
+        }
+        .m-tech-list:hover{
+            background-color: #427696;
+        }
+        .m-tech-list td{
+            text-align: center;
+        }
+        .setinp{
+            width: 100%;
+            border: 1px solid #427696;
+            padding: 5px 10px;
+            font-weight: bold;
+            background-color: #ffffff59;
+        }
+        .setvaluebtn{
+            width: 200px;
+            font-weight: bold;
+            position: absolute;
+            bottom: -15px;
+            height: 30px;
+            padding: 4px;
+            left: calc((100% - 200px) / 2);
+            cursor: pointer;
+        }
+        
+        .setvaluebtn span{
+            z-index: 1;
+            position: relative;
+        }
+        .setvaluebtn:before{
+            content: '';
+            display: block;
+            width: 200px;
+            background: #82c1c1;
+            font-weight: bold;
+            position: absolute;
+            bottom: 0px;
+            height: 30px;
+            padding: 4px;
+            left: calc((100% - 200px) / 2);
+            box-shadow: 1px 1px 4px #111;
+            cursor: pointer;
+            transform: skewX(30deg);
+        }
+        select.setinp{
+            color: #111;
+        }
+        .lx_chose{
+            width: 100%;
+            height: 100%;
+            position: relative;
+            border: 1px solid #fff;
+            color: #fff;
+            padding: 7px;
+            line-height: 23px;
+            background: #0a455f;
+            cursor: pointer;
+        }
+        
+        .lx_cradio{
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 20px;
+            height: 20px;
+            border: 1px solid #fff;
+            background-color: #fff;
+            border-radius: 100%;
+        }
+        
+        .lx_chose:hover .lx_cradio{
+            border: 4px solid #fff;
+            background: #99cde4;
+        }
+
+        .lx_chose.select .lx_cradio{
+            border: 4px solid #fff;
+            background-color: #0a455f;
+        }
+        .search_yard{
+            padding: 5px 10px;
+            width: 100%;
+            background: #0a455f;
+            border: 1px solid #0a455f;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 20px;
+            border-bottom-left-radius: 0px;
+            border-bottom-right-radius: 0px;
+        }
+        .search_yard::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+        color: #FFF;
+        opacity: 1; /* Firefox */        
+        font-style: italic;
+        }
+
+        .search_yard:-ms-input-placeholder { /* Internet Explorer 10-11 */
+            font-style: italic;
+        color: #FFF;
+        }
+
+        .search_yard::-ms-input-placeholder { /* Microsoft Edge */
+            font-style: italic;
+        color: #FFF;
+        }
+    </style>
+</head>
+
+<body class="fixed-navbar" >
+    <div class="page-wrapper">
+        <!-- START HEADER-->
+        <header class="header">
+            <div class="nav-hambuger">
+                <div id="nav-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            <div class="nav-content">
+                <div class="row">
+                    <div style="
+                    font-size: 20px;
+                    color: #fff;
+                    padding: 5px 30px !important;
+                    background: #0a455f;
+                    font-weight: bold;
+                    width: calc(25% - 45px);                
+                    ">YARD - TALLY</div>
+                    <div style="width: calc(75% + 45px);display: flex;flex-direction: row;align-items: stretch;justify-items: center;">
+                        <div style="width: 100%;"><div value="all" class="lx_chose">Tất cả <div class="lx_cradio"></div></div></div>
+                        <div style="width: 100%;"><div value="1" class="lx_chose select">Nhập tàu <div class="lx_cradio"></div></div></div>
+                        <div style="width: 100%;"><div value="2" class="lx_chose">Xuất tàu <div class="lx_cradio"></div></div></div>
+                        <div style="width: 100%;"><div value="3" class="lx_chose">Hạ bãi <div class="lx_cradio"></div></div></div>
+                        <div style="width: 100%;"><div value="4" class="lx_chose">Xuất bãi <div class="lx_cradio"></div></div></div>
+                    </div>
+                    
+                </div>
+            </div>
+            <div id="menu_box">
+                <a onClick="loadhis();">Lịch sử công việc</a>
+                <a href="/user/logout">Đăng xuất</a>
+            </div>
+        </header>
+        <!-- END HEADER-->
+
+        <div class="content-wrapper">
+            <table id="select_box" style="display: none;">
+                <tr>
+                    <td align="center" valign="middle">
+                        <div style="width: 40%;background: #fff;border:1px solid #b6b6b6;border-radius: 4px;margin:0px !important;position: relative;">
+                            <div style="position: absolute;right: 5px;top:5px;background:red;color:#ffffff;width: 30px;height: 30px;padding: 5px;font-size: 20px;line-height: 14px;cursor: pointer;" id="close_select_box">x</div>
+                            <div style="width: 100%;background: #0a455f;color: #ffffff;font-size: 18px; padding: 6px;">Chọn - Xe Nâng - Thiết bị</div>
+                            <div class="container" style=" margin: 0px !important;    width: 100%;    max-width: 100%; padding:0px">
+                                <div class="row" style=" width: 100%; padding:0px">
+                                  <div class="col-md-12 col-xs-12" style="padding:0px">
+                                    <div class="full_height" style="padding-top: 2px;overflow-x: hidden;">
+                                        <% (locals.loadDevice||[]).map((itm)=>{
+                                            %>
+                                            <div class="dev_select"><%= itm.DeviceName %></div>
+                                            <%
+                                        }) %>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                            
+                            <div style="padding:10px"></div>
+                            <div class="setvaluebtn" id="setdev"><span>CHỌN</span></div>    
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <table id="select_method_box" style="display: none;">
+                <tr>
+                    <td align="center" valign="middle">
+                        <div style="width: 300px;background: #fff;border:1px solid #b6b6b6;border-radius: 4px;margin:0px !important;position: relative;">
+                            <div style="position: absolute;right: 5px;top:5px;background:red;color:#ffffff;width: 30px;height: 30px;padding: 5px;font-size: 20px;line-height: 14px;cursor: pointer;" id="close_select_box">x</div>
+                            <div style="width: 100%;background: #0a455f;color: #ffffff;font-size: 18px; padding: 6px;">Chọn loại công việc</div>
+                            <div class="container" style=" margin: 0px !important;    width: 100%;    max-width: 100%; padding:0px">
+                                <div class="row" style=" width: 100%; padding:0px">
+                                  <div class="col-md-12 col-xs-12" style="padding:0px">
+                                    <div class="full_height" style="padding-top: 2px;">
+                                        <div style="height:100%;">
+                                            <table class="m-tech-table" id="tally-method-list" style="width: 100%" cellpadding="5">
+                                                <tbody id="tally-method-content">
+                                                    <tr class="m-tech-list" value="all">
+                                                        <td>Tất cả</td>
+                                                    </tr>
+                                                    <tr class="m-tech-list" value="1">
+                                                        <td>Nhập</td>
+                                                    </tr>
+                                                    <tr class="m-tech-list" value="2">
+                                                        <td>Xuất</td>
+                                                    </tr>                                                                                                
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <table id="set_value_box" style="display:none" >
+                <tr>
+                    <td align="center" valign="middle">
+                        <div style="width: 600px;max-width: 98vw;background: #5e8ca0bf;border:1px solid #b6b6b6;border-radius: 4px;margin:0px !important;position: relative;">
+                            <div style="position: absolute;right: 5px;top:5px;background:red;color:#ffffff;width: 30px;height: 30px;padding: 5px;font-size: 20px;line-height: 14px;cursor: pointer;" id="close_select_box">x</div>
+                            <div id="BNAME" style="width: 100%;background: #0a455f;color: #ffffff;font-size: 18px; padding: 6px;">LOADING...</div>
+                            <div class="container" style=" margin: 0px !important;    width: 100%;    max-width: 100%; padding:0px">
+                                <div class="row" style=" width: 100%; padding:0px">
+                                  <div class="col-md-6 col-xs-12" style="padding:5px">
+                                    <input autocomplete="off" class="setinp" id="set-TransitName" readonly placeholder="Nhập giao thẳng" />
+                                  </div>
+                                  <div class="col-md-6 col-xs-12" style="padding:5px">
+                                    <input autocomplete="off" class="setinp" id="set-ItemName" readonly placeholder="Tôn cuộn" />
+                                </div>
+                                <div class="col-md-4 col-xs-12" style="padding:5px">
+                                    <input autocomplete="off" class="setinp" id="set-TruckNo" readonly placeholder="Số xe" />
+                                </div>
+                                
+                                <div class="col-md-4 col-xs-12" style="padding:5px">
+                                    <select class="setinp devs" id="set-Worker" placeholder="Tổ đội công nhân" >
+                                        <option value="">Tổ đội công nhân</option>
+                                        <% (locals.loadWorkerGroup||[]).map((itm)=>{
+                                            %>
+                                            <option value="<%= itm.WorkerGroupID %>"><%= itm.WorkerGroupName %></option>
+                                            <%
+                                        }) %>
+                                    </select>
+                                </div>
+                                <div class="col-md-4 col-xs-12" style="padding:5px">
+                                    <select class="setinp devs" id="set-Device" placeholder="Thiết bị" >
+                                        <option value="">Thiết bị</option>
+                                        <% (locals.loadDevice||[]).map((itm)=>{
+                                            %>
+                                            <option value="<%= itm.DeviceID %>"><%= itm.DeviceName %></option>
+                                            <%
+                                        }) %>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 col-xs-12" style="padding:5px">
+                                    <input autocomplete="off" class="setinp" id="set-Quantity" type="number" placeholder="Số lượng" />
+                                </div>
+                                <div class="col-md-6 col-xs-12" style="padding:5px">
+                                    <input autocomplete="off" class="setinp" id="set-McWeight" type="number" placeholder="Trọng lượng" />
+                                </div>
+                                <div class="col-md-12 col-xs-12" style="padding:5px">
+                                    <input autocomplete="off" class="setinp" id="set-Note" placeholder="Ghi chú ..." />
+                                </div>
+                                </div>
+                                <div style="padding:10px"></div>
+                                <div class="setvaluebtn" id="setval"><span>XÁC NHẬN</span></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <!-- START PAGE CONTENT-->
+            <div class="page-content" style="margin-top:0px !important">
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div style="background: #fff;border:1px solid #b6b6b6;border-radius: 4px;width: 100%;height: 80vh;margin:0px !important; display: flex;flex-direction: column;">
+                            <div>
+                                <input class="search_yard"  placeholder="Tìm kiếm ..." />
+                            </div>
+                            <div id="bbs_list">
+                                
+
+                            </div>
+                        </div>
+
+                    </div>
+                    
+                    <div class="col-md-9 pl-md-0 pr-md-2 pl-xs-1 pr-xs-1">
+                        <div style="background: #fff;border:1px solid #b6b6b6;border-radius: 4px;width: 100%;height: 80vh;margin:0px !important;display: flex;flex-direction: column;">
+                            <div>
+                                <input class="search_yard"  placeholder="Tìm kiếm ..." />
+                            </div>
+                            <div id="block_cont">
+                                <div class="block_box">
+                                    <div class="block_bill">
+                                        <div class="block_bill_row">BillOfLading 01 - SL: 5 - TL: 10 <i class="block_down la la-arrow-circle-down"></i></div>
+                                        <div class="block_bill_row">BillOfLading 02 - SL: 15 - TL: 30 <i class="block_up la la-arrow-circle-up"></i></div>
+                                    </div>
+                                    <div class="block_letter">
+                                        A
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div style="padding:10px" id="block_load">
+                    
+                    
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            </div>
+            <!-- END PAGE CONTENT-->
+            <footer class="page-footer">
+                <div class="font-13">2020 © <b>C.E.H</b> - Certified Ethical Hacker</div>
+                <div class="to-top"><i class="fa fa-angle-double-up"></i></div>
+            </footer>
+            </div>
+            </div>
+            <input autocomplete="off" style="display: none" id="editor-input" />
+            <!-- BEGIN PAGA BACKDROPS-->
+            <div class="sidenav-backdrop backdrop"></div>
+            <div class="preloader-backdrop">
+                <div class="page-preloader">Loading</div>
+            </div>
+            <!-- END PAGA BACKDROPS-->
+            
+            <!-- CORE SCRIPTS-->
+            <script src="/assets/js/app.min.js"></script>
+            
+            <script>
+                var resizefunc = [];
+            
+                $.extend(true, $.fn.dataTable.defaults, {
+                    language: {
+                        info: "Số dòng: _TOTAL_",
+                        emptyTable: "------------ Không có dữ liệu hiển thị ------------",
+                        infoFiltered: "(trên _MAX_ dòng)",
+                        infoEmpty: "Số dòng: 0",
+                        search: '<span>Tìm:</span> _INPUT_',
+                        zeroRecords: "------------ Không có dữ liệu được tìm thấy ------------",
+                        sThousands: ",",
+                        sDecimal: ".",
+                        // autoFill: {
+                        //     // fillHorizontal: 'Đổ dữ liệu theo dòng',
+                        //     // fillVertical: 'Đổ dữ liệu theo cột',
+                        //     // fill: b[0][0].label,
+                        //     // increment: 'Thay đổi tất cả các ô theo giá trị: <input autocomplete="off" type="number" value="1">',
+                        //     // cancel: 'Hủy bỏ',
+                        //     // button:'Go!'
+                        // },
+                        select: {
+                            rows: {
+                                _: "Đã chọn %d dòng",
+                                0: ""
+                            }
+                        }
+                    },
+                    search: {
+                        regex: true
+                    },
+                    info: true,
+                    orderClasses: false,
+                    paging: false,
+                    scrollY: 419,
+                    scrollX: true,
+                    lengthChange: false,
+                    scrollCollapse: false,
+                    deferRender: true,
+                    processing: true,
+                    autoWidth: true,
+                    dom: '<"datatable-header"fl<"datatable-info-right"Bip>><"datatable-scroll-wrap"t>',
+                    buttons: [
+                        { extend: 'selectAll', text: 'Chọn tất cả', className: 'btn btn-xs btn-default' },
+                        { extend: 'selectNone', text: 'Bỏ chọn', className: 'btn btn-xs btn-default' }
+                    ],
+                    destroy: true
+                });
+            
+                function switchTer() {
+                    $.ajax({
+                        url: "user/switch-terminal",
+                        type: 'POST',
+                        success: function (data) {
+                            $('body').append(data)
+                        },
+                        error: function (err) {
+                            console.log(err);
+                            toastr.error(err.message || 'internal error!')
+                        }
+                    });
+                }
+            
+                function lockScreen(is) {
+            
+                }
+            </script>
+            <script>
+                function loadhis(){
+                    $.ajax({
+                            url: "/yard/viewHis",
+                            dataType: 'json',
+                            data: {},
+                            type: 'POST',
+                            success: function (res) {
+                                if(res.data){
+                                    let htmlx=`<table width="100%" cellspacing=0 cellpadding="5" border="1px">
+                                        <thead style="color: #ffffff;background: #0a455f;">
+                                            <tr>
+                                                <td width="30px">STT</td>
+                                                <td>Thời gian</td>
+                                                <td>Xe</td>
+                                                <td>Tổ đội</td>
+                                                <td>Thiết bị</td>
+                                                <td>Số lượng</td>
+                                                <td>Trọng lượng</td>
+                                                <td>Hầm</td>
+                                                <td>Nhập/Xuất</td>
+                                                <td>Ghi chú</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${res.data.map((itm,ii)=>{
+                                                return `<tr>                                                    
+                                                    <td align="center">${ii+1}</td>
+                                                    <td>${itm.CreateTime?moment(itm.CreateTime).format('YYYY-MM-DD HH:mm:ss'):''}</td>
+                                                    <td>${itm.TruckNo||''}</td>
+                                                    <td>${itm.WorkerGroupName||''}</td>
+                                                    <td>${itm.DeviceName||''}</td>
+                                                    <td>${itm.Quantity||''}</td>
+                                                    <td>${itm.McWeight||''}</td>
+                                                    <td>${itm.Cellar||''}</td>
+                                                    <td>${(itm.ClassID+'')?'Nhập':'Xuất'}</td> 
+                                                    <td>${itm.Note||''}</td> 
+                                                </tr>`;
+                                            }).join('')}
+                                        </tbody>
+                                        </table>`
+                                    $.confirm({
+                                        title: 'Lịch sử người dùng!',
+                                        type: 'blue',
+                                        icon: 'fa fa-warning',
+                                        boxWidth: '90%',
+                                        useBootstrap: false,
+                                        content: htmlx,
+                                        buttons: {
+                                            ok: {
+                                                text: 'Xác nhận',
+                                                btnClass: 'btn-warning',
+                                                keys: ['Enter'],
+                                                action: function () {
+                                                }
+                                            },
+                                        }
+                                    });
+                                }
+                            },
+                            error: function (err) {
+                                toastr["error"]("Error!");
+                                console.log(err);
+                            }
+                    });
+                }
+                $(document).ready(function () {
+
+                    $('#nav-icon').on('click',function(){
+                        
+                        if($(this).hasClass('open')){
+                            $(this).removeClass('open');
+                            $('#menu_box').removeClass('open');
+                        }
+                        else{
+                            $(this).addClass('open');
+                            $('#menu_box').addClass('open');
+                        }
+                    })
+
+                    $('.app-title').text(` - ${JSON.parse(localStorage.getItem('user_info')).CurrentTerminal.Name}`)
+                    $('#sidebar-collapse').slimScroll({ height: "100%", railOpacity: "0.9" });
+                    toastr.options = {
+                        "closeButton": false,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": false,
+                        "positionClass": "toast-top-right",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "1000",
+                        "hideDuration": "1000",
+                        "timeOut": "5000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "swing",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    };
+            
+                    $("#_myDrawerSidebar").on('change', function () {
+                        if (!isMobile.any()) {
+                            $("#_drawerSidebar").prop('checked', !$(this).is(':checked')).trigger('change');
+                            ($("body").hasClass("has-backdrop") && $("#sidebar").backdrop())
+                            setTimeout(function () {
+                                $($.fn.dataTable.tables(true)).DataTable()
+                                    .columns
+                                    .adjust();
+                            }, 220);
+                        }
+                    });
+            
+                    $('a.nav-link.sidebar-toggler.js-sidebar-toggler').on('click', function () {
+                        setTimeout(function () {
+                            $('.dataTable tbody').closest('table').each(function (k, v) {
+                                $(v).realign();
+                            });
+                        }, 250);
+                    });
+            
+                    //remove class error when change value
+                    $(document).on('input', '.error input', function () {
+                        $(this).parent().removeClass('error');
+                    });
+            
+                    $('[data-action="reloadUI"]').on('click', function (e) {
+                        var block = $(this).attr('data-reload-target');
+                        $(block).block({
+                            message: '<i class="la la-spinner spinner"></i>',
+                            overlayCSS: {
+                                backgroundColor: '#fff',
+                                opacity: 0.8,
+                                cursor: 'wait',
+                                'box-shadow': '0 0 0 1px #ddd'
+                            },
+                            css: {
+                                border: 0,
+                                padding: 0,
+                                backgroundColor: 'none'
+                            }
+                        });
+                    });
+
+
+
+
+
+
+
+
+                    $(document).on('click','#close_select_box',function(){
+                        $('#select_box').hide();
+                        $('#select_method_box').hide();
+                        $('#set_value_box').hide();
+                    })
+
+                    $(document).on('click','.lx_chose',function(){
+                        $('.lx_chose').removeClass('select');
+                        $(this).addClass('select');
+                        let value=$(this).attr('value');
+                        if(value=='4' || value=='3'){
+                            loadGateData();
+                        }
+                        else{
+                            loadTallyData();
+                        }                        
+                        loadBlockData();
+                    })
+                    $(document).on('click','.bbs_box',function(){
+                        $('.bbs_box').removeClass('active');
+                        $(this).addClass('active');
+                        $('.block_ud').remove();
+                        let select = ($('.bbs_box.active').data()||{});
+                        if($(this).hasClass('cexport') || $(this).hasClass('cimport')){
+                            $('.block_letter').each(function(){
+                                if((select.ClassID+'')=='1')
+                                $(this).append(`<i class="block_ud block_down la la-arrow-circle-down toyard"></i>`);
+                                else
+                                $(this).append(`<i class="block_ud block_up la la-arrow-circle-up toyard"></i>`);
+                            })
+                        }
+                        else
+                        if($(this).hasClass('gateexport') || $(this).hasClass('gateimport')){
+                            console.log(select);
+                            if((select.ClassID+'')=='1')
+                            $(`.block_bill_row[voyagekey="${$(this).attr('voyagekey')}"][bbno="${$(this).attr('bbno')}"][classid="${$(this).attr('classid')}"]`).each(function(){
+                                
+                                $(this).append(`<i class="block_ud block_up la la-arrow-circle-up togate"></i>`);                              
+                                
+                            })
+                            else
+                            if((select.ClassID+'')=='2')
+                            $('.block_letter').each(function(){    
+                                console.log(this);                            
+                                $(this).append(`<i class="block_ud block_down la la-arrow-circle-down togate"></i>`);
+                            })
+                        }
+                        
+                    })
+                    $(document).on('click','.block_ud.block_down.toyard',function(){
+                        $('#set_value_box').show();
+                        $('#BNAME').html($('.bbs_box.active .bbs_bname').text()+' - '+$('.bbs_box.active .bbs_truckno').text()+' - '+$(this).closest('.block_letter').text());
+                        $('#set-TransitName').val($('.bbs_box.active .bbs_jobname').text());
+                        $('#set-ItemName').val($('.bbs_box.active').attr('itemname'));
+                        $('#set-TruckNo').val($('.bbs_box.active .bbs_truckno').text());
+                        $('#set-Quantity').val($('.bbs_box.active .bbs_sltl').attr('quantity'));
+                        $('#set-McWeight').val($('.bbs_box.active .bbs_sltl').attr('mcweight'));
+                        $('#set-Device').val('');
+                        $('#set-Note').val('');
+                        window.Block=$(this).closest('.block_letter').text().trim();
+                    })
+
+                    $(document).on('click','.block_ud.block_up.togate',function(){
+                        $('#set_value_box').show();
+                        let rowhtml=$(this).closest('.block_bill_row');
+                        $('#BNAME').html($('.bbs_box.active .bbs_bname').text()+' - '+$('.bbs_box.active .bbs_truckno').text()+' - '+rowhtml.closest('.block_box').find('.block_letter').text().trim());
+                        $('#set-TransitName').val($('.bbs_box.active .bbs_jobname').text());
+                        $('#set-ItemName').val($('.bbs_box.active').attr('itemname'));
+                        $('#set-TruckNo').val($('.bbs_box.active .bbs_truckno').text());
+                        $('#set-Quantity').val('');
+                        $('#set-Quantity').attr('max',rowhtml.attr('quantity'));
+                        $('#set-McWeight').val('');
+                        $('#set-McWeight').attr('max',rowhtml.attr('mcweight'));
+                        $('#set-Device').val('');
+                        $('#set-Note').val('');
+                        window.Block=rowhtml.closest('.block_box').find('.block_letter').text().trim();
+                    })
+                    $(document).on('click','.block_ud.block_down.togate',function(){
+                        $('#set_value_box').show();
+                        let data=$('.bbs_box.active').data();
+                        $('#BNAME').html((data.BillOfLading||'')+(data.BookingNo||'')+' - '+data.TruckNo+' - '+$(this).closest('.block_letter').text());
+                        
+                        $('#set-TransitName').val(data.JobModeName);
+                        $('#set-ItemName').val(data.CommodityDescription);
+                        $('#set-TruckNo').val(data.TruckNo);
+                        $('#set-Quantity').val('');
+                        $('#set-McWeight').val('');
+                        $('#set-Quantity').attr('max',data.Quantity);
+                        $('#set-McWeight').attr('max',data.CargoWeight);
+                        $('#set-Device').val('');
+                        $('#set-Note').val('');
+                        window.Block=$(this).closest('.block_letter').text().trim();
+                    })
+                    $(document).on('input paste','#set-Quantity',function(){
+                        if($(this).attr('max') && parseFloat($(this).val())>parseFloat($(this).attr('max'))){
+                            $(this).val($(this).attr('max'))
+                        }
+                        let tb=parseFloat($('#set-McWeight').attr('max'))/parseFloat($('#set-Quantity').attr('max'));
+                        $('#set-McWeight').val(parseFloat($(this).val())*tb);
+                    })
+                    $(document).on('input paste','#set-McWeight',function(){
+                        if($(this).attr('max') && parseFloat($(this).val())>parseFloat($(this).attr('max'))){
+                            $(this).val($(this).attr('max'))
+                        }
+                    })
+                    window.rowdata={};
+                    
+
+
+
+                    function loadData(){
+                        $.ajax({
+                            url: "/yard/load",
+                            dataType: 'json',
+                            data: postdata,
+                            type: 'POST',
+                            success: function (res) {
+                                if(res.data){
+                                    toastr.success('Lưu hoàn tất !!');
+                                    loadData();
+                                }                                
+                            },
+                            error: function (err) {
+                                tbl.dataTable().fnClearTable();
+                                toastr["error"]("Error!");
+                                console.log(err);
+                            }
+                        });
+                    }
+                    function loadTallyData(){
+                        $.ajax({
+                            url: "/yard/loadTallyData",
+                            dataType: 'json',
+                            data: {filter:{ClassID:($('.lx_chose.select').attr('value')!='all'?$('.lx_chose.select').attr('value'):undefined)}},
+                            type: 'POST',
+                            success: function (res) {
+                                if(res.data){
+                                    let html='';
+                                    res.data.map(itm=>{
+                                        let diff1=moment(moment().format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]')).diff(moment(itm.CreateTime));
+                                        let diff=moment(moment().format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]')).diff(moment(itm.CreateTime));
+                                        let d=parseInt(diff/86400000);
+                                        diff=diff%86400000;
+                                        let h=parseInt(diff/3600000);
+                                        diff=diff%3600000;
+                                        let i=parseInt(diff/60000);
+                                        diff=diff%60000;
+                                        let s=parseInt(diff/1000);
+                                        console.log(itm)
+                                        html+=`<div class="bbs_box ${(itm.ClassID+'')=='1'?'cimport':'cexport'}" itemname="${itm.ItemName}" rowguid="${itm.rowguid}">
+                                        <div class="bbs_left">
+                                            <div>
+                                                <div class="bbs_bname" billoflading="${itm.BillOfLading}" bookingno="${itm.BookingNo}" truckno="${itm.TruckNo}">${itm.BillOfLading?itm.BillOfLading:itm.BookingNo}</div>
+                                                <div class="bbs_iname">${itm.ItemName}</div>
+                                                <div class="bbs_value">(${itm.LDQuantity} / ${itm.CargoWeight} Tấn)</div>                                                
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="bbs_right">
+                                            <div class="bbs_right_content">
+                                                <div class="bbs_truckno" truckno="${itm.TruckNo}">${itm.TruckNo}</div>
+                                                <div class="bbs_sltl" quantity="${itm.Quantity}" mcweight="${itm.McWeight}">SL:${itm.Quantity} - TL:${itm.McWeight}</div>
+                                                <div class="bbs_jobname" classid="${itm.ClassID}">${(itm.ClassID+'')=='1'?'Nhập tàu':'Xuất tàu'}</div>
+                                                <div class="bbs_datetime">${d?d+'d':''} ${h}:${i}:${s}</div>
+                                            </div>
+                                        </div>
+                                </div>`;
+                                    })
+                                    $('#bbs_list').html(html);
+                                    res.data.map(itm=>{
+                                        $(`.bbs_box[rowguid="${itm.rowguid}"]`).data({...itm,YardType:itm.ClassID.toString()=='1'?1:2,JobTypeID:itm.ClassID.toString()=='1'?'DS':'LD'});
+                                    });
+                                }                                
+                            },
+                            error: function (err) {
+                                toastr["error"]("Error!");
+                                console.log(err);
+                            }
+                        });
+                    }
+                    function loadGateData(){
+                        $.ajax({
+                            url: "/yard/loadGateData",
+                            dataType: 'json',
+                            data: {filter:{ClassID:$('.lx_chose.select').attr('value')=='3'?2:1}},
+                            type: 'POST',
+                            success: function (res) {
+                                if(res.data){
+                                    let html='';
+                                    res.data.map(itm=>{
+                                        let diff1=moment(moment().format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]')).diff(moment(itm.CreateTime));
+                                        let diff=moment(moment().format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]')).diff(moment(itm.CreateTime));
+                                        let d=parseInt(diff/86400000);
+                                        diff=diff%86400000;
+                                        let h=parseInt(diff/3600000);
+                                        diff=diff%3600000;
+                                        let i=parseInt(diff/60000);
+                                        diff=diff%60000;
+                                        let s=parseInt(diff/1000);
+                                        console.log(itm)
+                                        html+=`<div class="bbs_box ${(itm.ClassID+'')=='1'?'gateexport':'gateimport'}" itemname="${itm.CommodityDescription}" voyagekey="${itm.VoyageKey}" bbno="${(itm.BillOfLading||'')+(itm.BookingNo||'')}" classid="${itm.ClassID}" rowguid="${itm.rowguid}">
+                                        <div class="bbs_left">
+                                            <div>
+                                                <div class="bbs_bname" billoflading="${itm.BillOfLading}" bookingno="${itm.BookingNo}" truckno="${itm.TruckNo}">${itm.BillOfLading?itm.BillOfLading:itm.BookingNo}</div>
+                                                <div class="bbs_iname">${itm.CommodityDescription}</div>
+                                                <div class="bbs_value">(${itm.Quantity} / ${itm.CargoWeight} Tấn)</div>                                                
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="bbs_right">
+                                            <div class="bbs_right_content">
+                                                <div class="bbs_truckno" style="font-size:18px" truckno="${itm.TruckNo}">${itm.TruckNo}</div>
+                                                <div class="bbs_jobname" classid="${itm.ClassID}">${itm.JobModeName+''}</div>
+                                                <div class="bbs_datetime">${d?d+'d':''} ${h}:${i}:${s}</div>
+                                            </div>
+                                        </div>
+                                </div>`;
+                                    })
+                                    $('#bbs_list').html(html);
+                                    res.data.map(itm=>{
+                                        $(`.bbs_box[rowguid="${itm.rowguid}"]`).data({...itm,RefRowguid:itm.rowguid,YardType:itm.ClassID.toString()=='1'?2:1,JobTypeID:itm.ClassID.toString()=='1'?'GO':'GF'});
+                                    });
+                                }                                
+                            },
+                            error: function (err) {
+                                toastr["error"]("Error!");
+                                console.log(err);
+                            }
+                        });
+                    }
+
+                    function loadBlockData(){
+                        $.ajax({
+                            url: "/yard/loadBlockData",
+                            dataType: 'json',
+                            data: {filter:{ClassID:($('.lx_chose.select').attr('value')!='all'?$('.lx_chose.select').attr('value'):undefined)}},
+                            type: 'POST',
+                            success: function (res) {
+                                if(res.data){
+                                    let html='';
+                                    res.data.map(itm=>{
+                                        let detail='';
+                                        let tong=0;
+                                        for (let ix = 0; ix < itm.Details.length; ix++) {
+                                            const dlt = itm.Details[ix];
+                                            detail+=`<div class="block_bill_row" voyagekey="${dlt.VoyageKey}" bbno="${dlt.BBNo}" classid="${dlt.ClassID}" quantity="${dlt.Quantity}" mcweight="${dlt.McWeight}">${dlt.BBNo} - SL: ${dlt.Quantity} - TL: ${dlt.McWeight}</div>`;
+                                            tong+=dlt.McWeight;
+                                        }
+                                        html+=`
+                                <div class="block_box" block="${itm.Block}" style="left:${itm.Bleft==null?0:itm.Bleft}px;top:${itm.Btop==null?0:itm.Btop}px;width:${itm.Bwidth==null?350:itm.Bwidth}px;height:${itm.Bheight==null?140:itm.Bheight}px">
+                                    <div class="block_bill">
+                                        ${detail}                                        
+                                    </div>
+                                    <div class="block_letter cg${Math.ceil((tong / itm.Capacity * 100)/10)}">
+                                        ${itm.Block}
+                                    </div>
+                                    <div class="block_capacity">
+                                        Sức chứa : ${numF(tong)} / ${numF(itm.Capacity)} <i class="cg${Math.ceil((tong / itm.Capacity * 100)/10)}">( ${numF(tong / itm.Capacity * 100)}% )</i>
+                                    </div>
+                                    <div class="block_progess" style="">
+                                        <div class="block_progess_bar cpg${Math.ceil((tong / itm.Capacity * 100)/10)}" style="width:${tong / itm.Capacity * 100}%">
+                                        </div>
+                                    </div>
+                                </div>`;
+                                    })
+                                    $('#block_cont').html(html);
+                                }                                
+                            },
+                            error: function (err) {
+                                toastr["error"]("Error!");
+                                console.log(err);
+                            }
+                        });
+                    }
+
+                    function loadData(){
+                        loadBlockData();
+                        let value=$('.lx_chose.select').attr('value');
+                        if(value=='4' || value=='3'){
+                            loadGateData();
+                        }
+                        else{
+                            loadTallyData();
+                        }
+                    }
+
+                    loadData();
+
+
+
+
+
+                    
+                    $(document).on('input','.search_yard',function(){
+                        let val=$(this).val();
+                        $('.bbs_bname').each(function(){
+                            let bill = $(this).attr('billoflading');
+                            let book = $(this).attr('bookingno');
+                            let truckno = $(this).attr('truckno');
+                            let reg = new RegExp(val,'gi');
+                            console.log(val,reg,bill,book,truckno ,reg.test(bill) || reg.test(book) || reg.test(truckno))
+                            if(reg.test(bill) || reg.test(book) || reg.test(truckno)){
+                                $(this).closest('.bbs_box').show()
+                            }
+                            else{
+                                $(this).closest('.bbs_box').hide()
+                            }
+                        });
+                    })
+
+                    $(document).on('click','#setval',function(){
+                        if(!$('#set-Quantity').val()){
+                            return toastr['error']('Chưa nhập số lượng !');
+                        }
+                        if(!$('#set-McWeight').val()){
+                            return toastr['error']('Chưa nhập trọng lượng !');
+                        }
+                        if(!$('#set-Device').val()){
+                            return toastr['error']('Chưa chọn thiết bị !');
+                        }
+                        let data=$('.bbs_box.active').data();
+                        $.ajax({
+                            url: "/yard/saveYardData",
+                            dataType: 'json',
+                            data: {
+                                ...data,
+                                Quantity:$('#set-Quantity').val(),
+                                McWeight:$('#set-McWeight').val(),
+                                WorkerGroupID:$('#set-Worker').val(),
+                                DeviceID:$('#set-Device').val(),
+                                Note:$('#set-Note').val(),
+                                Block:window.Block
+                            },
+                            type: 'POST',
+                            success: function (res) {
+                                toastr["success"]("Lưu hoàn tất !");
+                                $('#set_value_box').hide();
+                                loadData();
+                            },
+                            error: function (err) {
+                                toastr["error"]("Error!");
+                                console.log(err);
+                            }
+                        });
+                        
+                    })
+
+
+
+
+
+
+
+
+
+
+
+                });
+            
+            </script>
+            </body>
+            <!-- <i class="block_ud block_up la la-arrow-circle-up"></i>
+                                        <div class="block_bill_row">BillOfLading 02 - SL: 15 - TL: 30 <i class="block_up la la-arrow-circle-up"></i></div> -->
+            </html>

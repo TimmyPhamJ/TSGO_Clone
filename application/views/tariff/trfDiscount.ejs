@@ -1,0 +1,564 @@
+ <!-- START PAGE CONTENT-->
+ <div class="page-content"><link href="https://gtos-csg.cehsoft.com/assets/vendors/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
+    <style>
+        @media (max-width: 767px) {
+            .f-text-right    {
+                text-align: right;
+            }
+        }
+        .no-pointer{
+            pointer-events: none;
+        }
+    
+        #contenttable_wrapper .dataTables_scroll #cell-context .dropdown-menu .dropdown-item .sub-text,
+        #contenttable_wrapper .dataTables_scroll #cell-context-2 .dropdown-menu .dropdown-item .sub-text{
+            margin-left: 7px;
+            font-size: 12px;
+            font-style: italic;
+        }
+    
+        .row .collapsible-box .ibox .btn-group{
+            width: 300px;
+        }
+        .btn-group-sm>.btn, .btn-sm{
+            border-radius: 5px;
+        }
+    </style>
+
+           
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="ibox collapsible-box">
+            
+            <div class="ibox-head">
+                <div class="ibox-title" style=" font-weight: normal;">Tìm kiếm:</div>
+                
+                    <div class="button-bar-group">
+                    
+                        <button id="search" class="btn btn-outline-warning btn-sm btn-loading mr-1" 
+                        data-loading-text="<i class='la la-spinner spinner'></i>Nạp dữ liệu"
+                        title="Nạp dữ liệu">
+                        <span class="btn-icon"><i class="ti-search"></i>Nạp dữ liệu</span>
+                        </button>				
+                            <button id="addrow" class="btn btn-outline-success btn-sm mr-1" 
+                                            title="Thêm dòng mới">
+                            <span class="btn-icon"><i class="fa fa-plus"></i>Thêm dòng</span>
+                        </button>
+    
+                        <button id="save" class="btn btn-outline-primary btn-sm mr-1"
+                                            data-loading-text="<i class='la la-spinner spinner'></i>Lưu dữ liệu"
+                                            title="Lưu dữ liệu">
+                            <span class="btn-icon"><i class="fa fa-save"></i>Lưu</span>
+                        </button>
+    
+                        <button id="delete" class="btn btn-outline-danger btn-sm mr-1" 
+                                            data-loading-text="<i class='la la-spinner spinner'></i>Xóa dòng"
+                                            title="Xóa những dòng đang chọn">
+                            <span class="btn-icon"><i class="fa fa-trash"></i>Xóa dòng</span>
+
+                </div>
+            </div>
+            
+            <div class="ibox-body pt-0 pb-0 bg-f9 border-e">
+                <div class="row ibox mb-0 border-e pb-1 pt-3">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <form id='Search1'>
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                                    <div class="row form-group">
+                                        <div style="width: 95px;">
+                                            <label class="col-form-label" style="margin-left: 20px;">Từ ngày</label>
+                                        </div>
+                                        <input id="Day1" class="form-control form-control-sm" placeholder="Từ ngày" type="text" style="height: 25px; width: 175px; margin-left: 10px; margin-right: 10px; margin-top: 2px;border-radius: 5px;">
+                                    </div>
+                                </div>
+            
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                                    <div class="row form-group">
+                                        <div style="width: 95px;">
+                                            <label class="col-form-label" style="margin-left: 20px;">Đến ngày</label>
+                                        </div>
+                                        <input id="Day2" class="form-control form-control-sm" placeholder="Đến ngày" type="text" style="height: 25px; width: 175px; margin-left: 10px; margin-right: 10px; margin-top: 2px;border-radius: 5px;">
+                                    </div>
+                                </div>
+            
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                                    <div class="row form-group">
+                                        <div style="width: 110px;">
+                                            <label class="col-form-label" style="margin-left: 20px;">Mã khách hàng</label>
+                                        </div>
+                                        <input id="Customer" class="form-control form-control-sm" placeholder="Mã khách hàng" type="text" style="height: 25px; width: 175px; margin-left: 10px; margin-right: 10px; margin-top: 2px;border-radius: 5px;">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="ibox-body pt-0 pb-0 bg-f9 border-e">
+                <div class="row ibox mb-0 border-e pb-1 pt-3">
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="row ml-2">
+                      <label class="mr-3">Mẫu</label>
+                      <select id="trfDiscountFilter" name="trfDiscountFilter" class="" data-style="btn-default btn-sm" title="-- Chọn mẫu biểu cước --">
+                        <% dataList.forEach((trfDiscount) => { %>
+                          <option DiscountID="<%= trfDiscount.ApplyDate+' - '+trfDiscount.ExpireDate+' - '+trfDiscount.DiscountID+' - '+trfDiscount.CusID %>" DiscountID="<%= trfDiscount.DiscountID %>" CusID="<%= trfDiscount.CusID %>" ApplyDate="<%= trfDiscount.ApplyDate %>" ExpireDate="<%= trfDiscount.ExpireDate %>" ><%= trfDiscount.ApplyDate+' - '+trfDiscount.ExpireDate+' - '+trfDiscount.DiscountID+' - '+trfDiscount.CusID %></option>
+                        <% }); %>
+                      </select>
+                      <button id="addNewTariff" class="btn btn-outline-success btn-sm ml-3" style="max-height: 5rem;" 
+                                            title="Thêm hợp đồng mới">
+                                    <span class="btn-icon"><i class="fa fa-plus"></i>Thêm hợp đồng mới</span>
+                                </button>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+           
+            
+                 
+        
+        
+            
+           
+            <div class="ibox-body pt-0 pb-0 bg-f9 border-e">
+                <div class="row ibox mb-0 border-e pb-1 pt-3">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <form id='contractForm'>
+                        <div class="row">
+                            
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                                <div class="row form-group">
+                                    <div style="width: 95px;">
+                                        <label class="col-form-label" style="margin-left: 20px;">Số h.đồng</label>
+                                    </div>
+                                    <input id="DiscountID" class="form-control form-control-sm" placeholder="Mã hợp đồng" type="text" style="height: 25px; width: 175px; margin-left: 10px; margin-right: 10px; margin-top: 2px;border-radius: 5px;">
+                                </div>
+                                <div class="row form-group">
+                                    <div style="width: 95px;">
+                                        <label class="col-form-label" style="margin-left: 20px;">Tên</label>
+                                    </div>
+                                    <input id="DiscountName" class="form-control form-control-sm" placeholder="Tên hợp đồng" type="text" style="height: 25px; width: 175px; margin-left: 10px; margin-right: 10px; margin-top: 2px;border-radius: 5px;">
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                                <div class="row form-group">
+                                    <div style="width: 95px;">
+                                        <label class="col-form-label" style="margin-left: 20px;">Khách hàng</label>
+                                    </div>
+                                    <input id="CusID" class="form-control form-control-sm" placeholder="Khách hàng" type="text" style="height: 25px; width: 175px; margin-left: 10px; margin-right: 10px; margin-top: 2px;border-radius: 5px;">
+                            </select>
+                                </div>
+                                <div class="row form-group">
+                                    <div style="width: 95px;">
+                                        <label class="col-form-label" style="margin-left: 20px;">Loại khách</label>
+                                    </div>
+                                    <input id="CusTypeID" class="form-control form-control-sm" placeholder="Loại khách hàng" type="text" style="height: 25px; width: 175px; margin-left: 10px; margin-right: 10px; margin-top: 2px;border-radius: 5px;">
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                                <div class="row form-group">
+                                    <div style="width: 110px;">
+                                        <label class="col-form-label" style="margin-left: 20px;">Ngày ký</label>
+                                    </div>
+                                    <input id="ApplyDate" class="form-control form-control-sm" placeholder="" type="text" style="height: 25px; width: 175px; margin-left: 10px; margin-right: 10px; margin-top: 2px;border-radius: 5px;">
+                                </div>
+                                <div class="row form-group">
+                                    <div style="width: 110px;">
+                                        <label class="col-form-label" style="margin-left: 20px;">Ngày hết hạn</label>
+                                    </div>
+                                    <input id="ExpireDate" class="form-control form-control-sm" placeholder="" type="text" style="height: 25px; width: 175px; margin-left: 10px; margin-right: 10px; margin-top: 2px;border-radius: 5px;">
+                                </div>
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+
+            
+                               
+                          
+                        
+
+			<div class="row ibox-body">
+				<div class="col-md-12 col-sm-12 col-xs-12 table-responsive">
+					<div id="tablecontent">
+						<table id="contenttable" class="table table-striped display nowrap" cellspacing="0"
+							style="width: 99.8%"></table>
+					</div>
+				</div>
+			</div>
+		
+            
+            <script type="text/javascript">
+                $(document).ready(function () {
+
+                   $("#trfDiscountFilter").selectpicker();
+                  $("#trfDiscountFilter").val('');
+
+                    let loadTrfCode=<%- JSON.stringify(locals.loadTrfCode || []) %>;
+                    let loadMethod=<%- JSON.stringify(locals.loadMethod || []) %>;
+                    let loadTransit=<%- JSON.stringify(locals.loadTransit || []) %>;
+                    let loadJobType=<%- JSON.stringify(locals.loadJobType || []) %>;
+                    let loadJobMode=<%- JSON.stringify(locals.loadJobMode || []) %>;
+                    let loadClass=<%- JSON.stringify(locals.loadClass || []) %>;
+                    let loadCargoType=<%- JSON.stringify(locals.loadCargoType || []) %>;
+                    let loadService=<%- JSON.stringify(locals.loadService || []) %>;
+                    let loadCarType=<%- JSON.stringify(locals.loadCarType || []) %>;
+                    let loadUnit=<%- JSON.stringify(locals.loadUnit || []) %>;
+                    let loadRate=<%- JSON.stringify(locals.loadRate || []) %>;
+
+
+
+                    var _columns = [
+                            { width: "80px", data: "STT", name: "STT", title: "STT", className: "text-center  editor-cancel", targets: 0 },
+                            { data: "TRFCode", name: "TRFCode", title: "Mã biểu cước", className: "text-center autocomplete",list:loadTrfCode.map((itm)=>{return {value:itm.TRFCode, label:itm.TRFCodeName}}), targets: 1} ,
+                             { data: "TRFDesc", name: "TRFDesc", title: "Diễn giải", className: "text-center ", targets:2 },
+                             { data: "PlanID", name: "PlanID", title: "Phương án", className: "text-center ", targets:3 },
+                             { data: "MethodID", name: "MethodID", title: "Phương thức", className: "text-center autocomplete",list:loadMethod.map((itm)=>{return {value:itm.MethodID, label:itm.MethodName}}), targets:4 },
+                             { data: "TransitID", name: "TransitID", title: "Loại hình ", className: "text-center autocomplete",list:loadTransit.map((itm)=>{return {value:itm.TransitID, label:itm.TransitName}}), targets:5 },
+                             { data: "JobTypeID", name: "JobTypeID", title: "Loại công việc", className: "text-center autocomplete",list:loadJobType.map((itm)=>{return {value:itm.JobTypeID, label:itm.JobTypeName}}), targets:6 },
+                             { data: "ServiceID", name: "ServiceID", title: "Dịch vụ", className: "text-center autocomplete",list:loadService.map((itm)=>{return {value:itm.ServiceID, label:itm.ServiceName}}), targets:7 },
+                             { data: "JobModeID", name: "JobModeID", title: "Phương án", className: "text-center autocomplete",list:loadJobMode.map((itm)=>{return {value:itm.JobModeID, label:itm.JobModeName}}), targets:8 },
+                             { data: "ClassID", name: "ClassID", title: "Nhập/ xuất", className: "text-center autocomplete",list:loadClass.map((itm)=>{return {value:itm.ClassID, label:itm.ClassName}}), targets:9 },
+                             { data: "CargoGroup", name: "CargoGroup", title: "Nhóm hàng hóa", className: "text-center ", targets:10 },
+                             { data: "UnitID", name: "UnitID", title: "Đơn vị tính", className: "text-center autocomplete",list:loadUnit.map((itm)=>{return {value:itm.UnitID, label:itm.UnitName}}), targets:11 },
+                             { data: "RateID", name: "RateID", title: "Loại tiền", className: "text-center autocomplete",list:loadRate.map((itm)=>{return {value:itm.RateID, label:itm.ExchangeRate}}), targets:12 },
+                             { data: "UnitPrice", name: "UnitPrice", title: "Đơn giá", className: "text-center ", targets:13 },
+                             { data: "VAT", name: "VAT", title: "VAT", className: "text-center ", targets:14 },
+                             { data: "PaymentTypeID", name: "PaymentTypeID", title: "HTTT", className: "text-center ", targets:15 },
+                             { data: "rowguid", name: "rowguid", title: "rowguid", visible: false, targets: 16},
+                        ],
+                        tbl = $('#contenttable'),
+                        dataList = <%- JSON.stringify(locals.dataList || []) %>;
+                    var dataTbl = tbl.newDataTable({
+                        scrollY: '55vh',
+                        columnDefs: _columns,
+                        data: [],
+                        order: [[0, 'asc']],
+                        paging: false,
+                        keys: true,
+                        autoFill: {
+                            focus: 'focus',
+                        },
+                        select: true,
+                        rowReorder: false
+                    });
+                    tbl.editableTableWidget();
+                    $('#addrow').on('click', function () {
+	tbl.addRows();
+});
+
+
+                    var table = $('#contenttable').DataTable();
+///
+$('#Day1, #Day2').datepicker({
+			controlType: 'select',
+			oneLine: true,
+			dateFormat: 'dd/mm/yy',	
+		});
+
+		$('#Day2').on('focus', function(){
+			$(window).keyup(function (e) {
+				if (e.which == 56){
+					$('#Day2').val('*');
+				}
+			});
+		});
+
+  /* ApplyDate, ExpireDate */
+$('#ApplyDate, #ExpireDate').datepicker({
+			controlType: 'select',
+			oneLine: true,
+			dateFormat: 'dd/mm/yy',	
+		});
+
+		$('#ExpireDate').on('focus', function(){
+			$(window).keyup(function (e) {
+				if (e.which == 56){
+					$('#ExpireDate').val('*');
+				}
+			});
+		});
+        $("#addNewTariff").on('click', function(){
+			$("#contractForm").trigger('reset');
+
+			$("#trfDiscountFilter").val('');
+            $("#trfDiscountFilter").selectpicker('refresh');
+			table.clear().draw();
+		});
+
+
+        // Tạo sự kiện click cho button #search
+       
+        $('#search').on('click', function () {
+			var btn = $(this);
+			btn.button('loading');
+			sumNumRows = 0;
+
+			var formData = {
+				'action': 'view',
+				'FromDate': $('#Day1').val(),
+				'ToDate': $('#Day2').val(),
+				'CusID': $('#Customer').val(),
+			};
+
+			$.ajax({
+				url: "/Tariff/trfDiscount/get",
+				dataType: 'json',
+				data: formData,
+				type: 'POST',
+				success: function (data) {
+                    
+			btn.button('reset');
+
+            let html='';
+            for (let ii = 0; ii < data.data.length; ii++) {
+                const row = data.data[ii];
+                html+='<option value="'+row.DataDiscount+'">'+row.DataDiscount+'</option>'
+            }
+
+            $('#trfDiscountFilter').html(html);
+            
+            $("#trfDiscountFilter").selectpicker('refresh');
+if(data.data.length > 0){
+    $('#trfDiscountFilter').val(data.data[0].DataDiscount); 
+    $("#trfDiscountFilter").selectpicker('refresh');
+    $('#trfDiscountFilter').trigger('change');
+}
+                }
+
+					
+                });
+            });
+
+        $("#trfDiscountFilter").on("change", function() {
+  var selectedValue = $(this).val();
+  
+  var cut_elements = selectedValue.split(' - ');
+  
+  var ApplyDate = cut_elements[0];
+  var ExpireDate = cut_elements[1];
+  var DiscountID = cut_elements[2];
+  var CusID = cut_elements[3];
+
+
+  // Lưu dữ liệu vào các input có id là #ApplyDate, #ExpireDate và #Remark
+  $("#ApplyDate").val(ApplyDate);
+  $("#ExpireDate").val(ExpireDate);
+  $("#DiscountID").val(DiscountID);
+  $("#CusID").val(CusID);
+//return;
+  // Get the grid element
+  var grid = $("#grid");
+  
+  // Chuyển đổi định dạng của applyDate và expireDate sang "YYYY-MM-DD" bằng Moment.js
+  const formattedApplyDate = moment(ApplyDate, "DD/MM/YYYY").format("YYYY-MM-DD");
+  const formattedExpireDate = moment(ExpireDate, "DD/MM/YYYY").format("YYYY-MM-DD");
+
+  // Tạo đối tượng dữ liệu để gửi đi bằng ajax và đặt tên là postData
+  const postData = {
+    applyDate: formattedApplyDate,
+    expireDate: formattedExpireDate,
+    cusID: CusID,
+    discountID :DiscountID
+  };
+  
+  // Tiếp tục viết phần còn lại của code ở đây
+
+//////////////////////////////////////
+// Gửi yêu cầu ajax
+$.ajax({
+  type: "POST",
+  url: "/Tariff/trfDiscount/get1",
+  data: postData,
+  
+  // Xử lý kết quả trả về
+    
+    success: function(result) {
+      // Clear the grid
+      
+table.rows().remove().draw();
+     if(result.data.length > 0) {
+       // table.rows.add(result.data).draw();
+        $("#CusTypeID").val(result.data[0].CusTypeID);
+        $("#DiscountName").val(result.data[0].DiscountName);
+
+     }
+      for (var i = 0; i < result.data.length; i++) {
+       // result.data[i].DT_RowId = result.data[i].id; // set ID for row
+     //  result.data[i].DT_RowIndex = i; // set row index
+     result.data[i].STT = i + 1;
+        table.row.add(result.data[i]).draw();
+   
+ 
+  }
+   },
+  error: function(xhr, status, error) {
+    // Handle errors here
+  }
+});
+$('#delete').on('click', function () {
+	if (tbl.getSelectedRows().length == 0) {
+		$('.toast').remove();
+		toastr["info"]("Vui lòng chọn các dòng dữ liệu để xóa!");
+	} else {
+		tbl.confirmDelete(function (selectedData) {
+			postDel(selectedData);
+		});
+	}
+});
+
+
+
+$('#save').on('click', function () {
+	if (tbl.DataTable().rows('.addnew, .editing').data().toArray().length == 0) {
+		$('.toast').remove();
+		toastr["info"]("Không có dữ liệu thay đổi!");
+	} else {
+		var newData = tbl.DataTable().rows('.addnew, .editing').data().toArray();
+		$.confirm({
+			title: 'Thông báo!',
+			type: 'orange',
+			icon: 'fa fa-warning',
+			content: 'Tất cả các thay đổi sẽ được lưu lại!\nTiếp tục?',
+			buttons: {
+				ok: {
+					text: 'Xác nhận lưu',
+					btnClass: 'btn-warning',
+					keys: ['Enter'],
+					action: function () {
+						saveData();
+					}
+				},
+				cancel: {
+					text: 'Hủy bỏ',
+					btnClass: 'btn-default',
+					keys: ['ESC']
+				}
+			}
+		});
+	}
+});
+//save functions
+function saveData() {
+
+
+	var newData = tbl.DataTable().rows('.addnew, .editing').data().toArray();
+  
+  var ApplyDate = $('#ApplyDate').val();
+  var ExpireDate = $('#ExpireDate').val();
+  var DiscountID = $('#DiscountID').val();
+  var CusID = $('#CusID').val();
+  var CusTypeID = $('#CusTypeID').val();
+  var DiscountName = $('#DiscountName').val();
+
+
+
+  // Lưu dữ liệu vào các input có id là #ApplyDate, #ExpireDate và #Remark
+ 
+  // Chuyển đổi định dạng của applyDate và expireDate sang "YYYY-MM-DD" bằng Moment.js
+const formattedApplyDate = moment(ApplyDate, "DD/MM/YYYY").format("YYYY-MM-DD");
+const formattedExpireDate = moment(ExpireDate, "DD/MM/YYYY").format("YYYY-MM-DD");
+
+	if (newData.length > 0) {
+        for(var i=0; i<newData.length; i++){
+
+            newData[i].ApplyDate = formattedApplyDate;
+             newData[i].ExpireDate = formattedExpireDate;;
+             newData[i].DiscountID = DiscountID;
+             newData[i].CusID = CusID;
+             newData[i].CusTypeID = CusTypeID;
+             newData[i].DiscountName = DiscountName;
+
+
+        }
+            
+
+
+		var fnew = {
+			'data': newData
+		};
+		postSave(fnew);
+	}
+}
+// gán 3 trường 
+
+function postSave(formData) {
+	var saveBtn = $('#save');
+	saveBtn.button('loading');
+	$('.ibox.collapsible-box').blockUI();
+	$.ajax({
+		url: "/Tariff/trfDiscount/save",
+		dataType: 'json',
+		data: formData,
+		type: 'POST',
+		success: function (datas) {
+			saveBtn.button('reset');
+			$('.ibox.collapsible-box').unblock();
+			if (!datas.data) {
+				toastr["error"]('Cập nhật dữ liệu thất bại !!');
+				return;
+			}
+			if (datas.data) {
+				toastr["success"]('Cập nhật dữ liệu thành công !!');
+				tbl.DataTable().rows('.addnew').nodes().to$().removeClass("addnew");
+				tbl.DataTable().rows('.editing').nodes().to$().removeClass("editing");
+				tbl.updateSTT(0);
+			}
+		},
+		error: function (err) {
+			toastr["error"]("Error!");
+			saveBtn.button('reset');
+			$('.ibox.collapsible-box').unblock();
+			console.log(err);
+		}
+	});
+}
+function postDel(rows) {
+	$('.ibox.collapsible-box').blockUI();
+	var delBtn = $('#delete');
+	delBtn.button('loading');
+	var delWorker = rows;
+	var formdata = {
+		'data': delWorker,
+	};
+	$.ajax({
+		url: "/Tariff/trfDiscount/delete",
+		dataType: 'json',
+		data: formdata,
+		type: 'POST',
+		success: function (output) {
+			delBtn.button('reset');
+			$('.ibox.collapsible-box').unblock();
+			var data = output.data;
+			if (output.error && output.error.length > 0) {
+				for (var i = 0; i < output.error.length; i++) {
+					toastr["error"](output.error[i]);
+				}
+			}
+			if (data) {
+				tbl.DataTable().rows('.selected').remove().draw(false);
+				tbl.updateSTT(0);
+			}
+		},
+		error: function (err) {
+			delBtn.button('reset');
+			$('.ibox.collapsible-box').unblock();
+			toastr["error"]("Error!");
+			console.log(err);
+		}
+	});
+     } 
+
+    
+
+});
+
+                });
+                </script>
+                        <script src="/assets/vendors/bootstrap-select/dist/js/bootstrap-select.min.js"></script>

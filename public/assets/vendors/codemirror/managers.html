@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+    <script src="https://demororo.cehsoft.com/assets/vendors/codemirro/codemirror.js"></script>
+    <link rel="stylesheet" href="https://demororo.cehsoft.com/assets/vendors/codemirro/codemirror.css" />
+    <script src="https://demororo.cehsoft.com/assets/vendors/codemirro/addon/edit/matchbrackets.js"></script>
+    <link rel="stylesheet" href="https://demororo.cehsoft.com/assets/vendors/codemirro/theme/colorforth.css" />
+    <script src="https://demororo.cehsoft.com/assets/vendors/codemirro/mode/clike/clike.js"></script>
+    <script src="https://demororo.cehsoft.com/assets/vendors/codemirro/mode/javascript/javascript.js"></script>
+    <script src="https://demororo.cehsoft.com/assets/js/jquery.min.js"></script>
+
+</head>
+<body>
+<button id="save">Save</button>&ensp;
+<button id="load">Load</button>&ensp;
+<button id="clear">Clear</button>&ensp;
+<button id="start">Start</button>&ensp;
+<button id="stop">Stop</button>&ensp;
+<button id="status">Status</button>&ensp;
+<button id="viewlog">View Log</button>&ensp;
+<br />
+<br />
+<textarea id="html_content" style="width:600px;height:800px;"></textarea>
+<br>
+
+
+<script>
+    $(document).ready(function() {
+        var editor = CodeMirror.fromTextArea(document.getElementById("html_content"), {
+            mode: "text/javascript",
+            lineNumbers: true,
+            theme:  'colorforth',
+			lineWrapping : true
+        });
+        
+        var change = false;
+        var action = "";
+
+        var url = 'https://demororo.cehsoft.com/dieuhanh/editfile.php';
+        $("#save").click(function() {
+			var text = editor.getValue();
+			if(!text.match(/var|Socket RORO/g)) {
+				alert("Save cái gì, có phải nội dung javascript đâu mà save ..");
+			} else if (text.length > 100) {
+				var confirm = prompt("gõ chữ YES để chấp nhận save");
+				if(confirm == 'YES') {
+					if(text.length > 100) {
+						$.ajax({
+							url : url,
+							type: 'post',
+							data : {
+								action : 'save',
+								content : editor.getValue()
+							},
+							success : function(data) {
+                                change = false;
+								editor.setValue('');
+							}
+						});
+					} 
+				} else {
+					alert("Chưa có lưu được đâu ...");
+				}
+			} else {
+				alert('save cái gì, nội dung đâu mà save');
+			}
+        });
+        
+        $("#load").click( function() {
+            $.ajax({
+                url : url,
+                type: 'post',
+                data : {
+                    action : 'load'
+                },
+                success : function(html) {
+                    editor.setOption('readOnly', false);
+					editor.setOption('mode', 'text/javascript');
+                    editor.setValue(html);
+                }
+            });
+        });
+		
+		$("#clear").click( function() {
+			editor.setValue('');
+        });
+		
+		$("#start").click(function() {
+            $.ajax({
+                url : url,
+                type: 'post',
+                data : {
+                    action : 'start'
+                },
+				success: function(data) {
+					editor.setValue('');
+                    editor.setOption('readOnly', true);
+					editor.setValue(data);
+				}
+            });
+        });
+		
+		$("#stop").click(function() {
+            $.ajax({
+                url : url,
+                type: 'post',
+                data : {
+                    action : 'stop'
+                },
+				success: function(data) {
+					editor.setValue('');
+                    editor.setOption('readOnly', true);
+					editor.setValue(data);
+				}
+            });
+        });
+		
+		$("#status").click( function() {
+            $.ajax({
+                url : url,
+                type: 'post',
+                data : {
+                    action : 'status'
+                },
+                success : function(html) {
+                    editor.setOption('readOnly', true);
+                    editor.setValue(html);
+                }
+            });
+        });
+		
+		$("#viewlog").click( function() {
+            $.ajax({
+                url : url,
+                type: 'post',
+                data : {
+                    action : 'viewlog'
+                },
+                success : function(html) {
+                    editor.setOption('readOnly', true);
+					editor.setOption('mode', 'text/javascript');
+                    editor.setValue(html);
+                }
+            });
+        });
+
+        $('button').click(function(e) {
+           if($(this).attr('id') == 'load') {
+               var step = 1;
+               e.preventDefault();
+               if(change === false) {
+                   editor.on('change', function(editor, ch) {
+                       if(step == 2) {
+                           change = true;
+                       }
+                       step = 2;
+                   })
+               }
+           }
+        });
+
+
+        window.onbeforeunload = function(e) {
+            if(change === true) {
+                var dialogText = 'Dialog text here';
+                e.returnValue = dialogText;
+                return dialogText;
+            }
+        };
+
+    });
+
+</script>
+
+</body>
+</html>

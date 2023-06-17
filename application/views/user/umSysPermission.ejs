@@ -1,0 +1,295 @@
+<link href="/assets/vendors/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
+<script>document.title = 'PHÂN QUYỀN NGƯỜI DÙNG'</script>
+<div class="row">
+	<div class="col-xl-12">
+		<div class="ibox collapsible-box">
+			<div class="ibox-head">
+				<div class="ibox-title">PHÂN QUYỀN NGƯỜI DÙNG</div>
+				<div class="button-bar-group">                    
+					
+					<button id="save" class="btn btn-outline-primary btn-sm mr-1"
+						data-loading-text="<i class='la la-spinner spinner'></i>Lưu dữ liệu" title="Lưu dữ liệu">
+						<span class="btn-icon"><i class="fa fa-save"></i>Lưu</span>
+					</button>
+				</div>
+			</div>
+            <div class="ibox-body pt-1 pb-1 bg-f9 border-e">
+				<div class="row ibox mb-0 border-e pb-1 pt-3">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<div class="row">
+							<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+								<div class="row form-group">
+									<label class="col-md-3 col-sm-3 col-xs-3 col-form-label">Cảng</label>
+									<div class="col-md-8 col-sm-10 col-xs-10">
+										<select id="TerminalCode" class="selectpicker" data-width="100%" data-style="btn-default btn-sm" title="Cảng">
+                                            <% if( (UserTerminalList||[]).length > 0) UserTerminalList.map(itm=> {  %>
+                                                    <option value="<%=itm['TerminalCode']%>"><%=itm['TerminalName']%></option>
+                                            <% });%>
+                                        </select>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+								<div class="row form-group">
+									<label class="col-md-3 col-sm-2 col-xs-2 col-form-label">Nhóm tài khoản</label>
+									<div class="col-md-8 col-sm-10 col-xs-10">
+										<select id="UserGroupCode" class="selectpicker" data-width="100%" data-style="btn-default btn-sm" title="Nhóm tài khoản">
+                                            <% if( (userGroupList||[]).length > 0) userGroupList.map(itm=> {  %>
+                                                    <option value="<%=itm['UserGroupCode']%>"><%=itm['UserGroupName']%></option>
+                                            <% });%>
+                                        </select>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row ibox-body">
+				<div class="col-md-12 col-sm-12 col-xs-12 table-responsive">
+					<div id="tablecontent">
+						<table id="contenttable" class="table table-striped display nowrap" cellspacing="0"
+							style="width: 99.8%"></table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function () {
+		var userGroupList = <%- JSON.stringify(locals.userGroupList || []) %>;
+		var TerminalList = <%- JSON.stringify(locals.TerminalList || []) %>;
+		var UserTerminalList = <%- JSON.stringify(locals.UserTerminalList || []) %>;
+		var _columns = [
+            { "name": "STT", "data": "STT", title: "STT", className: "text-center editor-cancel", "targets": 0 },
+            { "name": "MenuName", "data": "MenuName", title: "Tên danh mục", "targets": 3, className: "text-center" },
+            { "name": "ParentCode", "data": "ParentCode", title: "ParentCode", "targets": 4, "className": "text-center" },
+            { "name": "IsView", "data": "IsView", title: "Xem", "targets": 5, className: "text-center data-type-checkbox" },
+            { "name": "IsAddNew", "data": "IsAddNew", title: "Thêm", "targets": 6, className: "text-center data-type-checkbox" },
+            { "name": "IsModify", "data": "IsModify", title: "Sửa", "targets": 7, className: "text-center data-type-checkbox" },
+            { "name": "IsDelete", "data": "IsDelete", title: "Xóa", "targets": 8, className: "text-center data-type-checkbox" },
+        ],
+			tbl = $('#contenttable'),
+			dataList = <%- JSON.stringify(locals.dataList || []) %>;
+			_columns=_columns.map((itm,ii)=>{return {...itm,targets:ii}});
+		var dataTbl = tbl.newDataTable({
+			scrollY: '55vh',
+			columnDefs: _columns,
+			data: dataList.map((itm, ii) => { return { ...itm, STT: ii + 1 } }),
+			ordering: false,
+			paging: false,
+			keys: true,
+			select: true,
+			rowReorder: false
+		});
+
+
+
+        $(document).on('change','#TerminalCode , #UserGroupCode', function () {
+            $('#contenttable').DataTable().rows().remove();
+			if($('#TerminalCode').val() && $('#UserGroupCode').val()){
+                window.awPost('/Users_Management/umSysPermission/loadACCESSRIGHTMenu',{TerminalCode:$('#TerminalCode').val(),UserGroupCode:$('#UserGroupCode').val()}).then((data)=>{
+                    let parents=Object.keys(data.data||{});
+                    let datatable=$('#contenttable').DataTable();
+                    let ix=0;
+                    for (let ii = 0; ii < parents.length; ii++) {
+                        const prow = data.data[parents[ii]];
+                        let trDOM = datatable.row.add( {...prow,STT:++ix} ).draw().node();
+                        $(trDOM).addClass('parent_row');
+                        $(trDOM).attr('parent_code',prow.MenuID);
+                        let childs=Object.keys(prow.submenu||{});
+                        for (let jj = 0; jj < childs.length; jj++) {
+                            const crow = prow.submenu[childs[jj]];
+                            let chDOM = datatable.row.add( {...crow,STT:++ix} ).draw().node();
+                            $(chDOM).addClass('child_row');
+                            $(chDOM).attr('parent_code',prow.MenuID);
+                        }
+                    }
+                    datatable.draw(false);
+                })
+            }
+		});
+
+        $(document).on('click','.datatable_checkbox_input',function(){
+            console.log($(this).prop('checked'),$(this).closest('td'));
+            console.log(tbl.DataTable().cell($(this).closest('td')).index(),$(this).closest('tr').hasClass('.parent_row'));
+            if($(this).closest('tr').hasClass('parent_row')){
+                let val = $(this).prop('checked');
+                let loop=true;
+                let next = $(this).closest('tr').next();
+                let rowI=tbl.DataTable().cell($(this).closest('td')).index().row+1;
+                let colIndex=tbl.DataTable().cell($(this).closest('td')).index().column;
+                while (loop) {
+                    console.log(next);
+                    if(next.hasClass('child_row')){
+                        tbl.DataTable().cell(rowI, colIndex).data(val);
+                        next = next.next();rowI++;
+                    }
+                    else{
+                        loop=false;
+                    }
+                }
+            }
+            else
+            if($(this).closest('tr').hasClass('child_row')){
+                let val = $(this).prop('checked');
+                let loop=true;
+                let next = $(this).closest('tr').next();
+                let colIndex=tbl.DataTable().cell($(this).closest('td')).index().column;
+                
+                let data=tbl.DataTable().row($(this).closest('tr')).data();
+
+                let parentRow=tbl.DataTable().row('.child_row[parent_code="'+data.ParentCode+'"]').index()-1;
+                console.log(parentRow);
+
+                if(!val && data.ParentCode){
+                    tbl.DataTable().cell(parentRow, colIndex).data(val);
+                }
+            }
+        })
+		$('#addrow').on('click', function () {
+			tbl.addRows();
+		});
+
+		$('#delete').on('click', function () {
+			if (tbl.getSelectedRows().length == 0) {
+				$('.toast').remove();
+				toastr["info"]("Vui lòng chọn các dòng dữ liệu để xóa!");
+			} else {
+				tbl.confirmDelete(function (selectedData) {
+					postDel(selectedData);
+				});
+			}
+		});
+
+		$('#save').on('click', function () {
+			
+                let newData = tbl.DataTable().rows().data().toArray();
+                let objj={TerminalCode:$('#TerminalCode').val(),UserGroupCode:$('#UserGroupCode').val()}
+				for (i = 0; i < newData.length; i++) {
+					newData[i]={
+                        TerminalCode:objj.TerminalCode,
+                        UserGroupCode:objj.UserGroupCode,
+                        MenuID:newData[i]['MenuID'],
+                        MenuName:newData[i]['MenuName'],
+                        IsView:newData[i]['IsView'],
+                        IsAddNew:newData[i]['IsAddNew'],
+                        IsModify:newData[i]['IsModify'],
+                        IsDelete:newData[i]['IsDelete'],
+                    }
+                    
+                    
+                    Object.assign(newData[i],objj);
+                    delete newData[i]['submenu'];
+                    delete newData[i]['ParentCode'];
+				}
+
+				$.confirm({
+					title: 'Thông báo!',
+					type: 'orange',
+					icon: 'fa fa-warning',
+					content: 'Tất cả các thay đổi sẽ được lưu lại!\nTiếp tục?',
+					buttons: {
+						ok: {
+							text: 'Xác nhận lưu',
+							btnClass: 'btn-warning',
+							keys: ['Enter'],
+							action: function () {
+								saveData(objj,newData);
+							}
+						},
+						cancel: {
+							text: 'Hủy bỏ',
+							btnClass: 'btn-default',
+							keys: ['ESC']
+						}
+					}
+				});
+		});
+
+
+		//save functions
+		function saveData(objj,newData) {
+				var fnew = {
+                    'parent':objj,
+					'data': newData
+				};
+				postSave(fnew);
+		}
+
+		function postSave(formData) {
+			var saveBtn = $('#save');
+			saveBtn.button('loading');
+			$('.ibox.collapsible-box').blockUI();
+
+			$.ajax({
+				url: "/Users_Management/umSysPermission/save",
+				dataType: 'json',
+				data: formData,
+				type: 'POST',
+				success: function (datas) {
+					saveBtn.button('reset');
+					$('.ibox.collapsible-box').unblock();
+					if (!datas.data) {
+						toastr["error"]('Cập nhật dữ liệu thất bại !!');
+						return;
+					}
+					if (datas.data) {
+						toastr["success"]('Cập nhật dữ liệu thành công !!');
+						tbl.DataTable().rows('.addnew').nodes().to$().removeClass("addnew");
+						tbl.DataTable().rows('.editing').nodes().to$().removeClass("editing");
+						tbl.updateSTT(0);
+					}
+
+				},
+				error: function (err) {
+					toastr["error"]("Error!");
+					saveBtn.button('reset');
+					$('.ibox.collapsible-box').unblock();
+					console.log(err);
+				}
+			});
+		}
+
+		function postDel(rows) {
+			$('.ibox.collapsible-box').blockUI();
+			var delBtn = $('#delete');
+			delBtn.button('loading');
+			var delWorker = rows;
+			var formdata = {
+				'data': delWorker,
+			};
+			$.ajax({
+				url: "/Users_Management/umSysPermission/delete",
+				dataType: 'json',
+				data: formdata,
+				type: 'POST',
+				success: function (output) {
+					delBtn.button('reset');
+					$('.ibox.collapsible-box').unblock();
+					var data = output.data;
+					if (output.error && output.error.length > 0) {
+						for (var i = 0; i < output.error.length; i++) {
+							toastr["error"](output.error[i]);
+						}
+					}
+
+					if (data) {
+						tbl.DataTable().rows('.selected').remove().draw(false);
+						tbl.updateSTT(0);
+					}
+
+				},
+				error: function (err) {
+					delBtn.button('reset');
+					$('.ibox.collapsible-box').unblock();
+					toastr["error"]("Error!");
+					console.log(err);
+				}
+			});
+		}
+	});
+</script>
+<script src="/assets/vendors/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
