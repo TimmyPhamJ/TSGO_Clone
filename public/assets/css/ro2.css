@@ -2,14 +2,17 @@
 .hidden-input {
     display: none !important;
 }
-.select2.select2-container{
+
+.select2.select2-container {
     padding: 0px !important;
 }
-.parent_row{
+
+.parent_row {
     color: #fff;
     background: #23b8ff !important;
     font-weight: bold;
 }
+
 .card-box {
     background-color: white !important;
     margin-bottom: 10px;
@@ -31,9 +34,11 @@
 input[readonly] {
     background-color: #fff !important;
 }
+
 input.setinp[readonly] {
     background-color: #ffffff59 !important;
 }
+
 .input-hidden {
     display: none !important;
 }
@@ -242,10 +247,12 @@ button i.spinner {
 .page-content {
     margin-top: 20px !important;
 }
-tr.selected td{
-    background-color: rgba(255,231,112,0.4)!important;
+
+tr.selected td {
+    background-color: rgba(255, 231, 112, 0.4) !important;
 }
-#bbs_list{
+
+#bbs_list {
     width: 100%;
     padding: 10px;
     margin-right: 0px;
@@ -253,7 +260,8 @@ tr.selected td{
     overflow-x: hidden;
     scrollbar-width: thin;
 }
-.bbs_box{
+
+.bbs_box {
     width: 100%;
     display: flex;
     cursor: pointer;
@@ -261,17 +269,19 @@ tr.selected td{
     margin-bottom: 10px;
 }
 
-.bbs_box:hover{
+.bbs_box:hover {
     filter: drop-shadow(1px 2px 3px #111);
 }
 
-.bbs_box.active{
+.bbs_box.active {
     filter: drop-shadow(1px 2px 3px #0099cc);
 }
-.bbs_box.cexport.active{
+
+.bbs_box.cexport.active {
     filter: drop-shadow(1px 2px 3px #f57f25);
 }
-.bbs_left{
+
+.bbs_left {
     width: 40%;
     height: 80px;
     vertical-align: middle;
@@ -285,13 +295,15 @@ tr.selected td{
     align-items: center;
 }
 
-.cexport .bbs_left{
+.cexport .bbs_left {
     background: #f57f32;
 }
-.bbs_left div{
+
+.bbs_left div {
     width: 100%;
 }
-.bbs_right{
+
+.bbs_right {
     width: 60%;
     height: 80px;
     background: #FFF;
@@ -302,38 +314,58 @@ tr.selected td{
     display: flex;
     align-items: center;
 }
-.bbs_right_content{
+
+.bbs_right_content {
     width: 100%;
-    padding:10px;
+    padding: 10px;
 }
-.bbs_bname{
+
+.bbs_bname {
     width: 100%;
     text-align: center;
     font-size: 16px;
     font-weight: bold;
 }
-.bbs_truckno{
+
+.bbs_truckno {
+    color: red;
+    font-weight: bold;
+    font-size: 15px;
+    line-height: 15px;
+}
+
+.bbs_sltl {
     color: red;
     font-weight: bold;
 }
-.bbs_sltl{
-    color:red;
+
+.bbs_jobname {
+    color: #0078a1;
     font-weight: bold;
 }
-.bbs_jobname{    
-    color:#0078a1;
+
+.cexport .bbs_jobname {
+    color: #e05e07;
     font-weight: bold;
 }
-.cexport .bbs_jobname{    
-    color:#e05e07;
-    font-weight: bold;
-}
-.bbs_datetime{
+
+.bbs_datetime {
     position: absolute;
     bottom: 5px;
     right: 5px;
+    font-size: 12px;
 }
-#block_cont{
+
+.bbs_plan {
+    position: absolute;
+    right: 8px;
+    top: 0px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #08c;
+}
+
+#block_cont {
     padding: 10px;
     width: 100%;
     border: 1px solid #b6b6b6;
@@ -342,7 +374,8 @@ tr.selected td{
     scrollbar-width: thin;
     position: relative;
 }
-.block_box{
+
+.block_box {
     background: #ffffff;
     width: CALC((100% - 40px) / 3);
     border: 1px solid #111;
@@ -359,28 +392,38 @@ tr.selected td{
     -ms-user-select: none;
     user-select: none;
 }
-.block_bill{
+
+.block_bill {
     padding: 5px;
-    overflow-x:hidden;
+    overflow-x: hidden;
     height: calc(100% - 45px);
 }
-.block_letter{
+
+.block_letter {
     padding: 5px;
-    padding-top:15px;
+    padding-top: 15px;
     font-size: 24px;
     font-weight: bold;
     position: relative;
     color: red;
 }
-.block_bill_row{
+
+.block_bill_row {
     position: relative;
     font-size: 16px;
     font-weight: bold;
-    padding-top:5px;
-    padding-bottom:5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     min-height: 35px;
+    border: 1px solid #e3e3e3;
+    padding: 5px 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    box-shadow: 1px 1px 10px #b6b6b6;
 }
-.block_up,.block_down{
+
+.block_up,
+.block_down {
     font-size: 30px;
     font-weight: bold;
     position: absolute;
@@ -388,13 +431,16 @@ tr.selected td{
     top: 2px;
     cursor: pointer;
 }
-.block_down{
+
+.block_down {
     color: #0099cc;
 }
-.block_up{
+
+.block_up {
     color: #e05e07;
 }
-.dev_select{
+
+.dev_select {
     width: auto;
     display: inline-block;
     margin: 5px;
@@ -405,31 +451,44 @@ tr.selected td{
     font-weight: bold;
     cursor: pointer;
 }
-.dev_select:hover{
+
+.dev_select:hover {
     background: #f57f23;
 }
-.bbs_box.active .bbs_right{
+
+.bbs_box.active .bbs_right {
     border-color: #0078a1;
 }
-.bbs_box.active .bbs_left{
+
+.bbs_box.active .bbs_left {
     border-color: #0078a1;
 }
-.bbs_box.cexport.active .bbs_right{
+
+.bbs_box.cexport.active .bbs_right {
     border-color: #e05e07;
 }
-.bbs_box.cexport.active .bbs_left{
+
+.bbs_box.cexport.active .bbs_left {
     border-color: #e05e07;
 }
-.block_ud{
+
+.block_ud {
     float: right;
 }
-.bbs_iname{
+.togate{
+    position: absolute;
+    top: 2px;
+    right: 167px;
+}
+
+.bbs_iname {
     font-style: italic;
     font-size: 12px;
     margin-top: -7px;
     color: #e3e3e3;
 }
-.block_letter .block_ud{
+
+.block_letter .block_ud {
     font-size: 32px;
     font-weight: bold;
     position: absolute;
@@ -437,7 +496,8 @@ tr.selected td{
     top: 19px;
     cursor: pointer;
 }
-.block_box_resize{
+
+.block_box_resize {
     position: absolute;
     width: 15px;
     height: 15px;
@@ -445,19 +505,23 @@ tr.selected td{
     right: 0px;
     bottom: 0px;
 }
-.ui-resizable-handle.ui-resizable-se.ui-icon.ui-icon-gripsmall-diagonal-se{
+
+.ui-resizable-handle.ui-resizable-se.ui-icon.ui-icon-gripsmall-diagonal-se {
     z-index: 0 !important;
 }
-.block_capacity{
+
+.block_capacity {
     position: absolute;
     display: inline-block;
     right: 10px;
     bottom: 9px;
 }
-.block_capacity i{
+
+.block_capacity i {
     color: red;
 }
-.block_progess{
+
+.block_progess {
     position: absolute;
     height: 10px;
     overflow: hidden;
@@ -467,7 +531,7 @@ tr.selected td{
     bottom: 40px;
 }
 
-.block_progess_bar{
+.block_progess_bar {
     position: absolute;
     left: 0px;
     top: 0px;
@@ -475,91 +539,120 @@ tr.selected td{
     height: 100%;
 }
 
-.cpg0{
+.cpg0 {
     background-color: #b6b6b6 !important;
 }
-.cpg1{
+
+.cpg1 {
     background-color: green !important;
 }
-.cpg2{
+
+.cpg2 {
     background-color: green !important;
 }
-.cpg3{
+
+.cpg3 {
     background-color: green !important;
 }
-.cpg4{
+
+.cpg4 {
     background-color: green !important;
 }
-.cpg5{
+
+.cpg5 {
     background-color: rgb(176, 179, 0) !important;
 }
-.cpg6{
+
+.cpg6 {
     background-color: rgb(248, 232, 0) !important;
 }
-.cpg7{
+
+.cpg7 {
     background-color: rgb(189, 161, 1) !important;
 }
-.cpg8{
+
+.cpg8 {
     background-color: rgb(128, 87, 0) !important;
 }
-.cpg9{
+
+.cpg9 {
     background-color: rgb(128, 36, 0) !important;
 }
-.cpg10{
+
+.cpg10 {
     background-color: red !important;
 }
 
 
-.cg0{
+.cg0 {
     color: #34495f !important;
 }
-.cg1{
+
+.cg1 {
     color: green !important;
 }
-.cg2{
+
+.cg2 {
     color: green !important;
 }
-.cg3{
+
+.cg3 {
     color: green !important;
 }
-.cg4{
+
+.cg4 {
     color: green !important;
 }
-.cg5{
+
+.cg5 {
     color: rgb(176, 179, 0) !important;
 }
-.cg6{
+
+.cg6 {
     color: rgb(248, 232, 0) !important;
 }
-.cg7{
+
+.cg7 {
     color: rgb(189, 161, 1) !important;
 }
-.cg8{
+
+.cg8 {
     color: rgb(128, 87, 0) !important;
 }
-.cg9{
+
+.cg9 {
     color: rgb(128, 36, 0) !important;
 }
-.cg10{
+
+.cg10 {
     color: red !important;
 }
 
 
-.cslbox{
+.cslbox {
     cursor: pointer;
 }
 
-.cslbox:hover{
-    background-color: #f8fdff;  
+.cslbox:hover {
+    background-color: #f8fdff;
 }
+
 @keyframes cslbox {
-    0% {border-color: #F57F20;}
-    50% {border-color: #08c;}
-    100% {border-color: #F57F20;}
+    0% {
+        border-color: #F57F20;
+    }
+
+    50% {
+        border-color: #08c;
+    }
+
+    100% {
+        border-color: #F57F20;
+    }
 
 }
 
-.cslbox::after{
+.cslbox::after {
     content: "\f112";
     display: inline-block;
     font: normal normal normal 14px/1 FontAwesome;
@@ -568,18 +661,20 @@ tr.selected td{
     -webkit-font-smoothing: antialiased;
     position: absolute;
     right: 10px;
-    top:10px;
+    top: 10px;
     font-size: 18px;
 }
-.planning_row{
+
+.planning_row {
     color: red !important;
 }
 
-.planning_row:hover{
+.planning_row:hover {
     text-decoration: underline;
     cursor: pointer;
 }
-.cancel_plan{
+
+.cancel_plan {
     float: right;
     display: inline-block;
     padding-right: 10px;
@@ -589,52 +684,101 @@ tr.selected td{
     position: absolute;
     right: 0px;
     top: 1px;
+    font-size: 22px;
 }
-.title_popup,.title_row{
+
+.title_popup,
+.title_row {
     border: 1px solid #e3e3e3;
     box-shadow: 1px 1px 2px #b6b6b6;
     border-radius: 4px;
     padding: 5px 10px;
     position: absolute;
     background: #ffffff;
-    z-index: 9999;    
+    z-index: 9999;
     width: 325px;
 }
-.title_popup hr, .title_row hr{
+
+.title_popup hr,
+.title_row hr {
     margin-top: 3px !important;
     margin-bottom: 3px !important;
 }
-.title_row{    
+
+.title_row {
     position: relative;
     font-weight: normal;
     height: auto;
     font-size: 13px !important;
-    margin-bottom:15px;
+    margin-bottom: 15px;
     text-decoration: none !important;
     border: 1px solid #b6b6b6 !important;
     box-shadow: 1px 1px 10px #b6b6b6 !important;
     width: 100% !important;
+    z-index: 0;
 }
-.title_row b{    
+
+.title_row b {
     font-weight: bold !important;
 }
 
-.m-row-selected td{
+.m-row-selected td {
     background: none !important;
 }
-.bbs_box .del_plan_book{
+
+.bbs_box .del_plan_book {
     display: none;
     color: red !important;
-    position:absolute;
-    right:5px;
-    top:5px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
     font-size: 20px;
     opacity: 0.5;
 }
-.bbs_box:hover .del_plan_book{
+
+.bbs_box:hover .del_plan_book {
     display: inline-block;
-    
+
 }
-.del_plan_book:hover{
+
+.del_plan_book:hover {
     opacity: 1;
+}
+
+.fright {
+    display: inline-block;
+    float: right;
+    min-width: 135px;
+    margin-right: 20px
+}
+
+.row_goiy {
+    box-shadow: 1px 1px 10px #f57f20;
+    border: 1px solid #f57f30;
+}
+
+select.setinp option[disabled] {
+    display: none !important;
+}
+
+select:invalid {
+    color: #787979 !important;
+}
+
+select:required:invalid {
+    color: #787979 !important;
+}
+
+/* .hiden-input {
+     display: none;
+} */
+
+
+@media only screen and (max-width: 1750px) {
+    .bbs_truckno,.bbs_jobname{
+        font-size: 11px;
+    }
+    .bbs_bname{
+        font-size: 13px;
+    }
 }

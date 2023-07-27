@@ -68,13 +68,13 @@
 				<div class="row ibox mb-0 border-e pb-1 pt-3">
 					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						<div class="row">
-							<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 mb-3">	
+							<div class="col-lg-4 col-xs-12 mb-3">	
 								<div class="row">
 									<input id="VoyageKey" class="form-control form-control-sm" type="text" hidden>
 									<input id="VesselID" class="form-control form-control-sm" type="text" hidden>
 
 									<label class="ml-3" style="width: 3.5rem; margin-top: 0.4rem">Tàu</label>		
-									<input id="VesselInfo" placeholder="Tên tàu | Chuyến nhập | Chuyến xuất" style="border-radius: 5px; margin-left: 1rem; padding-left: 7.5px; border-color: rgba(0, 0, 0, .1); border-width: 1px; height: 2rem; width: 19rem" type="text">
+									<input id="VesselInfo" placeholder="Tên tàu | Chuyến nhập | Chuyến xuất" style="border-radius: 5px; margin-left: 1rem; padding-left: 7.5px; border-color: rgba(0, 0, 0, .1); border-width: 1px; height: 2rem; width: CALC(100% - 145px)" type="text">
 
 									<!-- -->
 									<button id="chooseVessel" class="btn btn-success btn-icon-only btn-circle btn-sm btn-air ml-2" style="height: 1.65rem; width: 1.65rem" title="Chọn tàu">
@@ -87,7 +87,7 @@
 								</div>
 														
 							</div>	
-							<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 mb-3">		
+							<div class="col-lg-3 col-xs-12 mb-3">		
 							<div class="input-group">
 								<input class="form-control form-control-sm input-required" id="taxcode" placeholder="Chủ hàng" type="text" />
 								<span class="input-group-addon bg-white btn mobile-hiden text-warning" style="padding: 0 0.5rem;" title="Chọn đối tượng thanh toán" data-toggle="modal" data-target="#payer-modal" onClick="setTimeout(()=>{$('#search-payer').DataTable().draw()},200)">
@@ -95,7 +95,7 @@
 								</span>
 							</div>	
 							</div>		
-							<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 mb-3">		
+							<div class="col-lg-3 col-xs-12 mb-3">		
 							<div class="input-group">
 								<input class="form-control form-control-sm input-required" id="ItemID" placeholder="Hàng hóa" type="text" />
 								<span class="input-group-addon bg-white btn mobile-hiden text-warning" style="padding: 0 0.5rem;" title="Chọn hàng hóa" data-toggle="modal" data-target="#items-modal" onClick="setTimeout(()=>{$('#tbl-items').DataTable().draw()},200)">
@@ -103,7 +103,7 @@
 								</span>
 							</div>	
 							</div>
-							<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 mb-3">	
+							<div class="col-lg-2 col-xs-12 mb-3">	
 								<div class="row mt-0">
 									<div class="ml-3 mt-0">
 										<label class="mt-1 radio radio-info">
@@ -826,7 +826,7 @@
                                             <div class="bbs_right_content">
                                                 <div class="bbs_truckno" truckno="${itm.CusID}">${itm.CusName||''}</div>
                                                 <div class="bbs_sltl" quantity="${itm.Quantity}" mcweight="${itm.McWeight}"><i class="fa fa-th-large" aria-hidden="true"></i> ${itm.Quantity}  <i class="fa fa-balance-scale" aria-hidden="true"></i> ${itm.CargoWeight}</div>
-                                                <div class="bbs_jobname" classid="${itm.ClassID}">${(itm.ClassID+'')=='1'?'Nhập tàu':'Xuất tàu'}</div>
+                                                <div class="bbs_jobname" classid="${itm.ClassID}">${(itm.JobModeName+'')}</div>
                                                 <div class="bbs_datetime">${d?d+'d':''} ${h}:${i}:${s}</div>
                                             </div>
                                         </div>
@@ -863,7 +863,7 @@
                             }
                         });
                     }
-					loadMNFData();
+					//loadMNFData();
 					
                     $(document).on('click','.bbs_box',function(){
                         $('.bbs_box').removeClass('active');
@@ -1087,7 +1087,7 @@
 				url: "/Planning/YardPlanning/loadPayer",
 				dataType: 'json',
 				type: 'POST',
-				data: {type:'CNS'},
+				data: {type:'SPN'},
 				success: function(data) {
 					var rows = [];
 

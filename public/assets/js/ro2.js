@@ -140,7 +140,6 @@ function getDate(fullDateTime) {
     return dateTime;
 }
 
-
 function dateformat(timestamp) {
     var date = new Date(timestamp * 1000);
     var year = date.getFullYear();
@@ -195,6 +194,19 @@ function changeDateFormat(formatstring, value) {
     var d = value.substring(day_start, day_start + day_length);
 
     return (y.length == 2 ? ("20" + y) : y) + "-" + (m.length == 1 ? "0" + m : m) + "-" + (d.length == 1 ? "0" + d : d) + " " + time;
+}
+
+function dataURItoBlob(dataURI) {
+    const byteString = window.atob(dataURI);
+    const arrayBuffer = new ArrayBuffer(byteString.length);
+    const int8Array = new Uint8Array(arrayBuffer);
+    for (let i = 0; i < byteString.length; i++) {
+        int8Array[i] = byteString.charCodeAt(i);
+    }
+    const blob = new Blob([int8Array], {
+        type: 'application/pdf'
+    });
+    return blob;
 }
 
 function adjustheader(headtbl, bodytbl, hasrow) {
@@ -495,3 +507,14 @@ function numF0(num, show0) {
         return '';
     return formatMoney(num, 2, '.', ',');
 }
+function coverDate(date) {
+    return moment(date);
+}
+$(document).ready(function(){
+    $(document).on('keypress','input[type="number"]',function(evt){
+        if (evt.which != 8 && evt.which != 0 && evt.which < 48 || evt.which > 57)
+        {
+            evt.preventDefault();
+        }
+    })
+})

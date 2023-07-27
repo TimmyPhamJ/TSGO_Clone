@@ -96,7 +96,7 @@ router.post('/switch-terminal', auth, async function (req, res, next) {
 
 router.post('/select-terminal',auth, async function (req, res, next) {
     var user = global.get_userdata() || req.session?.userdata;
-    console.log(user)
+    //console.log(user)
     var terminalCode = req.body.terminal;
     var jwt = require('jsonwebtoken');
     var exp = Math.floor(Date.now() / 1000) + (86400 * 30 * 1);// expires in 24 hours * 1 thang

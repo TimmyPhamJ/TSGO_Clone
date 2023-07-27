@@ -6,9 +6,9 @@ const CommonModel = require("../../models/common_model.js");
 const VesselModel = require("../../models/VesselModel.js");
 const DiscountModel = require("../../models/trf_model.js");
 const CustomerModel = require("../../models/Customer_model.js");
-const EirModel = require("../../models/ord_eir_bulk_model");
-const LdBulkModel = require("../../models/MNF_LD_Bulk_model.js");
-const FunctionModel = require('../../models/FunctionModel.js');
+const EirModel = require("../../models/ordeirbulk_model"); //
+const LdBulkModel = require("../../models/mnfldbulk_model.js");
+const FunctionModel = require("../../models/FunctionModel.js");
 router.get("/", auth, async function (req, res, next) {
   let dataList = []; //await BulkModel.loadUserGroup(req);
   let jobModeList = await CommonModel.loadJobMode(req);
@@ -19,7 +19,7 @@ router.get("/", auth, async function (req, res, next) {
   let customerList = await CommonModel.loadCustomers(req);
   let customerTypeList = await CommonModel.loadCustomerType(req);
   let transitList = await CommonModel.loadTransit(req);
-  res.loadContent("/Order/ordDelivery", {
+  res.loadContent("/order/ordDelivery", {
     dataList,
     jobModeList,
     classList,
@@ -29,7 +29,7 @@ router.get("/", auth, async function (req, res, next) {
     customerList,
     customerTypeList,
     transitList,
-    title: 'Lệnh giao hàng'
+    title: "LỆNH GIAO HÀNG",
   });
 });
 
@@ -44,7 +44,7 @@ router.post("/loadVesselVisit", auth, function (req, res, next) {
 });
 
 router.post("/get", auth, function (req, res, next) {
-  LdBulkModel.LoadManiFestBulk(req)
+  LdBulkModel.LoadGiaoHang(req)
     .then((data) => {
       res.status(200).json({ data });
     })
@@ -101,18 +101,20 @@ router.post("/filter", auth, async function (req, res, next) {
     });
 });
 
-router.use('/qrcode/:code', async function (req, res) {
-    try {
-        FunctionModel.generateQRCodeToSting((req.params.code || '')).then((result) => {
-            var result = result.replace(/^data:image\/png;base64,/, "");
-            var buf = new Buffer(result, 'base64');
-            res.header('Content-Type', 'image/png').end(buf);
-        }).catch((e) => {
-            return res.status(400).json({ status: 400, message: e });
-        });
-    } catch (e) {
-        return res.status(400).json({ status: 400, message: e.message });
-    }
-})
+router.use("/qrcode/:code", async function (req, res) {
+  try {
+    FunctionModel.generateQRCodeToSting(req.params.code || "")
+      .then((result) => {
+        var result = result.replace(/^data:image\/png;base64,/, "");
+        var buf = new Buffer(result, "base64");
+        res.header("Content-Type", "image/png").end(buf);
+      })
+      .catch((e) => {
+        return res.status(400).json({ status: 400, message: e });
+      });
+  } catch (e) {
+    return res.status(400).json({ status: 400, message: e.message });
+  }
+});
 
 module.exports = router;

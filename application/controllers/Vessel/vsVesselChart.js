@@ -15,11 +15,11 @@ router.post("/get", auth, async function (req, res, next) {
         arrVoyakey.push(item.dataObj.vdata.VoyageKey);
       });
     });
-
     req.body.voyageKey = arrVoyakey;
     data.disload = await VesselModel.getDisLoad(req);
     res.status(200).json({ ...data });
   } catch (error) {
+    console.log(error)
     res.status(200).json({ error });
   }
 });
@@ -58,7 +58,7 @@ router.get("/get-bitt", auth, async function (req, res, next) {
         message: "No Data with server",
       });
     }
-  } catch (error) {}
+  } catch (error) { }
 });
 router.get("/get-disload", auth, async function (req, res, next) {
   try {
@@ -76,6 +76,6 @@ router.get("/get-disload", auth, async function (req, res, next) {
         message: "No Data with server",
       });
     }
-  } catch (error) {}
+  } catch (error) { }
 });
 module.exports = router;

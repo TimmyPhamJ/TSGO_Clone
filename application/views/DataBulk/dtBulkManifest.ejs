@@ -82,30 +82,7 @@
       <div class="ibox-head">
         <div class="ibox-title">NHẬP LIỆU - HÀNG RỜI</div>
         <div class="button-bar-group mr-3">
-          <a class="btn mt-2" id="downloadFileForImport">
-            <i style="color: #365899"><u>Tải file import mẫu...</u></i>
-          </a>
-
-          <label
-            id="imgLabel"
-            for="import"
-            class="btn btn-outline-info btn-sm mt-2">
-            <span class="btn-icon"><i class="ti-import"></i>Import</span>
-          </label>
-          <input
-            id="import"
-            name="import"
-            style="visibility: hidden; width: 1px"
-            type="file" />
-
-          <button
-            id="Export"
-            class="btn btn-outline-dark btn-sm btn-loading mr-1"
-            data-loading-text="<i class='la la-spinner spinner'></i>Export"
-            title="Export">
-            <span class="btn-icon"><i class="ti-export"></i>Export</span>
-          </button>
-
+          
           <button
             id="search"
             class="btn btn-outline-warning btn-sm btn-loading mr-1"
@@ -255,6 +232,11 @@
                     "
                     type="text" />
                 </div>
+				<div class="row">
+					<button id="load_stock" class="btn btn-outline-warning btn-sm btn-loading mr-1" data-loading-text="<i class='la la-spinner spinner'></i>Nạp dữ liệu" title="Nạp dữ liệu">
+						<span class="btn-icon"><i class="ti-download"></i>Nạp dữ liệu tồn kho</span>
+					</button>
+				</div>
               </div>
             </div>
           </div>
@@ -739,10 +721,12 @@
   		$("#tableIn").hide();
   		$("#tableOut").hide();
       	if (this.value == 1){
+  			$("#load_stock").hide();
   			$("#tableIn").show();
 			$("#contenttable").DataTable().draw();
       	}
       	else if (this.value == 2){
+			$("#load_stock").show();
       		$("#tableOut").show();
 			$("#contenttable2").DataTable().draw();
       	}
@@ -854,7 +838,63 @@
   			}
   		});
   	});
+	  $('#load_stock').on("click", function(){
+  		/* Load data to datatable */
+  		// Get data input
+  		var btn 					= $(this),
+  			VoyageKey				= $("#VoyageKey").val(),
+  			IsLocalForeign			= $("input[name='IsLocalForeign']:checked").val(),
+  			ClassID					= $("input[name='ClassID']:checked").val();
 
+  		if (VoyageKey == ''){
+  			toastr['error']('Vui lòng chọn tàu trước khi load dữ liệu!');
+  			return;
+  		}
+
+  		var formData = {
+			'VoyageKey':VoyageKey,
+  		};
+
+  		tbl.waitingLoad();
+  		tbl2.waitingLoad();
+  		//btn.button('loading');
+
+  		$.ajax({
+  			url: "/DataBulk/dtBulkManifest/getStock",
+  			dataType: 'json',
+  			data: formData,
+  			type: 'POST',
+  			success: function (data) {
+  				let ii=0,jj=0;
+  				var rowsIn = [], rowsOut = [], index1 = 1, index2 = 1;
+  				if(data.data.length > 0) {
+  					for (i = 0; i < data.data.length; i++) {
+  						var rData = data.data[i], r = [];
+  						if (data.data[i]['ClassID'] == 1){
+  							rowsIn.push({...data.data[i],STT:++ii});
+  						}
+  						else{
+  							rowsOut.push({...data.data[i],STT:++jj});
+  						}
+  					}
+  				}
+  				tbl.dataTable().fnClearTable();
+  				tbl2.dataTable().fnClearTable();
+  	        	if (rowsIn.length > 0){
+  					tbl.dataTable().fnAddData(rowsIn);
+  	        	}
+  				console.log(rowsOut);
+  	        	if (rowsOut.length > 0){
+  					tbl2.dataTable().fnAddData(rowsOut);
+  	        	}
+  	        	//btn.button('reset');
+  			},
+  			error: function(err){
+  				console.log(err);
+  				//btn.button('reset');
+  			}
+  		});
+  	});
   	/* SAVE EVENT */
   	$('#save').on('click', function(){
   		if ($('#VoyageKey').val() == ''){

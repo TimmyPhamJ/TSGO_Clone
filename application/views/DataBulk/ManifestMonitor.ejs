@@ -21,6 +21,96 @@
 		font-size: 12px;
 		font-style: italic;
 	}
+	#select_box,#select_method_box,#set_value_box{
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
+            left: 0px;
+            top:0px;
+            background-color: rgba(1, 1, 1, 0.3);
+            z-index: 9999999;
+        }
+        .m-tech-table{
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        .m-list-title{
+            color: #ffffff;
+            background: #0a455f;
+        }
+        .m-tech-table tbody {
+        display: block;
+        max-height: calc(100% - 31px);
+        min-height: calc(100% - 31px);
+        overflow-y: scroll;
+        background-color: #86c8e5;
+        }
+
+        .m-tech-table thead,.m-tech-table tbody tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+        }
+        .m-tech-list{
+            background-color: #86c8e5;
+            color: #ffffff;
+            border-bottom: 1px solid #e3e3e3;
+            cursor: pointer;
+        }
+        
+        .m-tech-list.active{
+            background-color: #286c96;
+        }
+        .m-tech-list:hover{
+            background-color: #427696;
+        }
+        .m-tech-list td{
+            text-align: center;
+        }
+        .setinp{
+            width: 100%;
+            border: 1px solid #427696;
+            padding: 5px 10px;
+            font-weight: bold;
+            background-color: #ffffff59 !important;
+        }
+        .setvaluebtn{
+            width: 200px;
+            font-weight: bold;
+            position: absolute;
+            bottom: -15px;
+            height: 30px;
+            padding: 4px;
+            left: calc((100% - 200px) / 2);
+            cursor: pointer;
+        }
+        
+        .setvaluebtn span{
+            z-index: 1;
+            position: relative;
+        }
+        .setvaluebtn:before{
+            content: '';
+            display: block;
+            width: 200px;
+            background: #82c1c1;
+            font-weight: bold;
+            position: absolute;
+            bottom: 0px;
+            height: 30px;
+            padding: 4px;
+            left: calc((100% - 200px) / 2);
+            box-shadow: 1px 1px 4px #111;
+            cursor: pointer;
+            transform: skewX(30deg);
+        }
+        input[readonly]{
+            color: #777879;
+        }
+		input:read-only{
+            color: #777879;
+        }
 </style>
 
 <div class="row">
@@ -71,7 +161,7 @@
 								</div>
 								
 								<div class="row" style="margin-top: 10px;">
-									<div class="col-md-9 col-sm-12">
+									<div class="col-md-12 col-sm-12">
 										<div class="row">
 										<div class="col-md-3 text-center">
 											<button id="MStart" class="btn btn-outline-info btn-sm btn-loading mr-1" style="width: 100%;" >
@@ -243,6 +333,45 @@
 	</div>
 </div>
 
+<table id="set_value_box" style="display:none" >
+	<tr>
+		<td align="center" valign="middle">
+			<div style="width: 400px;max-width: 98vw;background: #5e8ca0bf;border:1px solid #b6b6b6;border-radius: 4px;margin:0px !important;position: relative;">
+				<div style="position: absolute;right: 5px;top:5px;background:red;color:#ffffff;width: 30px;height: 30px;padding: 5px;font-size: 20px;line-height: 14px;cursor: pointer;" id="close_select_box">x</div>
+				<div id="BNAME" style="width: 100%;background: #0a455f;color: #ffffff;font-size: 18px; padding: 6px;">LOADING...</div>
+				<div class="container" style=" margin: 0px !important;    width: 100%;    max-width: 100%; padding:0px">
+					<div class="row" style=" width: 100%; padding:0px">
+					  <div class="col-md-6 col-xs-12" style="padding:5px">
+						<input autocomplete="off" class="setinp" id="set-TransitName" readonly placeholder="Nhập giao thẳng" />
+					  </div>
+					  <div class="col-md-6 col-xs-12" style="padding:5px">
+						<input autocomplete="off" class="setinp" id="set-ItemName" readonly placeholder="Tôn cuộn" />
+					</div>
+					<div class="col-md-12 col-xs-12" style="padding:5px">
+						<input autocomplete="off" class="setinp" id="set-TruckNo" placeholder="Số xe" />
+					</div>
+					<div class="col-md-4 col-xs-12" style="padding:5px">
+						<input autocomplete="off" class="setinp" id="set-Quantity" type="number" placeholder="Số lượng" />
+					</div>
+					<div class="col-md-4 col-xs-12" style="padding:5px">
+						<input autocomplete="off" class="setinp" id="set-McWeight" placeholder="Trọng lượng" />
+					</div>
+					<div class="col-md-4 col-xs-12" style="padding:5px">
+						<select class="setinp" id="set-Cellars" placeholder="Hầm" readonly >
+							<option value="0">Hầm</option>
+						</select>
+					</div>
+					<div class="col-md-12 col-xs-12" style="padding:5px">
+						<input autocomplete="off" class="setinp" id="set-Note" placeholder="Ghi chú ..." />
+					</div>
+					</div>
+					<div style="padding:10px"></div>
+					<div class="setvaluebtn" id="setvaluebtn"><span>XÁC NHẬN</span></div>
+				</div>
+			</div>
+		</td>
+	</tr>
+</table>
 
 <script type="text/javascript">
 	$(document).ready(function () {
@@ -266,7 +395,7 @@
 		console.log(methodList1,jobModeList1)
 
 		var _columns2		= [
-                { width: "80px", data: "STT", name: "STT", title: "STT", className: "text-center  editor-cancel", targets: 0 },
+                { width: "30px", data: "STT", name: "STT", title: "STT", className: "text-center  editor-cancel", targets: 0 },
                 { data: "LDStatus", name: "LDStatus", title: "Công việc", className: "text-center", targets: 1 },
                 { data: "BookingNo", name: "BookingNo", title: "Số booking", className: "text-center", targets: 2 },
 				{ data: "JobModeID", name: "JobModeID", title: "Phương án", className: "text-center autocomplete",list:jobModeList2.map((itm)=>{return {value:itm.JobModeID, label:itm.JobModeName}}), targets:2 },
@@ -283,7 +412,7 @@
 				{ data: "rowguid", name: "rowguid", title: "rowguid", visible: false, targets: 13 },
             ],
 			_columns 		= [
-				{ width: "80px", data: "STT", name: "STT", title: "STT", className: "text-center  editor-cancel", targets: 0 },
+				{ width: "30px", data: "STT", name: "STT", title: "STT", className: "text-center  editor-cancel", targets: 0 },
                 { data: "LDStatus", name: "LDStatus", title: "Công việc", className: "text-center", targets: 1 },
                 { data: "BillOfLading", name: "BillOfLading", title: "Số vận đơn", className: "text-center", targets: 1 },
 				{ data: "JobModeID", name: "JobModeID", title: "Phương án", className: "text-center autocomplete",list:jobModeList1.map((itm)=>{return {value:itm.JobModeID, label:itm.JobModeName}}), targets:2 },
@@ -314,7 +443,7 @@
 
 
 			let giamsat_cols 		= [
-				{ width: "80px", data: "STT", name: "STT", title: "STT", className: "text-center  editor-cancel", targets: 0 },
+				{ width: "30px", data: "STT", name: "STT", title: "STT", className: "text-center  editor-cancel", targets: 0 },
                 { data: "TruckNo", name: "TruckNo", title: "Số xe", className: "text-center", targets: 1 },
                 { data: "BillOfLading", name: "BillOfLading", title: "Số Bill/Booking", className: "text-center", targets: 1 ,render:(data,type,row)=>{return row.BillOfLading?row.BillOfLading:row.BookingNo}},
 				{ data: "JobModeName", name: "JobModeName", title: "Phương án", className: "text-center "},
@@ -607,7 +736,7 @@
 					//btn.button('reset');
 				}
 			});
-			
+			formData.filter.MethodID={operation:'!=',value:'TAU-XE'}
 			$.ajax({
 				url: "/DataBulk/ManifestMonitor/loadTallyJob",
 				dataType: 'json',
@@ -691,7 +820,80 @@
             });
 		});
 		$(document).on('click','#MEdit',function(){
+			if($('#giamsat tr.selected').length<=0)
+				return toastr['error']('Chưa chọn dữ liệu !');
+			let rowdata=$('#giamsat').DataTable().row('.selected').data();
+			$('#BNAME').html(rowdata.BillOfLading||rowdata.BookingNo);
+			$('#set_value_box').show();
+			$('#set-TransitName').val(rowdata.JobModeName);
+			$('#set-ItemName').val(rowdata.ItemName);
+			$('#set-TruckNo').val(rowdata.TruckNo);
+			$('#set-Quantity').val(rowdata.Quantity);
+			$('#set-McWeight').val(rowdata.McWeight);                          
+			$('#set-Quantity').attr('max',9999999);
+			$('#set-McWeight').attr('max',9999999);
+			let Cellars=parseInt(rowdata.Cellars||'0');
+			let html=`<option value="0">Hầm</option>`;
+			for (let ii = 0; ii < Cellars; ii++) {
+				html+=`<option value="${ii+1}">${ii+1}</option>`;
+			}
+			$('#set-Cellars').html(html);
+			$('#set-Cellars').val(rowdata.Cellar);
+			$('#set-Note').val(rowdata.Note);
+			$('#setvaluebtn').attr('rowguid',rowdata.rowguid);
+
 		});
+		$(document).on('click','#setvaluebtn',function(){
+			let ups={
+				rowguid:$(this).attr('rowguid'),
+				TruckNo:$('#set-TruckNo').val(),
+				Quantity:$('#set-Quantity').val(),
+				McWeight:$('#set-McWeight').val(),
+				Cellar:$('#set-Cellars').val(),
+				Note:$('#set-Note').val()
+			}
+			$.ajax({
+				url: "/DataBulk/ManifestMonitor/editTally",
+				dataType: 'json',
+				data: ups,
+				type: 'POST',
+				success: function (res) {
+					if(res.error){
+						return toastr.error(res.error.message||res.error);
+					} 
+					if(res.data){
+						toastr.success('Cập nhật thành công !!');
+						$('#set_value_box').hide();
+						$('#search').trigger('click');
+					}                                
+				},
+				error: function (err) {
+					tbl.dataTable().fnClearTable();
+					toastr["error"]("Error!");
+					console.log(err);
+				}
+            });
+		});
+		$(document).on('click','#close_select_box',function(){
+                        $('#select_box').hide();
+                        $('#select_method_box').hide();
+                        $('#set_value_box').hide();
+                    })
+		$(document).on('input','#set-Quantity',function(){
+                        if($(this).attr('max') && parseFloat($(this).val())>parseFloat($(this).attr('max'))){
+                            $(this).val($(this).attr('max'))
+                        }
+                        let oncew=window.rowdata.Quantity?(window.rowdata.CargoWeight/window.rowdata.Quantity):0;
+                        let val=parseFloat($(this).val());
+                        $('#set-McWeight').val((val*oncew).toFixed(3).replace(/[.,]000$/, "")||0);
+                    })
+                    $(document).on('input','#set-McWeight',function(){
+                        if($(this).attr('max') && parseFloat($(this).val())>parseFloat($(this).attr('max'))){
+                            $(this).val($(this).attr('max'))
+                        }
+                        let val=parseFloat($(this).val());
+                        $('#set-McWeight').val((val).toFixed(3).replace(/[.,]000$/, "")||0);
+                    })
 		$(document).on('click','#MCancel',function(){
 			let ClassID=$('input[name="ClassID"]:checked').val();
 			let tbl=$('#contenttable');
@@ -819,7 +1021,7 @@
 						'IsDifferent': 	'',
 						'DeclareContent': '',
        					'OldVoyageKey': '',
-       					'InvNo': 		'',
+       					'InvoiceNo': 		'',
        					'OrderNo': 		'',
        					'CusID': 		'',
        					'POL': 			newData[i]['POL'],

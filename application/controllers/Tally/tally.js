@@ -7,8 +7,8 @@ const TallyModel = require('../../models/TallyModel.js');
 router.get('/', auth, async function (req, res, next) {
     let loadVesselVisit = await VesselModel.loadVesselVisit(req);
     let loadWorkerGroup = await CommonModel.loadWorkerGroup(req);
-    let loadDevice = await CommonModel.loadDevice(req);
-    //console.log(loadVesselVisit);
+    let loadDevice = await CommonModel.loadDevice({...req,body:{filter:{DeviceTypeID:{operation:'!=',value:'YT'}}}});
+    //console.log(loadDevice);
     res.loadOnce('tally/tally', {loadVesselVisit,loadWorkerGroup,loadDevice});
 });
 router.post('/loadTallyData', auth, async function (req, res, next) {

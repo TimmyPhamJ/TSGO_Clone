@@ -1,983 +1,1783 @@
-"use strict"
-const { gtos, gtosglobal, knex_once } = require('../config/database');
-const moment = require('moment-timezone');
+"use strict";
+const { gtos, gtosglobal, knex_once } = require("../config/database");
+const moment = require("moment-timezone");
 
-const FunctionModel = require('../models/FunctionModel.js');
-
-
+const FunctionModel = require("../models/FunctionModel.js");
 
 /*********************** BS_DEVICETYPE */
 module.exports.loadDevice = async (req) => {
-    return await req.gtos('BS_DEVICE').select('*').orderBy('DeviceID').catch(err => console.log(err)) || [];
-}
+  let query = req.gtos("BS_DEVICE").select("*").orderBy("DeviceID");
+  query = FunctionModel.KnexWhere(query, req.body.filter);
+  //console.log(query.toString());
+  return (await query.catch((err) => console.log(err))) || [];
+};
 
 module.exports.saveDevice = async (req) => {
-    let prm = [];
-    for await (let item of (req.body.data || [])) {
-        delete item['STT'];
+  let prm = [];
+  for await (let item of req.body.data || []) {
+    delete item["STT"];
 
-        var checkitem = await req.gtos('BS_DEVICE').select("rowguid").where('DeviceID', item['DeviceID']).orWhere('rowguid', item['rowguid'] || null).limit(1).catch(err => console.log(err));
+    var checkitem = await req
+      .gtos("BS_DEVICE")
+      .select("rowguid")
+      .where("DeviceID", item["DeviceID"])
+      .orWhere("rowguid", item["rowguid"] || null)
+      .limit(1)
+      .catch((err) => console.log(err));
 
-        if (checkitem && checkitem.length > 0) {
-            item['ModifiedBy'] = req.session.userdata["UserID"];
-            item['UpdateTime'] = moment().format('YYYY-MM-DD HH:mm:ss');
-            /* Do nothing */
-            prm.push(req.gtos('BS_DEVICE').where('rowguid', checkitem[0]["rowguid"]).update(item));
-        } else {
-            delete item['rowguid'];
-            item['CreatedBy'] = req.session.userdata["UserID"];
-            prm.push(req.gtos('BS_DEVICE').insert(item));
-        }
-
+    if (checkitem && checkitem.length > 0) {
+      item["ModifiedBy"] = req.session.userdata["UserID"];
+      item["UpdateTime"] = moment().format("YYYY-MM-DD HH:mm:ss");
+      /* Do nothing */
+      prm.push(
+        req
+          .gtos("BS_DEVICE")
+          .where("rowguid", checkitem[0]["rowguid"])
+          .update(item)
+      );
+    } else {
+      delete item["rowguid"];
+      item["CreatedBy"] = req.session.userdata["UserID"];
+      prm.push(req.gtos("BS_DEVICE").insert(item));
     }
-    let rt = false;
-    await Promise.all(prm).then(() => { rt = true; }).catch((err) => { console.log(err) });
-    return rt;
-}
+  }
+  let rt = false;
+  await Promise.all(prm)
+    .then(() => {
+      rt = true;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return rt;
+};
 
 module.exports.deleteDevice = async (req) => {
-    try {
-        await req.gtos('BS_DEVICE').whereIn('DeviceID', (req.body.data || []).map((itm) => itm.DeviceID)).del();
-        return true;
-    } catch (error) {
-        return false;
-    }
-}
+  try {
+    await req
+      .gtos("BS_DEVICE")
+      .whereIn(
+        "DeviceID",
+        (req.body.data || []).map((itm) => itm.DeviceID)
+      )
+      .del();
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
 
 /*********************** BS_DEVICETYPE */
 module.exports.loadDeviceType = async (req) => {
-    return await req.gtos('BS_DEVICETYPE').select('*').orderBy('DeviceTypeID').catch(err => console.log(err)) || [];
-}
+  return (
+    (await req
+      .gtos("BS_DEVICETYPE")
+      .select("*")
+      .orderBy("DeviceTypeID")
+      .catch((err) => console.log(err))) || []
+  );
+};
 
 module.exports.saveDeviceType = async (req) => {
-    let prm = [];
-    for await (let item of (req.body.data || [])) {
-        delete item['STT'];
+  let prm = [];
+  for await (let item of req.body.data || []) {
+    delete item["STT"];
 
-        var checkitem = await req.gtos('BS_DEVICETYPE').select("rowguid").where('DeviceTypeID', item['DeviceTypeID']).orWhere('rowguid', item['rowguid'] || null).limit(1).catch(err => console.log(err));
+    var checkitem = await req
+      .gtos("BS_DEVICETYPE")
+      .select("rowguid")
+      .where("DeviceTypeID", item["DeviceTypeID"])
+      .orWhere("rowguid", item["rowguid"] || null)
+      .limit(1)
+      .catch((err) => console.log(err));
 
-        if (checkitem && checkitem.length > 0) {
-            item['ModifiedBy'] = req.session.userdata["UserID"];
-            item['UpdateTime'] = moment().format('YYYY-MM-DD HH:mm:ss');
-            /* Do nothing */
-            prm.push(req.gtos('BS_DEVICETYPE').where('rowguid', checkitem[0]["rowguid"]).update(item));
-        } else {
-            delete item['rowguid'];
-            item['CreatedBy'] = req.session.userdata["UserID"];
-            prm.push(req.gtos('BS_DEVICETYPE').insert(item));
-        }
-
+    if (checkitem && checkitem.length > 0) {
+      item["ModifiedBy"] = req.session.userdata["UserID"];
+      item["UpdateTime"] = moment().format("YYYY-MM-DD HH:mm:ss");
+      /* Do nothing */
+      prm.push(
+        req
+          .gtos("BS_DEVICETYPE")
+          .where("rowguid", checkitem[0]["rowguid"])
+          .update(item)
+      );
+    } else {
+      delete item["rowguid"];
+      item["CreatedBy"] = req.session.userdata["UserID"];
+      prm.push(req.gtos("BS_DEVICETYPE").insert(item));
     }
-    let rt = false;
-    await Promise.all(prm).then(() => { rt = true; }).catch((err) => { console.log(err) });
-    return rt;
-}
+  }
+  let rt = false;
+  await Promise.all(prm)
+    .then(() => {
+      rt = true;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return rt;
+};
 
 module.exports.deleteDeviceType = async (req) => {
-    try {
-        await req.gtos('BS_DEVICETYPE').whereIn('DeviceTypeID', (req.body.data || []).map((itm) => itm.DeviceTypeID)).del();
-        return true;
-    } catch (error) {
-        return false;
-    }
-}
-
-
-
-
+  try {
+    await req
+      .gtos("BS_DEVICETYPE")
+      .whereIn(
+        "DeviceTypeID",
+        (req.body.data || []).map((itm) => itm.DeviceTypeID)
+      )
+      .del();
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
 
 /*********************** BS_YP_AREA */
 module.exports.loadArea = async (req) => {
-    return await req.gtos('BS_YP_AREA').select('*').orderBy('Area').catch(err => console.log(err)) || [];
-}
+  return (
+    (await req
+      .gtos("BS_YP_AREA")
+      .select("*")
+      .orderBy("Area")
+      .catch((err) => console.log(err))) || []
+  );
+};
 
 module.exports.saveArea = async (req) => {
-    let prm = [];
-    for await (let item of (req.body.data || [])) {
-        delete item['STT'];
+  let prm = [];
+  for await (let item of req.body.data || []) {
+    delete item["STT"];
 
-        var checkitem = await req.gtos('BS_YP_AREA').select("rowguid").where('Area', item['Area']).orWhere('rowguid', item['rowguid'] || null).limit(1).catch(err => console.log(err));
+    var checkitem = await req
+      .gtos("BS_YP_AREA")
+      .select("rowguid")
+      .where("Area", item["Area"])
+      .orWhere("rowguid", item["rowguid"] || null)
+      .limit(1)
+      .catch((err) => console.log(err));
 
-        if (checkitem && checkitem.length > 0) {
-            item['ModifiedBy'] = req.session.userdata["UserID"];
-            item['UpdateTime'] = moment().format('YYYY-MM-DD HH:mm:ss');
-            /* Do nothing */
-            prm.push(req.gtos('BS_YP_AREA').where('rowguid', checkitem[0]["rowguid"]).update(item));
-        } else {
-            delete item['rowguid'];
-            item['CreatedBy'] = req.session.userdata["UserID"];
-            prm.push(req.gtos('BS_YP_AREA').insert(item));
-        }
-
+    if (checkitem && checkitem.length > 0) {
+      item["ModifiedBy"] = req.session.userdata["UserID"];
+      item["UpdateTime"] = moment().format("YYYY-MM-DD HH:mm:ss");
+      /* Do nothing */
+      prm.push(
+        req
+          .gtos("BS_YP_AREA")
+          .where("rowguid", checkitem[0]["rowguid"])
+          .update(item)
+      );
+    } else {
+      delete item["rowguid"];
+      item["CreatedBy"] = req.session.userdata["UserID"];
+      prm.push(req.gtos("BS_YP_AREA").insert(item));
     }
-    let rt = false;
-    await Promise.all(prm).then(() => { rt = true; }).catch((err) => { console.log(err) });
-    return rt;
-}
+  }
+  let rt = false;
+  await Promise.all(prm)
+    .then(() => {
+      rt = true;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return rt;
+};
 
 module.exports.deleteArea = async (req) => {
-    try {
-        await req.gtos('BS_YP_AREA').whereIn('Area', (req.body.data || []).map((itm) => itm.Area)).del();
-        return true;
-    } catch (error) {
-        return false;
-    }
-}
+  try {
+    await req
+      .gtos("BS_YP_AREA")
+      .whereIn(
+        "Area",
+        (req.body.data || []).map((itm) => itm.Area)
+      )
+      .del();
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
 
 /*********************** BS_ITEM */
 module.exports.loadItem = async (req) => {
-    return await req.gtos('BS_ITEM').select('*').orderBy('ItemID').catch(err => console.log(err)) || [];
-}
+  return (
+    (await req
+      .gtos("BS_ITEM")
+      .select("*")
+      .orderBy("ItemID")
+      .catch((err) => console.log(err))) || []
+  );
+};
 
 module.exports.saveItem = async (req) => {
-    let prm = [];
-    for await (let item of (req.body.data || [])) {
-        delete item['STT'];
+  let prm = [];
+  for await (let item of req.body.data || []) {
+    delete item["STT"];
 
-        var checkitem = await req.gtos('BS_ITEM').select("rowguid").where('ItemID', item['ItemID']).orWhere('rowguid', item['rowguid'] || null).limit(1).catch(err => console.log(err));
+    var checkitem = await req
+      .gtos("BS_ITEM")
+      .select("rowguid")
+      .where("ItemID", item["ItemID"])
+      .orWhere("rowguid", item["rowguid"] || null)
+      .limit(1)
+      .catch((err) => console.log(err));
 
-        if (checkitem && checkitem.length > 0) {
-            item['ModifiedBy'] = req.session.userdata["UserID"];
-            item['UpdateTime'] = moment().format('YYYY-MM-DD HH:mm:ss');
-            /* Do nothing */
-            prm.push(req.gtos('BS_ITEM').where('rowguid', checkitem[0]["rowguid"]).update(item));
-        } else {
-            delete item['rowguid'];
-            item['CreatedBy'] = req.session.userdata["UserID"];
-            prm.push(req.gtos('BS_ITEM').insert(item));
-        }
+    if (checkitem && checkitem.length > 0) {
+      item["ModifiedBy"] = req.session.userdata["UserID"];
+      item["UpdateTime"] = moment().format("YYYY-MM-DD HH:mm:ss");
+      /* Do nothing */
+      prm.push(
+        req
+          .gtos("BS_ITEM")
+          .where("rowguid", checkitem[0]["rowguid"])
+          .update(item)
+      );
+    } else {
+      delete item["rowguid"];
+      item["CreatedBy"] = req.session.userdata["UserID"];
+      prm.push(req.gtos("BS_ITEM").insert(item));
     }
-    let rt = false;
-    await Promise.all(prm).then(() => { rt = true; }).catch((err) => { console.log(err) });
-    return rt;
-}
+  }
+  let rt = false;
+  await Promise.all(prm)
+    .then(() => {
+      rt = true;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return rt;
+};
 
 module.exports.deleteItem = async (req) => {
-    try {
-        await req.gtos('BS_ITEM').whereIn('ItemID', (req.body.data || []).map((itm) => itm.ItemID)).del();
-        return true;
-    } catch (error) {
-        return false;
-    }
-}
+  try {
+    await req
+      .gtos("BS_ITEM")
+      .whereIn(
+        "ItemID",
+        (req.body.data || []).map((itm) => itm.ItemID)
+      )
+      .del();
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
 /*********************** BS_CARGOTYPE */
 module.exports.loadCargoType = async (req) => {
-    return await req.gtos('BS_CARGOTYPE').select('*').orderBy('CargoTypeID').catch(err => console.log(err)) || [];
-}
+  return (
+    (await req
+      .gtos("BS_CARGOTYPE")
+      .select("*")
+      .orderBy("CargoTypeID")
+      .catch((err) => console.log(err))) || []
+  );
+};
 
 module.exports.saveCargoType = async (req) => {
-    let prm = [];
-    for await (let item of (req.body.data || [])) {
-        delete item['STT'];
+  let prm = [];
+  for await (let item of req.body.data || []) {
+    delete item["STT"];
 
-        var checkitem = await req.gtos('BS_CARGOTYPE').select("rowguid").where('CargoTypeID', item['CargoTypeID']).orWhere('rowguid', item['rowguid'] || null).limit(1).catch(err => console.log(err));
+    var checkitem = await req
+      .gtos("BS_CARGOTYPE")
+      .select("rowguid")
+      .where("CargoTypeID", item["CargoTypeID"])
+      .orWhere("rowguid", item["rowguid"] || null)
+      .limit(1)
+      .catch((err) => console.log(err));
 
-        if (checkitem && checkitem.length > 0) {
-            item['ModifiedBy'] = req.session.userdata["UserID"];
-            item['UpdateTime'] = moment().format('YYYY-MM-DD HH:mm:ss');
-            /* Do nothing */
-            prm.push(req.gtos('BS_CARGOTYPE').where('rowguid', checkitem[0]["rowguid"]).update(item));
-        } else {
-            delete item['rowguid'];
-            item['CreatedBy'] = req.session.userdata["UserID"];
-            prm.push(req.gtos('BS_CARGOTYPE').insert(item));
-        }
+    if (checkitem && checkitem.length > 0) {
+      item["ModifiedBy"] = req.session.userdata["UserID"];
+      item["UpdateTime"] = moment().format("YYYY-MM-DD HH:mm:ss");
+      /* Do nothing */
+      prm.push(
+        req
+          .gtos("BS_CARGOTYPE")
+          .where("rowguid", checkitem[0]["rowguid"])
+          .update(item)
+      );
+    } else {
+      delete item["rowguid"];
+      item["CreatedBy"] = req.session.userdata["UserID"];
+      prm.push(req.gtos("BS_CARGOTYPE").insert(item));
     }
-    let rt = false;
-    await Promise.all(prm).then(() => { rt = true; }).catch((err) => { console.log(err) });
-    return rt;
-}
+  }
+  let rt = false;
+  await Promise.all(prm)
+    .then(() => {
+      rt = true;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return rt;
+};
 
 module.exports.deleteCargoType = async (req) => {
-    try {
-        await req.gtos('BS_CARGOTYPE').whereIn('CargoTypeID', (req.body.data || []).map((itm) => itm.CargoTypeID)).del();
-        return true;
-    } catch (error) {
-        return false;
-    }
-}
+  try {
+    await req
+      .gtos("BS_CARGOTYPE")
+      .whereIn(
+        "CargoTypeID",
+        (req.body.data || []).map((itm) => itm.CargoTypeID)
+      )
+      .del();
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
 
 /*********************** BS_SERVICE */
 module.exports.loadService = async (req) => {
-    return await req.gtos('BS_SERVICE').select('*').orderBy('ServiceID').catch(err => console.log(err)) || [];
-}
+  return (
+    (await req
+      .gtos("BS_SERVICE")
+      .select("*")
+      .orderBy("ServiceID")
+      .catch((err) => console.log(err))) || []
+  );
+};
 
 module.exports.saveService = async (req) => {
-    let prm = [];
-    for await (let item of (req.body.data || [])) {
-        delete item['STT'];
+  let prm = [];
+  for await (let item of req.body.data || []) {
+    delete item["STT"];
 
-        var checkitem = await req.gtos('BS_SERVICE').select("rowguid").where('ServiceID', item['ServiceID']).orWhere('rowguid', item['rowguid'] || null).limit(1).catch(err => console.log(err));
+    var checkitem = await req
+      .gtos("BS_SERVICE")
+      .select("rowguid")
+      .where("ServiceID", item["ServiceID"])
+      .orWhere("rowguid", item["rowguid"] || null)
+      .limit(1)
+      .catch((err) => console.log(err));
 
-        if (checkitem && checkitem.length > 0) {
-            item['ModifiedBy'] = req.session.userdata["UserID"];
-            item['UpdateTime'] = moment().format('YYYY-MM-DD HH:mm:ss');
-            /* Do nothing */
-            prm.push(req.gtos('BS_SERVICE').where('rowguid', checkitem[0]["rowguid"]).update(item));
-        } else {
-            delete item['rowguid'];
-            item['CreatedBy'] = req.session.userdata["UserID"];
-            prm.push(req.gtos('BS_SERVICE').insert(item));
-        }
+    if (checkitem && checkitem.length > 0) {
+      item["ModifiedBy"] = req.session.userdata["UserID"];
+      item["UpdateTime"] = moment().format("YYYY-MM-DD HH:mm:ss");
+      /* Do nothing */
+      prm.push(
+        req
+          .gtos("BS_SERVICE")
+          .where("rowguid", checkitem[0]["rowguid"])
+          .update(item)
+      );
+    } else {
+      delete item["rowguid"];
+      item["CreatedBy"] = req.session.userdata["UserID"];
+      prm.push(req.gtos("BS_SERVICE").insert(item));
     }
-    let rt = false;
-    await Promise.all(prm).then(() => { rt = true; }).catch((err) => { console.log(err) });
-    return rt;
-}
+  }
+  let rt = false;
+  await Promise.all(prm)
+    .then(() => {
+      rt = true;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return rt;
+};
 
 module.exports.deleteService = async (req) => {
-    try {
-        await req.gtos('BS_SERVICE').whereIn('ServiceID', (req.body.data || []).map((itm) => itm.ServiceID)).del();
-        return true;
-    } catch (error) {
-        return false;
-    }
-}
-
+  try {
+    await req
+      .gtos("BS_SERVICE")
+      .whereIn(
+        "ServiceID",
+        (req.body.data || []).map((itm) => itm.ServiceID)
+      )
+      .del();
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
 
 /*********************** BS_PORT */
 module.exports.loadPortFull = async (req) => {
-    let query = req.gtos('BS_PORT').join('BS_NATIONAL', 'BS_NATIONAL.NationID', 'BS_PORT.NationID').select('BS_PORT.*', 'BS_NATIONAL.NationName').orderBy('PortID');
-    query = FunctionModel.KnexWhere(query, req.body.filter);
-    return await query.catch(err => console.log(err)) || [];
-}
+  let query = req
+    .gtos("BS_PORT")
+    .join("BS_NATIONAL", "BS_NATIONAL.NationID", "BS_PORT.NationID")
+    .select("BS_PORT.*", "BS_NATIONAL.NationName")
+    .orderBy("PortID");
+  query = FunctionModel.KnexWhere(query, req.body.filter);
+  return (await query.catch((err) => console.log(err))) || [];
+};
 module.exports.loadPort = async (req) => {
-    return await req.gtos('BS_PORT').select('*').orderBy('PortID').catch(err => console.log(err)) || [];
-}
+  return (
+    (await req
+      .gtos("BS_PORT")
+      .select("*")
+      .orderBy("PortID")
+      .catch((err) => console.log(err))) || []
+  );
+};
 
 module.exports.savePort = async (req) => {
-    let prm = [];
-    for await (let item of (req.body.data || [])) {
-        delete item['STT'];
+  let prm = [];
+  for await (let item of req.body.data || []) {
+    delete item["STT"];
 
-        var checkitem = await req.gtos('BS_PORT').select("rowguid").where('PortID', item['PortID']).orWhere('rowguid', item['rowguid'] || null).limit(1).catch(err => console.log(err));
+    var checkitem = await req
+      .gtos("BS_PORT")
+      .select("rowguid")
+      .where("PortID", item["PortID"])
+      .orWhere("rowguid", item["rowguid"] || null)
+      .limit(1)
+      .catch((err) => console.log(err));
 
-        if (checkitem && checkitem.length > 0) {
-            item['ModifiedBy'] = req.session.userdata["UserID"];
-            item['UpdateTime'] = moment().format('YYYY-MM-DD HH:mm:ss');
-            /* Do nothing */
-            prm.push(req.gtos('BS_PORT').where('rowguid', checkitem[0]["rowguid"]).update(item));
-        } else {
-            delete item['rowguid'];
-            item['CreatedBy'] = req.session.userdata["UserID"];
-            prm.push(req.gtos('BS_PORT').insert(item));
-        }
+    if (checkitem && checkitem.length > 0) {
+      item["ModifiedBy"] = req.session.userdata["UserID"];
+      item["UpdateTime"] = moment().format("YYYY-MM-DD HH:mm:ss");
+      /* Do nothing */
+      prm.push(
+        req
+          .gtos("BS_PORT")
+          .where("rowguid", checkitem[0]["rowguid"])
+          .update(item)
+      );
+    } else {
+      delete item["rowguid"];
+      item["CreatedBy"] = req.session.userdata["UserID"];
+      prm.push(req.gtos("BS_PORT").insert(item));
     }
-    let rt = false;
-    await Promise.all(prm).then(() => { rt = true; }).catch((err) => { console.log(err) });
-    return rt;
-}
+  }
+  let rt = false;
+  await Promise.all(prm)
+    .then(() => {
+      rt = true;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return rt;
+};
 
 module.exports.deletePort = async (req) => {
-    try {
-        await req.gtos('BS_PORT').whereIn('PortID', (req.body.data || []).map((itm) => itm.PortID)).del();
-        return true;
-    } catch (error) {
-        return false;
-    }
-}
-
+  try {
+    await req
+      .gtos("BS_PORT")
+      .whereIn(
+        "PortID",
+        (req.body.data || []).map((itm) => itm.PortID)
+      )
+      .del();
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
 
 /*********************** BS_NATIONAL */
 module.exports.loadNational = async (req) => {
-    return await req.gtos('BS_NATIONAL').select('*').orderBy('NationID').catch(err => console.log(err)) || [];
-}
+  return (
+    (await req
+      .gtos("BS_NATIONAL")
+      .select("*")
+      .orderBy("NationID")
+      .catch((err) => console.log(err))) || []
+  );
+};
 
 module.exports.saveNational = async (req) => {
-    let prm = [];
-    for await (let item of (req.body.data || [])) {
-        delete item['STT'];
+  let prm = [];
+  for await (let item of req.body.data || []) {
+    delete item["STT"];
 
-        var checkitem = await req.gtos('BS_NATIONAL').select("rowguid").where('NationID', item['NationID']).orWhere('rowguid', item['rowguid'] || null).limit(1).catch(err => console.log(err));
+    var checkitem = await req
+      .gtos("BS_NATIONAL")
+      .select("rowguid")
+      .where("NationID", item["NationID"])
+      .orWhere("rowguid", item["rowguid"] || null)
+      .limit(1)
+      .catch((err) => console.log(err));
 
-        if (checkitem && checkitem.length > 0) {
-            item['ModifiedBy'] = req.session.userdata["UserID"];
-            item['UpdateTime'] = moment().format('YYYY-MM-DD HH:mm:ss');
-            /* Do nothing */
-            prm.push(req.gtos('BS_NATIONAL').where('rowguid', checkitem[0]["rowguid"]).update(item));
-        } else {
-            delete item['rowguid'];
-            item['CreatedBy'] = req.session.userdata["UserID"];
-            prm.push(req.gtos('BS_NATIONAL').insert(item));
-        }
+    if (checkitem && checkitem.length > 0) {
+      item["ModifiedBy"] = req.session.userdata["UserID"];
+      item["UpdateTime"] = moment().format("YYYY-MM-DD HH:mm:ss");
+      /* Do nothing */
+      prm.push(
+        req
+          .gtos("BS_NATIONAL")
+          .where("rowguid", checkitem[0]["rowguid"])
+          .update(item)
+      );
+    } else {
+      delete item["rowguid"];
+      item["CreatedBy"] = req.session.userdata["UserID"];
+      prm.push(req.gtos("BS_NATIONAL").insert(item));
     }
-    let rt = false;
-    await Promise.all(prm).then(() => { rt = true; }).catch((err) => { console.log(err) });
-    return rt;
-}
+  }
+  let rt = false;
+  await Promise.all(prm)
+    .then(() => {
+      rt = true;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return rt;
+};
 
 module.exports.deleteNational = async (req) => {
-    try {
-        await req.gtos('BS_NATIONAL').whereIn('NationID', (req.body.data || []).map((itm) => itm.NationID)).del();
-        return true;
-    } catch (error) {
-        return false;
-    }
-}
-
-
+  try {
+    await req
+      .gtos("BS_NATIONAL")
+      .whereIn(
+        "NationID",
+        (req.body.data || []).map((itm) => itm.NationID)
+      )
+      .del();
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
 
 /*********************** BS_OPR */
 module.exports.loadOpr = async (req) => {
-    return await req.gtos('BS_OPR').select('*').orderBy('OprID').catch(err => console.log(err)) || [];
-}
+  return (
+    (await req
+      .gtos("BS_OPR")
+      .select("*")
+      .orderBy("OprID")
+      .catch((err) => console.log(err))) || []
+  );
+};
 
 module.exports.saveOpr = async (req) => {
-    let prm = [];
-    for await (let item of (req.body.data || [])) {
-        delete item['STT'];
+  let prm = [];
+  for await (let item of req.body.data || []) {
+    delete item["STT"];
 
-        var checkitem = await req.gtos('BS_OPR').select("rowguid").where('OprID', item['OprID']).orWhere('rowguid', item['rowguid'] || null).limit(1).catch(err => console.log(err));
+    var checkitem = await req
+      .gtos("BS_OPR")
+      .select("rowguid")
+      .where("OprID", item["OprID"])
+      .orWhere("rowguid", item["rowguid"] || null)
+      .limit(1)
+      .catch((err) => console.log(err));
 
-        if (checkitem && checkitem.length > 0) {
-            item['ModifiedBy'] = req.session.userdata["UserID"];
-            item['UpdateTime'] = moment().format('YYYY-MM-DD HH:mm:ss');
-            /* Do nothing */
-            prm.push(req.gtos('BS_OPR').where('rowguid', checkitem[0]["rowguid"]).update(item));
-        } else {
-            delete item['rowguid'];
-            item['CreatedBy'] = req.session.userdata["UserID"];
-            prm.push(req.gtos('BS_OPR').insert(item));
-        }
+    if (checkitem && checkitem.length > 0) {
+      item["ModifiedBy"] = req.session.userdata["UserID"];
+      item["UpdateTime"] = moment().format("YYYY-MM-DD HH:mm:ss");
+      /* Do nothing */
+      prm.push(
+        req
+          .gtos("BS_OPR")
+          .where("rowguid", checkitem[0]["rowguid"])
+          .update(item)
+      );
+    } else {
+      delete item["rowguid"];
+      item["CreatedBy"] = req.session.userdata["UserID"];
+      prm.push(req.gtos("BS_OPR").insert(item));
     }
-    let rt = false;
-    await Promise.all(prm).then(() => { rt = true; }).catch((err) => { console.log(err) });
-    return rt;
-}
+  }
+  let rt = false;
+  await Promise.all(prm)
+    .then(() => {
+      rt = true;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return rt;
+};
 
 module.exports.deleteOpr = async (req) => {
-    try {
-        await req.gtos('BS_OPR').whereIn('OprID', (req.body.data || []).map((itm) => itm.OprID)).del();
-        return true;
-    } catch (error) {
-        return false;
-    }
-}
-
+  try {
+    await req
+      .gtos("BS_OPR")
+      .whereIn(
+        "OprID",
+        (req.body.data || []).map((itm) => itm.OprID)
+      )
+      .del();
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
 
 /*********************** BS_JOB_TYPE */
 module.exports.loadJobType = async (req) => {
-    return await req.gtos('BS_JOB_TYPE').select('*').orderBy('JobTypeID').catch(err => console.log(err)) || [];
-}
+  return (
+    (await req
+      .gtos("BS_JOB_TYPE")
+      .select("*")
+      .orderBy("JobTypeID")
+      .catch((err) => console.log(err))) || []
+  );
+};
 
 module.exports.saveJobType = async (req) => {
-    let prm = [];
-    for await (let item of (req.body.data || [])) {
-        delete item['STT'];
+  let prm = [];
+  for await (let item of req.body.data || []) {
+    delete item["STT"];
 
-        var checkitem = await req.gtos('BS_JOB_TYPE').select("rowguid").where('JobTypeID', item['JobTypeID']).orWhere('rowguid', item['rowguid'] || null).limit(1).catch(err => console.log(err));
+    var checkitem = await req
+      .gtos("BS_JOB_TYPE")
+      .select("rowguid")
+      .where("JobTypeID", item["JobTypeID"])
+      .orWhere("rowguid", item["rowguid"] || null)
+      .limit(1)
+      .catch((err) => console.log(err));
 
-        if (checkitem && checkitem.length > 0) {
-            item['ModifiedBy'] = req.session.userdata["UserID"];
-            item['UpdateTime'] = moment().format('YYYY-MM-DD HH:mm:ss');
-            /* Do nothing */
-            prm.push(req.gtos('BS_JOB_TYPE').where('rowguid', checkitem[0]["rowguid"]).update(item));
-        } else {
-            delete item['rowguid'];
-            item['CreatedBy'] = req.session.userdata["UserID"];
-            prm.push(req.gtos('BS_JOB_TYPE').insert(item));
-        }
+    if (checkitem && checkitem.length > 0) {
+      item["ModifiedBy"] = req.session.userdata["UserID"];
+      item["UpdateTime"] = moment().format("YYYY-MM-DD HH:mm:ss");
+      /* Do nothing */
+      prm.push(
+        req
+          .gtos("BS_JOB_TYPE")
+          .where("rowguid", checkitem[0]["rowguid"])
+          .update(item)
+      );
+    } else {
+      delete item["rowguid"];
+      item["CreatedBy"] = req.session.userdata["UserID"];
+      prm.push(req.gtos("BS_JOB_TYPE").insert(item));
     }
-    let rt = false;
-    await Promise.all(prm).then(() => { rt = true; }).catch((err) => { console.log(err) });
-    return rt;
-}
+  }
+  let rt = false;
+  await Promise.all(prm)
+    .then(() => {
+      rt = true;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return rt;
+};
 
 module.exports.deleteJobType = async (req) => {
-    try {
-        await req.gtos('BS_JOB_TYPE').whereIn('JobTypeID', (req.body.data || []).map((itm) => itm.JobTypeID)).del();
-        return true;
-    } catch (error) {
-        return false;
-    }
-}
-
+  try {
+    await req
+      .gtos("BS_JOB_TYPE")
+      .whereIn(
+        "JobTypeID",
+        (req.body.data || []).map((itm) => itm.JobTypeID)
+      )
+      .del();
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
 
 /*********************** BS_METHOD */
 module.exports.loadMethod = async (req) => {
-    return await req.gtos('BS_METHOD').select('*').orderBy('MethodID').catch(err => console.log(err)) || [];
-}
+  return (
+    (await req
+      .gtos("BS_METHOD")
+      .select("*")
+      .orderBy("MethodID")
+      .catch((err) => console.log(err))) || []
+  );
+};
 
 module.exports.saveMethod = async (req) => {
-    let prm = [];
-    for await (let item of (req.body.data || [])) {
-        delete item['STT'];
+  let prm = [];
+  for await (let item of req.body.data || []) {
+    delete item["STT"];
 
-        var checkitem = await req.gtos('BS_METHOD').select("rowguid").where('MethodID', item['MethodID']).orWhere('rowguid', item['rowguid'] || null).limit(1).catch(err => console.log(err));
+    var checkitem = await req
+      .gtos("BS_METHOD")
+      .select("rowguid")
+      .where("rowguid", item["rowguid"] || null)
+      .limit(1)
+      .catch((err) => console.log(err));
 
-        if (checkitem && checkitem.length > 0) {
-            item['ModifiedBy'] = req.session.userdata["UserID"];
-            item['UpdateTime'] = moment().format('YYYY-MM-DD HH:mm:ss');
-            /* Do nothing */
-            prm.push(req.gtos('BS_METHOD').where('rowguid', checkitem[0]["rowguid"]).update(item));
-        } else {
-            delete item['rowguid'];
-            item['CreatedBy'] = req.session.userdata["UserID"];
-            prm.push(req.gtos('BS_METHOD').insert(item));
-        }
+    if (checkitem && checkitem.length > 0) {
+      item["ModifiedBy"] = req.session.userdata["UserID"];
+      item["UpdateTime"] = moment().format("YYYY-MM-DD HH:mm:ss");
+      /* Do nothing */
+      prm.push(
+        req
+          .gtos("BS_METHOD")
+          .where("rowguid", checkitem[0]["rowguid"])
+          .update(item)
+      );
+    } else {
+      delete item["rowguid"];
+      item["CreatedBy"] = req.session.userdata["UserID"];
+      prm.push(req.gtos("BS_METHOD").insert(item));
     }
-    let rt = false;
-    await Promise.all(prm).then(() => { rt = true; }).catch((err) => { console.log(err) });
-    return rt;
-}
+  }
+  let rt = false;
+  await Promise.all(prm)
+    .then(() => {
+      rt = true;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return rt;
+};
 
 module.exports.deleteMethod = async (req) => {
-    try {
-        await req.gtos('BS_METHOD').whereIn('MethodID', (req.body.data || []).map((itm) => itm.MethodID)).del();
-        return true;
-    } catch (error) {
-        return false;
-    }
-}
-
+  try {
+    await req
+      .gtos("BS_METHOD")
+      .whereIn(
+        "MethodID",
+        (req.body.data || []).map((itm) => itm.MethodID)
+      )
+      .del();
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
 
 /*********************** BS_CLASS */
 module.exports.loadClass = async (req) => {
-    return await req.gtos('BS_CLASS').select('*').orderBy('ClassID').catch(err => console.log(err)) || [];
-}
+  return (
+    (await req
+      .gtos("BS_CLASS")
+      .select("*")
+      .orderBy("ClassID")
+      .catch((err) => console.log(err))) || []
+  );
+};
 
 module.exports.saveClass = async (req) => {
-    let prm = [];
-    for await (let item of (req.body.data || [])) {
-        delete item['STT'];
+  let prm = [];
+  for await (let item of req.body.data || []) {
+    delete item["STT"];
 
-        var checkitem = await req.gtos('BS_CLASS').select("rowguid").where('ClassID', item['ClassID']).orWhere('rowguid', item['rowguid'] || null).limit(1).catch(err => console.log(err));
+    var checkitem = await req
+      .gtos("BS_CLASS")
+      .select("rowguid")
+      .where("ClassID", item["ClassID"])
+      .orWhere("rowguid", item["rowguid"] || null)
+      .limit(1)
+      .catch((err) => console.log(err));
 
-        if (checkitem && checkitem.length > 0) {
-            item['ModifiedBy'] = req.session.userdata["UserID"];
-            item['UpdateTime'] = moment().format('YYYY-MM-DD HH:mm:ss');
-            /* Do nothing */
-            prm.push(req.gtos('BS_CLASS').where('rowguid', checkitem[0]["rowguid"]).update(item));
-        } else {
-            delete item['rowguid'];
-            item['CreatedBy'] = req.session.userdata["UserID"];
-            prm.push(req.gtos('BS_CLASS').insert(item));
-        }
+    if (checkitem && checkitem.length > 0) {
+      item["ModifiedBy"] = req.session.userdata["UserID"];
+      item["UpdateTime"] = moment().format("YYYY-MM-DD HH:mm:ss");
+      /* Do nothing */
+      prm.push(
+        req
+          .gtos("BS_CLASS")
+          .where("rowguid", checkitem[0]["rowguid"])
+          .update(item)
+      );
+    } else {
+      delete item["rowguid"];
+      item["CreatedBy"] = req.session.userdata["UserID"];
+      prm.push(req.gtos("BS_CLASS").insert(item));
     }
-    let rt = false;
-    await Promise.all(prm).then(() => { rt = true; }).catch((err) => { console.log(err) });
-    return rt;
-}
+  }
+  let rt = false;
+  await Promise.all(prm)
+    .then(() => {
+      rt = true;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return rt;
+};
 
 module.exports.deleteClass = async (req) => {
-    try {
-        await req.gtos('BS_CLASS').whereIn('ClassID', (req.body.data || []).map((itm) => itm.ClassID)).del();
-        return true;
-    } catch (error) {
-        return false;
-    }
-}
+  try {
+    await req
+      .gtos("BS_CLASS")
+      .whereIn(
+        "ClassID",
+        (req.body.data || []).map((itm) => itm.ClassID)
+      )
+      .del();
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
 
 /*********************** BS_TRANSIT */
 module.exports.loadTransit = async (req) => {
-    return await req.gtos('BS_TRANSIT').select('*').orderBy('TransitID').catch(err => console.log(err)) || [];
-}
+  return (
+    (await req
+      .gtos("BS_TRANSIT")
+      .select("*")
+      .orderBy("TransitID")
+      .catch((err) => console.log(err))) || []
+  );
+};
 
 module.exports.saveTransit = async (req) => {
-    let prm = [];
-    for await (let item of (req.body.data || [])) {
-        delete item['STT'];
+  let prm = [];
+  for await (let item of req.body.data || []) {
+    delete item["STT"];
 
-        var checkitem = await req.gtos('BS_TRANSIT').select("rowguid").where('TransitID', item['TransitID']).orWhere('rowguid', item['rowguid'] || null).limit(1).catch(err => console.log(err));
+    var checkitem = await req
+      .gtos("BS_TRANSIT")
+      .select("rowguid")
+      .where("TransitID", item["TransitID"])
+      .orWhere("rowguid", item["rowguid"] || null)
+      .limit(1)
+      .catch((err) => console.log(err));
 
-        if (checkitem && checkitem.length > 0) {
-            item['ModifiedBy'] = req.session.userdata["UserID"];
-            item['UpdateTime'] = moment().format('YYYY-MM-DD HH:mm:ss');
-            /* Do nothing */
-            prm.push(req.gtos('BS_TRANSIT').where('rowguid', checkitem[0]["rowguid"]).update(item));
-        } else {
-            delete item['rowguid'];
-            item['CreatedBy'] = req.session.userdata["UserID"];
-            prm.push(req.gtos('BS_TRANSIT').insert(item));
-        }
+    if (checkitem && checkitem.length > 0) {
+      item["ModifiedBy"] = req.session.userdata["UserID"];
+      item["UpdateTime"] = moment().format("YYYY-MM-DD HH:mm:ss");
+      /* Do nothing */
+      prm.push(
+        req
+          .gtos("BS_TRANSIT")
+          .where("rowguid", checkitem[0]["rowguid"])
+          .update(item)
+      );
+    } else {
+      delete item["rowguid"];
+      item["CreatedBy"] = req.session.userdata["UserID"];
+      prm.push(req.gtos("BS_TRANSIT").insert(item));
     }
-    let rt = false;
-    await Promise.all(prm).then(() => { rt = true; }).catch((err) => { console.log(err) });
-    return rt;
-}
+  }
+  let rt = false;
+  await Promise.all(prm)
+    .then(() => {
+      rt = true;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return rt;
+};
 
 module.exports.deleteTransit = async (req) => {
-    try {
-        await req.gtos('BS_TRANSIT').whereIn('TransitID', (req.body.data || []).map((itm) => itm.TransitID)).del();
-        return true;
-    } catch (error) {
-        return false;
-    }
-}
-
+  try {
+    await req
+      .gtos("BS_TRANSIT")
+      .whereIn(
+        "TransitID",
+        (req.body.data || []).map((itm) => itm.TransitID)
+      )
+      .del();
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
 
 /*********************** JOBMODE */
 module.exports.loadJobMode = async (req) => {
-    return await req.gtos('BS_JOB_MODE').select('*').orderBy('JobModeID').catch(err => console.log(err)) || [];
-}
+  return (
+    (await req
+      .gtos("BS_JOB_MODE")
+      .select("*")
+      .orderBy("JobModeID")
+      .catch((err) => console.log(err))) || []
+  );
+};
 
 module.exports.saveJobMode = async (req) => {
-    let prm = [];
-    for await (let item of (req.body.data || [])) {
-        delete item['STT'];
+  let prm = [];
+  for await (let item of req.body.data || []) {
+    delete item["STT"];
 
-        var checkitem = await req.gtos('BS_JOB_MODE').select("rowguid").where('JobModeID', item['JobModeID']).orWhere('rowguid', item['rowguid'] || null).limit(1).catch(err => console.log(err));
+    var checkitem = await req
+      .gtos("BS_JOB_MODE")
+      .select("rowguid")
+      .where("JobModeID", item["JobModeID"])
+      .orWhere("rowguid", item["rowguid"] || null)
+      .limit(1)
+      .catch((err) => console.log(err));
 
-        if (checkitem && checkitem.length > 0) {
-            item['ModifiedBy'] = req.session.userdata["UserID"];
-            item['UpdateTime'] = moment().format('YYYY-MM-DD HH:mm:ss');
-            /* Do nothing */
-            prm.push(req.gtos('BS_JOB_MODE').where('rowguid', checkitem[0]["rowguid"]).update(item));
-        } else {
-            delete item['rowguid'];
-            item['CreatedBy'] = req.session.userdata["UserID"];
-            prm.push(req.gtos('BS_JOB_MODE').insert(item));
-        }
+    if (checkitem && checkitem.length > 0) {
+      item["ModifiedBy"] = req.session.userdata["UserID"];
+      item["UpdateTime"] = moment().format("YYYY-MM-DD HH:mm:ss");
+      /* Do nothing */
+      prm.push(
+        req
+          .gtos("BS_JOB_MODE")
+          .where("rowguid", checkitem[0]["rowguid"])
+          .update(item)
+      );
+    } else {
+      delete item["rowguid"];
+      item["CreatedBy"] = req.session.userdata["UserID"];
+      prm.push(req.gtos("BS_JOB_MODE").insert(item));
     }
-    let rt = false;
-    await Promise.all(prm).then(() => { rt = true; }).catch((err) => { console.log(err) });
-    return rt;
-}
+  }
+  let rt = false;
+  await Promise.all(prm)
+    .then(() => {
+      rt = true;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return rt;
+};
 
 module.exports.deleteJobMode = async (req) => {
-    try {
-        await req.gtos('BS_JOB_MODE').whereIn('JobModeID', (req.body.data || []).map((itm) => itm.JobModeID)).del();
-        return true;
-    } catch (error) {
-        return false;
-    }
-}
+  try {
+    await req
+      .gtos("BS_JOB_MODE")
+      .whereIn(
+        "JobModeID",
+        (req.body.data || []).map((itm) => itm.JobModeID)
+      )
+      .del();
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
 
 /*********************** RATE */
 module.exports.loadUnit = async (req) => {
-    return await req.gtos('BS_UNIT').select('*').orderBy('UnitID').catch(err => console.log(err)) || [];
-}
+  return (
+    (await req
+      .gtos("BS_UNIT")
+      .select("*")
+      .orderBy("UnitID")
+      .catch((err) => console.log(err))) || []
+  );
+};
 
 module.exports.saveUnit = async (req) => {
-    let prm = [];
-    for await (let item of (req.body.data || [])) {
-        delete item['STT'];
+  let prm = [];
+  for await (let item of req.body.data || []) {
+    delete item["STT"];
 
-        var checkitem = await req.gtos('BS_UNIT').select("rowguid").where('UnitID', item['UnitID']).orWhere('rowguid', item['rowguid'] || null).limit(1).catch(err => console.log(err));
+    var checkitem = await req
+      .gtos("BS_UNIT")
+      .select("rowguid")
+      .where("UnitID", item["UnitID"])
+      .orWhere("rowguid", item["rowguid"] || null)
+      .limit(1)
+      .catch((err) => console.log(err));
 
-        if (checkitem && checkitem.length > 0) {
-            item['ModifiedBy'] = req.session.userdata["UserID"];
-            item['UpdateTime'] = moment().format('YYYY-MM-DD HH:mm:ss');
-            /* Do nothing */
-            prm.push(req.gtos('BS_UNIT').where('rowguid', checkitem[0]["rowguid"]).update(item));
-        } else {
-            delete item['rowguid'];
-            item['CreatedBy'] = req.session.userdata["UserID"];
-            prm.push(req.gtos('BS_UNIT').insert(item));
-        }
+    if (checkitem && checkitem.length > 0) {
+      item["ModifiedBy"] = req.session.userdata["UserID"];
+      item["UpdateTime"] = moment().format("YYYY-MM-DD HH:mm:ss");
+      /* Do nothing */
+      prm.push(
+        req
+          .gtos("BS_UNIT")
+          .where("rowguid", checkitem[0]["rowguid"])
+          .update(item)
+      );
+    } else {
+      delete item["rowguid"];
+      item["CreatedBy"] = req.session.userdata["UserID"];
+      prm.push(req.gtos("BS_UNIT").insert(item));
     }
-    let rt = false;
-    await Promise.all(prm).then(() => { rt = true; }).catch((err) => { console.log(err) });
-    return rt;
-}
+  }
+  let rt = false;
+  await Promise.all(prm)
+    .then(() => {
+      rt = true;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return rt;
+};
 
 module.exports.deleteUnit = async (req) => {
-    try {
-        await req.gtos('BS_UNIT').whereIn('UnitID', (req.body.data || []).map((itm) => itm.UnitID)).del();
-        return true;
-    } catch (error) {
-        return false;
-    }
-}
-
-
+  try {
+    await req
+      .gtos("BS_UNIT")
+      .whereIn(
+        "UnitID",
+        (req.body.data || []).map((itm) => itm.UnitID)
+      )
+      .del();
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
 
 /*********************** RATE */
 module.exports.loadRate = async (req) => {
-    return await req.gtos('BS_INV_RATE').select('*').orderBy('RateID').catch(err => console.log(err)) || [];
-}
+  return (
+    (await req
+      .gtos("BS_INV_RATE")
+      .select("*")
+      .orderBy("RateID")
+      .catch((err) => console.log(err))) || []
+  );
+};
 
 module.exports.saveRate = async (req) => {
-    let prm = [];
-    for await (let item of (req.body.data || [])) {
-        delete item['STT'];
+  let prm = [];
+  for await (let item of req.body.data || []) {
+    delete item["STT"];
 
-        var checkitem = await req.gtos('BS_INV_RATE').select("rowguid").where('RateID', item['RateID']).orWhere('rowguid', item['rowguid'] || null).limit(1).catch(err => console.log(err));
+    var checkitem = await req
+      .gtos("BS_INV_RATE")
+      .select("rowguid")
+      .where("RateID", item["RateID"])
+      .orWhere("rowguid", item["rowguid"] || null)
+      .limit(1)
+      .catch((err) => console.log(err));
 
-        if (checkitem && checkitem.length > 0) {
-            item['ModifiedBy'] = req.session.userdata["UserID"];
-            item['UpdateTime'] = moment().format('YYYY-MM-DD HH:mm:ss');
-            /* Do nothing */
-            prm.push(req.gtos('BS_INV_RATE').where('rowguid', checkitem[0]["rowguid"]).update(item));
-        } else {
-            delete item['rowguid'];
-            item['CreatedBy'] = req.session.userdata["UserID"];
-            prm.push(req.gtos('BS_INV_RATE').insert(item));
-        }
+    if (checkitem && checkitem.length > 0) {
+      item["ModifiedBy"] = req.session.userdata["UserID"];
+      item["UpdateTime"] = moment().format("YYYY-MM-DD HH:mm:ss");
+      /* Do nothing */
+      prm.push(
+        req
+          .gtos("BS_INV_RATE")
+          .where("rowguid", checkitem[0]["rowguid"])
+          .update(item)
+      );
+    } else {
+      delete item["rowguid"];
+      item["CreatedBy"] = req.session.userdata["UserID"];
+      prm.push(req.gtos("BS_INV_RATE").insert(item));
     }
-    let rt = false;
-    await Promise.all(prm).then(() => { rt = true; }).catch((err) => { console.log(err) });
-    return rt;
-}
+  }
+  let rt = false;
+  await Promise.all(prm)
+    .then(() => {
+      rt = true;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return rt;
+};
 
 module.exports.deleteRate = async (req) => {
-    try {
-        await req.gtos('BS_INV_RATE').whereIn('RateID', (req.body.data || []).map((itm) => itm.RateID)).del();
-        return true;
-    } catch (error) {
-        return false;
-    }
-}
-
+  try {
+    await req
+      .gtos("BS_INV_RATE")
+      .whereIn(
+        "RateID",
+        (req.body.data || []).map((itm) => itm.RateID)
+      )
+      .del();
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
 
 /*********************** GATE */
 module.exports.loadGate = async (req) => {
-    return await req.gtos('BS_GATE').select('*').orderBy('GateID').catch(err => console.log(err)) || [];
-}
+  return (
+    (await req
+      .gtos("BS_GATE")
+      .select("*")
+      .orderBy("GateID")
+      .catch((err) => console.log(err))) || []
+  );
+};
 
 module.exports.saveGate = async (req) => {
-    let prm = [];
-    for await (let item of (req.body.data || [])) {
-        delete item['STT'];
+  let prm = [];
+  for await (let item of req.body.data || []) {
+    delete item["STT"];
 
-        var checkitem = await req.gtos('BS_GATE').select("rowguid").where('GateID', item['GateID']).orWhere('rowguid', item['rowguid'] || null).limit(1).catch(err => console.log(err));
+    var checkitem = await req
+      .gtos("BS_GATE")
+      .select("rowguid")
+      .where("GateID", item["GateID"])
+      .orWhere("rowguid", item["rowguid"] || null)
+      .limit(1)
+      .catch((err) => console.log(err));
 
-        if (checkitem && checkitem.length > 0) {
-            item['ModifiedBy'] = req.session.userdata["UserID"];
-            item['UpdateTime'] = moment().format('YYYY-MM-DD HH:mm:ss');
-            /* Do nothing */
-            prm.push(req.gtos('BS_GATE').where('rowguid', checkitem[0]["rowguid"]).update(item));
-        } else {
-            delete item['rowguid'];
-            item['CreatedBy'] = req.session.userdata["UserID"];
-            prm.push(req.gtos('BS_GATE').insert(item));
-        }
+    if (checkitem && checkitem.length > 0) {
+      item["ModifiedBy"] = req.session.userdata["UserID"];
+      item["UpdateTime"] = moment().format("YYYY-MM-DD HH:mm:ss");
+      /* Do nothing */
+      prm.push(
+        req
+          .gtos("BS_GATE")
+          .where("rowguid", checkitem[0]["rowguid"])
+          .update(item)
+      );
+    } else {
+      delete item["rowguid"];
+      item["CreatedBy"] = req.session.userdata["UserID"];
+      prm.push(req.gtos("BS_GATE").insert(item));
     }
-    let rt = false;
-    await Promise.all(prm).then(() => { rt = true; }).catch((err) => { console.log(err) });
-    return rt;
-}
+  }
+  let rt = false;
+  await Promise.all(prm)
+    .then(() => {
+      rt = true;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return rt;
+};
 
 module.exports.deleteGate = async (req) => {
-    try {
-        await req.gtos('BS_GATE').whereIn('GateID', (req.body.data || []).map((itm) => itm.GateID)).del();
-        return true;
-    } catch (error) {
-        return false;
-    }
-}
-
-
+  try {
+    await req
+      .gtos("BS_GATE")
+      .whereIn(
+        "GateID",
+        (req.body.data || []).map((itm) => itm.GateID)
+      )
+      .del();
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
 
 /*********************** BITT */
 module.exports.loadBitt = async (req) => {
-    return await req.gtos('BS_BITT').select('*').orderBy('BittID').catch(err => console.log(err)) || [];
-}
+  return (
+    (await req
+      .gtos("BS_BITT")
+      .select("*")
+      .orderBy("BittID")
+      .catch((err) => console.log(err))) || []
+  );
+};
 
 module.exports.saveBitt = async (req) => {
-    let prm = [];
-    for await (let item of (req.body.data || [])) {
-        delete item['STT'];
+  let prm = [];
+  for await (let item of req.body.data || []) {
+    delete item["STT"];
 
-        var checkitem = await req.gtos('BS_BITT').select("rowguid").where('BittID', item['BittID']).orWhere('rowguid', item['rowguid'] || null).limit(1).catch(err => console.log(err));
+    var checkitem = await req
+      .gtos("BS_BITT")
+      .select("rowguid")
+      .where("BittID", item["BittID"])
+      .orWhere("rowguid", item["rowguid"] || null)
+      .limit(1)
+      .catch((err) => console.log(err));
 
-        if (checkitem && checkitem.length > 0) {
-            item['ModifiedBy'] = req.session.userdata["UserID"];
-            item['UpdateTime'] = moment().format('YYYY-MM-DD HH:mm:ss');
-            /* Do nothing */
-            prm.push(req.gtos('BS_BITT').where('rowguid', checkitem[0]["rowguid"]).update(item));
-        } else {
-            delete item['rowguid'];
-            item['CreatedBy'] = req.session.userdata["UserID"];
-            prm.push(req.gtos('BS_BITT').insert(item));
-        }
+    if (checkitem && checkitem.length > 0) {
+      item["ModifiedBy"] = req.session.userdata["UserID"];
+      item["UpdateTime"] = moment().format("YYYY-MM-DD HH:mm:ss");
+      /* Do nothing */
+      prm.push(
+        req
+          .gtos("BS_BITT")
+          .where("rowguid", checkitem[0]["rowguid"])
+          .update(item)
+      );
+    } else {
+      delete item["rowguid"];
+      item["CreatedBy"] = req.session.userdata["UserID"];
+      prm.push(req.gtos("BS_BITT").insert(item));
     }
-    let rt = false;
-    await Promise.all(prm).then(() => { rt = true; }).catch((err) => { console.log(err) });
-    return rt;
-}
+  }
+  let rt = false;
+  await Promise.all(prm)
+    .then(() => {
+      rt = true;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return rt;
+};
 
 module.exports.deleteBitt = async (req) => {
-    try {
-        await req.gtos('BS_BITT').whereIn('BittID', (req.body.data || []).map((itm) => itm.BittID)).del();
-        return true;
-    } catch (error) {
-        return false;
-    }
-}
-
-
+  try {
+    await req
+      .gtos("BS_BITT")
+      .whereIn(
+        "BittID",
+        (req.body.data || []).map((itm) => itm.BittID)
+      )
+      .del();
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
 
 /*********************** YP_BLOCK */
 module.exports.loadBlock = async (req) => {
-    return await req.gtos('BS_YP_BLOCK').select('*').orderBy('Block').catch(err => console.log(err)) || [];
-}
+  return (
+    (await req
+      .gtos("BS_YP_BLOCK")
+      .select("*")
+      .orderBy("Block")
+      .catch((err) => console.log(err))) || []
+  );
+};
 
 module.exports.saveBlock = async (req) => {
-    let prm = [];
-    for await (let item of (req.body.data || [])) {
-        delete item['STT'];
+  let prm = [];
+  for await (let item of req.body.data || []) {
+    delete item["STT"];
 
-        var checkitem = await req.gtos('BS_YP_BLOCK').select("rowguid").where('Block', item['Block']).orWhere('rowguid', item['rowguid'] || null).limit(1).catch(err => console.log(err));
+    var checkitem = await req
+      .gtos("BS_YP_BLOCK")
+      .select("rowguid")
+      .where("Block", item["Block"])
+      .orWhere("rowguid", item["rowguid"] || null)
+      .limit(1)
+      .catch((err) => console.log(err));
 
-        if (checkitem && checkitem.length > 0) {
-            item['ModifiedBy'] = req.session.userdata["UserID"];
-            item['UpdateTime'] = moment().format('YYYY-MM-DD HH:mm:ss');
-            /* Do nothing */
-            prm.push(req.gtos('BS_YP_BLOCK').where('rowguid', checkitem[0]["rowguid"]).update(item));
-        } else {
-            delete item['rowguid'];
-            item['CreatedBy'] = req.session.userdata["UserID"];
-            prm.push(req.gtos('BS_YP_BLOCK').insert(item));
-        }
+    if (checkitem && checkitem.length > 0) {
+      item["ModifiedBy"] = req.session.userdata["UserID"];
+      item["UpdateTime"] = moment().format("YYYY-MM-DD HH:mm:ss");
+      /* Do nothing */
+      prm.push(
+        req
+          .gtos("BS_YP_BLOCK")
+          .where("rowguid", checkitem[0]["rowguid"])
+          .update(item)
+      );
+    } else {
+      delete item["rowguid"];
+      item["CreatedBy"] = req.session.userdata["UserID"];
+      prm.push(req.gtos("BS_YP_BLOCK").insert(item));
     }
-    let rt = false;
-    await Promise.all(prm).then(() => { rt = true; }).catch((err) => { console.log(err) });
-    return rt;
-}
+  }
+  let rt = false;
+  await Promise.all(prm)
+    .then(() => {
+      rt = true;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return rt;
+};
 
 module.exports.saveBlockDesign = async (req) => {
-    let prm = [];
-    for await (let item of (req.body.data || [])) {
-        delete item['STT'];
+  let prm = [];
+  for await (let item of req.body.data || []) {
+    delete item["STT"];
 
-        var checkitem = await req.gtos('BS_YP_BLOCK').select("rowguid").where('Block', item['Block']).limit(1).catch(err => console.log(err));
+    var checkitem = await req
+      .gtos("BS_YP_BLOCK")
+      .select("rowguid")
+      .where("Block", item["Block"])
+      .limit(1)
+      .catch((err) => console.log(err));
 
-        if (checkitem && checkitem.length > 0) {
-            item['ModifiedBy'] = req.session.userdata["UserID"];
-            item['UpdateTime'] = moment().format('YYYY-MM-DD HH:mm:ss');
-            /* Do nothing */
-            prm.push(req.gtos('BS_YP_BLOCK').where('rowguid', checkitem[0]["rowguid"]).update(item));
-        }
+    if (checkitem && checkitem.length > 0) {
+      item["ModifiedBy"] = req.session.userdata["UserID"];
+      item["UpdateTime"] = moment().format("YYYY-MM-DD HH:mm:ss");
+      /* Do nothing */
+      prm.push(
+        req
+          .gtos("BS_YP_BLOCK")
+          .where("rowguid", checkitem[0]["rowguid"])
+          .update(item)
+      );
     }
-    let rt = false;
-    await Promise.all(prm).then(() => { rt = true; }).catch((err) => { console.log(err) });
-    return rt;
-}
+  }
+  let rt = false;
+  await Promise.all(prm)
+    .then(() => {
+      rt = true;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return rt;
+};
 module.exports.deleteBlock = async (req) => {
-    try {
-        await req.gtos('BS_YP_BLOCK').whereIn('Block', (req.body.data || []).map((itm) => itm.Block)).del();
-        return true;
-    } catch (error) {
-        return false;
-    }
-}
+  try {
+    await req
+      .gtos("BS_YP_BLOCK")
+      .whereIn(
+        "Block",
+        (req.body.data || []).map((itm) => itm.Block)
+      )
+      .del();
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
 
 /***********************WORKER_GROUP */
 module.exports.loadWorkerGroup = async (req) => {
-    return await req.gtos('BS_WORKER_GROUP').select('*').orderBy('WorkerGroupID').catch(err => console.log(err)) || [];
-}
+  return (
+    (await req
+      .gtos("BS_WORKER_GROUP")
+      .select("*")
+      .orderBy("WorkerGroupID")
+      .catch((err) => console.log(err))) || []
+  );
+};
 
 module.exports.saveWorkerGroup = async (req) => {
-    let prm = [];
-    for await (let item of (req.body.data || [])) {
-        delete item['STT'];
+  let prm = [];
+  for await (let item of req.body.data || []) {
+    delete item["STT"];
 
-        var checkitem = await req.gtos('BS_WORKER_GROUP').select("rowguid").where('WorkerGroupID', item['WorkerGroupID']).orWhere('rowguid', item['rowguid'] || null).limit(1).catch(err => console.log(err));
+    var checkitem = await req
+      .gtos("BS_WORKER_GROUP")
+      .select("rowguid")
+      .where("WorkerGroupID", item["WorkerGroupID"])
+      .orWhere("rowguid", item["rowguid"] || null)
+      .limit(1)
+      .catch((err) => console.log(err));
 
-        if (checkitem && checkitem.length > 0) {
-            item['ModifiedBy'] = req.session.userdata["UserID"];
-            item['UpdateTime'] = moment().format('YYYY-MM-DD HH:mm:ss');
-            /* Do nothing */
-            prm.push(req.gtos('BS_WORKER_GROUP').where('rowguid', checkitem[0]["rowguid"]).update(item));
-        } else {
-            delete item['rowguid'];
-            item['CreatedBy'] = req.session.userdata["UserID"];
-            prm.push(req.gtos('BS_WORKER_GROUP').insert(item));
-        }
+    if (checkitem && checkitem.length > 0) {
+      item["ModifiedBy"] = req.session.userdata["UserID"];
+      item["UpdateTime"] = moment().format("YYYY-MM-DD HH:mm:ss");
+      /* Do nothing */
+      prm.push(
+        req
+          .gtos("BS_WORKER_GROUP")
+          .where("rowguid", checkitem[0]["rowguid"])
+          .update(item)
+      );
+    } else {
+      delete item["rowguid"];
+      item["CreatedBy"] = req.session.userdata["UserID"];
+      prm.push(req.gtos("BS_WORKER_GROUP").insert(item));
     }
-    let rt = false;
-    await Promise.all(prm).then(() => { rt = true; }).catch((err) => { console.log(err) });
-    return rt;
-}
+  }
+  let rt = false;
+  await Promise.all(prm)
+    .then(() => {
+      rt = true;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return rt;
+};
 
 module.exports.deleteWorkerGroup = async (req) => {
-    try {
-        await req.gtos('BS_WORKER_GROUP').whereIn('WorkerGroupID', (req.body.data || []).map((itm) => itm.WorkerGroupID)).del();
-        return true;
-    } catch (error) {
-        return false;
-    }
-}
-
+  try {
+    await req
+      .gtos("BS_WORKER_GROUP")
+      .whereIn(
+        "WorkerGroupID",
+        (req.body.data || []).map((itm) => itm.WorkerGroupID)
+      )
+      .del();
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
 
 /***********************WORKER_GROUP_TYPE */
 module.exports.loadWorkerGroupType = async (req) => {
-    return await req.gtos('BS_WORKER_GROUP_TYPE').select('*').orderBy('WorkerGroupType').catch(err => console.log(err)) || [];
-}
+  return (
+    (await req
+      .gtos("BS_WORKER_GROUP_TYPE")
+      .select("*")
+      .orderBy("WorkerGroupType")
+      .catch((err) => console.log(err))) || []
+  );
+};
 
 module.exports.saveWorkerGroupType = async (req) => {
-    let prm = [];
-    for await (let item of (req.body.data || [])) {
-        delete item['STT'];
+  let prm = [];
+  for await (let item of req.body.data || []) {
+    delete item["STT"];
 
-        var checkitem = await req.gtos('BS_WORKER_GROUP_TYPE').select("rowguid").where('WorkerGroupType', item['WorkerGroupType']).orWhere('rowguid', item['rowguid'] || null).limit(1).catch(err => console.log(err));
+    var checkitem = await req
+      .gtos("BS_WORKER_GROUP_TYPE")
+      .select("rowguid")
+      .where("WorkerGroupType", item["WorkerGroupType"])
+      .orWhere("rowguid", item["rowguid"] || null)
+      .limit(1)
+      .catch((err) => console.log(err));
 
-        if (checkitem && checkitem.length > 0) {
-            item['ModifiedBy'] = req.session.userdata["UserID"];
-            item['UpdateTime'] = moment().format('YYYY-MM-DD HH:mm:ss');
-            /* Do nothing */
-            prm.push(req.gtos('BS_WORKER_GROUP_TYPE').where('rowguid', checkitem[0]["rowguid"]).update(item));
-        } else {
-            delete item['rowguid'];
-            item['CreatedBy'] = req.session.userdata["UserID"];
-            prm.push(req.gtos('BS_WORKER_GROUP_TYPE').insert(item));
-        }
+    if (checkitem && checkitem.length > 0) {
+      item["ModifiedBy"] = req.session.userdata["UserID"];
+      item["UpdateTime"] = moment().format("YYYY-MM-DD HH:mm:ss");
+      /* Do nothing */
+      prm.push(
+        req
+          .gtos("BS_WORKER_GROUP_TYPE")
+          .where("rowguid", checkitem[0]["rowguid"])
+          .update(item)
+      );
+    } else {
+      delete item["rowguid"];
+      item["CreatedBy"] = req.session.userdata["UserID"];
+      prm.push(req.gtos("BS_WORKER_GROUP_TYPE").insert(item));
     }
-    let rt = false;
-    await Promise.all(prm).then(() => { rt = true; }).catch((err) => { console.log(err) });
-    return rt;
-}
+  }
+  let rt = false;
+  await Promise.all(prm)
+    .then(() => {
+      rt = true;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return rt;
+};
 
 module.exports.deleteWorkerGroupType = async (req) => {
-    try {
-        await req.gtos('BS_WORKER_GROUP_TYPE').whereIn('WorkerGroupType', (req.body.data || []).map((itm) => itm.WorkerGroupType)).del();
-        return true;
-    } catch (error) {
-        return false;
+  try {
+    await req
+      .gtos("BS_WORKER_GROUP_TYPE")
+      .whereIn(
+        "WorkerGroupType",
+        (req.body.data || []).map((itm) => itm.WorkerGroupType)
+      )
+      .del();
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
+/***********************BS_SHIFT */
+module.exports.loadShift = async (req) => {
+  return (
+    (await req
+      .gtos("BS_SHIFT")
+      .select("*")
+      .orderBy("ShiftID")
+      .catch((err) => console.log(err))) || []
+  );
+};
+
+// module.exports.saveShift = async (req) => {
+//   let prm = [];
+//   for await (let item of req.body.data || []) {
+//     delete item["STT"];
+
+//     var checkitem = await req
+//       .gtos("BS_SHIFT")
+//       .select("rowguid")
+//       .where("ShiftID", item["ShiftID"])
+//       .orWhere("rowguid", item["rowguid"] || null)
+//       .limit(1)
+//       .catch((err) => console.log(err));
+
+//     if (checkitem && checkitem.length > 0) {
+//       item["ModifiedBy"] = req.session.userdata["UserID"];
+//       item["UpdateTime"] = moment().format("YYYY-MM-DD HH:mm:ss");
+//       /* Do nothing */
+//       prm.push(
+//         req
+//           .gtos("BS_SHIFT")
+//           .where("rowguid", checkitem[0]["rowguid"])
+//           .update(item)
+//       );
+//     } else {
+//       delete item["rowguid"];
+//       item["CreatedBy"] = req.session.userdata["UserID"];
+//       prm.push(req.gtos("BS_SHIFT").insert(item));
+//     }
+//   }
+//   let rt = false;
+//   await Promise.all(prm)
+//     .then(() => {
+//       rt = true;
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+//   return rt;
+// };
+
+module.exports.saveShift = async (req) => {
+  try {
+    const data = req.body.data || [];
+
+    // console.log("data", data[0].FromTime);
+
+    for (let item of data) {
+      delete item.STT;
+
+      const shiftExists = await req
+        .gtos("BS_SHIFT")
+        .select("rowguid")
+        .where("ShiftID", item.ShiftID)
+        .orWhere("rowguid", item.rowguid || null)
+        .limit(1);
+
+      if (shiftExists.length > 0) {
+        item.ModifiedBy = req.session.userdata.UserID;
+        item.UpdateTime = moment().format("YYYY-MM-DD HH:mm:ss");
+
+        await req
+          .gtos("BS_SHIFT")
+          .where("rowguid", shiftExists[0].rowguid)
+          .update(item);
+      } else {
+        delete item.rowguid;
+        item.CreatedBy = req.session.userdata.UserID;
+
+        await req.gtos("BS_SHIFT").insert(item);
+      }
     }
-}
+
+    return true;
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+};
+
+module.exports.deleteShift = async (req) => {
+  try {
+    await req
+      .gtos("BS_SHIFT")
+      .whereIn(
+        "ShiftID",
+        (req.body.data || []).map((itm) => itm.ShiftID)
+      )
+      .del();
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
 
 /***********************Berth */
 module.exports.loadBerthList = async (req) => {
-    return await req.gtos('BS_BERTH').select('*').orderBy('BerthID').catch(err => console.log(err)) || [];
-}
+  return (
+    (await req
+      .gtos("BS_BERTH")
+      .select("*")
+      .orderBy("BerthID")
+      .catch((err) => console.log(err))) || []
+  );
+};
 
 module.exports.saveBerth = async (req) => {
-    let prm = [];
-    for await (let item of (req.body.data || [])) {
-        delete item['STT'];
+  let prm = [];
+  for await (let item of req.body.data || []) {
+    delete item["STT"];
 
-        var checkitem = await req.gtos('BS_BERTH').select("rowguid").where('BerthID', item['BerthID']).orWhere('rowguid', item['rowguid'] || null).limit(1).catch(err => console.log(err));
+    var checkitem = await req
+      .gtos("BS_BERTH")
+      .select("rowguid")
+      .where("BerthID", item["BerthID"])
+      .orWhere("rowguid", item["rowguid"] || null)
+      .limit(1)
+      .catch((err) => console.log(err));
 
-        if (checkitem && checkitem.length > 0) {
-            item['ModifiedBy'] = req.session.userdata["UserID"];
-            item['UpdateTime'] = moment().format('YYYY-MM-DD HH:mm:ss');
-            /* Do nothing */
-            prm.push(req.gtos('BS_BERTH').where('rowguid', checkitem[0]["rowguid"]).update(item));
-        } else {
-            delete item['rowguid'];
-            item['CreatedBy'] = req.session.userdata["UserID"];
-            prm.push(req.gtos('BS_BERTH').insert(item));
-        }
+    if (checkitem && checkitem.length > 0) {
+      item["ModifiedBy"] = req.session.userdata["UserID"];
+      item["UpdateTime"] = moment().format("YYYY-MM-DD HH:mm:ss");
+      /* Do nothing */
+      prm.push(
+        req
+          .gtos("BS_BERTH")
+          .where("rowguid", checkitem[0]["rowguid"])
+          .update(item)
+      );
+    } else {
+      delete item["rowguid"];
+      item["CreatedBy"] = req.session.userdata["UserID"];
+      prm.push(req.gtos("BS_BERTH").insert(item));
     }
-    let rt = false;
-    await Promise.all(prm).then(() => { rt = true; }).catch((err) => { console.log(err) });
-    return rt;
-}
+  }
+  let rt = false;
+  await Promise.all(prm)
+    .then(() => {
+      rt = true;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return rt;
+};
 
 module.exports.deleteBerth = async (req) => {
-    try {
-        await req.gtos('BS_BERTH').whereIn('BerthID', (req.body.data || []).map((itm) => itm.BerthID)).del();
-        return true;
-    } catch (error) {
-        return false;
-    }
-}
-
+  try {
+    await req
+      .gtos("BS_BERTH")
+      .whereIn(
+        "BerthID",
+        (req.body.data || []).map((itm) => itm.BerthID)
+      )
+      .del();
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
 
 /***********************CustomerType */
 module.exports.loadCustomerType = async (req) => {
-    return await req.gtos('BS_CUSTOMER_TYPE').select('*').orderBy('CusTypeID').catch(err => console.log(err)) || [];
-}
+  return (
+    (await req
+      .gtos("BS_CUSTOMER_TYPE")
+      .select("*")
+      .orderBy("CusTypeID")
+      .catch((err) => console.log(err))) || []
+  );
+};
 
 module.exports.saveCustomerType = async (req) => {
-    let prm = [];
-    for await (let item of (req.body.data || [])) {
-        var checkitem = await req.gtos('BS_CUSTOMER_TYPE').select("rowguid").where('CusTypeID', item['CusTypeID']).orWhere('rowguid', item['rowguid'] || null).limit(1).catch(err => console.log(err));
+  let prm = [];
+  for await (let item of req.body.data || []) {
+    var checkitem = await req
+      .gtos("BS_CUSTOMER_TYPE")
+      .select("rowguid")
+      .where("CusTypeID", item["CusTypeID"])
+      .orWhere("rowguid", item["rowguid"] || null)
+      .limit(1)
+      .catch((err) => console.log(err));
 
-        delete item['STT'];
-        delete item['rowguid'];
-        if (checkitem && checkitem.length > 0) {
-            item['ModifiedBy'] = req.session.userdata["UserID"];
-            item['UpdateTime'] = moment().format('YYYY-MM-DD HH:mm:ss');
-            /* Do nothing */
-            prm.push(req.gtos('BS_CUSTOMER_TYPE').where('rowguid', checkitem[0]["rowguid"]).update(item));
-        } else {
-            item['CreatedBy'] = req.session.userdata["UserID"];
-            prm.push(req.gtos('BS_CUSTOMER_TYPE').insert(item));
-        }
+    delete item["STT"];
+    delete item["rowguid"];
+    if (checkitem && checkitem.length > 0) {
+      item["ModifiedBy"] = req.session.userdata["UserID"];
+      item["UpdateTime"] = moment().format("YYYY-MM-DD HH:mm:ss");
+      /* Do nothing */
+      prm.push(
+        req
+          .gtos("BS_CUSTOMER_TYPE")
+          .where("rowguid", checkitem[0]["rowguid"])
+          .update(item)
+      );
+    } else {
+      item["CreatedBy"] = req.session.userdata["UserID"];
+      prm.push(req.gtos("BS_CUSTOMER_TYPE").insert(item));
     }
-    let rt = false;
-    await Promise.all(prm).then(() => { rt = true; }).catch((err) => { console.log(err) });
-    return rt;
-}
+  }
+  let rt = false;
+  await Promise.all(prm)
+    .then(() => {
+      rt = true;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return rt;
+};
 
 module.exports.deleteCustomerType = async (req) => {
-    try {
-        await req.gtos('BS_CUSTOMER_TYPE').whereIn('CusTypeID', (req.body.data || []).map((itm) => itm.CusTypeID)).del();
-        return true;
-    } catch (error) {
-        return false;
-    }
-}
-
-
+  try {
+    await req
+      .gtos("BS_CUSTOMER_TYPE")
+      .whereIn(
+        "CusTypeID",
+        (req.body.data || []).map((itm) => itm.CusTypeID)
+      )
+      .del();
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
 
 /***********************Customers */
 module.exports.loadCustomers = async (req) => {
-    var customers = req.gtos()
-        .select('B.CusID', 'B.CusTypeID', 'A.CusTypeName', 'B.PaymentTypeID', 'C.PaymentTypeName', 'B.CusName', 'B.TaxCode', 'B.Tel'
-            , 'B.Fax', 'B.Address', 'B.Email', 'B.IsActive', 'B.rowguid')
-        .from('BS_CUSTOMER AS B')
-        .leftJoin('BS_CUSTOMER_TYPE as A', 'A.CusTypeID', 'B.CusTypeID')
-        .leftJoin('BS_INV_PAYMENT_TYPE as C', 'B.PaymentTypeID', 'C.PaymentTypeID');
+  var customers = req
+    .gtos()
+    .select(
+      "B.CusID",
+      "B.CusTypeID",
+      "A.CusTypeName",
+      "B.PaymentTypeID",
+      "C.PaymentTypeName",
+      "B.CusName",
+      "B.TaxCode",
+      "B.Tel",
+      "B.Fax",
+      "B.Address",
+      "B.Email",
+      "B.IsActive",
+      "B.rowguid"
+    )
+    .from("BS_CUSTOMER AS B")
+    .leftJoin("BS_CUSTOMER_TYPE as A", "A.CusTypeID", "B.CusTypeID")
+    .leftJoin("BS_INV_PAYMENT_TYPE as C", "B.PaymentTypeID", "C.PaymentTypeID");
 
-    if (req.body.type) {
-        customers.where('A.CusTypeID', req.body.type);
-    }
-    if (req.body.id) {
-        customers.where('CusID', req.body.id);
-    }
-    if (req.body.name) {
-        customers.whereLike('CusName', `%${req.body.name}%`);
-    }
-    if (req.body.taxcode) {
-        customers.whereLike('TaxCode', `%${req.body.taxcode}%`);
-    }
-    if (req.body.search) {
-        customers.where(function () {
-            this.whereLike('TaxCode', `%${req.body.search}%`).orWhere('CusName', 'like', `%${req.body.search}%`);
-        });
-    }
+  if (req.body.type) {
+    customers.where("A.CusTypeID", req.body.type);
+  }
+  if (req.body.id) {
+    customers.where("CusID", req.body.id);
+  }
+  if (req.body.name) {
+    customers.whereLike("CusName", `%${req.body.name}%`);
+  }
+  if (req.body.taxcode) {
+    customers.whereLike("TaxCode", `%${req.body.taxcode}%`);
+  }
+  if (req.body.search) {
+    customers.where(function () {
+      this.whereLike("TaxCode", `%${req.body.search}%`).orWhere(
+        "CusName",
+        "like",
+        `%${req.body.search}%`
+      );
+    });
+  }
 
-    customers.orderBy('CusName')
-    return await customers.catch(err => console.log(err)) || []
-}
+  customers.orderBy("CusName");
+  return (await customers.catch((err) => console.log(err))) || [];
+};
 
 module.exports.saveCustomers = async (req) => {
-    let prm = [];
-    for await (let item of (req.body.data || [])) {
-        delete item['STT'];
-        delete item['CusTypeName'];
-        delete item['PaymentTypeName'];
+  let prm = [];
+  for await (let item of req.body.data || []) {
+    delete item["STT"];
+    delete item["CusTypeName"];
+    delete item["PaymentTypeName"];
 
-        var checkitem = await req.gtos('BS_CUSTOMER').select("rowguid").where('CusID', item['CusID']).orWhere('rowguid', item['rowguid'] || null).limit(1).catch(err => console.log(err));
+    var checkitem = await req
+      .gtos("BS_CUSTOMER")
+      .select("rowguid")
+      .where("CusID", item["CusID"])
+      .orWhere("rowguid", item["rowguid"] || null)
+      .limit(1)
+      .catch((err) => console.log(err));
 
-        if (checkitem && checkitem.length > 0) {
-            item['ModifiedBy'] = req.session.userdata["UserID"];
-            item['UpdateTime'] = moment().format('YYYY-MM-DD HH:mm:ss');
-            /* Do nothing */
-            prm.push(req.gtos('BS_CUSTOMER').where('rowguid', checkitem[0]["rowguid"]).update(item));
-        } else {
-            delete item['rowguid'];
-            item['CreatedBy'] = req.session.userdata["UserID"];
-            prm.push(req.gtos('BS_CUSTOMER').insert(item));
-        }
+    if (checkitem && checkitem.length > 0) {
+      item["ModifiedBy"] = req.session.userdata["UserID"];
+      item["UpdateTime"] = moment().format("YYYY-MM-DD HH:mm:ss");
+      /* Do nothing */
+      prm.push(
+        req
+          .gtos("BS_CUSTOMER")
+          .where("rowguid", checkitem[0]["rowguid"])
+          .update(item)
+      );
+    } else {
+      delete item["rowguid"];
+      item["CreatedBy"] = req.session.userdata["UserID"];
+      prm.push(req.gtos("BS_CUSTOMER").insert(item));
     }
-    let rt = false;
-    await Promise.all(prm).then(() => { rt = true; }).catch((err) => { console.log(err) });
-    return rt;
-}
+  }
+  let rt = false;
+  await Promise.all(prm)
+    .then(() => {
+      rt = true;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return rt;
+};
 
 module.exports.deleteCustomers = async (req) => {
-    try {
-        await req.gtos('BS_CUSTOMER').whereIn('CusID', (req.body.data || []).map((itm) => itm.CusID)).del();
-        return true;
-    } catch (error) {
-        return false;
-    }
-}
+  try {
+    await req
+      .gtos("BS_CUSTOMER")
+      .whereIn(
+        "CusID",
+        (req.body.data || []).map((itm) => itm.CusID)
+      )
+      .del();
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
 
-
-
-
-
-
-
-
-
-
+module.exports.loadPlanDeviceWithVoyageKey = async (req) => {
+  return (
+    (await req
+      .gtos("PLAN_DEVICE")
+      .select("DeviceID")
+      .where("VoyageKey", req.body.VoyageKey || "")
+      .catch((err) => console.log(err))) || []
+  );
+};
 
 // const tracking = async (req, col, val) => {
 //     var query = req.gtos()
@@ -1189,7 +1989,6 @@ module.exports.deleteCustomers = async (req) => {
 // const loadBittList = async (req) => {
 //     return await req.gtos('BS_BITT').select('BerthID', 'BittID', 'CoordX', 'CoordY', 'rowguid').orderBy('BittID').catch(err => console.log(err)) || [];
 // }
-
 
 // const loadBerthID = async (req) => {
 //     return await req.gtos('BS_BERTH').select('BerthID').orderBy('BerthID').catch(err => console.log(err)) || [];
@@ -1408,7 +2207,7 @@ module.exports.deleteCustomers = async (req) => {
 //         .select('CntrNo', 'EIRNo', 'IssueDate', 'ExpDate', 'ExpPluginDate', 'bXNVC', 'OprID', 'LocalSZPT', 'ISO_SZTP'
 //             , 'CARGO_TYPE', 'Status', 'ShipID', 'ImVoy', 'ExVoy', 'CJMode_CD', 'DMethod_CD', 'TruckNo', 'CMDWeight'
 //             , 'BLNo', 'BookingNo', 'SealNo', 'SealNo1', 'SealNo2', 'RetLocation', 'IsLocal', 'CusName', 'Note', 'CreatedBy'
-//             , 'DRAFT_INV_NO', 'InvNo')
+//             , 'DRAFT_INV_NO', 'InvoiceNo')
 //         .from('EIR')
 
 //     if (oprs['FROM_DATE'] != '')
@@ -1513,7 +2312,6 @@ module.exports.deleteCustomers = async (req) => {
 //     invs.orderBy('a.inv_date', 'a.inv_no', 'a.payer')
 //     return await invs.catch(err => console.log(err)) || {}
 // }
-
 
 // const savePorts = async (req, datas) => {
 //     for await (let item of datas) {
@@ -2093,7 +2891,6 @@ module.exports.deleteCustomers = async (req) => {
 //     }
 // }
 
-
 // /* Damaged Type */
 // const saveDamagedType = async (req, datas) => {
 //     for await (let item of datas) {
@@ -2162,8 +2959,6 @@ module.exports.deleteCustomers = async (req) => {
 //         return false;
 //     }
 // }
-
-
 
 // /* Bitt */
 // const saveBitt = async (req, datas) => {

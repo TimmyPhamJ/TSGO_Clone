@@ -1,5 +1,7 @@
+const { resolve } = require("path");
 const FunctionModel = require("../models/FunctionModel.js");
 const moment = require("moment-timezone");
+const { rejects } = require("assert");
 
 module.exports.loadTrfCode = async (req) => {
   let query = req.gtos("TRF_CODE").select("*");
@@ -166,13 +168,13 @@ module.exports.loadTrfDiscountGroup = async (req) => {
   let query = req
     .gtos("TRF_DISCOUNT")
     .select(
-      "rowguid",
-      "DiscountID",
+      // "rowguid",
+      // "DiscountID",
       "CusID",
       req.gtos.raw(`FORMAT(ApplyDate,'dd/MM/yyyy') as ApplyDate`),
       req.gtos.raw(`FORMAT(ExpireDate,'dd/MM/yyyy') as ExpireDate`)
     )
-    .groupByRaw("DiscountID,CusID,ApplyDate,ExpireDate")
+    .groupByRaw("CusID,ApplyDate,ExpireDate")
     .orderBy("ApplyDate", "desc");
   query = FunctionModel.KnexWhere(query, req.body.filter);
   return (await query.catch((err) => console.log(err))) || [];
@@ -192,60 +194,61 @@ module.exports.loadTrfDiscountDetails = async (req) => {
 module.exports.loadTrfDiscount = async (req) => {
   let query = req
     .gtos("TRF_DISCOUNT")
-    .select( "*" )
+    .select("*")
     .orderBy("CreateTime", "desc");
-    if(req.body.CusID)
-      query.where('CusID',req.body.CusID);
-    query = FunctionModel.KnexWhere(query, req.body.filter);
-    //console.log(query.toString());
+  if (req.body.CusID)
+    query.where('CusID', req.body.CusID);
+  query = FunctionModel.KnexWhere(query, req.body.filter);
   return (await query.catch((err) => console.log(err))) || [];
 };
 
 module.exports.saveTrfDiscount = async (req) => {
-  let prm = [];
-  for await (let item of req.body.data || []) {
-    delete item["STT"];
+  return new Promise(async (resolve, rejects) => {
+    try {
+      let prm = [];
+      for await (let item of req.body.data || []) {
+        let query = await req.gtos("TRF_DISCOUNT AS TD")
+          .select("TD.rowguid")
+          .where("TD.CargoTypeID", item.CargoTypeID)
+          .where("TD.ClassID", item.ClassID)
+          .where("TD.ContractName", item.ContractName)
+          .where("TD.CusID", item.CusID)
+          .where("TD.CusTypeID", item.CusTypeID)
+          .where("TD.JobModeID", item.JobModeID)
+          .where("TD.JobTypeID", item.JobTypeID)
+          .where("TD.MethodID", item.MethodID)
+          .where("TD.PaymentTypeID", item.PaymentTypeID)
+          .where("TD.TRFCode", item.TRFCode)
+          .where("TD.TRFDesc", item.TRFDesc)
+          .where("TD.TransitID", item.TransitID)
+          .where("TD.UnitID", item.UnitID)
+          .where("TD.VoyageKey", item.VoyageKey)
+          .limit(1)
+        console.log("checkquery", query)
+        let item1 = { ...item, CreatedBy: req.session.userdata["UserID"] }
+        if (query?.length > 0) {
+          prm.push(req.gtos("TRF_DISCOUNT").where("rowguid", query[0].rowguid)
+            .update(item1))
+        }
+        else {
+          prm.push(req.gtos("TRF_DISCOUNT").insert(item1));
+        }
 
-    var checkitem = await req
-      .gtos("TRF_DISCOUNT")
-      .select("rowguid")
-      .where("rowguid", item["rowguid"] || null)
-      .orWhere((trx) => {
-        trx.where({
-          TRFCode: item["TRFCode"],
-          ApplyDate: item["ApplyDate"],
-          ExpireDate: item["ExpireDate"],
-          Remark: item["Remark"],
+      }
+      let rt = false;
+      await Promise.all(prm)
+        .then(() => {
+          rt = true;
+        })
+        .catch((err) => {
+          console.log(err);
         });
-      })
-      .limit(1)
-      .catch((err) => console.log(err));
-
-    if (checkitem && checkitem.length > 0) {
-      item["ModifiedBy"] = req.session.userdata["UserID"];
-      item["UpdateTime"] = moment().format("YYYY-MM-DD HH:mm:ss");
-      /* Do nothing */
-      prm.push(
-        req
-          .gtos("TRF_DISCOUNT")
-          .where("rowguid", checkitem[0]["rowguid"])
-          .update(item)
-      );
-    } else {
-      delete item["rowguid"];
-      item["CreatedBy"] = req.session.userdata["UserID"];
-      prm.push(req.gtos("TRF_DISCOUNT").insert(item));
+      resolve(rt);
+    } catch (error) {
+      console.log(error)
+      rejects(error)
     }
-  }
-  let rt = false;
-  await Promise.all(prm)
-    .then(() => {
-      rt = true;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  return rt;
+  })
 };
 
 module.exports.deleteTrfDiscount = async (req) => {

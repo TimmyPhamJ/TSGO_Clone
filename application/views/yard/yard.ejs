@@ -87,6 +87,9 @@
     <script src="/assets/vendors/loaders/progressbar.min.js"></script>
 
     <style>
+        .ui-widget.ui-widget-content{
+            z-index: 9999999999999;
+        }
         #block_cont{
             min-height: calc(100vh - 280px);
             overflow: scroll;
@@ -529,7 +532,7 @@
                     width: calc(25% - 45px);                
                     ">YARD - TALLY</div>
                     <div style="width: calc(75% + 45px);display: flex;flex-direction: row;align-items: stretch;justify-items: center;">
-                        <div style="width: 100%;"><div value="all" class="lx_chose">Tất cả <div class="lx_cradio"></div></div></div>
+                        <!-- <div style="width: 100%;"><div value="all" class="lx_chose">Tất cả <div class="lx_cradio"></div></div></div> -->
                         <div style="width: 100%;"><div value="1" class="lx_chose select">Nhập tàu <div class="lx_cradio"></div></div></div>
                         <div style="width: 100%;"><div value="2" class="lx_chose">Xuất tàu <div class="lx_cradio"></div></div></div>
                         <div style="width: 100%;"><div value="3" class="lx_chose">Hạ bãi <div class="lx_cradio"></div></div></div>
@@ -621,12 +624,12 @@
                                     <input autocomplete="off" class="setinp" id="set-ItemName" readonly placeholder="Tôn cuộn" />
                                 </div>
                                 <div class="col-md-4 col-xs-12" style="padding:5px">
-                                    <input autocomplete="off" class="setinp" id="set-TruckNo" readonly placeholder="Số xe" />
+                                    <input autocomplete="off" class="setinp" id="set-TruckNo" placeholder="Chọn xe" />
                                 </div>
                                 
                                 <div class="col-md-4 col-xs-12" style="padding:5px">
-                                    <select class="setinp devs" id="set-Worker" placeholder="Tổ đội công nhân" >
-                                        <option value="">Tổ đội công nhân</option>
+                                    <select required class="setinp devs" id="set-Worker" placeholder="Tổ đội công nhân" >
+                                        <option value="" disabled selected>Tổ đội công nhân</option>
                                         <% (locals.loadWorkerGroup||[]).map((itm)=>{
                                             %>
                                             <option value="<%= itm.WorkerGroupID %>"><%= itm.WorkerGroupName %></option>
@@ -635,8 +638,8 @@
                                     </select>
                                 </div>
                                 <div class="col-md-4 col-xs-12" style="padding:5px">
-                                    <select class="setinp devs" id="set-Device" placeholder="Thiết bị" >
-                                        <option value="">Thiết bị</option>
+                                    <select required class="setinp devs" id="set-Device" placeholder="Thiết bị" >
+                                        <option value="" disabled selected>Thiết bị</option>
                                         <% (locals.loadDevice||[]).map((itm)=>{
                                             %>
                                             <option value="<%= itm.DeviceID %>"><%= itm.DeviceName %></option>
@@ -878,8 +881,79 @@
                             }
                     });
                 }
-                $(document).ready(function () {
 
+window.PlanDevice={};
+function loadPlanDevice(VoyageKey){
+    if(window.PlanDevice[VoyageKey] || !VoyageKey) return;
+    window.PlanDevice[VoyageKey]=false;
+    
+    $.ajax({
+        url: "/Common/load/loadPlanDeviceWithVoyageKey",
+        dataType: 'json',
+        data: {"VoyageKey":VoyageKey||''},
+        type: 'POST',
+        success: function (res) {
+            window.PlanDevice[VoyageKey]=[];
+            if(res.data){
+                window.PlanDevice[VoyageKey]=(res.data||[]).map(itm=>itm.DeviceID);
+                if(($('.bbs_box.active').data()||{}).VoyageKey==VoyageKey){
+                    setPlanDevice();
+                }
+            }                 
+        },
+        error: function (err) {
+            window.PlanDevice[VoyageKey]=[];
+            toastr["error"]("Error!");
+            console.log(err);
+        }
+    });
+}
+function setPlanDevice(){
+    let data=($('.bbs_box.active').data()||{});
+    $('#set-TruckNo').autocomplete({
+      source: window.PlanDevice[data.VoyageKey]||[],
+      minChars: 0,
+      minLength: 0
+    });
+    if((window.PlanDevice[data.VoyageKey]||[]).indexOf(data.TruckNo)===-1){
+        $('#set-TruckNo').val();
+    }
+    $('#set-TruckNo').off('click').on('click',function(){
+        $('#set-TruckNo').autocomplete('search','');
+    });
+    $('#set-TruckNo').off('focus').on('focus',function(){
+        $('#set-TruckNo').autocomplete('search','');
+    });
+    $('#set-TruckNo').off('blur').on('blur',function(){
+        //alert($(this).val());
+        
+        if((window.PlanDevice[data.VoyageKey]||[]).indexOf($(this).val())===-1){
+            toastr['error'](`Xe [${$(this).val()}] không có trong kế hoạch !`);
+            $('#set-TruckNo').val('');
+        }
+    });
+    
+}
+                
+                $(document).ready(function () {
+                    var socket = io();
+                    socket.on('connect', function(msg) {
+                        socket.emit('login', {
+                            pathname:location.pathname,
+                            access_token:localStorage.getItem('access_token')||'',
+                        });
+                        socket.on('reload', function(rt_data){
+                            let value=$('.lx_chose.select').attr('value');
+                            if((value+'')==(rt_data+'')){
+                                loadData(true);
+                            }
+                            else{
+                               if(rt_data=='loadblock'){
+                                    loadBlockData();
+                               } 
+                            }
+                        });
+                    });
                     $('#nav-icon').on('click',function(){
                         
                         if($(this).hasClass('open')){
@@ -972,20 +1046,31 @@
                         $('.lx_chose').removeClass('select');
                         $(this).addClass('select');
                         let value=$(this).attr('value');
-                        if(value=='4' || value=='3'){
-                            loadGateData();
-                        }
-                        else{
-                            loadTallyData();
-                        }                        
+                        loadData();            
                         loadBlockData();
                     })
                     $(document).on('click','.bbs_box',function(){
                         $('.bbs_box').removeClass('active');
+                        $('.block_bill_row').removeClass('row_goiy');
                         $(this).addClass('active');
                         $('.block_ud').remove();
                         let select = ($('.bbs_box.active').data()||{});
-                        if($(this).hasClass('cexport') || $(this).hasClass('cimport')){
+                        if($(this).hasClass('cexport')){
+                            console.log($(`.block_bill_row[bookingno="${select.BookingNo}"]`).length);
+                            let elms=$(`.block_bill_row[bookingno="${select.BookingNo}"]`);
+                            elms.addClass('row_goiy');
+                            elms.each(function(){
+                                let elm=$(this);
+                                $(this).append(`<i class="block_ud block_up la la-arrow-circle-up xuattau"></i>`);
+                                console.log(elm.offset().top);                        
+                                $(elm.closest('.block_bill')).animate({
+                                    scrollTop: $(elm.closest('.block_bill')).scrollTop()+(elm.offset().top-$(elm.closest('.block_bill')).offset().top-5)
+                                }, 100);
+                            });
+                            
+                        }
+                        else
+                        if($(this).hasClass('cimport')){
                             $('.block_letter').each(function(){
                                 if((select.ClassID+'')=='1')
                                 $(this).append(`<i class="block_ud block_down la la-arrow-circle-down toyard"></i>`);
@@ -1013,6 +1098,7 @@
                     })
                     $(document).on('click','.block_ud.block_down.toyard',function(){
                         $('#set_value_box').show();
+                        //$('#set-TruckNo').attr('readonly',true);
                         $('#BNAME').html($('.bbs_box.active .bbs_bname').text()+' - '+$('.bbs_box.active .bbs_truckno').text()+' - '+$(this).closest('.block_letter').text());
                         $('#set-TransitName').val($('.bbs_box.active .bbs_jobname').text());
                         $('#set-ItemName').val($('.bbs_box.active').attr('itemname'));
@@ -1020,13 +1106,33 @@
                         $('#set-Quantity').val($('.bbs_box.active .bbs_sltl').attr('quantity'));
                         $('#set-McWeight').val($('.bbs_box.active .bbs_sltl').attr('mcweight'));
                         $('#set-Device').val('');
-                        $('#set-Note').val('');
+                        $('#set-Worker').val('');
+                        $('#set-Note').val(($('.bbs_box.active').data()||{}).Note||'');
                         window.Block=$(this).closest('.block_letter').text().trim();
+                        setPlanDevice();
                     })
-
+                    $(document).on('click','.block_ud.block_up.xuattau',function(){
+                        $('#set_value_box').show();
+                        let rowhtml=$(this).closest('.block_bill_row');
+                        //$('#set-TruckNo').attr('readonly',false);
+                        $('#BNAME').html($('.bbs_box.active .bbs_bname').text()+' - '+rowhtml.closest('.block_box').find('.block_letter').text().trim());
+                        $('#set-TransitName').val($('.bbs_box.active .bbs_jobname').text());
+                        $('#set-ItemName').val($('.bbs_box.active').attr('itemname'));
+                        $('#set-TruckNo').val($('.bbs_box.active .bbs_truckno').text());
+                        $('#set-Quantity').val('');
+                        $('#set-Quantity').attr('max',rowhtml.attr('quantity'));
+                        $('#set-McWeight').val('');
+                        $('#set-McWeight').attr('max',rowhtml.attr('mcweight'));
+                        $('#set-Device').val('');
+                        $('#set-Worker').val('');
+                        $('#set-Note').val(($('.bbs_box.active').data()||{}).Note||'');
+                        window.Block=rowhtml.closest('.block_box').find('.block_letter').text().trim();
+                        setPlanDevice();
+                    })
                     $(document).on('click','.block_ud.block_up.togate',function(){
                         $('#set_value_box').show();
                         let rowhtml=$(this).closest('.block_bill_row');
+                        //$('#set-TruckNo').attr('readonly',true);
                         $('#BNAME').html($('.bbs_box.active .bbs_bname').text()+' - '+$('.bbs_box.active .bbs_truckno').text()+' - '+rowhtml.closest('.block_box').find('.block_letter').text().trim());
                         $('#set-TransitName').val($('.bbs_box.active .bbs_jobname').text());
                         $('#set-ItemName').val($('.bbs_box.active').attr('itemname'));
@@ -1036,12 +1142,15 @@
                         $('#set-McWeight').val('');
                         $('#set-McWeight').attr('max',rowhtml.attr('mcweight'));
                         $('#set-Device').val('');
-                        $('#set-Note').val('');
+                        $('#set-Worker').val('');
+                        $('#set-Note').val(($('.bbs_box.active').data()||{}).Note||'');
                         window.Block=rowhtml.closest('.block_box').find('.block_letter').text().trim();
+                        setPlanDevice();
                     })
                     $(document).on('click','.block_ud.block_down.togate',function(){
                         $('#set_value_box').show();
                         let data=$('.bbs_box.active').data();
+                        //$('#set-TruckNo').attr('readonly',true);
                         $('#BNAME').html((data.BillOfLading||'')+(data.BookingNo||'')+' - '+data.TruckNo+' - '+$(this).closest('.block_letter').text());
                         
                         $('#set-TransitName').val(data.JobModeName);
@@ -1052,15 +1161,17 @@
                         $('#set-Quantity').attr('max',data.Quantity);
                         $('#set-McWeight').attr('max',data.CargoWeight);
                         $('#set-Device').val('');
-                        $('#set-Note').val('');
+                        $('#set-Worker').val('');
+                        $('#set-Note').val(($('.bbs_box.active').data()||{}).Note||'');
                         window.Block=$(this).closest('.block_letter').text().trim();
+                        setPlanDevice();
                     })
                     $(document).on('input paste','#set-Quantity',function(){
                         if($(this).attr('max') && parseFloat($(this).val())>parseFloat($(this).attr('max'))){
                             $(this).val($(this).attr('max'))
                         }
                         let tb=parseFloat($('#set-McWeight').attr('max'))/parseFloat($('#set-Quantity').attr('max'));
-                        $('#set-McWeight').val(parseFloat($(this).val())*tb);
+                        $('#set-McWeight').val((parseFloat($(this).val())*tb).toFixed(3).replace(/[.,]000$/, ""));
                     })
                     $(document).on('input paste','#set-McWeight',function(){
                         if($(this).attr('max') && parseFloat($(this).val())>parseFloat($(this).attr('max'))){
@@ -1071,29 +1182,9 @@
                     
 
 
-
-                    function loadData(){
+                    function loadNhapTauData(){
                         $.ajax({
-                            url: "/yard/load",
-                            dataType: 'json',
-                            data: postdata,
-                            type: 'POST',
-                            success: function (res) {
-                                if(res.data){
-                                    toastr.success('Lưu hoàn tất !!');
-                                    loadData();
-                                }                                
-                            },
-                            error: function (err) {
-                                tbl.dataTable().fnClearTable();
-                                toastr["error"]("Error!");
-                                console.log(err);
-                            }
-                        });
-                    }
-                    function loadTallyData(){
-                        $.ajax({
-                            url: "/yard/loadTallyData",
+                            url: "/yard/loadNhapTauData",
                             dataType: 'json',
                             data: {filter:{ClassID:($('.lx_chose.select').attr('value')!='all'?$('.lx_chose.select').attr('value'):undefined)}},
                             type: 'POST',
@@ -1101,6 +1192,7 @@
                                 if(res.data){
                                     let html='';
                                     res.data.map(itm=>{
+                                        loadPlanDevice(itm.VoyageKey);
                                         let diff1=moment(moment().format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]')).diff(moment(itm.CreateTime));
                                         let diff=moment(moment().format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]')).diff(moment(itm.CreateTime));
                                         let d=parseInt(diff/86400000);
@@ -1116,16 +1208,70 @@
                                             <div>
                                                 <div class="bbs_bname" billoflading="${itm.BillOfLading}" bookingno="${itm.BookingNo}" truckno="${itm.TruckNo}">${itm.BillOfLading?itm.BillOfLading:itm.BookingNo}</div>
                                                 <div class="bbs_iname">${itm.ItemName}</div>
-                                                <div class="bbs_value">(${itm.LDQuantity} / ${itm.CargoWeight} Tấn)</div>                                                
+                                                <div class="bbs_value">(${itm.LDQuantity} / ${itm.CargoWeight} Tấn)</div>                                                 
                                             </div>
                                             
                                         </div>
                                         <div class="bbs_right">
                                             <div class="bbs_right_content">
                                                 <div class="bbs_truckno" truckno="${itm.TruckNo}">${itm.TruckNo}</div>
-                                                <div class="bbs_sltl" quantity="${itm.Quantity}" mcweight="${itm.McWeight}">SL:${itm.Quantity} - TL:${itm.McWeight}</div>
+                                                <div class="bbs_sltl" quantity="${itm.Quantity}" mcweight="${itm.McWeight}"><i class="fa fa-th-large" aria-hidden="true"></i> ${itm.Quantity} &nbsp; <i class="fa fa-balance-scale" aria-hidden="true"></i> ${itm.McWeight}</div>
                                                 <div class="bbs_jobname" classid="${itm.ClassID}">${(itm.ClassID+'')=='1'?'Nhập tàu':'Xuất tàu'}</div>
-                                                <div class="bbs_datetime">${d?d+'d':''} ${h}:${i}:${s}</div>
+                                                <div class="bbs_datetime">${d?d+'d':''} ${h}:${i}:${s}</div>                                                                                              
+                                                <div class="bbs_plan">${itm.Plan||''}</div> 
+                                            </div>
+                                        </div>
+                                </div>`;
+                                    })
+                                    $('#bbs_list').html(html);
+                                    res.data.map(itm=>{
+                                        $(`.bbs_box[rowguid="${itm.rowguid}"]`).data({...itm,YardType:itm.ClassID.toString()=='1'?1:2,JobTypeID:itm.ClassID.toString()=='1'?'DS':'LD'});
+                                    });
+                                }                                
+                            },
+                            error: function (err) {
+                                toastr["error"]("Error!");
+                                console.log(err);
+                            }
+                        });
+                    }
+                    function loadXuatTauData(){
+                        $.ajax({
+                            url: "/yard/loadXuatTauData",
+                            dataType: 'json',
+                            data: {filter:{ClassID:($('.lx_chose.select').attr('value')!='all'?$('.lx_chose.select').attr('value'):undefined)}},
+                            type: 'POST',
+                            success: function (res) {
+                                if(res.data){
+                                    let html='';
+                                    res.data.map(itm=>{
+                                        loadPlanDevice(itm.VoyageKey);
+                                        let diff1=moment(moment().format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]')).diff(moment(itm.CreateTime));
+                                        let diff=moment(moment().format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]')).diff(moment(itm.CreateTime));
+                                        let d=parseInt(diff/86400000);
+                                        diff=diff%86400000;
+                                        let h=parseInt(diff/3600000);
+                                        diff=diff%3600000;
+                                        let i=parseInt(diff/60000);
+                                        diff=diff%60000;
+                                        let s=parseInt(diff/1000);
+                                        console.log(itm)
+                                        html+=`<div class="bbs_box ${(itm.ClassID+'')=='1'?'cimport':'cexport'}" itemname="${itm.ItemName}" rowguid="${itm.rowguid}">
+                                        <div class="bbs_left">
+                                            <div>
+                                                <div class="bbs_bname" billoflading="${itm.BillOfLading}" bookingno="${itm.BookingNo}" truckno="${itm.TruckNo}">${itm.BillOfLading?itm.BillOfLading:itm.BookingNo}</div>
+                                                <div class="bbs_iname">${itm.ItemName}</div>
+                                                <div class="bbs_value">(${itm.LDQuantity} / ${itm.CargoWeight} Tấn)</div>                                                 
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="bbs_right">
+                                            <div class="bbs_right_content">
+                                                <div class="bbs_truckno" truckno="${itm.TruckNo}">${itm.TruckNo||''}</div>
+                                                <div class="bbs_sltl" quantity="${itm.Quantity}" mcweight="${itm.McWeight}"><i class="fa fa-th-large" aria-hidden="true"></i> ${itm.Quantity-itm.SumQuantity} &nbsp; <i class="fa fa-balance-scale" aria-hidden="true"></i> ${itm.McWeight-itm.SumMcWeight}</div>
+                                                <div class="bbs_jobname" classid="${itm.ClassID}">${(itm.ClassID+'')=='1'?'Nhập tàu':'Xuất tàu'}</div>
+                                                <div class="bbs_datetime">${d?d+'d':''} ${h}:${i}:${s}</div>                                                                                              
+                                                <div class="bbs_plan">${itm.Plan||''}</div> 
                                             </div>
                                         </div>
                                 </div>`;
@@ -1152,6 +1298,7 @@
                                 if(res.data){
                                     let html='';
                                     res.data.map(itm=>{
+                                        loadPlanDevice(itm.VoyageKey);
                                         let diff1=moment(moment().format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]')).diff(moment(itm.CreateTime));
                                         let diff=moment(moment().format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]')).diff(moment(itm.CreateTime));
                                         let d=parseInt(diff/86400000);
@@ -1162,7 +1309,7 @@
                                         diff=diff%60000;
                                         let s=parseInt(diff/1000);
                                         console.log(itm)
-                                        html+=`<div class="bbs_box ${(itm.ClassID+'')=='1'?'gateexport':'gateimport'}" itemname="${itm.CommodityDescription}" voyagekey="${itm.VoyageKey}" bbno="${(itm.BillOfLading||'')+(itm.BookingNo||'')}" classid="${itm.ClassID}" rowguid="${itm.rowguid}">
+                                        html+=`<div class="bbs_box ${(itm.ClassID+'')=='1'?'gateexport':'gateimport'}" itemname="${itm.CommodityDescription}" voyagekey="${itm.VoyageKey}" bbno="${(itm.BillOfLading||'')+(itm.BookingNo||'')}" billoflading="${(itm.BillOfLading||'')}" bookingno="${(itm.BookingNo||'')}" classid="${itm.ClassID}" rowguid="${itm.rowguid}">
                                         <div class="bbs_left">
                                             <div>
                                                 <div class="bbs_bname" billoflading="${itm.BillOfLading}" bookingno="${itm.BookingNo}" truckno="${itm.TruckNo}">${itm.BillOfLading?itm.BillOfLading:itm.BookingNo}</div>
@@ -1175,7 +1322,8 @@
                                             <div class="bbs_right_content">
                                                 <div class="bbs_truckno" style="font-size:18px" truckno="${itm.TruckNo}">${itm.TruckNo}</div>
                                                 <div class="bbs_jobname" classid="${itm.ClassID}">${itm.JobModeName+''}</div>
-                                                <div class="bbs_datetime">${d?d+'d':''} ${h}:${i}:${s}</div>
+                                                <div class="bbs_datetime">${d?d+'d':''} ${h}:${i}:${s}</div>                                                                                             
+                                                <div class="bbs_plan">${itm.Plan||''}</div> 
                                             </div>
                                         </div>
                                 </div>`;
@@ -1203,11 +1351,12 @@
                                 if(res.data){
                                     let html='';
                                     res.data.map(itm=>{
+                                        loadPlanDevice(itm.VoyageKey);
                                         let detail='';
                                         let tong=0;
                                         for (let ix = 0; ix < itm.Details.length; ix++) {
                                             const dlt = itm.Details[ix];
-                                            detail+=`<div class="block_bill_row" voyagekey="${dlt.VoyageKey}" bbno="${dlt.BBNo}" classid="${dlt.ClassID}" quantity="${dlt.Quantity}" mcweight="${dlt.McWeight}">${dlt.BBNo} - SL: ${dlt.Quantity} - TL: ${dlt.McWeight}</div>`;
+                                            detail+=`<div class="block_bill_row" rowguid="${dlt.rowguid}" voyagekey="${dlt.VoyageKey}" bbno="${dlt.BBNo}" billoflading="${dlt.BillOfLading}" bookingno="${dlt.BookingNo}" classid="${dlt.ClassID}" quantity="${dlt.Quantity}" mcweight="${dlt.McWeight}">${dlt.BBNo} <div class="fright"><i class="fa fa-th-large" aria-hidden="true"></i> ${dlt.Quantity} &nbsp; <i class="fa fa-balance-scale" aria-hidden="true"></i> ${dlt.McWeight}</div></div>`;
                                             tong+=dlt.McWeight;
                                         }
                                         html+=`
@@ -1237,14 +1386,19 @@
                         });
                     }
 
-                    function loadData(){
+                    function loadData(noloadblock=false){
+                        if(!noloadblock)
                         loadBlockData();
                         let value=$('.lx_chose.select').attr('value');
                         if(value=='4' || value=='3'){
                             loadGateData();
                         }
+                        else
+                        if(value=='2'){
+                            loadXuatTauData();
+                        }
                         else{
-                            loadTallyData();
+                            loadNhapTauData();
                         }
                     }
 
@@ -1291,6 +1445,7 @@
                                 Quantity:$('#set-Quantity').val(),
                                 McWeight:$('#set-McWeight').val(),
                                 WorkerGroupID:$('#set-Worker').val(),
+                                TruckNo:$('#set-TruckNo').val(),
                                 DeviceID:$('#set-Device').val(),
                                 Note:$('#set-Note').val(),
                                 Block:window.Block

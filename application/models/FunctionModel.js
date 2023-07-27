@@ -2,14 +2,14 @@
 const moment = require('moment-timezone');
 const { gtos, gtosglobal } = require('../config/database');
 var QRCode = require('qrcode');
-module.exports.moment=moment;
-module.exports.KnexWhere=(knex, filterObj, ext)=>{
-    let filters=Object.keys(filterObj||{});
-    
+module.exports.moment = moment;
+module.exports.KnexWhere = (knex, filterObj, ext) => {
+    let filters = Object.keys(filterObj || {});
+
     for (let ii = 0; ii < filters.length; ii++) {
         let key = filters[ii];
-        let field=filters[ii];
-        if(ext)field=ext+'.'+key;
+        let field = filters[ii];
+        if (ext) field = ext + '.' + key;
         let item = filterObj[key];
         //console.log('filters::',item);
         if (item) {
@@ -36,7 +36,7 @@ module.exports.KnexWhere=(knex, filterObj, ext)=>{
                                         knex.where(field, opr, (item.value != undefined ? item.value : item) + '%');
                                     else
                                         knex.where(field, opr, (item.value != undefined ? item.value : item));
-        
+
         }
     }
     //console.log('knex:::',knex.toString());
@@ -69,12 +69,57 @@ module.exports.generateQRCodeToSting = (code) => {
         );
     });
 }
-module.exports.getUserTerminalList=async (req)=>{
-    return ((req.session||{})['userdata']||{}).Terminals||[].map(itm=>{ return {TerminalCode: itm.Code, TerminalName: itm.Name} });
+module.exports.getUserTerminalList = async (req) => {
+    return ((req.session || {})['userdata'] || {}).Terminals || [].map(itm => { return { TerminalCode: itm.Code, TerminalName: itm.Name } });
 }
-module.exports.getTerminalList=async ()=>{
+module.exports.getTerminalList = async () => {
     return await gtosglobal('BS_TERMINAL').select('*');
 }
-module.exports.getTerminalInfo=async (req)=>{
-    return await gtosglobal('BS_TERMINAL').select('*').where('TerminalCode',req.body.TerminalCode||'');
+module.exports.getTerminalInfo = async (req) => {
+    return await gtosglobal('BS_TERMINAL').select('*').where('TerminalCode', req.body.TerminalCode || '');
+}
+
+module.exports.dbDateTime = (strDateTime, format= 'YYYY-MM-DD HH:mm:ss') => {
+    if (!strDateTime || !strDateTime.includes("/") && !strDateTime.includes("-")) {
+        return '';
+    }
+
+    if (strDateTime.includes("-") && moment(strDateTime).isValid()) {
+        return moment(strDateTime).format(format);
+    }
+
+    var dts = strDateTime.split(' ');
+    var date = dts[0].split('/').reverse().join('-');  //date('Y-m-d', strtotime(implode('-', array_reverse(explode('/', $dts[0])))));
+    var datetime = date + ' ' + (dts[1] || '00:00:00');
+    return moment(datetime).format(format);
+}
+
+module.exports.getConfig = async (partnerCode, terminalCode, TESTMODE = 1) => {
+    return new Promise(async (resolve, reject) => {
+        gtosglobal('SYS_CONFIG')
+            .select('ConfigJSON')
+            .where({
+                'PartnerCode': partnerCode,
+                'TestMode': TESTMODE
+            })
+            .where(p => {
+                if (terminalCode) {
+                    p.where('TerminalCode', terminalCode)
+                        .orWhereNull('TerminalCode')
+                }
+                else {
+                    p.whereNull('TerminalCode')
+                }
+            })
+            .limit(1)
+            .then(result => {
+
+                let jsonResult = result[0]['ConfigJSON'] ? JSON.parse(result[0]['ConfigJSON']) : [];
+                resolve(jsonResult);
+            })
+            .catch(err => {
+                resolve([]);
+            })
+    })
+
 }

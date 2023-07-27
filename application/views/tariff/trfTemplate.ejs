@@ -1,0 +1,795 @@
+<script>
+	document.title = 'MẪU BIỂU CƯỚC'
+</script>
+<link href="/assets/vendors/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
+<link href="/assets/vendors/dataTables/extensions/select.dataTables.min.css" rel="stylesheet" />
+<style>
+	table.dataTable tr td.select-checkbox::before {
+		top: auto;
+	}
+
+	table.dataTable tr.selected td.select-checkbox::after {
+		color: black !important;
+		/*margin-top: -28px !important;*/
+		top: 50%;
+	}
+
+	span.col-form-label {
+		width: 100%;
+		border-bottom: dotted 1px #ccc;
+		display: inline-block;
+		word-wrap: break-word;
+	}
+</style>
+<div class="row">
+	<div class="col-xl-12" style="font-size: 12px">
+		<div class="ibox collapsible-box">
+			<i class="la la-angle-double-up dock-right"></i>
+
+			<!-- Title name -->
+			<div class="ibox-head">
+				<div class="ibox-title">MẪU BIỂU CƯỚC</div>
+				<div class="button-bar-group mr-3">
+					<button id="addrow" class="btn btn-outline-success btn-sm mr-1" title="Thêm dòng mới">
+						<span class="btn-icon"><i class="fa fa-plus"></i>Thêm dòng</span>
+					</button>
+					<button id="save" class="btn btn-outline-primary btn-sm mr-1" data-loading-text="<i class='la la-spinner spinner'></i>Lưu dữ liệu" title="Lưu dữ liệu">
+						<span class="btn-icon"><i class="fa fa-save"></i>Lưu</span>
+					</button>
+					<button id="delete" class="btn btn-outline-danger btn-sm mr-1" data-loading-text="<i class='la la-spinner spinner'></i>Xóa dòng" title="Xóa những dòng đang chọn">
+						<span class="btn-icon"><i class="fa fa-trash"></i>Xóa dòng</span>
+					</button>
+				</div>
+			</div>
+
+			<!-- Filter name -->
+			<div class="ibox-body pt-0 pb-0 bg-f9 border-e">
+				<div class="row ibox mb-0 border-e pb-1 pt-1">
+					<div class="col-xl-7 col-lg-12 col-md-12 col-sm-12 col-xs-12 mt-3" id="col-transfer">
+						<div class="row form-group">
+							<div class="col-xl-2 col-form-label">
+								<label>Mẫu</label>
+							</div>
+							<div class="col-xl-10 input-group-sm">
+								<select id="trfStandardFilter" name="trfStandardFilter" required="" class="form-control form-control-sm" data-style="btn-default btn-sm" data-live-search="true" data-width="100%">
+									<option value="" selected="">-- Chọn mẫu biểu cước --</option>
+									<% for(var i=0; i < locals.loadTrfCode.length; i++) { %>
+									<option>
+										<%- locals.loadTrfCode[i].ApplyDate+'-'+locals.loadTrfCode[i].ExpireDate+'-'+locals.loadTrfCode[i].Remark %>
+									</option>
+									<% } %>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Table main -->
+			<div class="row ibox-footer border-top-0">
+				<div class="col-md-4 col-sm-12 col-xs-12 table-responsive" id="tblTemplate">
+					<table id="templateMain" class="table table-striped display nowrap" cellspacing="0" style="min-width: 100%">
+						<thead></thead>
+						<tbody></tbody>
+					</table>
+				</div>
+
+				<div class="col-md-8 col-sm-12 col-xs-12 table-responsive" id="tblStandard">
+					<table id="templateDetail" class="table table-striped display nowrap" cellspacing="0" style="min-width: 100%">
+						<thead></thead>
+						<tbody></tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	$(document).ready(function() {
+		var _lstTemplate = [],
+			_lstTariff = [],
+			_lstForSave = [];
+		let tblTemplate = $("#templateMain");
+		let tblStandard = $("#templateDetail");
+		let currencySource = [{
+				Code: "VND",
+				Name: "VND"
+			},
+			{
+				Code: "USD",
+				Name: "USD"
+			}
+		];
+		var _columnsTemplate = [{
+				data: "STT",
+				name: "STT",
+				title: "STT",
+				className: "text-center editor-cancel",
+				targets: 0,
+				render: function(data, type, row, meta) {
+					return meta.row + 1;
+				},
+			},
+			{
+				data: "TPLTCode",
+				name: "TPLTCode",
+				title: "Mã",
+				className: "text-center",
+				targets: 1,
+			},
+			{
+				data: "TPLTDesc",
+				name: "TPLTDesc",
+				title: "Diễn giải",
+				className: "text-center",
+				targets: 2,
+			},
+			{
+				data: "CurrencyCode",
+				name: "CurrencyCode",
+				title: "Loại tiền",
+				className: "text-center autocomplete",
+				targets: 3,
+				list: currencySource.map(item => {
+					return {
+						value: item.Code,
+						label: item.Name
+					}
+				})
+			},
+			{
+				data: "rowguid",
+				name: "rowguid",
+				title: "rowguid",
+				visible: false,
+				targets: 4,
+			},
+			{
+				data: "TRF_Standard_Rowguid",
+				name: "TRF_Standard_Rowguid",
+				title: "TRF_Standard_Rowguid",
+				visible: false,
+				targets: 5,
+			},
+		];
+
+		var _columnsStandard = [{
+				data: "Select",
+				title: "Chọn",
+				className: "text-center select-checkbox",
+				targets: 0,
+			},
+			{
+				data: "TRFCode",
+				name: "TRFCode",
+				title: "Mã biểu cước",
+				className: "text-center",
+				targets: 1,
+			},
+			{
+				data: "TRFDesc",
+				name: "TRFDesc",
+				title: "Tên biểu cước",
+				className: "text-center",
+				targets: 2,
+			},
+			{
+				data: "ClassID",
+				name: "ClassID",
+				title: "Hướng",
+				className: "text-center",
+				targets: 3,
+			},
+			{
+				data: "CargoTypeID",
+				name: "CargoTypeID",
+				title: "Loại hàng hoá",
+				className: "text-center",
+				targets: 4,
+			},
+			{
+				data: "JobTypeID",
+				name: "JobTypeID",
+				title: "Loại công việc",
+				className: "text-center",
+				targets: 5,
+			},
+			{
+				data: "JobModeID",
+				name: "JobModeID",
+				title: "Phương án",
+				className: "text-center",
+				targets: 6,
+			},
+			{
+				data: "MethodID",
+				name: "MethodID",
+				title: "PTGN",
+				className: "text-center",
+				targets: 7,
+			},
+			{
+				data: "TransitID",
+				name: "TransitID",
+				title: "Loại hình",
+				className: "text-center",
+				targets: 8,
+			},
+			{
+				data: "IsLocalForeign",
+				name: "IsLocalForeign",
+				title: "Nội/Ngoại",
+				className: "text-center",
+				targets: 9,
+			},
+			{
+				data: "rowguid",
+				name: "rowguid",
+				title: "rowguid",
+				visible: false,
+				targets: 10,
+			},
+		];
+
+		var dtTemplate = tblTemplate.newDataTable({
+			scrollY: '60vh',
+			columnDefs: _columnsTemplate,
+			paging: false,
+			keys: true,
+			info: false,
+			searching: false,
+			autoFill: {
+				focus: 'focus'
+			},
+			buttons: [],
+			rowReorder: false,
+			select: true,
+			arrayColumns: _columnsTemplate
+		});
+
+		var dtStardard = tblStandard.DataTable({
+			scrollY: '60vh',
+			columnDefs: _columnsStandard,
+			language: {
+				infoFiltered: '',
+			},
+			order: [],
+			keys: {
+				columns: ':eq(' + _columnsStandard.map(item => item.data.indexOf("Select")) + ')'
+			},
+			searching: false,
+			info: false,
+			autoFill: {
+				focus: 'focus'
+			},
+			buttons: [],
+			paging: true,
+			scroller: {
+				displayBuffer: 12,
+				boundaryScale: 0.5
+			},
+			rowReorder: false,
+		});
+
+		//------SET DROPDOWN BUTTON FOR COLUMN
+		loadInvTemp();
+		//------EVENTS
+
+		function loadInvTemp() {
+			tblTemplate.dataTable().fnClearTable();
+			tblTemplate.waitingLoad();
+
+			var formData = {
+				'action': 'view',
+				'act': 'load_inv_tplt'
+			};
+
+			$.ajax({
+				url: "/Tariff/trfTemplate/loadDataTemplate",
+				dataType: 'json',
+				data: formData,
+				type: 'POST',
+				success: function(response) {
+					if (response.deny) {
+						toastr["error"](response.deny);
+						tblTemplate.dataTable().fnClearTable();
+						return;
+					}
+					if (response.error) {
+						toastr["error"](response.error);
+						tblTemplate.dataTable().fnClearTable();
+						return;
+					}
+
+					if (!response.data.iPayload || response.data.iPayload == 0) {
+						tblTemplate.dataTable().fnClearTable();
+						return;
+					}
+					let dataNew = response.data.iPayload.map((item, index) => {
+						return {
+							group: response.data.iPayload,
+							STT: index + 1,
+							TPLTCode: item.TPLTCode,
+							TPLTDesc: item.TPLTDesc,
+							CurrencyCode: item.CurrencyCode,
+						};
+					});
+					_lstTemplate = dataNew;
+					tblTemplate.dataTable().fnClearTable();
+					if (_lstTemplate.length > 0) {
+						_lstTemplate = _lstTemplate.filter((obj, index) => {
+							return index === _lstTemplate.findIndex(o => obj.TPLTCode === o.TPLTCode);
+						});
+						tblTemplate.dataTable().fnAddData(_lstTemplate);
+					}
+					tblTemplate.editableTableWidget();
+				},
+				error: function(err) {
+					console.log(err);
+					toastr["error"]("Server Error: [loadInvTemp]");
+					tblTemplate.dataTable().fnClearTable();
+				}
+			});
+		}
+		//---------------end event list rate--------------------
+
+		tblTemplate.editableTableWidget();
+
+		//Thoilc(*Note)-Event on change select
+		$('#trfStandardFilter').on('change', function() {
+			if (!$(this).val()) {
+				tblStandard.dataTable().fnClearTable();
+				return;
+			}
+			$("#trfStandardFilter").data("old", $("#trfStandardFilter").val());
+			templateChanged();
+		});
+
+		function templateChanged() {
+			// reset list for save when change tariff
+			_lstForSave = [];
+
+			if ($('#trfStandardFilter').val()) {
+				loadTariff();
+			} else {
+				tblStandard.dataTable().fnClearTable();
+			}
+		}
+
+		//Thoilc(*Note)-Load danh sách mẫu cước theo mẫu
+		function loadTariff() {
+			tblStandard.dataTable().fnClearTable();
+			tblStandard.waitingLoad();
+
+			var dataSend = {
+				action: 'view',
+				act: 'load_tariff',
+				trfStandard: $('#trfStandardFilter').val()
+			};
+			$.ajax({
+				url: "/Tariff/trfTemplate/getData",
+				dataType: 'json',
+				data: dataSend,
+				type: 'POST',
+				success: function(response) {
+					if (response.deny) {
+						toastr["error"](response.deny);
+						tblStandard.dataTable().fnClearTable();
+						return;
+					}
+					if (response.error) {
+						toastr["error"](response.error);
+						tblStandard.dataTable().fnClearTable();
+						return;
+					}
+
+					_lstTariff = response.data.iPayload;
+
+					if (_lstTariff.length == 0) {
+						tblStandard.dataTable().fnClearTable();
+						return;
+					}
+					tblStandard.dataTable().fnClearTable();
+					if (_lstTariff.length > 0) {
+						tblStandard.dataTable().fnAddData(_lstTariff);
+					}
+				},
+				error: function(err) {
+					console.log(err);
+					toastr["error"]("Server Error: [loadTariff]");
+					tblStandard.dataTable().fnClearTable();
+				}
+			});
+		}
+		//---------------end event select------------------
+		$('#addrow').on('click', function() {
+			if ($("#trfStandardFilter").val()) {
+				tblTemplate.addRows();
+			} else {
+				toastr["info"]("Vui lòng chọn cước trước khi thêm dòng!");
+			}
+		});
+
+		tblTemplate.on("click", 'td', function(e) {
+			var row = $(e.target).closest("tr");
+			var dtRow = tblTemplate.DataTable().row(row).nodes().to$();
+			if (dtRow.hasClass("selected")) {
+				return;
+			}
+
+			tblTemplate.DataTable().rows('.selected').nodes().to$().removeClass('selected');
+			dtRow.addClass("selected");
+			window.setTimeout(function() {
+				loadTRFData();
+			}, 50);
+
+		});
+
+		var _oldCur = "";
+		tblTemplate.on("change", "tr", function(e) {
+			var cur = $(e.target).text();
+			if (cur && cur !== _oldCur) {
+				window.setTimeout(function() {
+					loadTRFData();
+					_oldCur = cur;
+				}, 50);
+			}
+		});
+
+		//Thoilc(*Note)-Event on selected dataTbl
+		tblStandard.on('click', 'tbody tr', function() {
+			$(this).toggleClass('selected');
+			if ($("#trfStandardFilter").val()) {
+				var rowTempSelected = tblTemplate.getSelectedData();
+				var rowStandard = tblStandard.getSelectedData();
+				if (rowTempSelected.length) {
+					for (let i = 0; i < rowStandard.length; i++) {
+						if (rowTempSelected[0].CurrencyCode !== rowStandard[i].CurrencyCode) {
+							dtStardard.rows().nodes().to$().removeClass('selected');
+							$("#trfStandardFilter").val("");
+							$(".toastr").remove();
+							toastr["error"]("Vui lòng chọn mẫu tương ứng với loại tiền!");
+							checkReturn = true;
+							return;
+						}
+					}
+				}
+				if (!rowTempSelected || rowTempSelected.length == 0) {
+					$(".toastr").remove();
+					toastr["error"]("Vui lòng chọn một TEMPLATE trước!");
+					checkReturn = true;
+				}
+				var row = $(this).closest('tr');
+				let selectedTariff = tblStandard.DataTable().rows('.selected').data().toArray();
+				if (rowTempSelected[0]) {
+					let temp = $("#trfStandardFilter").val().split("-");
+					let newData = selectedTariff.map((item, index) => {
+						return {
+							isCheck: 1,
+							TRFCode: item.TRFCode,
+							TRFDesc: item.TRFDesc,
+							ClassID: item.ClassID,
+							CargoTypeID: item.CargoTypeID,
+							JobTypeID: item.JobTypeID,
+							JobModeID: item.JobModeID,
+							MethodID: item.MethodID,
+							TransitID: item.TransitID,
+							CurrencyCode: rowTempSelected[0].CurrencyCode ? rowTempSelected[0].CurrencyCode : '',
+							ItemID: item.ItemID,
+							IsLocalForeign: item.IsLocalForeign,
+							ServiceID: item.ServiceID,
+							FormGRT: item.FormGRT,
+							ToGRT: item.ToGRT,
+							UnitID: item.UnitID,
+							Price: item.Price,
+							VAT: item.VAT,
+							IncludeVAT: item.IncludeVAT,
+							Remark: temp.slice(2).join('-'),
+							TPLTCode: rowTempSelected[0].TPLTCode ? rowTempSelected[0].TPLTCode : '',
+							TPLTDesc: rowTempSelected[0].TPLTDesc ? rowTempSelected[0].TPLTDesc : '',
+							TRF_Standard_Rowguid: item.rowguid,
+						};
+					});
+					let unCheck = tblStandard.DataTable().rows(row).data().toArray().map(item => {
+						return {
+							...item,
+							TPLTCode: rowTempSelected[0].TPLTCode,
+							TPLTDesc: rowTempSelected[0].TPLTDesc,
+							CurrencyCode: rowTempSelected[0].CurrencyCode,
+						}
+					})
+					_lstForSave = $(this).hasClass('selected') ? [] : unCheck;
+					if (_lstForSave.length) {
+						let findIdx = _lstForSave.findIndex(item => newData.some(entry => entry.rowguid === item.rowguid && entry.TRF_Standard_Rowguid === item.TRF_Standard_Rowguid));
+						if (findIdx == -1) {
+							_lstForSave.push(newData);
+						}
+					} else {
+						_lstForSave.push(newData);
+					}
+					let arr = [];
+					_lstForSave.forEach(element => {
+						arr = arr.concat(element)
+					});
+					_lstForSave = arr;
+					console.log("check", _lstForSave);
+				}
+			} else {
+				dtStardard.rows().nodes().to$().removeClass('selected');
+				$(".toastr").remove();
+				toastr["error"]("Vui lòng chọn mẫu cước!");
+				return;
+			}
+		});
+
+		//Thoilc(*Note)-Event on click save
+		$('#save').on('click', function() {
+			let dtTemplate = tblTemplate.getSelectedData();
+			let findIdx = _lstTemplate.findIndex(item => item.TPLTCode == dtTemplate[0].TPLTCode);
+			if (findIdx == -1 || dtTemplate[0].STT != "00.") {
+				$.confirm({
+					title: 'Thông báo!',
+					type: 'orange',
+					icon: 'fa fa-warning',
+					content: 'Tất cả các thay đổi sẽ được lưu lại!\nTiếp tục?',
+					buttons: {
+						ok: {
+							text: 'Xác nhận lưu',
+							btnClass: 'btn-warning',
+							keys: ['Enter'],
+							action: function() {
+								saveData();
+							}
+						},
+						cancel: {
+							text: 'Hủy bỏ',
+							btnClass: 'btn-default',
+							keys: ['ESC']
+						}
+					}
+				});
+			} else {
+				dtStardard.rows().nodes().to$().removeClass('selected');
+				$("#trfStandardFilter").val("");
+				$(".toastr").remove();
+				toastr["error"]("Hiện tại mẫu này đã có trước đó, Vui lòng đặt lại mã khác!");
+				return;
+			}
+		});
+
+		//Thoilc(*Note)-Event on click del
+		$('#delete').on('click', function() {
+			if (tblTemplate.getSelectedRows().length == 0) {
+				$('.toast').remove();
+				toastr["info"]("Vui lòng chọn các dòng dữ liệu để xóa!");
+			} else {
+				tblTemplate.confirmDelete(function(selectedData) {
+					//Thoilc(*Note) - Call function
+					postDel(selectedData);
+				});
+			}
+		});
+		//------EVENTS
+
+		//Thoilc(*Note)-Lưu dữ liệu
+		function saveData() {
+			let editTempData = tblTemplate.getEditData();
+			if (editTempData.length) {
+				if (_lstForSave.length) {
+					$.each(_lstForSave, function(i, v) {
+						var item = editTempData.filter(p => p.rowguid == v.rowguid);
+						_lstForSave[i].TPLTCode = item.length ? item[0].TPLTCode : editTempData[0].TPLTCode;
+						_lstForSave[i].TPLTDesc = item.length ? item[0].TPLTDesc : editTempData[0].TPLTDesc;
+						_lstForSave[i].CurrencyCode = item.length ? item[0].CurrencyCode : editTempData[0].CurrencyCode;
+					});
+				} else {
+					_lstForSave = editTempData.map(item => {
+						return {
+							TPLTCode: item.TPLTCode,
+							TPLTDesc: item.TPLTDesc,
+							CurrencyCode: item.CurrencyCode,
+						}
+					});
+				}
+			}
+			var result = _lstForSave.reduce((unique, o) => {
+				if (!unique.some(obj => obj.TRF_Standard_Rowguid === o.TRF_Standard_Rowguid && obj.TRFCode === o.TRFCode)) {
+					unique.push(o);
+				}
+				return unique;
+			}, []);
+			var dataSend = {
+				"action": "edit",
+				"only_update": false,
+				"data": _lstForSave
+			};
+			var saveBtn = $('#save');
+			saveBtn.button('loading');
+			$('.ibox-footer').blockUI();
+			$.ajax({
+				url: "/Tariff/trfTemplate/saveDataTemplate",
+				dataType: 'json',
+				data: dataSend,
+				type: 'POST',
+				success: function(response) {
+					if (response.deny) {
+						toastr["error"](response.deny);
+						return;
+					}
+					if (response.nothing) {
+						alert(response.nothing);
+					}
+					let data = response.data;
+					if (data.iStatus) {
+						toastr["success"](data.iMessage);
+						$("#trfStandardFilter").val("");
+						tblStandard.dataTable().fnClearTable();
+						_lstForSave = [];
+						tblStandard.DataTable().rows('.editing').nodes().to$().removeClass("editing");
+						loadInvTemp();
+						saveBtn.button('reset');
+						$('.ibox-footer').unblock();
+					} else {
+						toastr["success"](data.iMessage);
+					}
+				},
+				error: function(err) {
+					toastr["error"](response.data.iMessage);
+					saveBtn.button('reset');
+					$('.ibox-footer').unblock();
+					console.log(err);
+				}
+			});
+		}
+
+		//Thoilc(*Note)-Xoá dữ liệu
+		function postDel(rows) {
+			$('.ibox.collapsible-box').blockUI();
+			var delBtn = $('#delete');
+			delBtn.button('loading');
+			var delShift = rows;
+			var dataSend = {
+				"action": "del",
+				"only_delete": true,
+				'data': delShift,
+			};
+			$.ajax({
+				url: "/Tariff/trfTemplate/delDataTemplate",
+				dataType: 'json',
+				data: dataSend,
+				type: 'POST',
+				success: function(response) {
+					delBtn.button('reset');
+					$('.ibox.collapsible-box').unblock();
+					var data = response.data;
+					if (response.error && response.error.length > 0) {
+						for (var i = 0; i < response.error.length; i++) {
+							toastr["error"](response.error[i]);
+						}
+					}
+					if (data.iStatus) {
+						toastr["success"](data.iMessage);
+						tblTemplate.DataTable().rows('.selected').remove().draw(false);
+						tblTemplate.updateSTT(0);
+					} else {
+						toastr["error"](data.iMessage);
+					}
+				},
+				error: function(err) {
+					delBtn.button('reset');
+					$('.ibox.collapsible-box').unblock();
+					toastr["error"](response.data.iMessage);
+				}
+			});
+		}
+
+		//Thoilc(*Note)-Sự kiện nội bộ của thẻ selector
+		tblTemplate.on('change', 'td:nth-child(4)', function() {
+			var tempSelected = tblTemplate.getSelectedData();
+			if (!tempSelected || tempSelected.length == 0) return;
+			var currencyID = tempSelected[0].CurrencyCode || null;
+			var tpltCode = tempSelected[0].TPLTCode;
+			var std_rowguids = _lstTemplate[0] ? _lstTemplate[0].group.filter(p => p.TPLTCode == tpltCode).map(x => x.TRF_Standard_Rowguid.trim().toUpperCase()) : _lstTemplate.filter(p => p.TPLTCode == tpltCode).map(x => x.TRF_Standard_Rowguid.trim().toUpperCase());
+			if (std_rowguids || !std_rowguids == undefined) {
+				let isCheck = _lstTariff.findIndex(p => p.CurrencyCode == currencyID);
+				if (isCheck > -1) {
+					dtStardard.rows('.selected').nodes().to$().removeClass('selected');
+					//Clear
+					tblStandard.dataTable().fnClearTable();
+					//Filter
+					var filData = _lstTariff.filter(item => item.CurrencyCode == currencyID);
+					console.log(filData);
+					//Add
+					tblStandard.dataTable().fnAddData(filData);
+				} else {
+					tblStandard.dataTable().fnClearTable();
+				}
+			}
+		});
+
+		//Thoilc(*Note)-Load dữ liệu khi click vào bên trên lưới
+		function loadTRFData() {
+			if ($("#trfStandardFilter").val()) {
+				var tempSelected = tblTemplate.getSelectedData();
+				if (!tempSelected || tempSelected.length == 0) return;
+				var currencyID = tempSelected[0].CurrencyCode || null;
+				var tpltCode = tempSelected[0].TPLTCode;
+				var std_rowguids = _lstTemplate[0] ? _lstTemplate[0].group.filter(p => p.TPLTCode == tpltCode).map(x => x.TRF_Standard_Rowguid.trim().toUpperCase()) : _lstTemplate.filter(p => p.TPLTCode == tpltCode).map(x => x.TRF_Standard_Rowguid.trim().toUpperCase());
+				dtStardard.rows('.selected').nodes().to$().removeClass('selected');
+				if (std_rowguids || std_rowguids == undefined) {
+					//Thoilc(*Note)-Kiểm tra danh sách lưới standard
+					let dataStadr = tblStandard.DataTable().rows().data().toArray();
+					let countArr = [];
+					let flag_isCheck = false,
+						flag_notIsCheck = false;
+					for (let i = 0; i < std_rowguids.length; i++) {
+						let isCheck = dataStadr.findIndex(item => item.rowguid === std_rowguids[i]);
+						if (isCheck > -1) {
+							flag_isCheck = true;
+							// dtStardard.rows(isCheck).nodes().to$().addClass('selected');
+						} else {
+							var std_rowguids_Ch = _lstTemplate[0] ? _lstTemplate[0].group.filter(p => p.TPLTCode == tpltCode).map(x => x.TRF_Standard_Rowguid.trim().toUpperCase()) : _lstTemplate.filter(p => p.TPLTCode == tpltCode).map(x => x.TRF_Standard_Rowguid.trim().toUpperCase());
+							tblStandard.dataTable().fnClearTable();
+							tblStandard.dataTable().fnAddData(_lstTariff);
+							for (let j = 0; j < std_rowguids_Ch.length; j++) {
+								let isCheck_Ch = _lstTariff.findIndex(item => item.rowguid === std_rowguids_Ch[j]);
+								if (isCheck_Ch > -1) {
+									flag_notIsCheck = true;
+									countArr.push(isCheck_Ch);
+									// dtStardard.rows(isCheck_Ch).nodes().to$().addClass('selected');
+								}
+							}
+						}
+					}
+
+					//Thoilc(*Note)-Thoả điều kiện isCheck tìm thấy index nên sử dụng lưới dataStadr để làm tiền đề
+					if (flag_isCheck) {
+						let isCheckFil = dataStadr.findIndex(p => p.CurrencyCode == currencyID);
+						if (isCheckFil > -1) {
+							dtStardard.rows('.selected').nodes().to$().removeClass('selected');
+							//Clear
+							tblStandard.dataTable().fnClearTable();
+							//Filter
+							var filData = dataStadr.filter(item => item.CurrencyCode == currencyID);
+							//Add
+							tblStandard.dataTable().fnAddData(filData);
+							for (let j = 0; j < std_rowguids.length; j++) {
+								let isCheck_new = filData.findIndex(item => item.rowguid === std_rowguids[j]);
+								dtStardard.rows(isCheck_new).nodes().to$().addClass('selected');
+							}
+						} else {
+							tblStandard.dataTable().fnClearTable();
+						}
+
+					}
+
+					//Thoilc(*Note)-Ko Thoả điều kiện isCheck tìm thấy index nên sử dụng lưới _lstTariff để làm tiền đề
+					if (flag_notIsCheck) {
+						let isCheckFil = _lstTariff.findIndex(p => p.CurrencyCode == currencyID);
+						if (isCheckFil > -1) {
+							dtStardard.rows('.selected').nodes().to$().removeClass('selected');
+							//Clear
+							tblStandard.dataTable().fnClearTable();
+							//Filter
+							var filData = _lstTariff.filter(item => item.CurrencyCode == currencyID);
+							//Add
+							tblStandard.dataTable().fnAddData(filData);
+						} else {
+							tblStandard.dataTable().fnClearTable();
+						}
+						//Thoilc(*Note)-Lọc mảng lại không trùng nhau, do sử dụng for...for nên bị dup
+						let clsDup = [...new Set(countArr)];
+						for (let j = 0; j < clsDup.length; j++) {
+							dtStardard.rows(j).nodes().to$().addClass('selected');
+						}
+					}
+				}
+			} else {
+				toastr["info"]("Vui lòng chọn mẫu cước trước khi thao tác!");
+				return;
+			}
+		}
+	});
+</script>
+<script src="/assets/vendors/bootstrap-select/dist/js/bootstrap-select.min.js"></script>

@@ -4,7 +4,7 @@ var cancelEditorType = ["button", "checkbox"];
 $.fn.editableTableWidget = function (options) {
 	'use strict';
 	return $(this).each(function () {
-		
+
 		function getCusortPositionDiv(editableDiv) {
 			var editableDiv = editableDiv[0];
 			var caretPos = 0,
@@ -32,7 +32,7 @@ $.fn.editableTableWidget = function (options) {
 		}
 
 		function getCusortPositionInput(oField) {
-			
+
 			var oField = oField[0];
 			var iCaretPos = 0;
 			if (document.selection) {
@@ -81,10 +81,10 @@ $.fn.editableTableWidget = function (options) {
 			if (activeElement !== this) return false;
 			active = $(this);
 			if (editor.length <= 0)
-			editor = $("#editor-input");
+				editor = $("#editor-input");
 			if (element.length <= 0)
-			element = $('td.focus').closest('table');
-			window.tbl_active=active;
+				element = $('td.focus').closest('table');
+			window.tbl_active = active;
 			var thCurrent = $(this).closest("table").find('th:eq(' + active.index() + ')');
 			if (thCurrent.hasClass('editor-cancel') || $(this).hasClass('editor-cancel') || $(this).closest('tr').hasClass('editor-cancel')) return false;
 			if (editor.is(":visible")) {
@@ -93,7 +93,7 @@ $.fn.editableTableWidget = function (options) {
 
 				editor.hide();
 			}
-			
+
 			if (e.type == "touchend") {
 				if (editor.length <= 0) {
 					$("body").append("<input id='editor-input' value=\"" + $(this).text() + "\">");
@@ -111,7 +111,6 @@ $.fn.editableTableWidget = function (options) {
 			}
 			var that = this;
 			setTimeout(() => {
-				console.log('$(this).outerHeight()', $(that).outerHeight())
 				editor.css({ height: $(that).outerHeight() });
 				editor.css({ width: $(that).outerWidth() });
 			}, 10)
@@ -126,7 +125,6 @@ $.fn.editableTableWidget = function (options) {
 
 				if ($(".dt-autofill-handle").length > 0)
 					$(".dt-autofill-handle").offset({ left: possibleMove.offset().left + possibleMove.outerWidth() - $(".dt-autofill-handle").outerWidth(), top: possibleMove.offset().top + possibleMove.outerHeight() - $(".dt-autofill-handle").outerHeight() });
-				////console.log('stop9');
 				e.preventDefault();
 				e.stopPropagation();
 				return false;
@@ -155,19 +153,17 @@ $.fn.editableTableWidget = function (options) {
 			editor = activeOptions.editor.css({ "position": "absolute", "z-index": "2" }).hide().appendTo(element.parent()),
 			active,
 			showEditor = function (select, keyInput) {
-				active=element.find('td.focus');
+				active = element.find('td.focus');
 				var tbl = $(active).closest('table').DataTable();
-				editor=element.parent().find('> input').first();
+				editor = element.parent().find('> input').first();
 				editor.val('');
-				console.log('active::',editor,element,element.DataTable().init().columnDefs,element.DataTable().init().columnDefs[active.closest("table").DataTable().cell(active).index().column]);
-				if(element.DataTable().init().columnDefs[active.closest("table").DataTable().cell(active).index().column]){
+				if (element.DataTable().init().columnDefs[active.closest("table").DataTable().cell(active).index().column]) {
 					var defaultValue = element.DataTable().init().columnDefs[active.closest("table").DataTable().cell(active).index().column].defaultValue;
 					if (!tbl.cell(active).data()) {
 						tbl.cell(active).data(defaultValue)
 					}
 
 					var maxlength = element.DataTable().init().columnDefs[active.closest("table").DataTable().cell(active).index().column].maxLength;
-					//console.log(maxlength);
 					editor.removeAttr('maxlength');
 					if (maxlength)
 						editor.attr('maxlength', maxlength);
@@ -188,7 +184,7 @@ $.fn.editableTableWidget = function (options) {
 					if (inputmask != undefined)
 						editor.inputmask(inputmask);
 				}
-				
+
 
 
 
@@ -212,7 +208,7 @@ $.fn.editableTableWidget = function (options) {
 								dateFormat: 'yy-mm-dd',
 								timeFormat: 'HH:mm:ss',
 								timeInput: true,
-								minDate: header.hasClass('disable-past-dates')?(new Date()):undefined,
+								minDate: header.hasClass('disable-past-dates') ? (new Date()) : undefined,
 								onClose: function () {
 									editor.trigger('blur');
 									editor.hide();
@@ -228,7 +224,7 @@ $.fn.editableTableWidget = function (options) {
 								oneLine: true,
 								dateFormat: 'yy-mm-dd',
 								timeInput: true,
-								minDate: header.hasClass('disable-past-dates')?(new Date()):undefined,
+								minDate: header.hasClass('disable-past-dates') ? (new Date()) : undefined,
 								onClose: function () {
 									editor.trigger('blur');
 									editor.hide();
@@ -258,7 +254,6 @@ $.fn.editableTableWidget = function (options) {
 						var cdata = (tbl.cell(active).data() || '');
 
 						var opts = list.map((item) => {
-							////console.log(cdata,"----",item.value);
 							return `<option value="` + item.value + `" ` + (cdata.split(',').indexOf(item.value) == -1 ? '' : 'selected') + `>` + item.label + `</option>`;
 						}).join('');
 						var select2m = $(`<span class="multiple_select_box CICO"><select multiple id="${idm}">${opts}</select></span>`);
@@ -269,7 +264,7 @@ $.fn.editableTableWidget = function (options) {
 						editor = editor.select2();
 						editor = editor.closest('.multiple_select_box').find('.select2');
 						editor.attr('id', idm + '_sl');
-						setTimeout(()=>{editor.find('input').focus();$("#" + idm).select2('open');},100);
+						setTimeout(() => { editor.find('input').focus(); $("#" + idm).select2('open'); }, 100);
 						$("#" + idm).on('change', function () {
 							if (!$(active).closest('tr').hasClass('addnew')) $(active).closest('tr').addClass('editing');
 							tbl.cell(active).data($("#" + idm).val().join(',')).draw(false);
@@ -281,25 +276,21 @@ $.fn.editableTableWidget = function (options) {
 					if (header.hasClass('autocomplete')) {
 						var tblID = header.closest("table").attr("id"),
 							tableHeader = active.closest("table").parent().prev().find('table');
-						////console.log(typeof element.DataTable().init().columnDefs[active.closest("table").DataTable().cell(active).index().column].list,'==============================');
 						if (tableHeader) {
-							////console.log(element.DataTable().init().columnDefs[active.index()]);
-							var srcAttr = tableHeader.find("th:eq(" + active.index() + ")").attr("select-source") || JSON.stringify(element.DataTable().init().columnDefs[active.index()].list) || '[]';
+							var srcAttr = tableHeader.find("th:eq(" + active.index() + ")").attr("select-source")
+								|| JSON.stringify(element.DataTable().init().columnDefs.filter(def => [def.targets].flat(2).indexOf(active.index()) >= 0)[0]?.list || []) || '[]';
 							var src = srcAttr ? JSON.parse(srcAttr) : [];
 							var isArr = $.isArray(src);
 							var compeleteSrc = !isArr ? Object.values(src) : src;
-							////console.log(element.DataTable().init().columnDefs[active.closest("table").DataTable().cell(active).index().column].list,'==============================');
 							if ($.isArray(element.DataTable().init().columnDefs[active.closest("table").DataTable().cell(active).index().column].list)) {
 								compeleteSrc = element.DataTable().init().columnDefs[active.closest("table").DataTable().cell(active).index().column].list
 							}
 							if (typeof element.DataTable().init().columnDefs[active.closest("table").DataTable().cell(active).index().column].list == 'function') {
 								let rowdata = (tbl.row(active.closest('tr')).data() || '');
 								compeleteSrc = element.DataTable().init().columnDefs[active.closest("table").DataTable().cell(active).index().column].list;
-								//console.log('element.DataTable().init().columnDefs[active.closest("table").DataTable().cell(active).index().column].list(rowdata)',element.DataTable().init().columnDefs[active.closest("table").DataTable().cell(active).index().column].list(rowdata));
-								if(element.DataTable().init().columnDefs[active.closest("table").DataTable().cell(active).index().column].list(rowdata))
-								compeleteSrc = element.DataTable().init().columnDefs[active.closest("table").DataTable().cell(active).index().column].list(rowdata);
+								if (element.DataTable().init().columnDefs[active.closest("table").DataTable().cell(active).index().column].list(rowdata))
+									compeleteSrc = element.DataTable().init().columnDefs[active.closest("table").DataTable().cell(active).index().column].list(rowdata);
 							}
-							//console.log(element,element.DataTable().init().columnDefs[active.closest("table").DataTable().cell(active).index().column].list,compeleteSrc);					
 							editor.autocomplete({
 								source: compeleteSrc,
 								minLength: 0,
@@ -318,19 +309,16 @@ $.fn.editableTableWidget = function (options) {
 								// }
 							});
 							editor.show();
-							setTimeout(() => { if(editor && editor.autocomplete) editor.autocomplete("search", ''); }, 10);
+							setTimeout(() => { if (editor && editor.autocomplete) editor.autocomplete("search", ''); }, 10);
 
-							editor.on('autocompleteselect', function (e, ui) {
+							editor.off('autocompleteselect').on('autocompleteselect', function (e, ui) {
 								var tbl = $(active).closest('table').DataTable();
 								if (!$(active).closest('tr').hasClass('addnew')) $(active).closest('tr').addClass('editing');
-								console.log(ui);
-								////console.log('ui.item.rowData',element.DataTable().columns().context[0].aoColumns[0].name,$(active).closest('tr').find('td:first-child').text());
 								if (ui.item.rowData != undefined) {
 
 									var rowx = $(active).closest('tr').index();
 									if (element.DataTable().columns().context[0].aoColumns[0].name == 'STT')
 										ui.item.rowData['STT'] = $(active).closest('tr').find('td:first-child').text();
-									////console.log(ui.item.rowData,rowx);
 									tbl.row($(active).closest('tr')).data(Object.assign(tbl.row($(active).closest('tr')).data(), ui.item.rowData)).draw(false);
 								}
 								else
@@ -338,6 +326,7 @@ $.fn.editableTableWidget = function (options) {
 								if (editor.data('ui-autocomplete') != undefined) {
 									editor.autocomplete("destroy");
 								}
+								active.trigger('change');
 								editor.removeData('autocomplete');
 								editor.hide();
 							});
@@ -389,7 +378,7 @@ $.fn.editableTableWidget = function (options) {
 				}
 			},
 			setActiveText = function () {
-				if(!active)active=window.tbl_active;
+				if (!active) active = window.tbl_active;
 				var text = editor.val(),
 					evt = $.Event('change'),
 					originalContent;
@@ -404,17 +393,13 @@ $.fn.editableTableWidget = function (options) {
 			},
 			movement = function (element, keycode) {
 
-				//console.log(getCusortPositionInput(editor),editor.val().length,"-------------------log-------")
 				var cpos = getCusortPositionInput(editor);
 				if (keycode === ARROW_RIGHT) { cpos += 1 }
 				if (keycode === ARROW_LEFT) { cpos -= 1 }
-				//console.log(keycode, cpos);
 				if (keycode === ARROW_RIGHT && cpos > editor.val().length) {
-					//console.log('next');
 					editor.trigger('blur').hide();
 					return element.next('td');
 				} else if (keycode === ARROW_LEFT && cpos < 0) {
-					//console.log('back');
 					editor.trigger('blur').hide();
 					return element.prev('td');
 				} else if (keycode === ARROW_UP && !editor.hasClass('ui-autocomplete-input')) {
@@ -481,27 +466,9 @@ $.fn.editableTableWidget = function (options) {
 			if (e.which === ENTER) {
 				setActiveText();
 				var str = editor.is('select') ? '<input class="hidden-input" value="' + editor.val() + '"/>' + editor.find(':selected').text() : editor.val();
-
 				var tbl = $(active).closest('table').DataTable();
 
 				str = str ? str.trim() : "";
-				////console.log(editor.data(),'editor.data()');
-
-				// if(editor.data('ui-autocomplete')){
-				// 	var atcplSource = editor.data('ui-autocomplete').options.source;
-				// 	if(atcplSource && atcplSource.length > 0){
-				// 		if(atcplSource.indexOf(str) < 0 && atcplSource.indexOf(str.toUpperCase()) < 0){
-				// 			//window.message["error"]("Dữ liệu nhập vào không đúng!");
-				// 			$(active).addClass("error");
-				// 			tbl.cell(active).data("");
-				// 			editor.hide();
-
-				// 			active.focus();
-
-				// 			return;
-				// 		}
-				// 	}
-				// }
 
 				$(active).removeClass("error");
 
@@ -525,12 +492,10 @@ $.fn.editableTableWidget = function (options) {
 				}
 
 				editor.hide();
-				//console.log('stop8');
 				e.preventDefault();
 				e.stopPropagation();
 			} else if (e.which === ESC) {
 				editor.val(active.text());
-				//console.log('stop9');
 				e.preventDefault();
 				e.stopPropagation();
 				editor.hide();
@@ -580,13 +545,11 @@ $.fn.editableTableWidget = function (options) {
 				}
 
 				editor.hide();
-				//console.log('swopx');
 				e.preventDefault();
 				e.stopPropagation();
 			} else if (e.which === ARROW_LEFT || e.which === ARROW_UP || e.which === ARROW_RIGHT || e.which === ARROW_UP) {
 				var keycode = e.keycode || e.which;
 				var possibleMove = movement(active, keycode);
-				console.log('possibleMove.length', keycode, possibleMove.length);
 				if (possibleMove.length == 0) {
 					return false;
 				}
@@ -610,7 +573,6 @@ $.fn.editableTableWidget = function (options) {
 								$(active).addClass("error");
 								tbl.cell(active).data("");
 								if ((keycode == 39 || keycode == 37) && editor.hasClass('ui-autocomplete-input')) {
-									//console.log("hide");
 									editor.hide();
 								}
 
@@ -639,9 +601,7 @@ $.fn.editableTableWidget = function (options) {
 					if (!crow.hasClass("addnew")) {
 						crow.addClass("editing");
 					}
-					//console.log("stoped");
 					if ((keycode == 39 || keycode == 37) && editor.hasClass('ui-autocomplete-input')) {
-						//console.log("hide");
 						editor.hide();
 					}
 					active.closest('table').find('td.focus').removeClass('focus');
@@ -651,7 +611,6 @@ $.fn.editableTableWidget = function (options) {
 
 				var possibleMove = movement(active, e.which);
 				if (possibleMove.length > 0) {
-					//console.log('hhhh');
 					e.preventDefault();
 					e.stopPropagation();
 				}
@@ -659,30 +618,22 @@ $.fn.editableTableWidget = function (options) {
 		})
 			.on('input paste keydown', function (e) {
 				active = $("td.focus");
-				//var editor = $("#editor-input");
-				// var tbl = $(active).closest('table').DataTable();
-				// tbl.cell(active).data(editor.val()).draw(false);
 
 				var keycode = e.keycode || e.which;
-				//console.log(keycode);
 				var possibleMove = movement(active, keycode);
-				//console.log("possibleMove.length", possibleMove.length);
 				if (possibleMove.length == 0) {
 					if ((keycode >= 35 && keycode <= 40) || keycode == 9) {
 						var cpos = getCusortPositionInput(editor);
 						if (keycode === ARROW_RIGHT) { cpos += 1 }
 						if (keycode === ARROW_LEFT) { cpos -= 1 }
-						//console.log("kdown keycode",editor.val().length,cpos);
 						if (keycode === ARROW_LEFT && editor.val().length > 0 && cpos >= 0) {
 							showEditor(false);
 							setInputPosition(editor.attr('id'), cpos);
-							//showEditor(false);
 							return true;
 						}
 						if (keycode === ARROW_RIGHT && editor.val().length >= cpos) {
 							showEditor(false);
 							setInputPosition(editor.attr('id'), cpos);
-							//showEditor(false);
 							return true;
 						}
 						if (editor.hasClass("ui-autocomplete-input")) {
@@ -706,14 +657,12 @@ $.fn.editableTableWidget = function (options) {
 						}
 						// Ensure that it is a number and stop the keypress
 						if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-							//console.log('stop3');
 							e.preventDefault();
 							return;
 						}
 					} else if (e.type == "paste") {
 						var tempval = e.originalEvent.clipboardData.getData('Text').replace(',', '');
 						editor.val($.isNumeric(tempval) ? tempval : "");
-						//console.log('stop4');
 						e.preventDefault();
 						return;
 					}
@@ -750,18 +699,13 @@ $.fn.editableTableWidget = function (options) {
 				editorID = thCurrent.attr('class').match(/editor-(.*) (.*)/),
 				editTag = '',
 				keyInput = '';
-			//console.log(e.type,thCurrent.attr('class'))
 			if (e.type == "keypress") {
 
 				if (thCurrent.hasClass('editor-cancel') || tdActive.hasClass('editor-cancel') || tdActive.closest('tr').hasClass('editor-cancel')) return;
 
 				if (thCurrent.hasClass('data-type-numeric') && !$.isNumeric(e.originalEvent.key)) {
-					//console.log('stop6');
 					e.preventDefault();
 					return;
-				}
-				else {
-					//console.log(tdActive.index(),thCurrent.hasClass('data-type-numeric'),thCurrent,"thCurrent");
 				}
 
 				keyInput = e.originalEvent.key;
@@ -790,11 +734,9 @@ $.fn.editableTableWidget = function (options) {
 			//return false;
 			if (e.type == "paste") {
 				var tempval = e.originalEvent.clipboardData.getData('Text').replace(',', '');
-				//console.log(tempval);
 			}
-			//console.log(e,"log2");
-			//$('td.focus').last().click();
 			element = $('td.focus').closest('table');
+
 			if (element == undefined) return false;
 			var prevent = false,
 				tdActive = element.find('td.focus'),
@@ -843,7 +785,6 @@ $.fn.editableTableWidget = function (options) {
 			}
 
 			if (prevent) {
-				//console.log("=================================================");
 				e.stopPropagation();
 				e.preventDefault();
 			}
@@ -861,7 +802,7 @@ $.fn.editableTableWidget = function (options) {
 		});
 
 		$.pasteCell(function (e) {
-
+			console.log('======', e);
 			var tdActive = element.find('td.focus'),
 				thCurrent = element.find('th:eq(' + tdActive.index() + ')'),
 				editorID = thCurrent.attr('class').match(/editor-(.*) (.*)/),
@@ -924,7 +865,7 @@ $.fn.editableTableWidget = function (options) {
 		function fillValues(rowIndex, colIndex, val) {
 			val = !val ? "" : val;
 			val = val.trim().replace("\r\n|\r|\n|\t", "");
-			
+
 			var tdActive = element.find('tbody tr:eq(' + rowIndex + ') td:eq(' + colIndex + ')'),
 				thCurrent = element.find('th:eq(' + colIndex + ')'),
 				editorID = thCurrent.attr('class').match(/editor-(.*) (.*)/),
@@ -949,7 +890,7 @@ $.fn.editableTableWidget = function (options) {
 
 			if ((thCurrent.hasClass('data-type-date') || thCurrent.hasClass('data-type-datetime')) && !$.isDateValid(val)) return;
 			element.DataTable().cell(tdActive).data(val);
-			if(!element.find('tbody tr:eq(' + rowIndex + ')').hasClass('addnew'))
+			if (!element.find('tbody tr:eq(' + rowIndex + ')').hasClass('addnew'))
 				element.find('tbody tr:eq(' + rowIndex + ')').addClass('editing');
 			// tdActive.focus();
 			return true;

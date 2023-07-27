@@ -1,408 +1,639 @@
 <%- include('header') -%>
 <style>
-    .scanfcode_googel_cnt {
-        width: 100%;
-        padding: 0;
-        background-color: #fff;
-        box-shadow: 0 1px 2px 1px #ccc;
-        height: 45px;
-    }
+	.scanfcode_googel_cnt {
+		width: 100%;
+		padding: 0;
+		background-color: #fff;
+		box-shadow: 0 1px 2px 1px #ccc;
+		height: 45px;
+	}
 
-    .scanfcode_googel_cnt:hover,
-    input.google_in:focus {
-        box-shadow: 0 2px 6px 2px #ccc;
-    }
+	.scanfcode_googel_cnt:hover,
+	input.google_in:focus {
+		box-shadow: 0 2px 6px 2px #ccc;
+	}
 
-    .scanfcode_googel_cnt input {
-        border: solid 0 lightgray;
-        width: 100%;
-        height: 45px;
-        padding: 0 20px;
-        font-size: 25px;
-    }
+	.scanfcode_googel_cnt input {
+		border: solid 0 lightgray;
+		width: 100%;
+		height: 45px;
+		padding: 0 20px;
+		font-size: 25px;
+	}
 
-    .col-centered {
-        float: none;
-        margin: 0 auto;
-    }
+	.col-centered {
+		float: none;
+		margin: 0 auto;
+	}
 
-    .btn {
-        transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-    }
+	.btn {
+		transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+	}
 
-    .btn-default {
-        background: -webkit-gradient(linear, left top, left bottom, color-stop(0, rgb(243, 243, 243)), color-stop(1, rgb(225, 225, 225))) !important;
-        background: -moz-linear-gradient(center top, rgb(243, 243, 243) 0%, rgb(225, 225, 225) 100%) !important;
-    }
+	.btn-default {
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0, rgb(243, 243, 243)), color-stop(1, rgb(225, 225, 225))) !important;
+		background: -moz-linear-gradient(center top, rgb(243, 243, 243) 0%, rgb(225, 225, 225) 100%) !important;
+	}
 
-    .tabs-line.tabs-line-5x .nav-link {
-        border-bottom-width: 5px !important;
-    }
+	.tabs-line.tabs-line-5x .nav-link {
+		border-bottom-width: 5px !important;
+	}
 
-    .nav-tabs .nav-link.active {
-        background-color: transparent !important;
-    }
+	.nav-tabs .nav-link.active {
+		background-color: transparent !important;
+	}
 
-    .submit_3 {
-        cursor: pointer;
-    }
+	.submit_3 {
+		cursor: pointer;
+	}
 
-    label.font-bold {
-        border-bottom: dashed 1px #e0d39b;
-        font-size: 13px;
-        overflow: hidden;
-        white-space: nowrap;
-    }
+	label.font-bold {
+		color: #301b9e;
+		border-bottom: dashed 1px #e0d39b;
+		/* font-size: 13px; */
+		overflow: hidden;
+		white-space: nowrap;
+	}
 
-    .shadow-box {
-        -webkit-box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.15) !important;
-        -moz-box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.15) !important;
-        box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.15) !important;
-    }
+	li.font-bold {
+		border-bottom: dashed 1px #e0d39b;
+		/* font-size: 13px; */
+		overflow: hidden;
+		white-space: nowrap;
+	}
 
-    #cont-details {
-        -webkit-box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.15) !important;
-        -moz-box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.15) !important;
-        box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.15) !important;
-        background: rgb(252, 255, 244);
-        /* Old browsers */
-        background: -moz-linear-gradient(top, rgba(252, 255, 244, 1) 0%, rgba(233, 233, 206, 1) 100%);
-        /* FF3.6-15 */
-        background: -webkit-linear-gradient(top, rgba(252, 255, 244, 1) 0%, rgba(233, 233, 206, 1) 100%);
-        /* Chrome10-25,Safari5.1-6 */
-        background: linear-gradient(to bottom, rgba(252, 255, 244, 1) 0%, rgba(233, 233, 206, 1) 100%);
-        /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fcfff4', endColorstr='#e9e9ce', GradientType=0);
-        /* IE6-9 */
-    }
+	.shadow-box {
+		-webkit-box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.15) !important;
+		-moz-box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.15) !important;
+		box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.15) !important;
+	}
 
-    .flex-height {
-        height: 90vh !important;
-    }
+	#cont-details {
+		-webkit-box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.15) !important;
+		-moz-box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.15) !important;
+		/* box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.15) !important; */
+		/* background: rgb(252, 255, 244); */
+		/* Old browsers */
+		/* background: -moz-linear-gradient(top, rgba(252, 255, 244, 1) 0%, rgba(233, 233, 206, 1) 100%); */
+		/* FF3.6-15 */
+		/* background: -webkit-linear-gradient(top, rgba(252, 255, 244, 1) 0%, rgba(233, 233, 206, 1) 100%); */
+		/* Chrome10-25,Safari5.1-6 */
+		/* background: linear-gradient(to bottom, rgba(252, 255, 244, 1) 0%, rgba(233, 233, 206, 1) 100%); */
+		/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fcfff4', endColorstr='#e9e9ce', GradientType=0);
+		/* IE6-9 */
+	}
 
-    .flex-pdtop {
-        padding-top: 10% !important;
-    }
+	.flex-height {
+		height: 95vh !important;
+	}
 
-    .google_in::-moz-placeholder {
-        font-size: 15px;
-        font-style: italic;
-    }
+	.flex-pdtop {
+		padding-top: 10% !important;
+	}
 
-    .google_in::-webkit-input-placeholder {
-        font-size: 15px;
-        font-style: italic;
-    }
+	.google_in::-moz-placeholder {
+		font-size: 15px;
+		font-style: italic;
+	}
 
-    .google_in:-ms-input-placeholder {
-        font-size: 15px;
-        font-style: italic;
-    }
+	.google_in::-webkit-input-placeholder {
+		font-size: 15px;
+		font-style: italic;
+	}
 
-    .search-box h2 {
-        font-size: 30px;
-        letter-spacing: -1px;
-        color: #DFBF84;
-        text-transform: uppercase;
-        text-shadow: 1px 1px 0 #000;
-        margin: 10px 0 24px;
-        text-align: center;
-        line-height: 50px;
-    }
+	.google_in:-ms-input-placeholder {
+		font-size: 15px;
+		font-style: italic;
+	}
+
+	.search-box h2 {
+		font-size: 30px;
+		letter-spacing: -1px;
+		color: #DFBF84;
+		text-transform: uppercase;
+		text-shadow: 1px 1px 0 #000;
+		margin: 10px 0 24px;
+		text-align: center;
+		line-height: 50px;
+	}
 </style>
 
 <div class="row">
-    <div class="col-xl-12">
-        <div class="ibox mb-2 pb-2 header-box shadow-box flex-height">
-            <div class="col-lg-6 col-md-6 col-sm-8 col-xs-12 col-centered">
-                <div class="ibox-body p-3 flex-pdtop search-box">
-                    <h2 class="text-center font-bold pb-4" style="color: navy">TRA CỨU THÔNG TIN</h2>
-                    <ul class="nav nav-tabs tabs-line tabs-line-5x tabs-line-danger" style="font-size: 14px">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#tab-12-1" data-value="cont" data-toggle="tab"><i class="mr-2"></i>Số PINCODE</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#tab-12-2" data-value="bill" data-toggle="tab"><i class="mr-2"></i>Số Vận Đơn</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#tab-12-3" data-value="booking" data-toggle="tab"><i class="mr-2"></i>Số Booking</a>
-                        </li>
-                    </ul>
-                    <div class="input-group-icon input-group-icon-right form-control-rounded">
-                        <span class="input-icon input-icon-right text-primary submit_3" id="search"><i class="ti-search font-bold" style="font-size: 15px"></i></span>
-                        <div class="scanfcode_googel_cnt">
-                            <input class="google_in search_3" placeholder="Nhập thông tin tìm kiếm ..." />
-                        </div>
-                    </div>
+	<div class="col-xl-12">
+		<div class="ibox mb-2 pb-2 header-box shadow-box flex-height">
+			<div class="col-lg-6 col-md-6 col-sm-8 col-xs-12 col-centered">
+				<div class="ibox-body p-3 flex-pdtop search-box">
+					<h2 class="text-center font-bold pb-4" style="color: navy">TRA CỨU THÔNG TIN</h2>
+					<ul class="nav nav-tabs tabs-line tabs-line-5x tabs-line-danger" style="font-size: 14px">
+						<li class="nav-item">
+							<a class="nav-link active" href="#tab-12-1" data-value="pincode" data-toggle="tab"><i class="mr-2"></i>Số Pincode</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#tab-12-2" data-value="bill" data-toggle="tab"><i class="mr-2"></i>Số Vận Đơn</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#tab-12-3" data-value="booking" data-toggle="tab"><i class="mr-2"></i>Số Booking</a>
+						</li>
+					</ul>
+					<div class="input-group-icon input-group-icon-right form-control-rounded">
+						<span class="input-icon input-icon-right text-primary submit_3" id="search"><i class="ti-search font-bold" style="font-size: 15px"></i></span>
+						<div class="scanfcode_googel_cnt">
+							<input class="google_in search_3" placeholder="Nhập thông tin tìm kiếm ..." />
+						</div>
+					</div>
+					<!-- <h4 class="hiden-input booking-error col-form-label text-center pb-4 mt-5"><span style="color: red;">Số booking không tồn tại! Vui lòng thử lại</span></h4>
+					<h4 class="hiden-input cont-error col-form-label text-center pb-4 mt-5"><span style="color: red;">Số PINCODE không tồn tại ! Vui lòng thử lại</span></h4>
+					<h4 class="hiden-input bill-error col-form-label text-center pb-4 mt-5"><span style="color: red;">Số vận đơn không tồn tại! Vui lòng thử lại</span></h4> -->
+				</div>
+			</div>
 
-                    <h4 class="hiden-input booking-error col-form-label text-center pb-4 mt-5"><span style="color: red;">Số booking không tồn tại! Vui lòng thử lại</span></h4>
-                    <h4 class="hiden-input cont-error col-form-label text-center pb-4 mt-5"><span style="color: red;">Số PINCODE không tồn tại ! Vui lòng thử lại</span></h4>
-                    <h4 class="hiden-input bill-error col-form-label text-center pb-4 mt-5"><span style="color: red;">Số vận đơn không tồn tại! Vui lòng thử lại</span></h4>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-12 hiden-input content">
-        <div class="ibox shadow-box">
-            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 col-centered">
-                <div class="ibox-body p-0 mt-2">
-                    <div class="text-center">
-                        <nav aria-label="Page navigation example" style="display: inline-block; margin: 0 auto">
-                            <ul class="pagination hiden-input">
-                            </ul>
-                        </nav>
-                    </div>
-                    <div class="row border-e p-2 hiden-input pb-2 mb-2" id="cont-details">
-                        <div style="width: 100%; font-size: 25px;">
-                            <p class="text-center" id="cTLHQ" style="color: #301b9e; font-weight: bold;">Chưa thanh lý Hải Quan</p>
-                        </div>
-                        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 col-centered">
-                            <div class="row form-group">
-                                <label class="col-sm-5 col-form-label">Kích cỡ</label>
-                                <label id="ISO_SZTP" class="col-sm-7 col-form-label font-bold">22GP</label>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-5 col-form-label">Trạng thái</label>
-                                <label id="CMStatus" class="col-sm-7 col-form-label font-bold">22GP</label>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-5 col-form-label">Vị trí bãi</label>
-                                <label id="cLocation" class="col-sm-7 col-form-label font-bold text-danger">22GP</label>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-5 col-form-label">Hướng</label>
-                                <label id="CntrClass" class="col-sm-7 col-form-label font-bold">22GP</label>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-5 col-form-label">Nội/ngoại</label>
-                                <label id="IsLocal" class="col-sm-7 col-form-label font-bold">22GP</label>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-5 col-form-label">Hàng/rỗng</label>
-                                <label id="Status" class="col-sm-7 col-form-label font-bold">22GP</label>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-5 col-form-label">Phương án vào</label>
-                                <label id="CJModeName" class="col-sm-7 col-form-label font-bold">22GP</label>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-5 col-form-label">POD</label>
-                                <label id="POD" class="col-sm-7 col-form-label font-bold">22GP</label>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-5 col-form-label">FPOD</label>
-                                <label id="FPOD" class="col-sm-7 col-form-label font-bold">22GP</label>
-                            </div>
-                        </div>
-                        <div class="col-lg-5 col-md-12 col-sm-12 col-xs-12 col-centered">
-                            <div class="form-group row">
-                                <label class="col-sm-5 col-form-label">Tàu chuyến</label>
-                                <label id="ShipInfo" class="col-sm-7 col-form-label font-bold">22GP</label>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-5 col-form-label">Ngày vào bãi</label>
-                                <label id="DateIn" class="col-sm-7 col-form-label font-bold">22GP</label>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-5 col-form-label">Ngày ra bãi</label>
-                                <label id="DateOut" class="col-sm-7 col-form-label font-bold">22GP</label>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-5 col-form-label">Hãng tàu</label>
-                                <label id="OprID" class="col-sm-7 col-form-label font-bold">22GP</label>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-5 col-form-label">Trọng lượng</label>
-                                <label id="CMDWeight" class="col-sm-7 col-form-label font-bold">22GP</label>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-5 col-form-label">Nhiệt độ</label>
-                                <label id="Temperature" class="col-sm-7 col-form-label font-bold">22GP</label>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-5 col-form-label">Số niêm chì</label>
-                                <label id="SealNo" class="col-sm-7 col-form-label font-bold">22GP</label>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-5 col-form-label">Quá khổ</label>
-                                <label id="OOG" class="col-sm-7 col-form-label font-bold">22GP</label>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-5 col-form-label">Nguy hiểm</label>
-                                <label id="ClassUno" class="col-sm-7 col-form-label font-bold ">22GP</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-10 col-sm-12 col-xs-12 table-responsive col-centered hiden-input" id="bb-details">
-                <table id="bill-book-details" class="table table-striped display table-bordered nowrap" cellspacing="0" style="width: 99.8%">
-                    <thead>
-                        <tr>
-                            <th>.No</th>
-                            <th>Cont.No</th>
-                            <th>Hãng tàu</th>
-                            <th>Kích cỡ</th>
-                            <th>Vị trí bãi</th>
-                            <th>Ngày vào bãi</th>
-                            <th>Ngày ra bãi</th>
-                            <th>Tình trạng Cntr</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+			<!-- Thoilc(*Note)-Giao diện hiển thị tra cứu thông tin-->
+			<div class="col-xl-12 content" id="trackingSelected">
+				<div class="ibox shadow-box" style="visibility: hidden">
+					<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 col-centered" id="bb-header" style="max-width: 99%;">
+						<div class="ibox-body p-0">
+							<div class="text-center">
+								<nav aria-label="Page navigation example" style="display: inline-block; margin: 0 auto">
+									<ul class="pagination">
+									</ul>
+								</nav>
+							</div>
+							<div class="row border-e p-2 pb-2 mb-2" id="cont-details" style="font-size: 18px;">
+								<!-- <div style="width: 100%; font-size: 25px;">
+									<p class="text-center" id="cBBNo" style="color: #301b9e; font-weight: bold;"></p>
+								</div> -->
+								<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 col-centered">
+									<div class="row form-group">
+										<label class="col-sm-5 col-form-label">Hàng hoá</label>
+										<label id="cItemName" class="col-sm-7 col-form-label font-bold"></label>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-5 col-form-label">Loại hàng</label>
+										<label id="cCargoTypeName" class="col-sm-7 col-form-label font-bold"></label>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-5 col-form-label">Hướng</label>
+										<label id="cClassID" class="col-sm-7 col-form-label font-bold text-danger"></label>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-5 col-form-label">Vị trí bãi</label>
+										<label id="cBlock" class="col-sm-7 col-form-label font-bold"></label>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-5 col-form-label">Nội/ngoại</label>
+										<label id="cIsLocalForeign" class="col-sm-7 col-form-label font-bold"></label>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-5 col-form-label">Số lượng</label>
+										<label id="cQuantity" class="col-sm-7 col-form-label font-bold"></label>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-5 col-form-label">Trọng lượng (Tấn)</label>
+										<label id="cMcWeight" class="col-sm-7 col-form-label font-bold"></label>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-5 col-form-label">Thể tích (m3)</label>
+										<label id="cVolume" class="col-sm-7 col-form-label font-bold"></label>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-5 col-form-label">Chủ hàng</label>
+										<label id="cCusName" class="col-sm-7 col-form-label font-bold"></label>
+									</div>
+								</div>
+								<div class="col-lg-5 col-md-12 col-sm-12 col-xs-12 col-centered">
+									<div class="form-group row">
+										<label class="col-sm-5 col-form-label">Tàu chuyến</label>
+										<label id="cVesselName" class="col-sm-7 col-form-label font-bold"></label>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-5 col-form-label">ETB/ETD</label>
+										<label id="cETBD" class="col-sm-7 col-form-label font-bold"></label>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-5 col-form-label">Phương án vào</label>
+										<label id="cJobModeIn" class="col-sm-7 col-form-label font-bold"></label>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-5 col-form-label">Phương thức vào</label>
+										<label id="cMethodIn" class="col-sm-7 col-form-label font-bold"></label>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-5 col-form-label">Ngày vào bãi</label>
+										<label id="cGetIn" class="col-sm-7 col-form-label font-bold"></label>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-5 col-form-label">Ngày ra bãi</label>
+										<label id="cGetOut" class="col-sm-7 col-form-label font-bold"></label>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-5 col-form-label">Phương án ra</label>
+										<label id="cJobModeOut" class="col-sm-7 col-form-label font-bold"></label>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-5 col-form-label">Phương thức ra</label>
+										<label id="cMethodOut" class="col-sm-7 col-form-label font-bold"></label>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-5 col-form-label">Thanh lý Hải Quan</label>
+										<!-- <label id="cTLHQ" class="col-sm-7 col-form-label font-bold colorTLHQ"></label> -->
+										<li id="cTLHQ" class="col-sm-7 col-form-label font-bold" style="list-style: none;"></li>
+									</div>
+								</div>
+							</div>
+							<div class="text-center">
+								<nav aria-label="Page navigation example" style="display: inline-block; margin: 0 auto">
+									<ul class="pagination">
+									</ul>
+								</nav>
+							</div>
+						</div>
+					</div>
+					<!-- Tìm kiếm theo số PINCODE -->
+					<div class="col-md-10 col-sm-12 col-xs-12 table-responsive col-centered pt-3" id="bb-details" style="visibility: hidden;">
+						<div class="text-center">
+							<nav aria-label="Page navigation example" style="display: none; margin: 0 auto;">
+								<ul class="pagination">
+								</ul>
+							</nav>
+						</div>
+						<table id="contenttable" class="table table-striped display nowrap" cellspacing="0" style="width: 99.8%"></table>
+						<div class="text-center">
+							<nav aria-label="Page navigation example" style="display: inline-block; margin: 0 auto">
+								<ul class="pagination">
+								</ul>
+							</nav>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
 </div>
 
 <script>
-    function exec() {
-        var form = document.getElementById("form");
-        form.submit();
-    }
-    $(document).ready(function() {
-        //        $("body").hasClass("drawer-sidebar") ? $("#sidebar").backdrop() : ($("body").toggleClass("sidebar-mini"), $("body").hasClass("sidebar-mini") || ($("#sidebar-collapse").hide(), setTimeout(function() {
-        //            $("#sidebar-collapse").fadeIn(300)
-        //        }, 200)));
+	function exec() {
+		var form = document.getElementById("form");
+		form.submit();
+	}
+	$(document).ready(function() {
+		//        $("body").hasClass("drawer-sidebar") ? $("#sidebar").backdrop() : ($("body").toggleClass("sidebar-mini"), $("body").hasClass("sidebar-mini") || ($("#sidebar-collapse").hide(), setTimeout(function() {
+		//            $("#sidebar-collapse").fadeIn(300)
+		//        }, 200)));
 
-        var _results = [];
-        $('#bill-book-details').DataTable();
+		var _columns = [{
+					width: "80px",
+					data: "STT",
+					title: "STT",
+					className: "text-center  editor-cancel",
+					targets: 0,
+					render: function(data, type, row, meta) {
+						return meta.row + 1;
+					},
+				},
+				{
+					data: "ParrentPinCode",
+					title: "Mã pin",
+					className: "text-center",
+					targets: 1
+				},
+				{
+					data: "JobModeName",
+					title: "Tác nghiệp",
+					className: "text-center",
+					targets: 2
+				},
+				{
+					data: "MethodName",
+					title: "Phương án",
+					className: "text-center",
+					targets: 3
+				},
+				{
+					data: "ShipperName",
+					title: "Chủ hàng",
+					className: "text-center",
+					targets: 4
+				},
+				{
+					data: "CusName",
+					title: "Đối tượng thanh toán",
+					className: "text-center",
+					targets: 5
+				},
+				{
+					data: "InvoiceNo",
+					title: "Số hoá đơn",
+					className: "text-center",
+					targets: 6
+				},
+				{
+					data: "PinCode",
+					title: "Số PinCode",
+					className: "text-center",
+					targets: 7
+				},
+				{
+					data: "BBNo",
+					title: "Số vận đơn/booking",
+					className: "text-center",
+					targets: 8
+				},
+				{
+					data: "CargoTypeName",
+					title: "Loại hàng",
+					className: "text-center",
+					targets: 9
+				},
+				{
+					data: "ItemName",
+					title: "Hàng hoá",
+					className: "text-center",
+					targets: 10
+				},
+				{
+					data: "Quantity",
+					title: "Số lượng",
+					className: "text-center",
+					targets: 11
+				},
+				{
+					data: "CargoWeight",
+					title: "Trọng lượng",
+					className: "text-center",
+					targets: 12
+				},
+				{
+					data: "Volume",
+					title: "Thể tích",
+					className: "text-center",
+					targets: 13
+				},
+				{
+					data: "UnitName",
+					title: "Đơn vị tính",
+					className: "text-center",
+					targets: 14
+				},
+				{
+					data: "TransitID",
+					title: "Loại hình",
+					className: "text-center",
+					targets: 15
+				},
+				{
+					data: "Remark",
+					title: "Ghi chú",
+					className: "text-center",
+					targets: 16
+				},
+				// { data: "CusName", name: "CusName", title: "Chủ hàng", className: "text-center autocomplete", targets: 3,list:[{value:0,label:"Nội bộ"},{value:1,label:"Thuê"}]},
+				{
+					data: "rowguid",
+					title: "rowguid",
+					visible: false,
+					targets: 17
+				},
+			],
+			tbl = $('#contenttable');
+		var dataTbl = tbl.newDataTable({
+			scrollY: '40vh',
+			columnDefs: _columns,
+			// data: dataList.map((itm, ii) => { return { ...itm, STT: ii + 1 } }),
+			// data: [],
+			order: [
+				[0, 'asc']
+			],
+			paging: false,
+			keys: true,
+			autoFill: {
+				focus: 'focus',
+			},
+			select: {
+				style: "single",
+				info: false,
+			},
+			buttons: [],
+			rowReorder: false,
+		});
+		var _results = [];
+		//		$('.btn-option button').on('click', function () {
+		//			if($(this).hasClass('btn-primary')) return;
+		//
+		//			$(this).parent().find('i').remove();
+		//			$(this).parent().find('.btn-primary').removeClass('btn-primary').addClass('btn-default');
+		//			$(this).removeClass('btn-default').addClass('btn-primary');
+		//			$(this).prepend('<i class="fa fa-check"></i>');
+		//		});
 
-        //		$('.btn-option button').on('click', function () {
-        //			if($(this).hasClass('btn-primary')) return;
-        //
-        //			$(this).parent().find('i').remove();
-        //			$(this).parent().find('.btn-primary').removeClass('btn-primary').addClass('btn-default');
-        //			$(this).removeClass('btn-default').addClass('btn-primary');
-        //			$(this).prepend('<i class="fa fa-check"></i>');
-        //		});
+		//Thoilc(*Note)-Event key-press
+		$('input.search_3').on('keypress', function(e) {
+			if (e.keyCode == 13) {
+				$('#search').trigger('click');
+			}
+		});
 
-        $('input.search_3').on('keypress', function(e) {
-            if (e.keyCode == 13) {
-                $('#search').trigger('click');
-            }
-        });
+		//Thoilc(*Note)-Khi người dùng thao tác thông tin tìm kiếm mới show dữ liệu
+		function showhiddenSubMain(ishow, opt) {
+			if (ishow == "show") {
+				if (opt == 'pincode') {
+					$(".shadow-box").css({
+						"visibility": "visible"
+					});
+					$("#bb-header").css("display", "none");
+					$("#bb-details").css("visibility", "visible");
+				} else {
+					$(".shadow-box").css({
+						"visibility": "visible"
+					});
+					$("#bb-header").css("display", "block");
+					$("#bb-details").css("visibility", "hidden");
+				}
+			} else if (ishow == "hidden") {
+				if (opt == 'pincode') {
+					$(".shadow-box").css("visibility", "hidden");
+					$("#bb-header").css("display", "none");
+					$("#bb-details").css("visibility", "hidden");
+				} else {
+					$(".shadow-box").css({
+						"visibility": "hidden"
+					});
+					$("#bb-header").css("display", "block");
+				}
+			}
+		}
 
-        $('#search').on('click', function() {
-            if (!$('.search_3').val()) return;
-            $('.content, .cont-error, .bill-error, .booking-error, #bb-details, #cont-details, ul.pagination').addClass('hiden-input');
-            $('.header-box').addClass('flex-height');
-            $('.search-box').addClass('flex-pdtop');
+		//Thoilc(*Note)-Clear dữ liệu khi thay đổi tab
+		$('.nav-link').on('click', function(e) {
+			if ($(this).attr('data-value') !== $('a.nav-link.active').attr('data-value')) {
+				$('.search_3').val("");
+			}
 
-            $('.ibox-body').removeClass('p-2');
-            var formdata = {
-                'opt': $('a.nav-link.active').attr('data-value'),
-                'checkval': $('.search_3').val()
-            };
-            $.ajax({
-                url: "home/tracking",
-                dataType: 'json',
-                data: formdata,
-                type: 'POST',
-                success: function(data) {
-                    _results = data.results;
-                    $('.content').removeClass('hiden-input');
+			if ($(this).attr('data-value') === 'bill' || $(this).attr('data-value') === 'booking') {
+				$("label#cItemName").html("");
+				$("label#cCargoTypeName").html("");
+				$("label#cClassID").html("");
+				$("label#cBlock").html("");
+				$("label#cIsLocalForeign").html("");
+				$("label#cQuantity").html("");
+				$("label#cMcWeight").html("");
+				$("label#cVolume").html("");
+				$("label#cCusName").html("");
+				$("label#cVesselName").html("");
+				$("label#cETBD").html("");
+				$("label#cGetIn").html("");
+				$("label#cGetOut").html("");
+				$("label#cJobModeIn").html("");
+				$("label#cMethodIn").html("");
+				$("label#cJobModeOut").html("");
+				$("label#cMethodOut").html("");
+				$("li#cTLHQ").html("");
+				$("#bb-details").css("visibility", "hidden");
+			} else {
+				$("#bb-header").css("display", "none");
+				$("#bb-details").css("visibility", "hidden");
+			}
+		});
 
-                    if (formdata.opt == "cont") {
-                        $('ul.pagination').html('');
-                        if (!_results || _results.length == 0) {
-                            $('.cont-error').removeClass('hiden-input');
-                        } else {
-                            if (_results.length > 1) {
-                                $('ul.pagination').removeClass('hiden-input');
-                                var pagepre = '<li class="page-item"><a class="page-link pre" href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a></li>';
-                                var pagenext = '<li class="page-item"><a class="page-link next" href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>';
-                                //								$('ul.pagination').html('').append(pagepre);
-                                for (var i = 1; i <= data.results.length; i++) {
-                                    $('ul.pagination').append('<li class="page-item"><a class="page-link page-' + i + '" href="#">' + i + '</a></li>');
-                                }
-                                //								$('ul.pagination').append(pagenext);
-                                $('ul.pagination li.page-item a.page-1').trigger('click');
-                            } else {
-                                loadContInfo(1);
-                            }
+		//Thoilc(*Note)-Load dữ liệu theo thông tin tìm kiếm
+		$('#search').on('click', function() {
+			if (!$('.search_3').val()) return;
+			// $('.content, .cont-error, .bill-error, .booking-error, #bb-details, #cont-details, ul.pagination').addClass('hiden-input');
+			$('.header-box').addClass('flex-height');
+			$('.search-box').addClass('flex-pdtop');
+			$('.ibox-body').removeClass('p-2');
+			showhiddenSubMain("show", $('a.nav-link.active').attr('data-value'));
+			var dataSend = {
+				'opt': $('a.nav-link.active').attr('data-value'),
+				'checkval': $('.search_3').val()
+			};
+			if (dataSend.opt === 'pincode') {
+				$.ajax({
+					url: "/getPinCode",
+					dataType: 'json',
+					data: dataSend,
+					type: 'POST',
+					success: function(dataGet) {
+						$("#contenttable").dataTable().fnClearTable();
+						let data = dataGet.data;
+						if (data.iStatus) {
+							let dataAll = data.iPayload;
+							toastr["success"](data.iMessage);
+							let arr = [];
+							dataAll.map(item => {
+								arr.push(item);
+							});
+							$('#contenttable').dataTable().fnAddData(arr);
+						} else {
+							toastr["info"](data.iMessage);
+							$("#contenttable").dataTable().fnClearTable();
+						}
+					},
+					error: function(err) {
+						toastr["error"](dataGet.data.iMessage);
+						// $('input#search').css('pointer-events', '');
+					}
+				});
+			} else {
+				$.ajax({
+					url: "/findData",
+					dataType: 'json',
+					data: dataSend,
+					type: 'POST',
+					success: function(dataGet) {
+						let data = dataGet.data;
+						if (data.iStatus) {
+							toastr["success"](data.iMessage);
+							// $("p#cBBNo").html(data.iPayload[0].BBNo);
+							$("label#cItemName").html(data.iPayload[0].ItemName);
+							$("label#cCargoTypeName").html(data.iPayload[0].CargoTypeName);
+							$("label#cClassID").html(data.iPayload[0].ClassID === 1 ? "Nhập" : "Xuất");
+							$("label#cBlock").html(data.iPayload[0].Block);
+							$("label#cIsLocalForeign").html(data.iPayload[0].IsLocalForeign === 'L' ? 'Nội' : 'Ngoại');
+							$("label#cQuantity").html(data.iPayload[0].Quantity || !data.iPayload[0].Quantity === 0 ? data.iPayload[0].Quantity : '');
+							$("label#cMcWeight").html(data.iPayload[0].McWeight || !data.iPayload[0].McWeight === 0 ? data.iPayload[0].McWeight : '');
+							$("label#cVolume").html(data.iPayload[0].Volume || !data.iPayload[0].Volume === 0 ? data.iPayload[0].Volume : '');
+							$("label#cCusName").html(data.iPayload[0].CusName);
+							$("label#cVesselName").html(data.iPayload[0].VesselName + " / " + data.iPayload[0].InboundVoyage + " / " + data.iPayload[0].OutboundVoyage);
+							$("label#cETBD").html(moment(data.iPayload[0].ETB).format("YYYY-MM-DD HH:mm:ss") + " / " + moment(data.iPayload[0].ETD).format("YYYY-MM-DD HH:mm:ss"));
+							$("label#cGetIn").html(data.iPayload[0].GetIn ? moment(data.iPayload[0].GetIn).format("YYYY-MM-DD HH:mm:ss") : '');
+							$("label#cGetOut").html(data.iPayload[0].GetOut ? moment(data.iPayload[0].GetOut).format("YYYY-MM-DD HH:mm:ss") : '');
+							$("label#cJobModeIn").html(data.iPayload[0].JobModeNameIN ? data.iPayload[0].JobModeNameIN : '');
+							$("label#cMethodIn").html(data.iPayload[0].MethodNameIN ? data.iPayload[0].MethodNameIN : '');
+							$("label#cJobModeOut").html(data.iPayload[0].JobModeNameOUT ? data.iPayload[0].JobModeNameOUT : '');
+							$("label#cMethodOut").html(data.iPayload[0].MethodNameOUT ? data.iPayload[0].MethodNameOUT : '');
+							if (data.iPayload[0].TLHQ) {
+								$("li#cTLHQ").html("Đã thanh lý").css("color", "green");
+								// $("label#cTLHQ").html("Đã thanh lý").addClass("colorTLHQ text-success");
+							} else {
+								$("li#cTLHQ").html("Chưa thanh lý").css("color", "red");
+								// $("label#cTLHQ").html("Chưa thanh lý").addClass("colorTLHQ text-danger");
+							}
+						} else {
+							toastr["info"](data.iMessage);
+							$("label#cItemName").html("");
+							$("label#cCargoTypeName").html("");
+							$("label#cClassID").html("");
+							$("label#cBlock").html("");
+							$("label#cIsLocalForeign").html("");
+							$("label#cQuantity").html("");
+							$("label#cMcWeight").html("");
+							$("label#cVolume").html("");
+							$("label#cCusName").html("");
+							$("label#cVesselName").html("");
+							$("label#cETBD").html("");
+							$("label#cGetIn").html("");
+							$("label#cGetOut").html("");
+							$("label#cJobModeIn").html("");
+							$("label#cMethodIn").html("");
+							$("label#cJobModeOut").html("");
+							$("label#cMethodOut").html("");
+							$("li#cTLHQ").html("");
+						}
+					},
+					error: function(err) {
+						toastr["error"](dataGet.data.iMessage);
+						// $('input#search').css('pointer-events', '');
+						// console.log(err);
+					}
+				});
+			}
+		});
 
-                            $('.header-box').removeClass('flex-height');
-                            $('.search-box').removeClass('flex-pdtop');
-                            $('#cont-details').removeClass('hiden-input');
-                            $('.ibox-body').addClass('p-2');
-                        }
-                    } else {
-                        if (!data.results || data.results.length == 0) {
-                            if (formdata.opt == "bill") {
-                                $('.bill-error').removeClass('hiden-input');
-                            } else {
-                                $('.booking-error').removeClass('hiden-input');
-                            }
-                        } else {
-                            var rows = [];
-                            if (data.results.length > 0) {
-                                $('.header-box').removeClass('flex-height');
-                                $('.search-box').removeClass('flex-pdtop');
-                                $('#bb-details').removeClass('hiden-input');
-                                $('.ibox-body').addClass('p-2');
-                                for (i = 0; i < data.results.length; i++) {
-                                    rows.push([
-                                        (i + 1), data.results[i].CntrNo, data.results[i].OprID, data.results[i].LocalSZPT, data.results[i].cLocation, getDateTime(data.results[i].DateIn), getDateTime(data.results[i].DateOut), data.results[i].CMStatus == 'B' ? 'Trên Tàu' : (data.results[i].CMStatus == 'I' ? 'Đang vào bãi' : ((data.results[i].CMStatus == 'S' ? 'Trên bãi' : 'Đã giao ra')))
-                                    ]);
-                                }
-                                $('#bill-book-details').DataTable({
-                                    data: rows,
-                                    order: [
-                                        [0, 'asc']
-                                    ],
-                                    columnDefs: [{
-                                        className: "text-center",
-                                        targets: [0, 2, 3, 4, 5, 6, 7]
-                                    }],
-                                    paging: false
-                                });
-                            }
-                        }
-                    }
-                },
-                error: function(err) {
-                    $('input#search').css('pointer-events', '');
-                    console.log(err);
-                }
-            });
-        });
+		$(document).on('click', 'ul.pagination li.page-item a', function() {
+			var idx = $(this).html();
+			if ($(this).hasClass('pre')) {
+				idx = parseInt($(this).closest('ul').find('.bg-info').html()) - 1;
+			}
+			if ($(this).hasClass('next')) {
+				idx = parseInt($(this).closest('ul').find('.bg-info').html()) + 1;
+			}
 
-        $(document).on('click', 'ul.pagination li.page-item a', function() {
-            var idx = $(this).html();
-            if ($(this).hasClass('pre')) {
-                idx = parseInt($(this).closest('ul').find('.bg-info').html()) - 1;
-            }
-            if ($(this).hasClass('next')) {
-                idx = parseInt($(this).closest('ul').find('.bg-info').html()) + 1;
-            }
+			if ($(this).hasClass('bg-info')) return;
+			$(this).closest('ul').find('.bg-info').removeClass('bg-info text-white');
+			$(this).addClass('bg-info text-white');
 
-            if ($(this).hasClass('bg-info')) return;
-            $(this).closest('ul').find('.bg-info').removeClass('bg-info text-white');
-            $(this).addClass('bg-info text-white');
+			loadContInfo(idx);
+		});
 
-            loadContInfo(idx);
-        });
-
-        function loadContInfo(idx) {
-            if (idx < 0 || idx > _results.length) return;
-            var critem = _results[idx - 1];
-            if (critem) {
-                $.each(critem, function(k, v) {
-                    $('#cont-details').find('#' + k).html(v);
-                });
-                $('label#CntrClass').html((critem.CntrClass == '1') ? "Nhập" : ((critem.CntrClass == '2') ? 'Lưu rỗng' : ((critem.CntrClass == '3') ? 'Xuất' : '')));
-                $('label#Status').html((critem.Status == 'F') ? "Hàng" : "Rỗng");
-                $('label#IsLocal').html((critem.Status == 'F') ? "Ngoại" : "Nội");
-                $('label#OOG').html((critem.OOG_TOP == 0 ? "0" : critem.OOG_TOP) + '/' + (critem.OOG_LEFT == 0 ? "0" : critem.OOG_LEFT) + '/' + (critem.OOG_RIGHT == 0 ? "0" : critem.OOG_RIGHT) + '/' +
-                    (critem.OOG_BACK == 0 ? "0" : critem.OOG_BACK) + '/' + (critem.OOG_FRONT == 0 ? "0" : critem.OOG_FRONT));
-                $('label#CMStatus').html((critem.CMStatus == 'S') ? "Stacking" : ((critem.CMStatus == 'D') ? 'Delivery' : ((critem.CMStatus == 'O') ? 'Outgoing' : ((critem.CMStatus == 'I') ? 'Incoming' : ((critem.CMStatus == 'R') ? 'Reserved' : ((critem.CMStatus == 'B') ? 'Baplie Reserved' : 'Remashalling'))))));
-                $('label#DateIn').html(getDateTime(critem.DateIn));
-                $('label#DateOut').html(getDateTime(critem.DateOut));
-            }
-        }
-    });
+		function loadContInfo(idx) {
+			if (idx < 0 || idx > _results.length) return;
+			var critem = _results[idx - 1];
+			if (critem) {
+				$.each(critem, function(k, v) {
+					$('#cont-details').find('#' + k).html(v);
+				});
+				$('label#CntrClass').html((critem.CntrClass == '1') ? "Nhập" : ((critem.CntrClass == '2') ? 'Lưu rỗng' : ((critem.CntrClass == '3') ? 'Xuất' : '')));
+				$('label#Status').html((critem.Status == 'F') ? "Hàng" : "Rỗng");
+				$('label#IsLocal').html((critem.Status == 'F') ? "Ngoại" : "Nội");
+				$('label#OOG').html((critem.OOG_TOP == 0 ? "0" : critem.OOG_TOP) + '/' + (critem.OOG_LEFT == 0 ? "0" : critem.OOG_LEFT) + '/' + (critem.OOG_RIGHT == 0 ? "0" : critem.OOG_RIGHT) + '/' +
+					(critem.OOG_BACK == 0 ? "0" : critem.OOG_BACK) + '/' + (critem.OOG_FRONT == 0 ? "0" : critem.OOG_FRONT));
+				$('label#CMStatus').html((critem.CMStatus == 'S') ? "Stacking" : ((critem.CMStatus == 'D') ? 'Delivery' : ((critem.CMStatus == 'O') ? 'Outgoing' : ((critem.CMStatus == 'I') ? 'Incoming' : ((critem.CMStatus == 'R') ? 'Reserved' : ((critem.CMStatus == 'B') ? 'Baplie Reserved' : 'Remashalling'))))));
+				$('label#DateIn').html(getDateTime(critem.DateIn));
+				$('label#DateOut').html(getDateTime(critem.DateOut));
+			}
+		}
+	});
 </script>
 <%- include('footer') -%>

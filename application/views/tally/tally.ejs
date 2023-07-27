@@ -1,72 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="referrer"
-      content="origin-when-crossorigin"
-      id="meta_referrer"
-    />
-    <meta
-      http-equiv="Cache-Control"
-      content="no-cache, no-store, must-revalidate"
-    />
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="origin-when-crossorigin" id="meta_referrer" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
 
-    <title>TALLY</title>
+    <title>
+        TALLY
+    </title>
     <!--    favicon-->
-    <link rel="icon" href="/assets/img/icons/favicon.ico" type="image/ico" />
+    <link rel="icon" href="/assets/img/icons/favicon.ico" type="image/ico">
     <!-- GLOBAL MAINLY STYLES-->
     <link href="/assets/vendors/jquery-ui/jquery-ui.css" rel="stylesheet" />
-    <link
-      href="/assets/vendors/bootstrap/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="/assets/vendors/font-awesome/css/font-awesome.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="/assets/vendors/line-awesome/css/line-awesome.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="/assets/vendors/themify-icons/css/themify-icons.css"
-      rel="stylesheet"
-    />
+    <link href="/assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="/assets/vendors/line-awesome/css/line-awesome.min.css" rel="stylesheet" />
+    <link href="/assets/vendors/themify-icons/css/themify-icons.css" rel="stylesheet" />
 
-    <link
-      href="/assets/vendors/jquery-confirm/jquery-confirm.min.css"
-      rel="stylesheet"
-    />
+    <link href="/assets/vendors/jquery-confirm/jquery-confirm.min.css" rel="stylesheet" />
 
     <!-- PLUGINS STYLES-->
-    <link
-      href="/assets/vendors/dataTables/datatables.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="/assets/vendors/dataTables/jquery.dataTables.min.css"
-      rel="stylesheet"
-    />
+    <link href="/assets/vendors/dataTables/datatables.min.css" rel="stylesheet" />
+    <link href="/assets/vendors/dataTables/jquery.dataTables.min.css" rel="stylesheet" />
     <!--    DATATABLES SCROLL-->
-    <link
-      href="/assets/vendors/dataTables/scroller.dataTables.min.css"
-      rel="stylesheet"
-    />
+    <link href="/assets/vendors/dataTables/scroller.dataTables.min.css" rel="stylesheet" />
 
-    <link
-      href="/assets/vendors/toastr/toastr.min.css"
-      rel="stylesheet"
-      type="text/css"
-    />
+    <link href="/assets/vendors/toastr/toastr.min.css" rel="stylesheet" type="text/css" />
 
     <!--    CUSTOMIZE FOR DATATABLES-->
     <link href="/assets/css/custom.datatables.css" rel="stylesheet" />
 
-    <link href="/assets/vendors/select2/css/select2.min.css" rel="stylesheet" />
+    <link href="/assets/vendors/select2/css/select2.min.css" rel="stylesheet">
 
     <!-- THEME STYLES-->
     <link href="/assets/css/main.min.css" rel="stylesheet" />
@@ -74,6 +42,7 @@
     <!-- PAGE LEVEL STYLES-->
 
     <!-- CORE PLUGINS-->
+    <script src="/socket.io/socket.io.js"></script>
     <script src="/assets/vendors/popper.js/dist/umd/popper.min.js"></script>
 
     <script src="/assets/vendors/jquery/dist/jquery.min.js"></script>
@@ -89,15 +58,9 @@
 
     <script src="/assets/js/contextmenu.js"></script>
 
-    <link
-      href="/assets/vendors/datetimepicker/jquery-ui-timepicker-addon.css"
-      rel="stylesheet"
-    />
+    <link href="/assets/vendors/datetimepicker/jquery-ui-timepicker-addon.css" rel="stylesheet" />
     <script src="/assets/vendors/datetimepicker/jquery-ui-timepicker-addon.js"></script>
-    <script
-      type="text/javascript"
-      src="/assets/vendors/select2/js/select2.full.min.js"
-    ></script>
+    <script type="text/javascript" src="/assets/vendors/select2/js/select2.full.min.js"></script>
     <!--    custom for eblling js-->
     <script src="/assets/js/ro2.js"></script>
     <script src="/assets/js/datatables.ext.js"></script>
@@ -107,42 +70,15 @@
 
     <!--    TABLES SCROLL-->
     <script src="/assets/vendors/dataTables/dataTables.scroller.min.js"></script>
-    <script
-      type="text/javascript"
-      src="/assets/vendors/dataTables/extensions/key_table.min.js"
-    ></script>
-    <script
-      type="text/javascript"
-      src="/assets/vendors/dataTables/extensions/mindmup-editabletable.js"
-    ></script>
-    <script
-      type="text/javascript"
-      src="/assets/vendors/dataTables/extensions/numeric-input-example.js"
-    ></script>
-    <script
-      type="text/javascript"
-      src="/assets/vendors/dataTables/extensions/autofill.min.js"
-    ></script>
-    <script
-      type="text/javascript"
-      src="/assets/vendors/dataTables/extensions/scroller.min.js"
-    ></script>
-    <script
-      type="text/javascript"
-      src="/assets/vendors/dataTables/extensions/select.min.js"
-    ></script>
-    <script
-      type="text/javascript"
-      src="/assets/vendors/dataTables/extensions/buttons.min.js"
-    ></script>
-    <script
-      type="text/javascript"
-      src="/assets/vendors/dataTables/extensions/jszip/jszip.min.js"
-    ></script>
-    <script
-      type="text/javascript"
-      src="/assets/vendors/dataTables/extensions/buttons.html5.min.js"
-    ></script>
+    <script type="text/javascript" src="/assets/vendors/dataTables/extensions/key_table.min.js"></script>
+    <script type="text/javascript" src="/assets/vendors/dataTables/extensions/mindmup-editabletable.js"></script>
+    <script type="text/javascript" src="/assets/vendors/dataTables/extensions/numeric-input-example.js"></script>
+    <script type="text/javascript" src="/assets/vendors/dataTables/extensions/autofill.min.js"></script>
+    <script type="text/javascript" src="/assets/vendors/dataTables/extensions/scroller.min.js"></script>
+    <script type="text/javascript" src="/assets/vendors/dataTables/extensions/select.min.js"></script>
+    <script type="text/javascript" src="/assets/vendors/dataTables/extensions/buttons.min.js"></script>
+    <script type="text/javascript" src="/assets/vendors/dataTables/extensions/jszip/jszip.min.js"></script>    
+    <script type="text/javascript" src="/assets/vendors/dataTables/extensions/buttons.html5.min.js"></script>
 
     <!-- Toastr js -->
     <script src="/assets/vendors/toastr/toastr.min.js"></script>
@@ -152,603 +88,539 @@
     <script src="/assets/vendors/loaders/progressbar.min.js"></script>
 
     <style>
-      #user_fullname {
-        display: inherit !important;
-      }
-
-      .app-title {
-        font-family: LineAwesome, serif;
-        /*0 5px 10px rgba(0,0,0,.35),*/
-        /*0 10px 10px rgba(0,0,0,.3),*/
-        background-color: transparent;
-        color: #fc4920;
-      }
-
-      .brand-font {
-        font-family: Helvetica Neue, Helvetica, Arial, serif;
-        text-shadow: 0 1px 1px #bbb, 0 2px 0 #999, 0 3px 0 #888, 0 4px 0 #777,
-          0 5px 0 #666, 0 6px 0 #555, 0 7px 0 #444, 0 8px 0 #333,
-          0 9px 7px #302314;
-        background-color: transparent;
-      }
-
-      .icon-bar-cl {
-        background-color: #fc4920;
-      }
-
-      #alogout {
-        padding-left: 10px;
-      }
-
-      #user-info:hover,
-      #alogout:hover {
-        color: #3300aa;
-      }
-      #editor-input {
-        display: none;
-      }
-      @media (max-width: 960px) {
-        .app-title::before {
-          content: "GTOS";
-          font-size: 4vw;
+        .ui-widget.ui-widget-content{
+            z-index: 9999999999999;
+        }
+        #user_fullname {
+            display: inherit !important;
         }
 
-        #right-out {
-          font-size: 2vw;
-        }
-      }
-
-      @media (max-width: 960px) and (orientation: landscape) {
         .app-title {
-          padding-top: 1.05rem;
+            font-family: LineAwesome, serif;
+            /*0 5px 10px rgba(0,0,0,.35),*/
+            /*0 10px 10px rgba(0,0,0,.3),*/
+            background-color: transparent;
+            color: #fc4920;
         }
 
-        .app-title::before {
-          content: "GTOS";
-          font-size: 3vw;
+        .brand-font {
+            font-family: Helvetica Neue, Helvetica, Arial, serif;
+            text-shadow: 0 1px 1px #bbb,
+                0 2px 0 #999,
+                0 3px 0 #888,
+                0 4px 0 #777,
+                0 5px 0 #666,
+                0 6px 0 #555,
+                0 7px 0 #444,
+                0 8px 0 #333,
+                0 9px 7px #302314;
+            background-color: transparent;
         }
 
-        #right-out {
-          font-size: 1.75vw;
-        }
-      }
-
-      @media (min-width: 960px) and (max-width: 1280px) {
-        .app-title::before {
-          content: "GTOS";
-          font-size: 2.1vw;
+        .icon-bar-cl {
+            background-color: #fc4920;
         }
 
-        #right-out {
-          font-size: 1.5vw;
-        }
-      }
-
-      @media (min-width: 1366px) {
-        .app-title {
-          padding-top: 1rem;
+        #alogout {
+            padding-left: 10px;
         }
 
-        .app-title::before {
-          content: "GTOS";
+        #user-info:hover,
+        #alogout:hover {
+            color: #3300aa;
         }
-      }
+        #editor-input{
+            display: none;
+        }
+        @media (max-width: 960px) {
+            .app-title::before {
+                content: 'GTOS';
+                font-size: 4vw;
+            }
 
-      .content-wrapper {
-        width: 100%;
-        background: url("/assets/img/register-bgr-3.jpg");
-        background-repeat: no-repeat;
-        background-size: cover;
-        margin: 0px;
-        min-height: calc(100vh - 27px);
-      }
+            #right-out {
+                font-size: 2vw;
+            }
+        }
 
-      #nav-icon {
-        position: relative;
-        -webkit-transform: rotate(0deg);
-        -moz-transform: rotate(0deg);
-        -o-transform: rotate(0deg);
-        transform: rotate(0deg);
-        -webkit-transition: 0.5s ease-in-out;
-        -moz-transition: 0.5s ease-in-out;
-        -o-transition: 0.5s ease-in-out;
-        transition: 0.5s ease-in-out;
-        cursor: pointer;
-        width: 32px;
-        height: 32px;
-        margin: 4px;
-      }
+        @media (max-width: 960px) and (orientation: landscape) {
+            .app-title {
+                padding-top: 1.05rem;
+            }
 
-      #nav-icon span {
-        display: block;
-        position: absolute;
-        height: 2px;
-        width: 50%;
-        background: #fff;
-        opacity: 1;
-        -webkit-transform: rotate(0deg);
-        -moz-transform: rotate(0deg);
-        -o-transform: rotate(0deg);
-        transform: rotate(0deg);
-        -webkit-transition: 0.25s ease-in-out;
-        -moz-transition: 0.25s ease-in-out;
-        -o-transition: 0.25s ease-in-out;
-        transition: 0.25s ease-in-out;
-      }
+            .app-title::before {
+                content: 'GTOS';
+                font-size: 3vw;
+            }
 
-      #nav-icon span:nth-child(even) {
-        left: 50%;
-        border-radius: 0 9px 9px 0;
-      }
+            #right-out {
+                font-size: 1.75vw;
+            }
+        }
 
-      #nav-icon span:nth-child(odd) {
-        left: 0px;
-        border-radius: 9px 0 0 9px;
-      }
+        @media (min-width: 960px) and (max-width: 1280px) {
+            .app-title::before {
+                content: 'GTOS';
+                font-size: 2.1vw;
+            }
 
-      #nav-icon span:nth-child(1),
-      #nav-icon span:nth-child(2) {
-        top: 5px;
-      }
+            #right-out {
+                font-size: 1.5vw;
+            }
+        }
 
-      #nav-icon span:nth-child(3),
-      #nav-icon span:nth-child(4) {
-        top: 14px;
-      }
+        @media (min-width: 1366px) {
+            .app-title {
+                padding-top: 1rem;
+            }
 
-      #nav-icon span:nth-child(5),
-      #nav-icon span:nth-child(6) {
-        top: 24px;
-      }
+            .app-title::before {
+                content: 'GTOS';
+            }
+        }
 
-      #nav-icon.open span:nth-child(1),
-      #nav-icon.open span:nth-child(6) {
-        -webkit-transform: rotate(45deg);
-        -moz-transform: rotate(45deg);
-        -o-transform: rotate(45deg);
-        transform: rotate(45deg);
-      }
+        .content-wrapper {
+            width: 100%;
+            background: url("/assets/img/register-bgr-3.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            margin:0px;
+            min-height: calc(100vh - 27px);
+        }
+        
+#nav-icon {
+  position: relative;
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  transform: rotate(0deg);
+  -webkit-transition: .5s ease-in-out;
+  -moz-transition: .5s ease-in-out;
+  -o-transition: .5s ease-in-out;
+  transition: .5s ease-in-out;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  margin: 4px;
+}
 
-      #nav-icon.open span:nth-child(2),
-      #nav-icon.open span:nth-child(5) {
-        -webkit-transform: rotate(-45deg);
-        -moz-transform: rotate(-45deg);
-        -o-transform: rotate(-45deg);
-        transform: rotate(-45deg);
-      }
+#nav-icon span {
+  display: block;
+  position: absolute;
+  height: 2px;
+  width: 50%;
+  background: #FFF;
+  opacity: 1;
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  transform: rotate(0deg);
+  -webkit-transition: .25s ease-in-out;
+  -moz-transition: .25s ease-in-out;
+  -o-transition: .25s ease-in-out;
+  transition: .25s ease-in-out;
+}
 
-      #nav-icon.open span:nth-child(1) {
-        left: 5px;
-        top: 12px;
-      }
+#nav-icon span:nth-child(even) {
+  left: 50%;
+  border-radius: 0 9px 9px 0;
+}
 
-      #nav-icon.open span:nth-child(2) {
-        left: calc(50% - 5px);
-        top: 12px;
-      }
+#nav-icon span:nth-child(odd) {
+  left:0px;
+  border-radius: 9px 0 0 9px;
+}
 
-      #nav-icon.open span:nth-child(3) {
-        left: -50%;
-        opacity: 0;
-      }
+#nav-icon span:nth-child(1), #nav-icon span:nth-child(2) {
+  top: 5px;
+}
 
-      #nav-icon.open span:nth-child(4) {
-        left: 100%;
-        opacity: 0;
-      }
+#nav-icon span:nth-child(3), #nav-icon span:nth-child(4) {
+  top: 14px;
+}
 
-      #nav-icon.open span:nth-child(5) {
-        left: 5px;
-        top: 18px;
-      }
+#nav-icon span:nth-child(5), #nav-icon span:nth-child(6) {
+  top: 24px;
+}
 
-      #nav-icon.open span:nth-child(6) {
-        left: calc(50% - 5px);
-        top: 18px;
-      }
+#nav-icon.open span:nth-child(1),#nav-icon.open span:nth-child(6) {
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
 
-      .header {
-        height: 40px;
-        background: #4c6c8b;
-        z-index: 99 !important;
-      }
-      .nav-hambuger {
-        width: 40px;
-      }
-      .nav-content {
-        width: calc(100% - 40px);
-        padding: 0px 15px;
-      }
-      .lx_full {
-        height: 100%;
-        width: 100%;
-        color: #fff;
-        background: #0a455f;
-        height: 40px;
-        border: 1px solid #fff;
-        box-shadow: inset 0px 0px 10px #454545;
-        outline: none;
-        padding: 0px 10px;
-      }
-      .lx_full::placeholder {
-        /* Chrome, Firefox, Opera, Safari 10.1+ */
-        color: #fff;
+#nav-icon.open span:nth-child(2),#nav-icon.open span:nth-child(5) {
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+
+#nav-icon.open span:nth-child(1) {
+  left: 5px;
+  top: 12px;
+}
+
+#nav-icon.open span:nth-child(2) {
+  left: calc(50% - 5px);
+  top: 12px;
+}
+
+#nav-icon.open span:nth-child(3) {
+  left: -50%;
+  opacity: 0;
+}
+
+#nav-icon.open span:nth-child(4) {
+  left: 100%;
+  opacity: 0;
+}
+
+#nav-icon.open span:nth-child(5) {
+  left: 5px;
+  top: 18px;
+}
+
+#nav-icon.open span:nth-child(6) {
+  left: calc(50% - 5px);
+  top: 18px;
+}
+
+        .header{
+            height:40px;
+            background:#4c6c8b;
+            z-index: 99 !important;
+        }
+        .nav-hambuger{
+            width: 40px;
+        }        
+        .nav-content{
+            width: calc(100% - 40px);
+            padding: 0px 15px;
+        }
+        .lx_full{
+            height: 100%;
+            width: 100%;
+            color: #FFF;
+            background: #0a455f;
+            height: 40px;
+            border: 1px solid #fff;
+            box-shadow: inset 0px 0px 10px #454545;
+            outline: none;
+            padding: 0px 10px;
+        }
+        .lx_full::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+        color: #FFF;
         opacity: 1; /* Firefox */
-      }
+        }
 
-      .lx_full:-ms-input-placeholder {
-        /* Internet Explorer 10-11 */
-        color: #fff;
-      }
+        .lx_full:-ms-input-placeholder { /* Internet Explorer 10-11 */
+        color: #FFF;
+        }
 
-      .lx_full::-ms-input-placeholder {
-        /* Microsoft Edge */
-        color: #fff;
-      }
-      .lx_full[readonly] {
-        background-color: #0a455f !important;
-      }
-      #menu_box {
-        width: 280px;
-        height: calc(100vh - 40px);
-        background: #ffffff;
-        padding: 0px;
-        position: fixed;
-        left: -290px;
-        top: 40px;
-        border-right: 1px solid #b6b6b6;
-        box-shadow: 0px 0px 5px #111;
-        transition: all 0.5s cubic-bezier(0.58, 1.48, 0.44, 0.5);
-      }
-      #menu_box.open {
-        left: 0px;
-      }
-      #menu_box a {
-        display: block;
-        width: 100%;
-        padding: 5px 10px;
-        text-align: center;
-        border-bottom: 1px solid #0a455f;
-      }
-      #menu_box a:hover {
-        background: #0a455f;
-        color: #fff;
-      }
-      #select_box,
-      #select_method_box,
-      #set_value_box {
-        width: 100vw;
-        height: 100vh;
-        position: fixed;
-        left: 0px;
-        top: 0px;
-        background-color: rgba(1, 1, 1, 0.3);
-        z-index: 9999999;
-      }
-      .m-tech-table {
-        display: block;
-        width: 100%;
-        height: 100%;
-      }
-      .m-list-title {
-        color: #ffffff;
-        background: #0a455f;
-      }
-      .m-tech-table tbody {
+        .lx_full::-ms-input-placeholder { /* Microsoft Edge */
+        color: #FFF;
+        }
+        .lx_full[readonly]{
+            background-color: #0a455f !important;
+        }
+        #menu_box{
+            width: 280px;
+            height: calc(100vh - 40px);
+            background: #ffffff;
+            padding: 0px;
+            position: fixed;
+            left: -290px;
+            top:40px;
+            border-right: 1px solid #b6b6b6;
+            box-shadow: 0px 0px 5px #111;
+            transition: all 0.5s cubic-bezier(0.58, 1.48, 0.44, 0.5);   
+        }
+        #menu_box.open{
+            left:0px;
+        }
+        #menu_box a{
+            display: block;
+            width: 100%;
+            padding: 5px 10px;
+            text-align: center;
+            border-bottom: 1px solid #0a455f;
+        }
+        #menu_box a:hover{
+            background: #0a455f;
+            color: #fff;
+        }
+        #select_box,#select_method_box,#set_value_box{
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
+            left: 0px;
+            top:0px;
+            background-color: rgba(1, 1, 1, 0.3);
+            z-index: 9999999;
+        }
+        .m-tech-table{
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        .m-list-title{
+            color: #ffffff;
+            background: #0a455f;
+        }
+        .m-tech-table tbody {
         display: block;
         max-height: calc(100% - 31px);
         min-height: calc(100% - 31px);
         overflow-y: scroll;
         background-color: #86c8e5;
-      }
+        }
 
-      .m-tech-table thead,
-      .m-tech-table tbody tr {
+        .m-tech-table thead,.m-tech-table tbody tr {
         display: table;
         width: 100%;
         table-layout: fixed;
-      }
-      .m-tech-list {
-        background-color: #86c8e5;
-        color: #ffffff;
-        border-bottom: 1px solid #e3e3e3;
-        cursor: pointer;
-      }
-
-      .m-tech-list.active {
-        background-color: #286c96;
-      }
-      .m-tech-list:hover {
-        background-color: #427696;
-      }
-      .m-tech-list td {
-        text-align: center;
-      }
-      .setinp {
-        width: 100%;
-        border: 1px solid #427696;
-        padding: 5px 10px;
-        font-weight: bold;
-        background-color: #ffffff59 !important;
-      }
-      .setvaluebtn {
-        width: 200px;
-        font-weight: bold;
-        position: absolute;
-        bottom: -15px;
-        height: 30px;
-        padding: 4px;
-        left: calc((100% - 200px) / 2);
-        cursor: pointer;
-      }
-
-      .setvaluebtn span {
-        z-index: 1;
-        position: relative;
-      }
-      .setvaluebtn:before {
-        content: "";
-        display: block;
-        width: 200px;
-        background: #82c1c1;
-        font-weight: bold;
-        position: absolute;
-        bottom: 0px;
-        height: 30px;
-        padding: 4px;
-        left: calc((100% - 200px) / 2);
-        box-shadow: 1px 1px 4px #111;
-        cursor: pointer;
-        transform: skewX(30deg);
-      }
-      select.setinp {
-        color: #777879;
-      }
+        }
+        .m-tech-list{
+            background-color: #86c8e5;
+            color: #ffffff;
+            border-bottom: 1px solid #e3e3e3;
+            cursor: pointer;
+        }
+        
+        .m-tech-list.active{
+            background-color: #286c96;
+        }
+        .m-tech-list:hover{
+            background-color: #427696;
+        }
+        .m-tech-list td{
+            text-align: center;
+        }
+        .setinp{
+            width: 100%;
+            border: 1px solid #427696;
+            padding: 5px 10px;
+            font-weight: bold;
+            background-color: #ffffff59 !important;
+        }
+        .setvaluebtn{
+            width: 200px;
+            font-weight: bold;
+            position: absolute;
+            bottom: -15px;
+            height: 30px;
+            padding: 4px;
+            left: calc((100% - 200px) / 2);
+            cursor: pointer;
+        }
+        
+        .setvaluebtn span{
+            z-index: 1;
+            position: relative;
+        }
+        .setvaluebtn:before{
+            content: '';
+            display: block;
+            width: 200px;
+            background: #82c1c1;
+            font-weight: bold;
+            position: absolute;
+            bottom: 0px;
+            height: 30px;
+            padding: 4px;
+            left: calc((100% - 200px) / 2);
+            box-shadow: 1px 1px 4px #111;
+            cursor: pointer;
+            transform: skewX(30deg);
+        }
     </style>
-  </head>
+</head>
 
-  <body class="fixed-navbar">
+<body class="fixed-navbar" >
     <div class="page-wrapper">
-      <!-- START HEADER-->
-      <header class="header">
-        <div class="nav-hambuger">
-          <div id="nav-icon">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-        </div>
-        <div class="nav-content">
-          <div class="row">
-            <div class="col-md-4 p-0">
-              <input
-                autocomplete="off"
-                class="lx_full"
-                id="VoyageKey"
-                hidden
-                readonly
-              /><input
-                autocomplete="off"
-                class="lx_full"
-                id="VesselName"
-                readonly
-                placeholder="Chọn tàu ..."
-              />
+        <!-- START HEADER-->
+        <header class="header">
+            <div class="nav-hambuger">
+                <div id="nav-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
             </div>
-            <div class="col-md-2 p-0">
-              <input
-                autocomplete="off"
-                class="lx_full"
-                id="ImExVoy"
-                readonly
-                placeholder="Chuyến ..."
-              />
+            <div class="nav-content">
+                <div class="row">
+                    <div class="col-md-4 p-0"><input autocomplete="off" class="lx_full" id="VoyageKey" hidden readonly /><input autocomplete="off" class="lx_full" id="VesselName" readonly placeholder="Chọn tàu ..." /></div>
+                    <div class="col-md-2 p-0"><input autocomplete="off" class="lx_full" id="ImExVoy" readonly placeholder="Chuyến ..." /></div>
+                    <div class="col-md-2 p-0"><input autocomplete="off" class="lx_full" id="ClassID" hidden readonly value="1" /><input autocomplete="off" class="lx_full" id="ClassName" readonly placeholder="Loại công việc ..." /></div>
+                    <div class="col-md-2 p-0"><input autocomplete="off" class="lx_full" id="WorkerGroupID" hidden readonly /><input autocomplete="off" class="lx_full" id="WorkerName" readonly placeholder="Tổ CN ..." /></div>
+                    <div class="col-md-2 p-0"><input autocomplete="off" class="lx_full" id="DeviceID" hidden readonly /><input autocomplete="off" class="lx_full" id="DriverName" readonly placeholder="Thiết bị ..." /></div>
+                </div>
             </div>
-            <div class="col-md-2 p-0">
-              <input
-                autocomplete="off"
-                class="lx_full"
-                id="ClassID"
-                hidden
-                readonly
-              /><input
-                autocomplete="off"
-                class="lx_full"
-                id="ClassName"
-                readonly
-                placeholder="Loại công việc ..."
-              />
+            <div id="menu_box">
+                <a onClick="loadhis()">Lịch sử công việc</a>
+                <a href="/user/logout">Đăng xuất</a>
             </div>
-            <div class="col-md-2 p-0">
-              <input
-                autocomplete="off"
-                class="lx_full"
-                id="WorkerGroupID"
-                hidden
-                readonly
-              /><input
-                autocomplete="off"
-                class="lx_full"
-                id="WorkerName"
-                readonly
-                placeholder="Tổ CN ..."
-              />
-            </div>
-            <div class="col-md-2 p-0">
-              <input
-                autocomplete="off"
-                class="lx_full"
-                id="DeviceID"
-                hidden
-                readonly
-              /><input
-                autocomplete="off"
-                class="lx_full"
-                id="DriverName"
-                readonly
-                placeholder="Thiết bị ..."
-              />
-            </div>
-          </div>
-        </div>
-        <div id="menu_box">
-          <a onClick="loadhis()">Lịch sử công việc</a>
-          <a href="/user/logout">Đăng xuất</a>
-        </div>
-      </header>
-      <!-- END HEADER-->
+        </header>
+        <!-- END HEADER-->
 
-      <div class="content-wrapper">
-        <table id="select_box">
-          <tr>
-            <td align="center" valign="middle">
-              <div
-                style="
-                  width: 80%;
-                  background: #fff;
-                  border: 1px solid #b6b6b6;
-                  border-radius: 4px;
-                  min-height: 80vh;
-                  margin: 0px !important;
-                  position: relative;
-                "
-              >
-                <div
-                  style="
-                    position: absolute;
-                    right: 5px;
-                    top: 5px;
-                    background: red;
-                    color: #ffffff;
-                    width: 30px;
-                    height: 30px;
-                    padding: 5px;
-                    font-size: 20px;
-                    line-height: 14px;
-                    cursor: pointer;
-                  "
-                  id="close_select_box"
-                >
-                  x
-                </div>
-                <div
-                  style="
-                    width: 100%;
-                    background: #0a455f;
-                    color: #ffffff;
-                    font-size: 18px;
-                    padding: 6px;
-                  "
-                >
-                  Chọn Tàu/Chuyến - Tổ đội công nhân - Thiết bị
-                </div>
-                <div
-                  class="container"
-                  style="
-                    margin: 0px !important;
-                    width: 100%;
-                    max-width: 100%;
-                    padding: 0px;
-                  "
-                >
-                  <div class="row" style="width: 100%; padding: 0px">
-                    <div class="col-md-8 col-xs-12" style="padding: 0px">
-                      <div
-                        class="full_height"
-                        style="height: 80vh; padding-top: 2px"
-                      >
-                        <div style="height: 100%">
-                          <table
-                            class="m-tech-table"
-                            id="tally-ship-list"
-                            style="width: 100%"
-                            cellpadding="5"
-                          >
-                            <thead class="m-list-title">
-                              <tr>
-                                <th>Tên tàu</th>
-                                <th>Mã tàu</th>
-                                <th>Chuyến</th>
-                              </tr>
-                            </thead>
-                            <tbody id="tally-ship-content">
-                              <% (locals.loadVesselVisit||[]).map(itm=>{ %>
-                              <tr
-                                class="m-tech-list"
-                                value="<%= itm.VoyageKey %>"
-                              >
-                                <td class="ShipName"><%= itm.VesselName %></td>
-                                <td class="ShipID"><%= itm.VesselID %></td>
-                                <td class="ShipVoy">
-                                  <%= itm.InboundVoyage+'/'+itm.OutboundVoyage
-                                  %>
-                                </td>
-                              </tr>
-                              <% }) %>
-                            </tbody>
-                          </table>
+        <div class="content-wrapper">
+            <table id="select_box">
+                <tr>
+                    <td align="center" valign="middle">
+                        <div style="width: 80%;background: #fff;border:1px solid #b6b6b6;border-radius: 4px;min-height: 80vh;margin:0px !important;position: relative;">
+                            <div style="position: absolute;right: 5px;top:5px;background:red;color:#ffffff;width: 30px;height: 30px;padding: 5px;font-size: 20px;line-height: 14px;cursor: pointer;" id="close_select_box">x</div>
+                            <div style="width: 100%;background: #0a455f;color: #ffffff;font-size: 18px; padding: 6px;">Chọn Tàu/Chuyến - Tổ đội công nhân - Thiết bị</div>
+                            <div class="container" style=" margin: 0px !important;    width: 100%;    max-width: 100%; padding:0px">
+                                <div class="row" style=" width: 100%; padding:0px">
+                                  <div class="col-md-8 col-xs-12" style="padding:0px">
+                                    <div class="full_height" style="height:80vh;padding-top: 2px;">
+                                        <div style="height:100%;">
+                                            <table class="m-tech-table" id="tally-ship-list" style="width: 100%" cellpadding="5">
+                                                <thead class="m-list-title">
+                                                    <tr>
+                                                        <th>Tên tàu</th>
+                                                        <th>Mã tàu</th>
+                                                        <th>Chuyến</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="tally-ship-content">
+                                                    <% (locals.loadVesselVisit||[]).map(itm=>{ %>
+                                                                                                <tr class="m-tech-list" value="<%= itm.VoyageKey %>">
+                                                            <td class="ShipName"><%= itm.VesselName %></td>
+                                                            <td class="ShipID"><%= itm.VesselID %></td>
+                                                            <td class="ShipVoy"><%= itm.InboundVoyage+'/'+itm.OutboundVoyage %></td>
+                                                        </tr>
+                                                                       <% }) %>                         
+                                                                                        </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-4 col-xs-12" style="padding:0px">
+                                    <div class="full_height" style="height:80vh;padding-top: 2px;">
+                                        <div style="height: 50%;width: 100%;">
+                                            <table class="m-tech-table" id="tally-worker-list" style="width: 100%" cellpadding="5">
+                                                <thead class="m-list-title">
+                                                    <tr>
+                                                        <th>Tổ đội công nhân</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% (locals.loadWorkerGroup||[]).map(itm=>{ %>
+                                                        <tr class="m-tech-list" value="<%= itm.WorkerGroupID %>">
+                                                            <td ><%= itm.WorkerGroupName %></td>
+                                                        </tr>
+                                                    <% }) %>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div style="height: 50%;width: 100%;">
+                                            <table class="m-tech-table"  id="tally-device-list" style="width: 100%" cellpadding="5">
+                                                <thead class="m-list-title">
+                                                    <tr>
+                                                        <th>Chọn thiết bị</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% (locals.loadDevice||[]).map(itm=>{ %>
+                                                        <tr class="m-tech-list"  value="<%= itm.DeviceID %>">
+                                                            <td><%= itm.DeviceName %></td>
+                                                        </tr>
+                                                    <% }) %>
+                                                                                        </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
                         </div>
-                      </div>
-                    </div>
-                    <div class="col-md-4 col-xs-12" style="padding: 0px">
-                      <div
-                        class="full_height"
-                        style="height: 80vh; padding-top: 2px"
-                      >
-                        <div style="height: 50%; width: 100%">
-                          <table
-                            class="m-tech-table"
-                            id="tally-worker-list"
-                            style="width: 100%"
-                            cellpadding="5"
-                          >
-                            <thead class="m-list-title">
-                              <tr>
-                                <th>Tổ đội công nhân</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <% (locals.loadWorkerGroup||[]).map(itm=>{ %>
-                              <tr
-                                class="m-tech-list"
-                                value="<%= itm.WorkerGroupID %>"
-                              >
-                                <td><%= itm.WorkerGroupName %></td>
-                              </tr>
-                              <% }) %>
-                            </tbody>
-                          </table>
+                    </td>
+                </tr>
+            </table>
+            <table id="select_method_box" style="display: none;">
+                <tr>
+                    <td align="center" valign="middle">
+                        <div style="width: 300px;background: #fff;border:1px solid #b6b6b6;border-radius: 4px;margin:0px !important;position: relative;">
+                            <div style="position: absolute;right: 5px;top:5px;background:red;color:#ffffff;width: 30px;height: 30px;padding: 5px;font-size: 20px;line-height: 14px;cursor: pointer;" id="close_select_box">x</div>
+                            <div style="width: 100%;background: #0a455f;color: #ffffff;font-size: 18px; padding: 6px;">Chọn loại công việc</div>
+                            <div class="container" style=" margin: 0px !important;    width: 100%;    max-width: 100%; padding:0px">
+                                <div class="row" style=" width: 100%; padding:0px">
+                                  <div class="col-md-12 col-xs-12" style="padding:0px">
+                                    <div class="full_height" style="padding-top: 2px;">
+                                        <div style="height:100%;">
+                                            <table class="m-tech-table" id="tally-method-list" style="width: 100%" cellpadding="5">
+                                                <tbody id="tally-method-content">
+                                                    <tr class="m-tech-list active" value="1">
+                                                        <td>Nhập</td>
+                                                    </tr>
+                                                    <tr class="m-tech-list" value="2">
+                                                        <td>Xuất</td>
+                                                    </tr>                                                                                                
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
                         </div>
-                        <div style="height: 50%; width: 100%">
-                          <table
-                            class="m-tech-table"
-                            id="tally-device-list"
-                            style="width: 100%"
-                            cellpadding="5"
-                          >
-                            <thead class="m-list-title">
-                              <tr>
-                                <th>Chọn thiết bị</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <% (locals.loadDevice||[]).map(itm=>{ %>
-                              <tr
-                                class="m-tech-list"
-                                value="<%= itm.DeviceID %>"
-                              >
-                                <td><%= itm.DeviceName %></td>
-                              </tr>
-                              <% }) %>
-                            </tbody>
-                          </table>
+                    </td>
+                </tr>
+            </table>
+
+            <table id="set_value_box" style="display:none" >
+                <tr>
+                    <td align="center" valign="middle">
+                        <div style="width: 400px;max-width: 98vw;background: #5e8ca0bf;border:1px solid #b6b6b6;border-radius: 4px;margin:0px !important;position: relative;">
+                            <div style="position: absolute;right: 5px;top:5px;background:red;color:#ffffff;width: 30px;height: 30px;padding: 5px;font-size: 20px;line-height: 14px;cursor: pointer;" id="close_select_box">x</div>
+                            <div id="BNAME" style="width: 100%;background: #0a455f;color: #ffffff;font-size: 18px; padding: 6px;">LOADING...</div>
+                            <div class="container" style=" margin: 0px !important;    width: 100%;    max-width: 100%; padding:0px">
+                                <div class="row" style=" width: 100%; padding:0px">
+                                  <div class="col-md-6 col-xs-12" style="padding:5px">
+                                    <input autocomplete="off" class="setinp" id="set-TransitName" readonly placeholder="Nhập giao thẳng" />
+                                  </div>
+                                  <div class="col-md-6 col-xs-12" style="padding:5px">
+                                    <input autocomplete="off" class="setinp" id="set-ItemName" readonly placeholder="Tôn cuộn" />
+                                </div>
+                                <div class="col-md-12 col-xs-12" style="padding:5px">
+                                    <input autocomplete="off" class="setinp" id="set-TruckNo" placeholder="Chọn xe" />
+                                </div>
+                                <div class="col-md-4 col-xs-12" style="padding:5px">
+                                    <input autocomplete="off" class="setinp" id="set-Quantity" type="number" placeholder="Số lượng" />
+                                </div>
+                                <div class="col-md-4 col-xs-12" style="padding:5px">
+                                    <input autocomplete="off" class="setinp" id="set-McWeight" readonly placeholder="Trọng lượng" />
+                                </div>
+                                <div class="col-md-4 col-xs-12" style="padding:5px">
+                                    <select class="setinp" id="set-Cellars" placeholder="Hầm" >
+                                        <option value="0">Hầm</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-12 col-xs-12" style="padding:5px">
+                                    <input autocomplete="off" class="setinp" id="set-Note" placeholder="Ghi chú ..." />
+                                </div>
+                                </div>
+                                <div style="padding:10px"></div>
+                                <div class="setvaluebtn"><span>XÁC NHẬN</span></div>
+                            </div>
                         </div>
-                      </div>
-                    </div>
-                  </div>
+                    </td>
+                </tr>
+            </table>
+            <!-- START PAGE CONTENT-->
+            <div class="page-content" style="background: #fff;border:1px solid #b6b6b6;border-radius: 4px;width: 100%;min-height: 80vh;margin:0px !important;">
+
+
+
+
+                <div style="padding:10px" id="table_box">
+                    <table id="contenttable" style="width: 100%;"></table>
                 </div>
 
 
@@ -924,7 +796,94 @@
                             }
                     });
                 }
+                
+window.PlanDevice={};
+function loadPlanDevice(VoyageKey){
+    if(window.PlanDevice[VoyageKey] || !VoyageKey) return;
+    window.PlanDevice[VoyageKey]=false;
+    
+    $.ajax({
+        url: "/Common/load/loadPlanDeviceWithVoyageKey",
+        dataType: 'json',
+        data: {"VoyageKey":VoyageKey||''},
+        type: 'POST',
+        success: function (res) {
+            window.PlanDevice[VoyageKey]=[];
+            if(res.data){
+                window.PlanDevice[VoyageKey]=(res.data||[]).map(itm=>itm.DeviceID);
+                if(($('.bbs_box.active').data()||{}).VoyageKey==VoyageKey){
+                    setPlanDevice();
+                }
+            }                 
+        },
+        error: function (err) {
+            window.PlanDevice[VoyageKey]=[];
+            toastr["error"]("Error!");
+            console.log(err);
+        }
+    });
+}
+function setPlanDevice(){
+    let data=($('#contenttable').DataTable().row('#contenttable tr.selected').data()||{});
+    // console.log(data);
+    // let html=`<option value="" disabled>Chọn Xe</option>`;
+    // window.PlanDevice[data.VoyageKey].map((itm)=>{
+    //     if(itm==data.TruckNo)
+    //     html+=`<option value="${itm}" selected>${itm}</option>`;
+    //     else
+    //     html+=`<option value="${itm}">${itm}</option>`;
+    // })                    
+    // $('#set-TruckNo').html(html);
+    $('#set-TruckNo').autocomplete({
+      source: window.PlanDevice[data.VoyageKey]||[],
+      minChars: 0,
+      minLength: 0
+    });
+    if((window.PlanDevice[data.VoyageKey]||[]).indexOf(data.TruckNo)===-1){
+        $('#set-TruckNo').val();
+    }
+    $('#set-TruckNo').off('click').on('click',function(){
+        $('#set-TruckNo').autocomplete('search','');
+    });
+    $('#set-TruckNo').off('focus').on('focus',function(){
+        $('#set-TruckNo').autocomplete('search','');
+    });
+    $('#set-TruckNo').off('blur').on('blur',function(){
+        //alert($(this).val());
+        
+        if((window.PlanDevice[data.VoyageKey]||[]).indexOf($(this).val())===-1){
+            toastr['error'](`Xe [${$(this).val()}] không có trong kế hoạch !`);
+            $('#set-TruckNo').val('');
+        }
+    });
+    //$('#set-TruckNo').select2({minimumResultsForSearch: Infinity}); 
+}
                 $(document).ready(function () {
+
+
+
+
+var socket = io();
+socket.on('connect', function(msg) {
+    socket.emit('login', {
+        pathname:location.pathname,
+        access_token:localStorage.getItem('access_token')||'',
+    });
+    socket.on('reload', function(rt_data){
+        console.log(rt_data);
+        if(rt_data==$('#VoyageKey').val())
+        loadData();
+    });
+});
+
+
+
+
+
+
+
+
+
 
                     $('#nav-icon').on('click',function(){
                         
@@ -1025,8 +984,8 @@
                         $(this).closest('tbody').find('tr.active').removeClass('active');
                         $(this).addClass('active');
                     })
-                    $('#ClassID').val('all');
-                    $('#ClassName').val('Tất cả');
+                    $('#ClassID').val('1');
+                    $('#ClassName').val('Nhập');
                     $(document).on('click','#tally-device-list tr',function(){
                         if($('#tally-ship-content tr.active').length && $('#tally-worker-list tr.active').length && $('#tally-device-list tr.active').length){
                             $('#VoyageKey').val($('#tally-ship-content tr.active').attr('value'));
@@ -1044,12 +1003,8 @@
                         $('#ClassID').val($('#tally-method-list tr.active').attr('value'));
                         $('#ClassName').val($('#tally-method-list tr.active').find('td:nth-child(1)').text());
                         $('#select_method_box').hide();
+                        
                         loadData();
-                    })
-                    $(document).on('click','#tally-method-list tr',function(){
-                        $('#ClassID').val($('#tally-method-list tr.active').attr('value'));
-                        $('#ClassName').val($('#tally-method-list tr.active').find('td:nth-child(1)').text());
-                        $('#select_method_box').hide();
                     })
 
                     window.rowdata={};
@@ -1057,14 +1012,67 @@
                         let rowdata=$(this).closest('table').DataTable().row(this).data();
                         window.rowdata=rowdata;
                         console.log(rowdata);
-                        $('#BNAME').html(rowdata.BillOfLading||rowdata.BookingNo);
-                        $('#set_value_box').show();
-                        $('#set-TransitName').val(rowdata.JobModeName);
-                        $('#set-ItemName').val(rowdata.ItemName);
-                        $('#set-TruckNo').val('');
-                        $('#set-Quantity').val('');
-                        $('#set-McWeight').val('');
-                        $('#set-Note').val('');
+                        if(($('#ClassID').val()+'')=='1'){
+                          if((rowdata.Quantity-rowdata.ActualQuantity)<=0){
+                            return toastr['error']('Số lượng ko phù hợp để xuất !');
+                          }
+                          if(rowdata.JobModeID=='NGTH' || rowdata.JobModeID=='XGTH'){
+                            $('#BNAME').html(rowdata.BillOfLading||rowdata.BookingNo);
+                            $('#set_value_box').show();
+                            $('#set-TransitName').val(rowdata.JobModeName);
+                            $('#set-ItemName').val(rowdata.ItemName);
+                            $('#set-TruckNo').val(rowdata.TruckNo);
+                            $('#set-Quantity').val('');
+                            $('#set-McWeight').val('');                          
+                            $('#set-Quantity').attr('max',rowdata.Quantity-rowdata.ActualQuantity);
+                            $('#set-McWeight').attr('max',rowdata.CargoWeight-rowdata.ActualWeight);
+                            $('#set-Note').val(rowdata.Remark);
+                            setPlanDevice();
+                          }
+                          else{
+                            $('#BNAME').html(rowdata.BillOfLading||rowdata.BookingNo);
+                            $('#set_value_box').show();
+                            $('#set-TransitName').val(rowdata.JobModeName);
+                            $('#set-ItemName').val(rowdata.ItemName);
+                            $('#set-TruckNo').val('');
+                            $('#set-Quantity').val('');
+                            $('#set-McWeight').val('');                          
+                            $('#set-Quantity').attr('max',rowdata.Quantity-rowdata.ActualQuantity);
+                            $('#set-McWeight').attr('max',rowdata.CargoWeight-rowdata.ActualWeight);
+                            $('#set-Note').val('');
+                            setPlanDevice();
+                          }
+                          
+                        }
+                        else{
+                          if(rowdata.JobModeID=='NGTH' || rowdata.JobModeID=='XGTH'){
+                            $('#BNAME').html(rowdata.BillOfLading||rowdata.BookingNo);
+                            $('#set_value_box').show();
+                            $('#set-TransitName').val(rowdata.JobModeName);
+                            $('#set-ItemName').val(rowdata.ItemName);
+                            $('#set-TruckNo').val(rowdata.TruckNo);
+                            $('#set-Quantity').val('');
+                            $('#set-McWeight').val('');                          
+                            $('#set-Quantity').attr('max',rowdata.Quantity-rowdata.ActualQuantity);
+                            $('#set-McWeight').attr('max',rowdata.CargoWeight-rowdata.ActualWeight);
+                            $('#set-Note').val(rowdata.Remark);
+                            setPlanDevice();
+                          }
+                          else{
+                            $('#BNAME').html(rowdata.BillOfLading||rowdata.BookingNo);
+                            $('#set_value_box').show();
+                            $('#set-TransitName').val(rowdata.JobModeName);
+                            $('#set-ItemName').val(rowdata.ItemName);
+                            $('#set-TruckNo').val(rowdata.TruckNo);
+                            $('#set-Quantity').val(rowdata.ActualQuantity);
+                            $('#set-McWeight').val(rowdata.ActualWeight);
+                            $('#set-Quantity').attr('max',rowdata.ActualQuantity);
+                            $('#set-McWeight').attr('max',rowdata.ActualWeight);
+                            $('#set-Note').val(rowdata.Note);
+                            setPlanDevice();
+                          }
+                        }
+                        
                         let Cellars=parseInt(rowdata.Cellars||'0');
                         let html=`<option value="0">Hầm</option>`;
                         for (let ii = 0; ii < Cellars; ii++) {
@@ -1097,40 +1105,89 @@
                         { data: "MethodName", name: "MethodName", title: "Phương thức vào", className: "text-center", targets: 5 },
                         { data: "Quantity", name: "Quantity", title: "SL kê khai", className: "text-center", targets: 6 },
                         { data: "CargoWeight", name: "CargoWeight", title: "TL kê khai", className: "text-center", targets: 7 },
-                        { data: "ActualQuantity", name: "ActualQuantity", title: "SL thực tế", className: "text-center", targets: 8 },
-                        { data: "ActualWeight", name: "ActualWeight", title: "TL thực tế", className: "text-center", targets: 9 },
-                        { data: "rowguid", name: "rowguid", title: "rowguid", visible: false, targets: 10 },
-                    ],
-                        tbl = $('#contenttable'),
-                        dataList = <%- JSON.stringify(locals.dataList || []) %>;
-                    var dataTbl = tbl.newDataTable({
-                        scrollY: '55vh',
-                        columnDefs: _columns,
-                        data: dataList.map((itm, ii) => { return { ...itm, STT: ii + 1 } }),
-                        order: [[0, 'asc']],
-                        paging: false,
-                        keys: true,
-                        autoFill: {
-                            focus: 'focus',
-                        },
-                        select: true,
-                        rowReorder: false
-                    });
+                        { data: "TruckNo", name: "TruckNo", title: "Số xe", className: "text-center", targets: 8 },
+                        { data: "ActualQuantity", name: "ActualQuantity", title: "SL thực tế", className: "text-center", targets: 9 },
+                        { data: "ActualWeight", name: "ActualWeight", title: "TL thực tế", className: "text-center", targets: 10 },
+                        { data: "rowguid", name: "rowguid", title: "rowguid", visible: false, targets: 11 },
+                    ];
+                    tbl=$('#contenttable');
+                        var dataTbl = tbl.newDataTable({
+                          scrollY: '55vh',
+                          columnDefs: _columns,
+                          data: [],
+                          order: [[0, 'asc']],
+                          paging: false,
+                          keys: true,
+                          autoFill: {
+                              focus: 'focus',
+                          },
+                          select: true,
+                          rowReorder: false
+                      });
+                      var _columns2 = [
+                        { width: "50px", data: "STT", name: "STT", title: "STT", className: "text-center  editor-cancel", targets: 0 },
+                        { data: "TransitName", name: "TransitName", title: "Loại công việc", className: "text-center", targets: 1,render:(data,type,row)=>{
+                            switch (row.ClassID+'') {
+                                case '1':
+                                    return 'Nhập tàu';
+                                    break;
+                                case '2':
+                                    return 'Xuất tàu';
+                                    break;
+                                default:
+                                    return '';
+                                    break;
+                            }
+                        } },
+                        { width: "220px", data: "BillOfLading", name: "BillOfLading", title: "Số vận đơn / Booking", className: "text-center", targets: 2, render:(data,type,row)=>{
+                            return row.BillOfLading||row.BookingNo;
+                        } },
+                        { data: "ItemName", name: "ItemName", title: "Hàng hóa", className: "text-center", targets: 3},
+                        { data: "JobModeName", name: "JobModeName", title: "Phương án vào", className: "text-center", targets: 4 },
+                        { data: "MethodName", name: "MethodName", title: "Phương thức vào", className: "text-center", targets: 5 },
+                        { data: "Quantity", name: "Quantity", title: "SL kê khai", className: "text-center", targets: 6 },
+                        { data: "CargoWeight", name: "CargoWeight", title: "TL kê khai", className: "text-center", targets: 7 },
+                        { data: "TruckNo", name: "TruckNo", title: "Số xe", className: "text-center", targets: 8 },
+                        { data: "ActualQuantity", name: "ActualQuantity", title: "SL thực tế", className: "text-center", targets: 9 },
+                        { data: "ActualWeight", name: "ActualWeight", title: "TL thực tế", className: "text-center", targets: 10 },
+                        { data: "rowguid", name: "rowguid", title: "rowguid", visible: false, targets: 11 },
+                    ];
 
 
                     function loadData(){
-                        tbl.dataTable().fnClearTable();
+                       tbl.DataTable().destroy();
+                        $('#table_box').html(`<table id="contenttable" style="width: 100%;"></table>`);
+                        tbl=$('#contenttable');
+                        var dataTbl = tbl.newDataTable({
+                          scrollY: '55vh',
+                          columnDefs: ($('#ClassID').val()+'')=='1'?_columns:_columns2,
+                          data: [],
+                          order: [[0, 'asc']],
+                          paging: false,
+                          keys: true,
+                          autoFill: {
+                              focus: 'focus',
+                          },
+                          select: true,
+                          rowReorder: false
+                      });
                         $.ajax({
                             url: "/tally/loadTallyData",
                             dataType: 'json',
-                            data: {filter:{
+                            data: {
                                 VoyageKey:$('#VoyageKey').val(),
-                                ClassID:($('#ClassID').val()!='all'?$('#ClassID').val():undefined)
-                            }},
+                                ClassID:$('#ClassID').val()
+                            },
                             type: 'POST',
                             success: function (res) {
                                 tbl.dataTable().fnClearTable();
-                                tbl.dataTable().fnAddData((res.data||[]).map((itm,ii)=>({...itm,STT:ii+1})));
+                                if(res.data && res.data[0]){
+                                    (res.data||[]).map((itm,ii)=>{
+                                        loadPlanDevice(itm.VoyageKey);
+                                    })
+                                    tbl.dataTable().fnAddData((res.data||[]).map((itm,ii)=>({...itm,STT:ii+1})));
+                                }
+                                
                             },
                             error: function (err) {
                                 tbl.dataTable().fnClearTable();
@@ -1140,10 +1197,20 @@
                         });
                     }      
                     $(document).on('input','#set-Quantity',function(){
+                        if($(this).attr('max') && parseFloat($(this).val())>parseFloat($(this).attr('max'))){
+                            $(this).val($(this).attr('max'))
+                        }
                         let oncew=window.rowdata.Quantity?(window.rowdata.CargoWeight/window.rowdata.Quantity):0;
                         let val=parseFloat($(this).val());
-                        $('#set-McWeight').val((val*oncew)||0);
-                    })              
+                        $('#set-McWeight').val((val*oncew).toFixed(3).replace(/[.,]000$/, "")||0);
+                    })
+                    $(document).on('input','#set-McWeight',function(){
+                        if($(this).attr('max') && parseFloat($(this).val())>parseFloat($(this).attr('max'))){
+                            $(this).val($(this).attr('max'))
+                        }
+                        let val=parseFloat($(this).val());
+                        $('#set-McWeight').val((val).toFixed(3).replace(/[.,]000$/, "")||0);
+                    })         
                     $(document).on('click','.setvaluebtn',function(){
                         if(!$('#set-TruckNo').val())return toastr.error('Chưa nhập thông tin số xe !');
                         if(!$('#set-Quantity').val())return toastr.error('Chưa nhập số lượng !');
@@ -1155,6 +1222,8 @@
                             DeviceID: $('#DeviceID').val(),
                             TallyType: 1,
                             MethodID: window.rowdata.MethodID,
+                            UnitID: window.rowdata.UnitID,
+                            JobModeID: window.rowdata.JobModeID,
                             ItemID: window.rowdata.ItemID,
                             ClassID: window.rowdata.ClassID,
                             VoyageKey: window.rowdata.VoyageKey,
@@ -1165,7 +1234,8 @@
                             McWeight: $('#set-McWeight').val(),
                             Cellar: $('#set-Cellars').val(),
                             Note: $('#set-Note').val(),
-                            RefRowguid: window.rowdata.rowguid,
+                            RefRowguid: window.rowdata.RefRowguid||window.rowdata.rowguid,
+                            rowguid: window.rowdata.rowguid,
                         };
                         $.ajax({
                             url: "/tally/saveTallyData",

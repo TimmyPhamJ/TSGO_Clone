@@ -1,0 +1,669 @@
+<script>document.title = 'IN PHIẾU GIAO NHẬN'</script>
+<div class="row">
+	<div class="col-xl-12">
+		<div class="ibox collapsible-box">
+			<div class="ibox-head">
+				<div class="ibox-title">IN PHIẾU GIAO NHẬN</div>
+				<div class="button-bar-group">                    
+					<button id="search" class="btn btn-outline-warning btn-sm mr-1"
+                        data-loading-text="<i class='la la-spinner spinner'></i>Xóa dữ liệu"
+                        title="Xóa những dòng đang chọn">
+                        <span class="btn-icon"><i class="fa fa-refresh" aria-hidden="true"></i>Nạp dữ liệu</span>
+                    </button>
+					<button id="print_order" class="btn btn-outline-success btn-sm mr-1">
+						<span class="btn-icon"><i class="fa fa-print" aria-hidden="true"></i>In Phiếu</span>
+					</button>
+				</div>
+			</div>
+
+            <div class="ibox-body pt-2 pb-2 bg-f9">
+                <div class="row ibox mb-0 p-2">
+
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-xs-12">
+                            <div class="row form-group mb-0">
+                                <label class="col-sm-4 col-form-label"><b style="font-size: 13px;">Tàu chuyến</b></label>
+                                <div class="col-sm-8 input-group input-group-sm">
+                                    <input id="VoyageKey" class="form-control form-control-sm input-required" type="text" hidden>
+										<input class="form-control form-control-sm input-required" id="shipid" placeholder="Tàu/chuyến" type="text" readonly autocomplete="off" />
+										<span class="input-group-addon bg-white btn mobile-hiden text-warning" style="padding: 0 0.5rem;" title="chọn tàu" data-toggle="modal" data-target="#ship-modal">
+											<i class="ti-search"></i>
+										</span>
+                                </div>
+                            </div>		
+
+                        </div>
+
+						<div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-xs-12">
+                            <div class="row form-group mb-0">
+                                <label class="col-sm-4 col-form-label"><b style="font-size: 13px;">Chủ hàng</b></label>
+                                <div class="col-sm-8 input-group input-group-sm">
+                                    <input class="form-control form-control-sm input-required" id="CusID" placeholder="Đối tượng thanh toán" readonly type="text">
+										<button class="input-group-addon bg-white btn mobile-hiden text-warning" style="padding: 0 .5rem" title="Chọn đối tượng thanh toán" data-toggle="modal" data-target="#payer-modal" id="chooseCustomer">
+											<i class="ti-search"></i>
+										</button>
+                                </div>
+                            </div>		
+
+                        </div>
+
+                        
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-xs-12">
+                            <div class="row form-group mb-0">
+                                <label class="col-sm-4 col-form-label"><b style="font-size: 13px;">Số Bill / Book</b></label>
+                                <div class="col-sm-8 input-group input-group-sm">
+                                    <div class="input-group">
+                                        <input class="form-control form-control-sm input-required" id="BBNo" type="text" placeholder="Số Bill / Book">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                </div>
+            </div>
+
+            <div class="ibox-body pt-2 pb-2 bg-f9">
+                <div class="row ibox">
+                    <div class="col-md-12 col-sm-12 col-xs-12 table-responsive pt-3 pb-3">
+                        <div id="tablecontent">
+                            <table id="contenttable" class="table table-striped display nowrap" cellspacing="0" style="width: 99.8%"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+
+<!--select ship-->
+<div class="modal fade" id="ship-modal" tabindex="-1" role="dialog" aria-labelledby="groups-modalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-mw" role="document" style="min-width: 960px;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="groups-modalLabel">Chọn tàu</h5>
+			</div>
+			<div class="modal-body" style="padding: 10px 0;">
+				<div class="row col-xl-12">
+					<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 mt-1">
+						<div class="form-group">
+							<label class="radio radio-outline-primary" style="padding-right: 15px !important;">
+								<input name="shipArrStatus" type="radio" value="1" checked />
+								<span class="input-span"></span>
+								Đến cảng
+							</label>
+							<label class="radio radio-outline-primary">
+								<input name="shipArrStatus" value="2" type="radio" />
+								<span class="input-span"></span>
+								Rời Cảng
+							</label>
+						</div>
+					</div>
+					<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 pr-0">
+						<div class="row form-group">
+							<div class="col-sm-12 pr-0">
+								<div class="input-group">
+									<input class="form-control form-control-sm" id="search-ship-name" type="text" placeholder="Nhập tên tàu" />
+									<span id="btn-search-ship" class="input-group-addon bg-white btn mobile-hiden text-warning">
+										<i class="ti-search"></i>
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="table-responsive">
+					<table id="search-ship" class="table table-striped display nowrap table-popup single-row-select" cellspacing="0" style="width: 99.8%;">
+						<thead>
+							<tr>
+								<th>Mã Tàu</th>
+								<th style="width: 20px;">STT</th>
+								<th>Tên Tàu</th>
+								<th>Chuyến Nhập</th>
+								<th>Chuyến Xuất</th>
+								<th>ETB</th>
+								<th>ShipKey</th>
+								<th>ATB</th>
+								<th>LaneID</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<div style="display: flex;flex: 1;justify-content: flex-start;align-items: center;">
+					<button type="button" id="reload-ship" class="btn btn-sm btn-warning">
+						<i class="fa fa-refresh"></i>
+						Tải lại
+					</button>
+				</div>
+				<button type="button" id="select-ship" class="btn btn-sm btn-outline-primary" data-dismiss="modal">
+					<i class="fa fa-check"></i>
+					Chọn
+				</button>
+				<button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">
+					<i class="fa fa-close"></i>
+					Đóng
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--Discount-->
+<div class="modal fade" id="cus-modal" tabindex="-1" role="dialog" aria-labelledby="groups-modalLabel-1" aria-hidden="true" data-whatever="id" style="padding-left: 2%; padding-top: 2%">
+	<div class="modal-dialog" role="document" style="min-width: 1024px!important">
+		<div class="modal-content" style="border-radius: 4px">
+			<div class="modal-header">
+				<h5 class="modal-title text-primary" id="groups-modalLabel-1">Chọn đối tượng thanh toán</h5>
+				<button id="CusSearch" class="btn btn-outline-warning btn-sm btn-loading mr-1" 
+									data-loading-text="<i class='la la-spinner spinner'></i>Nạp dữ liệu"
+								 	title="Nạp dữ liệu" style="display:none">
+					<span class="btn-icon"><i class="ti-search"></i>Nạp dữ liệu</span>
+				</button>
+			</div>
+			<div class="modal-body" style="padding: 0px 15px 15px 15px">
+				<div class="row mb-0 border-e border-top-0 pb-1 pt-3" style="display: none;">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+							<div class="row">
+								<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+									<div class="row form-group">
+										<label class="col-md-2 col-sm-4 col-xs-4 col-form-label">Khách</label>
+										<input id="CustomNameFilter" class="col-md-8 col-sm-10 col-xs-10 form-control form-control-sm" placeholder="Khách hàng" type="text"></input>
+									</div>
+								</div>
+								<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+									<div class="row form-group">
+
+										<label class="radio radio-success ml-5 mt-1">
+					                        <input type="radio" checked name="CusFilter" class="css-checkbox" value="M" />
+					                            <span class="input-span"></span>Thu Ngay
+					                    </label>								
+
+										<label class="radio radio-success ml-3 mt-1 mr-3">
+					                       <input type="radio" name="CusFilter" class="css-checkbox" value="C" />
+					                            <span class="input-span"></span>Thu Sau
+					                    </label>  
+
+									</div>
+								</div>
+							</div>
+					</div>
+				</div>
+				<div class="row ibox-footer border-top-0 mt-3">
+					<div class="col-md-12 col-sm-12 col-xs-12 table-responsive">
+						<table id="CusTable" class="table table-striped display nowrap" cellspacing="0" style="width: 99.5%">
+							<thead>
+								<tr style="width: 100%">
+									<th col-name = "STT"  class="text-center"> STT </th>
+									<th col-name="VoyageKey"></th>
+									<th col-name = "CusID"  class="text-center"> Mã ĐT</th>
+									<th col-name = "TaxCode"  class="text-center"> MST </th>
+									<th col-name = "CusName" class="text-center" > Tên </th>
+									<th col-name = "Address"  class="text-center"> Địa Chỉ </th>
+									<th col-name = "PaymentTypeName"  class="text-center"> HTTT </th>
+									<th col-name = "PaymentTypeID">PaymentTypeID</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<div  style="text-align: right;">
+					<button type="button" id="apply-cus" class="btn btn-sm btn-outline-primary" data-dismiss="modal">
+						<i class="fa fa-check"></i>
+						Chọn
+					</button>
+					<button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">
+						<i class="fa fa-close"></i>
+						Đóng
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function () {
+		var _columns = [
+				{ width: "80px", data: "STT", name: "STT", title: "STT", className: "text-center  editor-cancel", targets: 0 },
+				{ data: "BBNo", name: "BBNo", title: "Bill/Booking No", className: "text-center", targets: 1 },
+				{ data: "ItemName", name: "ItemName", title: "Hàng hóa", className: "text-center", targets: 2 },
+				{ data: "Quantity", name: "Quantity", title: "Số lượng", className: "text-center", targets: 3 ,render:(data,type,row)=>{
+					if(row.ClassID==2){
+						return row.QuantityIn;
+					}
+					else
+					if(row.ClassID==1){
+						return row.QuantityOut;
+					}
+				}},
+				{ data: "McWeight", name: "McWeight", title: "Trọng lượng", className: "text-center", targets: 4,render:(data,type,row)=>{
+					if(row.ClassID==2){
+						return row.McWeightIn;
+					}
+					else
+					if(row.ClassID==1){
+						return row.McWeightOut;
+					}
+				}},
+				{ data: "JobModeName", name: "JobModeName", title: "Phương án", className: "text-center", targets: 5,render:(data,type,row)=>{
+					if(row.ClassID==2){
+						return row.JobModeInName;
+					}
+					else
+					if(row.ClassID==1){
+						return row.JobModeOutName;
+					}
+				}},
+				{ data: "IN", name: "IN", title: "In", className: "text-center", targets: 6, render:()=>{
+					return `<button  class="btn btn-warning btn-sm mr-1 print_row">
+                        <span class="btn-icon"><i class="fa fa-print" aria-hidden="true"></i>In Phiếu</span>
+                    </button>`
+				}},
+			],
+			tbl = $('#contenttable'),
+			dataList = <%- JSON.stringify(locals.dataList || []) %>;
+		var dataTbl = tbl.newDataTable({
+			scrollY: '55vh',
+			columnDefs: _columns,
+			data: dataList.map((itm, ii) => { return { ...itm, STT: ii + 1 } }),
+			order: [[0, 'asc']],
+			paging: false,
+			keys: true,
+			autoFill: {
+				focus: 'focus',
+			},
+			select: true,
+			rowReorder: false
+		});
+
+		tbl.editableTableWidget();
+        function searchData(){
+            if(!$('#VoyageKey').val() && !$('#CusID').val() && !$('#BBNo').val() )
+            return toastr['error']("Vui lòng nhập dữ liệu !");
+            let dt={
+                VoyageKey: $('#VoyageKey').val()||undefined,
+                CusID: $('#CusID').val()||undefined,
+                BBNo: $('#BBNo').val()||undefined,
+            }
+            $.ajax({
+				url: "/Tools/ReceiptPrint/search",
+				dataType: 'json',
+				data: dt,
+				type: 'POST',
+				success: function (data) {
+					let dt=((data.data||[]).map((itm,ii)=>({...itm,STT:(ii+1)})));
+					tbl.dataTable().fnClearTable();
+					if(dt.length>0)
+					tbl.dataTable().fnAddData((data.data||[]).map((itm,ii)=>({...itm,STT:(ii+1)})));
+					else
+					toastr['error']('Không tìm thấy dữ liệu !!');
+				},
+				error: function(err){
+					toastr['error']('Không tìm thấy dữ liệu !!');
+					console.log(err);
+					//btn.button('reset');
+				}
+			});
+        }
+		$('#search').on('click', function () {
+			searchData();
+		});
+        $(document).on('click','#contenttable tbody tr', function () {
+            $('#contenttable tbody tr').removeClass('selected');
+            $(this).addClass('selected');
+		});
+		$('#print_order').on('click', function () {
+			if (tbl.getSelectedRows().length == 0) {
+				$('.toast').remove();
+				toastr["info"]("Vui lòng chọn các dòng dữ liệu để in!");
+			} else {
+				let data=tbl.DataTable().row('.selected').data();
+                window.open(`/Order/PrintSD/TTP?VoyageKey=${data.VoyageKey}&ClassID=${data.ClassID}&CusID=${data.CusID}&JobModeID=${data.ClassID==2?data.JobModeIn:data.JobModeOut}#print_auto`);
+				return false;
+			}
+		});
+		$(document).on('click','.print_row', function () {
+			let data=tbl.DataTable().row($(this).closest('tr')).data();
+            window.open(`/Order/PrintSD/TTP?VoyageKey=${data.VoyageKey}&ClassID=${data.ClassID}&CusID=${data.CusID}&JobModeID=${data.ClassID==2?data.JobModeIn:data.JobModeOut}&BBNo=${data.BBNo}#print_auto`);
+			return false;
+		});
+///////// SEARCH SHIP
+var _selectShipKey='';
+function getLane(laneID) {
+			
+		}
+		$( "#ship-modal" ).on('shown.bs.modal', function(){
+			$('#search-ship').DataTable().draw();
+		});
+		$('#search-ship').DataTable({
+			scrollY: '35vh',
+			paging: false,
+			order: [
+				[1, 'asc']
+			],
+			columnDefs: [{
+					className: "input-hidden",
+					targets: [0, 6, 8]
+				},
+				{
+					className: "text-center",
+					targets: [1]
+				}
+			],
+			buttons: [],
+			info: false,
+			searching: false
+		});
+		function search_ship() {
+		$("#search-ship").waitingLoad();
+		var formdata = {
+			'action': 'view',
+			'act': 'searh_ship',
+			'arrStatus': $('input[name="shipArrStatus"]:checked').val(),
+			'shipname': $('#search-ship-name').val()
+		};
+		if(formdata.arrStatus=='1'){
+			formdata.filter={Status:{operation:'in',value:[0,1]}}
+		}
+		else{
+			formdata.filter={Status:{operation:'>',value:1}}
+		}
+		$.ajax({
+			url: "/Order/ordReceive/get-ship",
+			dataType: 'json',
+			data: formdata,
+			type: 'POST',
+			success: function(data) {
+				var rows = [];
+				if (data.vsls.length > 0) {
+					for (i = 0; i < data.vsls.length; i++) {
+						rows.push([
+							data.vsls[i].VesselID,
+							(i + 1),
+							data.vsls[i].VesselName,
+							data.vsls[i].InboundVoyage,
+							data.vsls[i].OutboundVoyage,
+							getDateTime(data.vsls[i].ETB),
+							data.vsls[i].VoyageKey,
+							getDateTime(data.vsls[i].ATB),
+							data.vsls[i].InLane || ''
+						]);
+					}
+				}
+				$('#search-ship').dataTable().fnClearTable();
+				if (rows.length > 0) {
+					$('#search-ship').dataTable().fnAddData(rows);
+				}
+			},
+			error: function(err) {
+				console.log(err);
+			}
+		});
+	}
+	search_ship();
+		$('#btn-search-ship').on('click', function() {
+			search_ship();
+		});
+
+		$(document).on('click', '#search-ship tbody tr', function() {
+			$('.m-row-selected').removeClass('m-row-selected');
+			$(this).addClass('m-row-selected');
+		});
+		$('#search-ship-name').on('keypress', function(e) {
+			if (e.which == 13) {
+				search_ship();
+			}
+		});
+		$('#select-ship').on('click', function(e) {
+			var r = $('#search-ship tbody').find('tr.m-row-selected').first();
+
+			var cid = $(r).find('td:eq(0)').text();
+			if (!cid) {
+				e.preventDefault();
+				return false;
+			}
+
+			$('#shipid').val($(r).find('td:eq(0)').text() + "/" + $(r).find('td:eq(3)').text() + "/" + $(r).find('td:eq(4)').text());
+			$('#shipid').removeClass('error');
+
+			_selectShipKey = $(r).find('td:eq(6)').text();
+			$('#VoyageKey').val(_selectShipKey);
+			_laneID = $(r).find('td:eq(8)').text();
+
+			getLane(_laneID);
+		});
+
+		$('#search-ship').on('dblclick', 'tbody tr td', function(e) {
+			var r = $(this).parent();
+
+			var cid = $(r).find('td:eq(0)').text();
+			if (!cid) {
+				e.preventDefault();
+				return false;
+			}
+
+			var yardClosingTime = $(r).find('td:eq(10)').text();
+
+			if (yardClosingTime && (new Date().getTime() > new Date(yardClosingTime).getTime())) {
+				$.confirm({
+					title: 'Cảnh báo!',
+					type: 'orange',
+					icon: 'fa fa-warning',
+					content: 'Container quá thời gian Closing time, bạn có muốn tiếp tục ?',
+					buttons: {
+						ok: {
+							text: 'Tiếp tục',
+							btnClass: 'btn-primary',
+							keys: ['Enter'],
+							action: function() {
+								$('#shipid').val($(r).find('td:eq(0)').text() + "/" + $(r).find('td:eq(3)').text() + "/" + $(r).find('td:eq(4)').text());
+								$('#shipid').removeClass('error');
+
+								_selectShipKey = $(r).find('td:eq(6)').text();
+								$('#VoyageKey').val(_selectShipKey);
+								_laneID = $(r).find('td:eq(8)').text();
+
+								getLane(_laneID);
+							}
+						},
+						cancel: {
+							text: 'Hủy bỏ',
+							btnClass: 'btn-default',
+							keys: ['ESC'],
+							action: function() {
+								$('#ship-modal').modal("show");
+							}
+						}
+					}
+				});
+			} else {
+				$('#shipid').val($(r).find('td:eq(0)').text() + "/" + $(r).find('td:eq(3)').text() + "/" + $(r).find('td:eq(4)').text());
+				$('#shipid').removeClass('error');
+
+				_selectShipKey = $(r).find('td:eq(6)').text();
+				$('#VoyageKey').val(_selectShipKey);
+				_laneID = $(r).find('td:eq(8)').text();
+
+				getLane(_laneID);
+			}
+
+			$('#ship-modal').modal("hide");
+		});
+
+		$('#unselect-ship').on('click', function() {
+			$('#shipid').val('');
+		});
+
+		$('#reload-ship').on("click", function() {
+			$('#search-ship-name').val("");
+			search_ship();
+		})
+		///////// END SEARCH SHIP
+		///CUS
+		var _CusColumns 	= ["STT","VoyageKey","CusID","TaxCode","CusName","Address","PaymentTypeName","PaymentTypeID"],
+			tblCustomer 	= $("#CusTable"),
+			CustomModal 	= $("#cus-modal");
+			
+		//Initial customer  table 	
+		tblCustomer.newDataTable({
+			paging: true,
+			scroller: {
+				displayBuffer: 12,
+				boundaryScale: 0.5
+			},
+			scrollY: '30vh',
+			columnDefs: [
+				{ width: "30px",type: "num", className: "text-center", targets: _CusColumns.indexOf('STT')},		
+				{ width: "200px", className: "text-left", targets: _CusColumns.getIndexs(["CusName","Address"])},		
+				{className: "text-center", targets: _CusColumns.getIndexs(["CusID","TaxCode","PaymentTypeName"])},
+				{ className: "hiden-input", visible:false, targets: _CusColumns.getIndexs(["VoyageKey","PaymentTypeID"])},
+			],
+			order: [[ _CusColumns.indexOf('STT'), 'asc' ]],
+			keys:true,
+			select: {
+				style: 'single',
+				info: false,
+			},
+			buttons: [],
+			rowReorder: false,
+			arrayColumns:_CusColumns,
+		});
+
+		$('#cus-modal').on('shown.bs.modal', function(e){
+			$('#CusTable').DataTable().draw(false);
+		});
+		
+		$("#CusSearch").on('click', function(){
+			$('#CusTable').DataTable().draw(false);
+			tblCustomer.waitingLoad();
+			var formData = {
+				filter:{
+					PaymentTypeID:$("input[type='radio'][name='CusFilter']:checked").val(),
+					CusID:{
+						operation: 'like',
+						value: $('#CustomNameFilter').val()
+					}
+				}
+			};			
+
+			$.ajax({
+				url: "/Order/ordDelivery/cus",
+				dataType: 'json',
+				data: {},
+				type: 'POST',
+				success: function (data) {
+					var rows = [];
+					tblCustomer.dataTable().fnClearTable();
+					window.CUSs=data.data||[];
+					if(data.data.length > 0) {
+						for (i = 0; i < data.data.length; i++) {
+							var rData = data.data[i], r = [];
+							$.each(_CusColumns, function(idx, colname){
+								var val = "";
+								switch(colname){
+									case "STT": 
+										val = i+1; 
+										break;
+									default:
+										val = (rData[colname] ? rData[colname] : '');
+										break;	
+								}
+								r.push(val);
+							});
+							rows.push(r);
+						}
+					}
+					tblCustomer.dataTable().fnClearTable();
+					if(rows.length > 0){
+						tblCustomer.dataTable().fnAddData(rows);
+					}
+				
+				},
+				error: function(err){
+					tblCustomer.dataTable().fnClearTable();
+					console.log(err);
+				}
+			});
+		});
+		$('#CusSearch').trigger('click');
+		$("#chooseCustomer").on('click', function(){
+    		$('#cus-modal').modal("show");
+			sumNumRows = 0;
+		});
+
+		$(document).on("dblclick", "#tblCustomer tbody tr",  function(){
+       		var CustomerData	= tblCustomer.getSelectedRows().data().toArray()[0],
+       			CusID 			= CustomerData[_CusColumns.indexOf("CusID")],
+       			CusName 		= CustomerData[_CusColumns.indexOf("CusName")],
+				PaymentTypeID	= CustomerData[_CusColumns.indexOf("PaymentTypeID")],
+				Fax				= CustomerData[_CusColumns.indexOf("Fax")],
+				Tel				= CustomerData[_CusColumns.indexOf("Tel")],
+				Address 		= CustomerData[_CusColumns.indexOf("Address")],
+				Email			= CustomerData[_CusColumns.indexOf("Email")];
+
+       		$("#CusID").val(CusID);
+			$("#CusTypeID").val(getPayerType(CusID));
+			$("#CusName").val(CusName);
+			$("#PaymentTypeID").val(PaymentTypeID);
+			$("Fax").val(Fax);
+			$("#Tel").val(Tel);
+			$("#Address").val(Address);
+			$("#Email").val(Email);
+
+       		$('#search').trigger('click');
+       		CustomModal.modal('hide');
+       	});
+		function getPayerType(id) {
+			console.log(id);
+			if (window.CUSs.length == 0) return "";
+			var py = window.CUSs.filter(p => p.CusID == id);
+			console.log(py);
+			if (py.length == 0) return "";
+			return py[0].CusTypeID || "";
+		}
+		function formatDate(dateString){
+			var date = new  Date (dateString);
+			var day = date.getDate();
+			var month = date. getMonth() +1;
+			var year = date.getFullYear();
+			if (day < 10){
+				day = '0' + day;
+			}
+			if (month <10){
+				month = '0' + month;
+			}
+			return day + '/' + month + '/' + year;
+		};
+
+		$("#apply-cus").on("click", function(){
+       		var tblCustomerSelectedRows 	= 	tblCustomer.getSelectedRows().data().toArray()[0],
+       			CusID 						= 	tblCustomerSelectedRows[_CusColumns.indexOf("CusID")],
+       			CusName 					= 	tblCustomerSelectedRows[_CusColumns.indexOf("CusName")],
+				PaymentTypeID				= 	tblCustomerSelectedRows[_CusColumns.indexOf("PaymentTypeID")],
+				Fax							=	tblCustomerSelectedRows[_CusColumns.indexOf("Fax")],
+				Tel							= 	tblCustomerSelectedRows[_CusColumns.indexOf("Tel")],
+				Address 					= 	tblCustomerSelectedRows[_CusColumns.indexOf("Address")],
+				Email						= 	tblCustomerSelectedRows[_CusColumns.indexOf("Email")];
+				
+
+			
+       		$("#CusID").val(CusID);			
+			$("#CusTypeID").val(getPayerType(CusID));
+			$("Fax").val(Fax);
+			$("#CusName").val(CusName);
+			$("#PaymentTypeID").val(PaymentTypeID);
+			$("#Tel").val(Tel);
+			$("#Address").text(Address);
+			$("#CusName").text(CusName);
+			
+       	});
+		
+		///END CUS
+	});
+</script>

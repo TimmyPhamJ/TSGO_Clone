@@ -1,0 +1,173 @@
+<script>document.title = 'IN LẠI CHỨNG TỪ'</script>
+<div class="row">
+	<div class="col-xl-12">
+		<div class="ibox collapsible-box">
+			<div class="ibox-head">
+				<div class="ibox-title">IN LẠI CHỨNG TỪ</div>
+				<div class="button-bar-group">                    
+					<button id="search" class="btn btn-outline-warning btn-sm mr-1"
+                        data-loading-text="<i class='la la-spinner spinner'></i>Xóa dữ liệu"
+                        title="Xóa những dòng đang chọn">
+                        <span class="btn-icon"><i class="fa fa-refresh" aria-hidden="true"></i>Nạp dữ liệu</span>
+                    </button>
+					<button id="print_order" class="btn btn-outline-success btn-sm mr-1" title="Thêm dòng mới">
+						<span class="btn-icon"><i class="fa fa-print" aria-hidden="true"></i>In Lệnh</span>
+					</button>
+					<button id="print_inv" class="btn btn-outline-primary btn-sm mr-1"
+						data-loading-text="<i class='la la-spinner spinner'></i>Lưu dữ liệu" title="Lưu dữ liệu">
+						<span class="btn-icon"><i class="fa fa-internet-explorer"></i>In hóa đơn</span>
+					</button>
+				</div>
+			</div>
+
+            <div class="ibox-body pt-2 pb-2 bg-f9">
+                <div class="row ibox mb-0 p-2">
+
+                        <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-xs-12">
+                            <div class="row form-group mb-0">
+                                <label class="col-sm-4 col-form-label"><b style="font-size: 13px;">Số Lệnh</b></label>
+                                <div class="col-sm-8 input-group input-group-sm">
+                                    <div class="input-group">
+                                        <input class="form-control form-control-sm input-required" id="OrderNo" type="text" placeholder="Số lệnh">
+                                    </div>
+                                </div>
+                            </div>		
+
+                        </div>
+
+                        <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-xs-12">
+                            <div class="row form-group mb-0">
+                                <label class="col-sm-4 col-form-label"><b style="font-size: 13px;">Số PIN</b></label>
+                                <div class="col-sm-8 input-group input-group-sm">
+                                    <div class="input-group">
+                                        <input class="form-control form-control-sm input-required" id="PinCode" type="text" placeholder="Số PIN">
+                                    </div>
+                                </div>
+                            </div>		
+
+                        </div>
+                        
+                        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                            <div class="row form-group mb-0">
+                                <label class="col-sm-4 col-form-label"><b style="font-size: 13px;">Số Bill / Book</b></label>
+                                <div class="col-sm-8 input-group input-group-sm">
+                                    <div class="input-group">
+                                        <input class="form-control form-control-sm input-required" id="BBNo" type="text" placeholder="Số Bill / Book">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                            <div class="row form-group mb-0">
+                                <label class="col-sm-4 col-form-label"><b style="font-size: 13px;">Số Hóa Đơn</b></label>
+                                <div class="col-sm-8 input-group input-group-sm">
+                                    <div class="input-group">
+                                        <input class="form-control form-control-sm input-required" id="InvoiceNo" type="text" placeholder="Số Hóa Đơn">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-xs-12">
+								<label class="mt-2 radio radio-info">
+									<input type="radio" name="TypeOrd" class="css-checkbox" value="1" checked>
+									<span class="input-span"></span>Nhập Xuất Hàng &nbsp; 
+								</label>	
+								<label class="mt-2 ml-3 radio radio-info">
+									<input type="radio" name="TypeOrd" class="css-checkbox" value="2">
+									 <span class="input-span"></span>Dịch vụ
+								</label>	
+                        </div>
+
+                </div>
+            </div>
+
+            <div class="ibox-body pt-2 pb-2 bg-f9">
+                <div class="row ibox">
+                    <div class="col-md-12 col-sm-12 col-xs-12 table-responsive pt-3 pb-3">
+                        <div id="tablecontent">
+                            <table id="contenttable" class="table table-striped display nowrap" cellspacing="0" style="width: 99.8%"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function () {
+		var _columns = [
+				{ width: "80px", data: "STT", name: "STT", title: "STT", className: "text-center  editor-cancel", targets: 0 },
+				{ data: "BBNo", name: "BBNo", title: "Bill/Booking No", className: "text-center", targets: 1 },
+				{ data: "OrderNo", name: "OrderNo", title: "Số Lệnh", className: "text-center", targets: 2 },
+				{ data: "PinCode", name: "PinCode", title: "Số Pin", className: "text-center", targets: 3},
+				{ data: "JobModeName", name: "JobModeName", title: "Phương án", className: "text-center", targets: 4},
+			],
+			tbl = $('#contenttable'),
+			dataList = <%- JSON.stringify(locals.dataList || []) %>;
+		var dataTbl = tbl.newDataTable({
+			scrollY: '55vh',
+			columnDefs: _columns,
+			data: dataList.map((itm, ii) => { return { ...itm, STT: ii + 1 } }),
+			order: [[0, 'asc']],
+			paging: false,
+			keys: true,
+			autoFill: {
+				focus: 'focus',
+			},
+			select: true,
+			rowReorder: false
+		});
+
+		tbl.editableTableWidget();
+        function searchData(){
+            if(!$('#BBNo').val() && !$('#OrderNo').val() && !$('#PinCode').val() && !$('#InvoiceNo').val() )
+            return toastr['error']("Vui lòng nhập dữ liệu !");
+            let dt={
+                BBNo: $('#BBNo').val()||undefined,
+                OrderNo: $('#OrderNo').val()||undefined,
+                PinCode: $('#PinCode').val()||undefined,
+                InvoiceNo: $('#InvoiceNo').val()||undefined,
+            }
+            $.ajax({
+				url: "/Tools/RePrint/search",
+				dataType: 'json',
+				data: dt,
+				type: 'POST',
+				success: function (data) {
+					let dt=((data.data||[]).map((itm,ii)=>({...itm,STT:(ii+1)})));
+					tbl.dataTable().fnClearTable();
+					if(dt.length>0)
+					tbl.dataTable().fnAddData((data.data||[]).map((itm,ii)=>({...itm,STT:(ii+1)})));
+					else
+					toastr['error']('Không tìm thấy dữ liệu !!');
+				},
+				error: function(err){
+					console.log(err);
+					toastr['error']('Không tìm thấy dữ liệu !!');
+					//btn.button('reset');
+				}
+			});
+        }
+		$('#search').on('click', function () {
+			searchData();
+		});
+        $(document).on('click','#contenttable tbody tr', function () {
+            $('#contenttable tbody tr').removeClass('selected');
+            $(this).addClass('selected');
+		});
+		$('#print_order').on('click', function () {
+			if (tbl.getSelectedRows().length == 0) {
+				$('.toast').remove();
+				toastr["info"]("Vui lòng chọn các dòng dữ liệu để in!");
+			} else {
+				let data=tbl.DataTable().row('.selected').data();
+                window.open('/Order/Print/'+data.PinCode.split('-')[0]+'#print_auto');
+				return false;
+			}
+		});
+
+	});
+</script>

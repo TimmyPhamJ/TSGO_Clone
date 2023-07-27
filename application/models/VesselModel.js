@@ -15,7 +15,7 @@ module.exports.loadVesselChart = async (req) => {
   query.where(req.gtos.raw("ISNULL(ATA,ETA)"), "<=", req.body.TOTIME || "");
   query.where(req.gtos.raw("ISNULL(ATD,ETD)"), ">=", req.body.FROMTIME || "");
   query.where(req.gtos.raw("ISNULL(ATD,ETD)"), "<=", req.body.TOTIME || "");
-  console.log(query.toString());
+  //console.log(query.toString());
   let data = (await query.catch((err) => console.log(err))) || [];
   let vessel = {};
   let stt = 0;
@@ -115,6 +115,18 @@ module.exports.loadLaneDetails = async (req) => {
     .leftJoin("BS_PORT", "BS_PORT.PortID", "BS_LANE_DETAILS.PortID")
     .orderBy("CreateTime", "desc");
   query = FunctionModel.KnexWhere(query, req.body.filter);
+  //console.log(query.toString());
+  return (await query.catch((err) => console.log(err))) || [];
+};
+
+module.exports.loadLaneDetails2 = async (req) => {
+  let query = req
+    .gtos("BS_LANE_DETAILS")
+    .select("BS_LANE.LaneName", "BS_LANE_DETAILS.*", "BS_PORT.NationID")
+    .leftJoin("BS_PORT", "BS_PORT.PortID", "BS_LANE_DETAILS.PortID")
+    .leftJoin("BS_LANE", "BS_LANE.LaneID", "BS_LANE_DETAILS.LaneID")
+    .orderBy("CreateTime", "desc");
+  query = FunctionModel.KnexWhere(query, req.body.filter);
   console.log(query.toString());
   return (await query.catch((err) => console.log(err))) || [];
 };
@@ -165,6 +177,61 @@ module.exports.saveLane = async (req) => {
     prm.push(req.gtos("BS_LANE").insert(item));
     prm.push(req.gtos("BS_LANE_DETAILS").where("LaneID", item["LaneID"]).del());
     prm.push(req.gtos("BS_LANE_DETAILS").insert(laneDetailList));
+  }
+
+  let rt = false;
+  await Promise.all(prm)
+    .then(() => {
+      rt = true;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return rt;
+};
+
+module.exports.saveLane2 = async (req) => {
+  let prm = [];
+  let item = {
+    LaneID: req.body.data.LaneID,
+    LaneName: req.body.data.LaneName,
+    CreatedBy: req.session.userdata["UserID"],
+    CreateTime: moment().format("YYYY-MM-DD HH:mm:ss"),
+    OprList: req.body.data.OprList,
+    PortList: req.body.data.PortList,
+  };
+  let laneDetailList = [...(item["laneDetailList"] || [])].map((itm) => {
+    return {
+      ...itm,
+      CreatedBy: req.session.userdata["UserID"],
+      CreateTime: moment().format("YYYY-MM-DD HH:mm:ss"),
+    };
+  });
+  delete item["STT"];
+  delete item["laneDetailList"];
+  console.log("laneDetailList:", laneDetailList);
+  var checkitem = await req
+    .gtos("BS_LANE")
+    .select("rowguid")
+    .where("LaneID", req.body.data.LaneID)
+    .limit(1)
+    .catch((err) => console.log(err));
+
+  if (checkitem && checkitem.length > 0) {
+    console.log(111, laneDetailList);
+    item["ModifiedBy"] = req.session.userdata["UserID"];
+    item["UpdateTime"] = moment().format("YYYY-MM-DD HH:mm:ss");
+    /* Do nothing */
+    prm.push(req.gtos("BS_LANE_DETAILS").where("LaneID", item["LaneID"]).del());
+    prm.push(req.gtos("BS_LANE_DETAILS").insert(laneDetailList));
+    prm.push(
+      req.gtos("BS_LANE").where("rowguid", checkitem[0]["rowguid"]).update(item)
+    );
+  } else {
+    // item["CreatedBy"] = req.session.userdata["UserID"];
+    prm.push(req.gtos("BS_LANE").insert(item));
+    // prm.push(req.gtos("BS_LANE_DETAILS").where("LaneID", item["LaneID"]).del());
+    // prm.push(req.gtos("BS_LANE_DETAILS").insert(laneDetailList));
   }
 
   let rt = false;
@@ -286,7 +353,7 @@ module.exports.deleteYardPlanning = async (req) => {
 module.exports.getBerth = async (req) => {
   return new Promise(async (resolve, rejects) => {
     try {
-      let result = await req.gtos("BS_BERTH").select("*");
+      let result = await req.gtos("BS_BERTH").select("*").orderBy("OrderBy");
       resolve(result);
     } catch (error) {
       rejects(error);
@@ -295,7 +362,6 @@ module.exports.getBerth = async (req) => {
 };
 module.exports.getDisLoad = async (req) => {
   return new Promise(async (resolve, rejects) => {
-    console.log("check arr", req.body);
     try {
       let { voyageKey } = req.body;
       if (voyageKey.length > 0) {
@@ -306,6 +372,8 @@ module.exports.getDisLoad = async (req) => {
 
         resolve(result);
       }
+      else
+        resolve([]);
     } catch (error) {
       rejects(error);
     }
@@ -315,7 +383,6 @@ module.exports.getBitt = async (req) => {
   return new Promise(async (resolve, rejects) => {
     try {
       let { bitt_ID, berth_ID } = req.query;
-      console.log("checkdata", bitt_ID, berth_ID);
       let result = await req
         .gtos("BS_BITT")
         .select("*")
@@ -343,6 +410,8 @@ module.exports.loadVesselVisit = async (req) => {
       "DT_VESSEL_VISIT.*",
       //,'DT_VESSEL.VesselName'
       "DT_VESSEL.IMO",
+      "DT_VESSEL.NationID",
+      "DT_VESSEL.DWT",
       "BS_OPR.OprName",
       "LP.PortName as LastPortName",
       "NP.PortName as NextPortName",
@@ -350,6 +419,7 @@ module.exports.loadVesselVisit = async (req) => {
     )
     .orderBy("CreateTime", "desc");
   query = FunctionModel.KnexWhere(query, req.body.filter, "DT_VESSEL_VISIT");
+  //console.log(query.toString());
   return (await query.catch((err) => console.log(err))) || [];
 };
 
@@ -367,7 +437,7 @@ module.exports.saveVesselVisit = async (req) => {
       .orWhere("rowguid", item["rowguid"] || null)
       .limit(1)
       .catch((err) => console.log(err));
-
+    console.log(checkitem, item);
     if (checkitem && checkitem.length > 0) {
       item["ModifiedBy"] = req.session.userdata["UserID"];
       item["UpdateTime"] = moment().format("YYYY-MM-DD HH:mm:ss");
@@ -410,6 +480,19 @@ module.exports.deleteVesselVisit = async (req) => {
   }
 };
 
+module.exports.loadLanePort = async (req) => {
+  try {
+    let data = await req
+      .gtos("BS_LANE_DETAILS")
+      .select("BS_LANE_DETAILS.*", "BS_PORT.NationID", "BS_PORT.PortName")
+      .leftJoin("BS_PORT", "BS_PORT.PortID", "BS_LANE_DETAILS.PortID")
+      .where("BS_LANE_DETAILS.LaneID", req.body.LaneID);
+    return data;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
 /*********************** DT_VESSEL */
 
 module.exports.saveRowVessel = async (req) => {
@@ -433,10 +516,11 @@ module.exports.saveRowVessel = async (req) => {
 module.exports.loadVesselFull = async (req) => {
   let query = req
     .gtos("DT_VESSEL")
-    .join("BS_OPR", "BS_OPR.OprID", "DT_VESSEL.OprID")
+    .leftJoin("BS_OPR", "BS_OPR.OprID", "DT_VESSEL.OprID")
     .select("DT_VESSEL.*", "BS_OPR.OprName")
     .orderBy("VesselID");
   query = FunctionModel.KnexWhere(query, req.body.filter, "DT_VESSEL");
+  //console.log(query.toString());
   return (await query.catch((err) => console.log(err))) || [];
 };
 
@@ -488,9 +572,9 @@ module.exports.saveVessel = async (req) => {
         );
         require("fs").writeFile(
           __dirname +
-            "/../../public/assets/img/vessel_images/" +
-            req.body.data[0].VesselID +
-            ".jpg",
+          "/../../public/assets/img/vessel_images/" +
+          req.body.data[0].VesselID +
+          ".jpg",
           base64Data,
           "base64",
           function (err) {

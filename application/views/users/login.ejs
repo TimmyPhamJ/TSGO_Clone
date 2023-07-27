@@ -2,393 +2,400 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width initial-scale=1.0">
-    <title>
-        <%=locals.title || 'GTOS' %>
-    </title>
-    <!-- GLOBAL MAINLY STYLES-->
-    <link href="/assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="/assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="/assets/vendors/line-awesome/css/line-awesome.min.css" rel="stylesheet" />
-    <link href="/assets/vendors/themify-icons/css/themify-icons.css" rel="stylesheet" />
-    <link href="/assets/vendors/animate.css/animate.min.css" rel="stylesheet" />
-    <link href="/assets/vendors/toastr/toastr.min.css" rel="stylesheet" />
-    <link href="/assets/vendors/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
-    <link href="/assets/css/main.min.css" rel="stylesheet" />
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width initial-scale=1.0">
+	<title>
+		<%=locals.title || 'GTOS' %>
+	</title>
+	<!-- GLOBAL MAINLY STYLES-->
+	<link href="/assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="/assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="/assets/vendors/line-awesome/css/line-awesome.min.css" rel="stylesheet" />
+	<link href="/assets/vendors/themify-icons/css/themify-icons.css" rel="stylesheet" />
+	<link href="/assets/vendors/animate.css/animate.min.css" rel="stylesheet" />
+	<link href="/assets/vendors/toastr/toastr.min.css" rel="stylesheet" />
+	<link href="/assets/vendors/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
+	<link href="/assets/css/main.min.css" rel="stylesheet" />
 
-    <style>
-        .blur {
-            background: url('/assets/img/bg.png') no-repeat center center fixed;
-            filter: blur(7px);
-            -webkit-background-size: cover;
-            -moz-background-size: cover;
-            -o-background-size: cover;
-            background-size: cover;
-            height: 100%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            min-width: 100%;
-            min-height: 100%;
-        }
+	<style>
+		.blur {
+			background: url('/assets/img/bg.png') no-repeat center center fixed;
+			filter: blur(7px);
+			-webkit-background-size: cover;
+			-moz-background-size: cover;
+			-o-background-size: cover;
+			background-size: cover;
+			height: 100%;
+			position: fixed;
+			top: 0;
+			left: 0;
+			min-width: 100%;
+			min-height: 100%;
+		}
 
-        .widget {
-            height: 100%;
-            width: 100%;
-            overflow: hidden;
-        }
+		.widget {
+			height: 100%;
+			width: 100%;
+			overflow: hidden;
+		}
 
-        a:hover {
-            color: navy !important;
-        }
+		a:hover {
+			color: navy !important;
+		}
 
-        .center {
-            position: absolute;
-            margin: auto;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-        }
+		.center {
+			position: absolute;
+			margin: auto;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+		}
 
-        .text {
-            top: 12vh;
-            bottom: 20vh;
-            margin: 10px;
-        }
+		.text {
+			top: 12vh;
+			bottom: 20vh;
+			margin: 10px;
+		}
 
-        .text.left {
-            right: 44vw;
-            left: 25vw;
-            background-color: #f0f0f0;
-            padding: 50px 65px;
-        }
+		.text.left {
+			left: 25vw;
+			width: 30vw;
+			background-color: #f0f0f0;
+			padding: 4vh 7vh;
+		}
 
-        .text.left:after {
-            background: url('assets/img/register-bgr-1.jpg') no-repeat center center fixed;
-            background-size: cover;
-            background-color: white;
-            transform: scaleX(-1);
-        }
+		.text.left:after {
+			background: url('assets/img/register-bgr-1.jpg') no-repeat center center fixed;
+			background-size: cover;
+			background-color: white;
+			transform: scaleX(-1);
+		}
 
-        .text.right {
-            left: 55vw;
-            right: 25vw;
-            margin: 7px;
-            border-radius: 0 10px 10px 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-evenly;
-            background: #AFD6FF;
-            box-shadow: -1px 0px 4px #57575782;
-            padding: 50px 0;
-        }
+		.text.right {
+			left: calc(55vw - 5px);
+            width: 18vw;
+			margin: 6px;
+			border-radius: 0 10px 10px 0;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: space-evenly;
+			background: #AFD6FF;
+			box-shadow: -1px 0px 4px #57575782;
+			padding: 50px 0;
+		}
 
-        .text h1 {
-            text-align: center;
-            text-shadow: 1px 1px rgba(0, 0, 0, .1);
-            color: #ffffff;
-            margin-top: 57px;
-            font-family: 'Lora', serif;
-            font-weight: 700;
-            font-size: 38px;
-        }
+		.text h1 {
+			text-align: center;
+			text-shadow: 1px 1px rgba(0, 0, 0, .1);
+			color: #ffffff;
+			margin-top: 57px;
+			font-family: 'Lora', serif;
+			font-weight: 700;
+			font-size: 38px;
+		}
 
-        .text p {
-            text-align: center;
-            color: #ffffff;
-            text-shadow: 1px 1px rgba(0, 0, 0, .1);
-            margin-top: 0;
-            font-family: 'Lato', serif;
-            font-weight: 400;
-            font-size: 22px;
-        }
+		.text p {
+			text-align: center;
+			color: #ffffff;
+			text-shadow: 1px 1px rgba(0, 0, 0, .1);
+			margin-top: 0;
+			font-family: 'Lato', serif;
+			font-weight: 400;
+			font-size: 22px;
+		}
 
-        label,
-        span {
-            background-color: transparent !important;
-            /*color: #fff!important;*/
-        }
+		label,
+		span {
+			background-color: transparent !important;
+			/*color: #fff!important;*/
+		}
 
-        /*resize in mobile*/
-        @media (orientation: landscape) and (max-width: 800px) {
-            #img-app {
-                max-width: 120px;
-                /*max-height: 60px;*/
-            }
+		/*resize in mobile*/
+		@media (orientation: landscape) and (max-width: 800px) {
+			#img-app {
+				max-width: 120px;
+				/*max-height: 60px;*/
+			}
 
-            .text {
-                top: 0;
-                right: 10px;
-                left: 60vw !important;
-            }
-        }
+			.text {
+				top: 0;
+				right: 10px;
+				left: 60vw !important;
+			}
+		}
 
-        @media (orientation: portrait) and (max-width: 800px) {
-            #img-app {
-                max-width: 200px;
-                /*max-height: 60px;*/
-                display: block;
-                margin-left: auto;
-            }
+		@media (orientation: portrait) and (max-width: 800px) {
+			#img-app {
+				max-width: 200px;
+				/*max-height: 60px;*/
+				display: block;
+				margin-left: auto;
+			}
 
-            .text {
-                top: 10vh;
-                right: 10px;
-                left: 30vw !important;
-            }
+			.text {
+				top: 10vh;
+				right: 10px;
+				left: 30vw !important;
+			}
 
-            input {
-                background-color: #204d74 !important;
-                border: none !important;
-                color: #fff !important;
-                /*border-radius: 20px!important;*/
-            }
-        }
+			input {
+				background-color: #204d74 !important;
+				border: none !important;
+				color: #fff !important;
+				/*border-radius: 20px!important;*/
+			}
+		}
 
-        @media only screen and (max-width: 500px) {
-            @-ms-viewport {
-                width: 320px;
-            }
+		@media only screen and (max-width: 500px) {
+			@-ms-viewport {
+				width: 320px;
+			}
 
-            #img-app {
-                max-width: 200px;
-                /*max-height: 60px;*/
-                display: block;
-                margin-left: auto;
-            }
+			#img-app {
+				max-width: 200px;
+				/*max-height: 60px;*/
+				display: block;
+				margin-left: auto;
+			}
 
-            .text {
-                top: 10%;
-                right: 10px;
-                left: 30% !important;
-            }
+			.text {
+				top: 10%;
+				right: 10px;
+				left: 30% !important;
+			}
 
-            input {
-                background-color: #204d74 !important;
-                border: none !important;
-                color: #fff !important;
-            }
-        }
+			input {
+				background-color: #204d74 !important;
+				border: none !important;
+				color: #fff !important;
+			}
+		}
 
-        .ui-switch span:after {
-            background-color: #dc3b3b;
-        }
+		.ui-switch span:after {
+			background-color: #dc3b3b;
+		}
 
-        .logo {
-            margin: 0 auto;
-            margin-bottom: 75px;
-            display: block;
-            max-width: 200px;
-        }
+		.logo {
+			margin: 0 auto;
+			margin-bottom: 3vh;
+			display: block;
+			max-width: 9vw;
+		}
 
-        .flex-container {
-            display: flex;
-            flex-wrap: wrap;
-            flex-direction: row;
-            justify-content: center;
-            overflow-y: auto;
-        }
+		.flex-container {
+			display: flex;
+			flex-wrap: wrap;
+			flex-direction: row;
+			justify-content: center;
+			overflow-y: auto;
+		}
 
-        .flex-container .card {
-            margin: 10px;
-            text-align: center;
-            max-width: 160px;
-            min-width: 160px;
-            border: 1px solid #67b0fd;
-            box-shadow: -1px 1px 5px #939393;
-        }
+		.flex-container .card {
+			margin: 10px;
+			text-align: center;
+			max-width: 160px;
+			min-width: 160px;
+			border: 1px solid #67b0fd;
+			box-shadow: -1px 1px 5px #939393;
+		}
 
-        .flex-container .card:hover {
-            transform: translateY(-2px) scale(1.001) translateZ(0);
-            border: 1px solid #208cff;
-            cursor: pointer;
-        }
-    </style>
+		.flex-container .card:hover {
+			transform: translateY(-2px) scale(1.001) translateZ(0);
+			border: 1px solid #208cff;
+			cursor: pointer;
+		}
+	</style>
 </head>
 
 <body>
-    <div class="widget center">
-        <div class="blur"></div>
-        <div class="text center left">
-            <form action="/user/login" method="post" >
-                <img class="logo" src="https://www.cehsoft.com/wp-content/themes/cehsoft/images/logo-1.png">
-                <img id="img-app" src="/assets/img/logos/LOGO.png" style="margin-bottom: 40px;">
-                <div class="form-group has-error">
-                    <label id="error-message" class="help-block"></label>
-                </div>
-                <div class="form-group mb-4">
-                    <div class="input-group-icon input-group-icon-left">
-                        <span class="input-icon input-icon-left"><i class="ti-user"></i></span>
-                        <input class="form-control" name="UserID" type="text" placeholder="Tên đăng nhập" autocomplete="off">
+	<div class="widget center">
+		<div class="blur"></div>
+		<div class="text center left">
+			<form action="/user/login" method="post" style="height: 100%;">
+				<div style="  display: flex; flex-direction: column; align-items: stretch; align-content: space-evenly; justify-content: space-evenly; height: 100%;">
+					<img class="logo" src="https://www.cehsoft.com/wp-content/themes/cehsoft/images/logo-1.png">
+					<img id="img-app" src="/assets/img/logos/LOGO.png" >
+					
+                    <div style="margin-bottom: 10px;">
+                        <div class="form-group has-error">
+                            <label id="error-message" class="help-block"></label>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group-icon input-group-icon-left">
+                                <span class="input-icon input-icon-left"><i class="ti-user"></i></span>
+                                <input class="form-control form-control-sm" name="UserID" type="text" placeholder="Tên đăng nhập" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group-icon input-group-icon-left">
+                                <span class="input-icon input-icon-left"><i class="ti-lock"></i></span>
+                                <input class="form-control form-control-sm" name="password" type="password" type="text" placeholder="Mật khẩu" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="flexbox">
+                            <label class="checkbox checkbox-outline-primary">
+                                <input type="checkbox">
+                                <span class="input-span"></span>Ghi nhớ
+                            </label>
+                            <a href="#"><u>Quên mật khẩu?</u></a>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group mb-4">
-                    <div class="input-group-icon input-group-icon-left">
-                        <span class="input-icon input-icon-left"><i class="ti-lock"></i></span>
-                        <input class="form-control" name="password" type="password" type="text" placeholder="Mật khẩu" autocomplete="off">
-                    </div>
-                </div>
-                <div class="flexbox mb-4">
-                    <label class="checkbox checkbox-outline-primary">
-                        <input type="checkbox">
-                        <span class="input-span"></span>Ghi nhớ
-                    </label>
-                    <a href="#"><u>Quên mật khẩu?</u></a>
-                </div>
-                <div class="form-group mt-5">
-                    <div class="input-group" style="justify-content: center;">
-                        <button class="btn btn-blue btn-labeled btn-labeled-left btn-icon mr-2">
-                            <span class="btn-label"><i class="la la-sign-in"></i></span>ĐĂNG NHẬP</button>
+					
+					<div class="form-group mb-0">
+						<div class="input-group" style="justify-content: center;">
+							<button class="btn btn-blue btn-sm btn-labeled btn-labeled-left btn-icon mr-2">
+								<span class="btn-label"><i class="la la-sign-in"></i></span>ĐĂNG NHẬP</button>
 
-                        <!-- <button class="btn btn-outline-primary btn-fix btn-air mr-2" type="submit">
+							<!-- <button class="btn btn-outline-primary btn-fix btn-air mr-2" type="submit">
                             <span class="btn-icon"><i class="ti-cloud-up"></i>ĐĂNG NHẬP</span>
                         </button> -->
-                        <a id="register" class="btn btn-warning btn-labeled btn-labeled-left btn-icon" href="#">
-                            <span class="btn-label"><i class="la la-user-plus"></i></span>
-                            ĐĂNG KÝ</a>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="text center right">
-            <a id="back-to-login" href="/user/logout" style="position: absolute;top: 15px;left: 17px; display: none;">
-                <span class="btn-label">
-                    <i style="font-size: 25px;color: #5a5c7b;" class="fa fa-arrow-circle-o-left"></i>
-                </span>
-            </a>
-            <div class="mb-5">
-                <img style="margin: auto; width: 200px;" src="/assets/img/logos/logo-csg.png">
-            </div>
-            <div id="ters" class="flex-container" style="width: 100%; display: none;">
-            </div>
-        </div>
-    </div>
-    </div>
-    <footer class="page-footer" style="background-color: transparent!important;">
-        <div class="font-13" style="color: #ffffff">2020 © <b>C.E.H</b> - Certified Ethical Hacker</div>
-        <div class="to-top"><i class="fa fa-angle-double-up"></i></div>
-    </footer>
+							<a id="register" class="btn  btn-sm btn-warning btn-labeled btn-labeled-left btn-icon" href="#">
+								<span class="btn-label"><i class="la la-user-plus"></i></span>
+								ĐĂNG KÝ</a>
+						</div>
+					</div>
+			</form>
+		</div>
 
-    <!-- BEGIN PAGA BACKDROPS-->
-    <div class="sidenav-backdrop backdrop"></div>
-    <div class="preloader-backdrop">
-        <div class="page-preloader">Loading</div>
-    </div>
-    <!-- CORE PLUGINS-->
-    <script src="/assets/vendors/jquery/dist/jquery.min.js"></script>
-    <script src="/assets/vendors/popper.js/dist/umd/popper.min.js"></script>
-    <script src="/assets/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="/assets/vendors/metisMenu/dist/metisMenu.min.js"></script>
-    <script src="/assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-    <script src="/assets/vendors/jquery-idletimer/dist/idle-timer.min.js"></script>
-    <script src="/assets/vendors/toastr/toastr.min.js"></script>
-    <script src="/assets/vendors/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="/assets/vendors/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
-    <!-- PAGE LEVEL PLUGINS-->
-    <!-- CORE SCRIPTS-->
-    <script src="/assets/js/app.min.js"></script>
-    <script src="/assets/js/ro2.js"></script>
-    <!-- PAGE LEVEL SCRIPTS-->
-    <script>
-        $(document).ready(function () {
-            $('input[name="UserID"]').focus();
-            $('input[name="UserID"]').select();
-            if (isMobile.any()) {
-                $('input').addClass('form-control-sm');
-                $('.btn').addClass('btn-sm');
-                $('.form-group').removeClass('mb-4');
-            }
-        });
-        $(function () {
-            $('form').validate({
-                errorLabelContainer: "#error-message",
-                wrapper: "li",
-                errorClass: "help-block",
-                rules: {
-                    UserID: {
-                        required: true,
-                        minlength: 1,
-                        maxlength: 30
-                    },
-                    password: {
-                        required: true
-                    }
-                },
-                highlight: function (e) {
-                    $(e).closest(".form-group").addClass("has-error")
-                },
-                unhighlight: function (e) {
-                    $(e).closest(".form-group").removeClass("has-error")
-                }
-            });
+	</div>
+	<div class="text center right">
+		<a id="back-to-login" href="/user/logout" style="position: absolute;top: 15px;left: 17px; display: none;">
+			<span class="btn-label">
+				<i style="font-size: 25px;color: #5a5c7b;" class="fa fa-arrow-circle-o-left"></i>
+			</span>
+		</a>
+		<div class="mb-5">
+			<img style="margin: auto;max-width: 10vw;" src="/assets/img/logos/logo-csg.png">
+		</div>
+		<div id="ters" class="flex-container" style="width: 100%; display: none;">
+		</div>
+	</div>
+	</div>
+	</div>
+	<footer class="page-footer" style="background-color: transparent!important; position: absolute;">
+		<div class="font-13" style="color: #ffffff">2021 © <b>C.E.H</b> - CEH Software</div>
+		<div class="to-top"><i class="fa fa-angle-double-up"></i></div>
+	</footer>
 
-            $("form").on("submit", function (event) {
-                event.preventDefault();
-                if (!$(event.target).valid()) return;
+	<!-- BEGIN PAGA BACKDROPS-->
+	<div class="sidenav-backdrop backdrop"></div>
+	<div class="preloader-backdrop">
+		<div class="page-preloader">Loading</div>
+	</div>
+	<!-- CORE PLUGINS-->
+	<script src="/assets/vendors/jquery/dist/jquery.min.js"></script>
+	<script src="/assets/vendors/popper.js/dist/umd/popper.min.js"></script>
+	<script src="/assets/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="/assets/vendors/metisMenu/dist/metisMenu.min.js"></script>
+	<script src="/assets/vendors/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="/assets/vendors/jquery-idletimer/dist/idle-timer.min.js"></script>
+	<script src="/assets/vendors/toastr/toastr.min.js"></script>
+	<script src="/assets/vendors/jquery-validation/dist/jquery.validate.min.js"></script>
+	<script src="/assets/vendors/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+	<!-- PAGE LEVEL PLUGINS-->
+	<!-- CORE SCRIPTS-->
+	<script src="/assets/js/app.min.js"></script>
+	<script src="/assets/js/ro2.js"></script>
+	<!-- PAGE LEVEL SCRIPTS-->
+	<script>
+		$(document).ready(function() {
+			$('input[name="UserID"]').focus();
+			$('input[name="UserID"]').select();
+			if (isMobile.any()) {
+				$('input').addClass('form-control-sm');
+				$('.btn').addClass('btn-sm');
+				$('.form-group').removeClass('mb-4');
+			}
+		});
+		$(function() {
+			$('form').validate({
+				errorLabelContainer: "#error-message",
+				wrapper: "li",
+				errorClass: "help-block",
+				rules: {
+					UserID: {
+						required: true,
+						minlength: 1,
+						maxlength: 30
+					},
+					password: {
+						required: true
+					}
+				},
+				highlight: function(e) {
+					$(e).closest(".form-group").addClass("has-error")
+				},
+				unhighlight: function(e) {
+					$(e).closest(".form-group").removeClass("has-error")
+				}
+			});
 
-                var formData = {};
-                $(event.target).serializeArray().map(p => {
-                    formData[p.name] = p.value || '';
-                });
+			$("form").on("submit", function(event) {
+				event.preventDefault();
+				if (!$(event.target).valid()) return;
 
-                $.ajax({
-                    url: "/user/login",
-                    dataType: 'json',
-                    data: formData,
-                    type: 'POST',
-                    success: function (data) {
-                        //neu user chi vao dc 1 cang -> response user_info -> redirect to home
-                        if (data.error) {
-                            $('#error-message').text(data.error);
-                            toastr.error(data.error || 'internal error!');
-                            return;
-                        }
-                        console.log(data.user_info);
-                        if(data.access_token){
-                            setCookie('ssid',data.access_token,(new Date().setMonth(new Date().getMonth() + 1)));
-                        }
-                        if (data.user_info && data.user_info.UserGroupCode=='YARD') {
-                            location.href = '/yard';
-                            return;
-                        }
-                        
-                        if (data.user_info && data.user_info.UserGroupCode=='TALLY') {
-                            location.href = '/tally';
-                            return;
-                        }
-                        
-                        if (data.user_info) {
-                            localStorage.setItem('user_info', JSON.stringify(data.user_info));
-                            
-                            location.href = '/';
-                            return;
-                        }
+				var formData = {};
+				$(event.target).serializeArray().map(p => {
+					formData[p.name] = p.value || '';
+				});
 
-                        var terminals = data.terminals || [];
-                        if (terminals.length == 0) {
-                            $('#error-message').text('Tài khoản này chưa được cấp phép truy cập danh sách cảng!');
-                            return;
-                        }
-                        else{
-                            //location.assign('/');
-                            //location.reload();
-                        }
-                        renderTerminals(terminals);
-                    },
-                    error: function (err) {
-                        console.log(err);
-                        toastr.error(err.message || 'internal error!')
-                    }
-                });
-            });
-        })
+				$.ajax({
+					url: "/user/login",
+					dataType: 'json',
+					data: formData,
+					type: 'POST',
+					success: function(data) {
+						//neu user chi vao dc 1 cang -> response user_info -> redirect to home
+						if (data.error) {
+							$('#error-message').text(data.error);
+							toastr.error(data.error || 'internal error!');
+							return;
+						}
+						console.log(data.user_info);
+						if (data.access_token) {
+							setCookie('ssid', data.access_token, (new Date().setMonth(new Date().getMonth() + 1)));
+							localStorage.setItem('access_token',data.access_token);
+						}
+						if (data.user_info && data.user_info.UserGroupCode == 'YARD') {
+							location.href = '/yard';
+							return;
+						}
 
-        function renderTerminals(terminals) {
-            var partial = `<div id="TERMINAL_CODE" class="card">
+						if (data.user_info && data.user_info.UserGroupCode == 'TALLY') {
+							location.href = '/tally';
+							return;
+						}
+
+						if (data.user_info) {
+							localStorage.setItem('user_info', JSON.stringify(data.user_info));
+
+							location.href = '/';
+							return;
+						}
+
+						var terminals = data.terminals || [];
+						if (terminals.length == 0) {
+							$('#error-message').text('Tài khoản này chưa được cấp phép truy cập danh sách cảng!');
+							return;
+						} else {
+							//location.assign('/');
+							//location.reload();
+						}
+						renderTerminals(terminals);
+					},
+					error: function(err) {
+						console.log(err);
+						toastr.error(err.message || 'internal error!')
+					}
+				});
+			});
+		})
+
+		function renderTerminals(terminals) {
+			var partial = `<div id="TERMINAL_CODE" class="card">
                     <div class="card-body text-center p-2">
                         <img class="img-circle mb-3" src="/assets/img/logos/logo-csg.png"
                             alt="image" width="90">
@@ -397,33 +404,39 @@
                         </h6>
                     </div>
                 </div>`;
-            var htmlTerminals = terminals.map(ter => partial.replaceAll('TERMINAL_CODE', ter.Code).replaceAll('TERMINAL_NAME', ter.Name)).join('');
-            $('.text.center.right').animate({ 'left': '25vw', 'border-radius': '10px' }, 500, function () {
-                $('#ters').html(htmlTerminals);
-                $('#ters').slideToggle(200);
-                $('#back-to-login').show(200);
-            });
-        }
+			var htmlTerminals = terminals.map(ter => partial.replaceAll('TERMINAL_CODE', ter.Code).replaceAll('TERMINAL_NAME', ter.Name)).join('');
+			$('.text.center.right').animate({
+				'left': '25vw',
+				'width': '48vw',
+				'border-radius': '10px'
+			}, 500, function() {
+				$('#ters').html(htmlTerminals);
+				$('#ters').slideToggle(200);
+				$('#back-to-login').show(200);
+			});
+		}
 
-        // location.href = '/'
-        $('#ters').on('click', '.card', function (e) {
-            var ter = e.currentTarget.id;
-            $.ajax({
-                url: "/user/select-terminal",
-                dataType: 'json',
-                data: { terminal: ter },
-                type: 'POST',
-                success: function (data) {
-                    localStorage.setItem('user_info', JSON.stringify(data.user_info));
-                    location.href = '/';
-                },
-                error: function (err) {
-                    console.log(err);
-                    toastr.error(err.message || 'internal error!')
-                }
-            });
-        });
-    </script>
+		// location.href = '/'
+		$('#ters').on('click', '.card', function(e) {
+			var ter = e.currentTarget.id;
+			$.ajax({
+				url: "/user/select-terminal",
+				dataType: 'json',
+				data: {
+					terminal: ter
+				},
+				type: 'POST',
+				success: function(data) {
+					localStorage.setItem('user_info', JSON.stringify(data.user_info));
+					location.href = '/';
+				},
+				error: function(err) {
+					console.log(err);
+					toastr.error(err.message || 'internal error!')
+				}
+			});
+		});
+	</script>
 
 </body>
 

@@ -130,7 +130,8 @@
 												<label class="col-md-6 col-sm-6 col-xs-6 col-form-label">Hãng</label>
 												<label class="col-md-6 col-sm-6 col-xs-6 col-form-label">Quốc gia</label>
 												<div class="col-md-6 col-sm-6 col-xs-6">
-													<select id="OprID" class="selectpicker" data-width="100%" data-style="btn-default btn-sm" title="Tên hãng">
+													<select id="OprID" class="selectpicker" data-width="100%" data-style="btn-default btn-sm" title="Chọn hãng">
+														<option value="">Chọn hãng</option>
 														<% if( (oprList||[]).length > 0) oprList.map(itm=> {  %>
 																<option value="<%=itm['OprID']%>"><%=itm['OprName']%></option>
 														<% });%>
@@ -428,10 +429,10 @@
 				return;
 			}
 
-			if (OprID == ""){
-				toastr["error"]('Vui lòng chọn Hãng khai thác!');	
-				return;
-			}
+			// if (OprID == ""){
+			// 	toastr["error"]('Vui lòng chọn Hãng khai thác!');	
+			// 	return;
+			// }
 
 			if (CallSign == ""){
 				toastr["error"]('Vui lòng nhập Call Sign!');	

@@ -1,0 +1,710 @@
+<script>
+	document.title = "KẾ HOẠCH XE";
+</script>
+<link href="/assets/vendors/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="/public/assets/css/bootstrap-select.min.css" />
+<style>
+	.main_container {
+		height: 135px;
+		background-color: white;
+		box-shadow: 5px 5px 8px #ccc;
+		border-top: 3px solid #eee !important;
+		border-bottom: 3px solid #eee !important;
+		border-left: 1px solid #eee !important;
+		border-right: 1px solid #eee !important;
+		margin-left: 10px;
+	}
+
+	.table_container {
+		height: 300px;
+		background-color: white;
+		box-shadow: 5px 5px 8px #ccc;
+	}
+
+	.span_check-time {
+		margin-top: 2rem;
+		font-family: apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+			"Helvetica Neue", Arial, sans-serif !important;
+		font-size: 14px !important;
+		margin-left: 2rem;
+	}
+
+	.row .form-group {
+		margin-top: 2rem;
+		font-family: apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+			"Helvetica Neue", Arial, sans-serif !important;
+		font-size: 12px !important;
+	}
+
+	.input_planvessel {
+		margin-left: 1rem;
+		padding-left: 7.5px;
+		border-color: rgba(0, 0, 0, 0.1);
+		border-width: 1px;
+		height: 2rem;
+		width: 17.6rem;
+		font-size: 12px;
+		border-radius: 4px;
+	}
+
+	div#MainScreemTable_filter {
+		margin-top: 15px;
+		font-size: 12.6px;
+	}
+
+	div#MainScreemTable1_filter {
+		margin-top: 15px;
+		font-size: 12.6px;
+	}
+
+	div.dataTables_wrapper div.dataTables_info {
+		margin-top: 10px;
+		font-size: 12.6px;
+	}
+
+	.table1 {
+		border-right: 1px solid #ccc;
+	}
+
+	.text_table1 {
+		margin-top: 15px;
+		font-size: 12px;
+		font-weight: 500;
+		margin-bottom: 15px;
+		display: flex;
+		align-items: center;
+		font-family: apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+			"Helvetica Neue", Arial, sans-serif !important;
+	}
+</style>
+<div class="row">
+	<!-- PHẦN HEADER -->
+	<div class="col-xl-12">
+		<div style="margin-bottom: -1px !important" class="ibox collapsible-box">
+			<i class="la la-angle-double-up dock-right"></i>
+			<!-- Phần thêm lưu xóa -->
+			<div class="ibox-head">
+				<div class="ibox-title">KẾ HOẠCH XE</div>
+				<div class="button-bar-group mr-3">
+					<button id="loaddata" class="btn btn-outline-warning btn-sm mr-1" title="Khởi tạo lại form trống">
+						<span class="btn-icon"><i class="fa fa-search"></i>Nạp dữ liệu</span>
+					</button>
+					<button id="addrow" class="btn btn-outline-success btn-sm mr-1" title="Khởi tạo lại form trống">
+						<span class="btn-icon"><i class="fa fa-plus"></i>Thêm mới</span>
+					</button>
+					<button id="save" class="btn btn-outline-primary btn-sm mr-1" data-loading-text="<i class='la la-spinner spinner'></i>Lưu dữ liệu" title="Lưu dữ liệu">
+						<span class="btn-icon"><i class="fa fa-save"></i>Lưu</span>
+					</button>
+
+					<button id="delete" class="btn btn-outline-danger btn-sm mr-1" data-loading-text="<i class='la la-spinner spinner'></i>Xóa dòng" title="Xóa những dòng đang chọn">
+						<span class="btn-icon"><i class="fa fa-trash"></i>Xóa dòng</span>
+					</button>
+				</div>
+			</div>
+		</div>
+		<!-- Phần Thông tin tàu -->
+		<div class="main_container">
+			<div>
+				<!-- Layout thông tin tàu -->
+				<div>
+					<div style="display: flex; gap: 2rem">
+						<span class="span_check-time">Thông tin tàu</span>
+						<div class="row form-group">
+							<input id="VoyageKey" class="form-control form-control-sm input-required" type="text" value="" hidden />
+
+							<input class="input_planvessel" id="VesselName" placeholder="Tên tàu | Chuyến nhập | Chuyến xuất" type="text" />
+
+							<button id="chooseVessel" class="btn btn-success btn-icon-only btn-circle btn-sm btn-air ml-2" style="
+                  height: 1.85rem;
+                  width: 1.85rem;
+                  margin-left: 15px !important;
+                " title="Chọn tàu">
+								<i class="ti-plus"></i>
+							</button>
+
+							<button id="nochooseVessel" class="btn btn-danger btn-icon-only btn-circle btn-sm btn-air ml-2" style="
+                  height: 1.85rem;
+                  width: 1.85rem;
+                  margin-left: 5px !important;
+                " title="Bỏ chọn">
+								<i class="ti-close"></i>
+							</button>
+						</div>
+					</div>
+					<!-- Phần ETA/ETD -->
+					<div>
+						<label style="margin-right: 43px; margin-left: 2rem" class="" style="width: 5.5rem; margin-top: 0.4rem">ETA/ETD:</label>
+						<input id="ETA" placeholder="ETA" style="
+                border-radius: 4px;
+                margin-left: 1rem;
+                padding-left: 7.5px;
+                border-color: rgba(0, 0, 0, 0.1);
+                border-width: 1px;
+                height: 2rem;
+                width: 11rem;
+              " type="text" />
+						<input id="ETD" placeholder="ETD" style="
+                border-radius: 4px;
+                margin-left: 1rem;
+                padding-left: 7.5px;
+                border-color: rgba(0, 0, 0, 0.1);
+                border-width: 1px;
+                height: 2rem;
+                width: 11rem;
+              " type="text" />
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Phần table dữ liệu -->
+		<div style="height: auto" class="table_container">
+			<div class="container col-12">
+				<!-- TABLE 1 -->
+				<div class="row col-lg-12 col-md-12">
+					<div class="table1 col-lg-6 col-md-6">
+						<div class="text_table1">
+							<span style="color: #5c6bc0"> XE NỘI BỘ</span>
+						</div>
+						<table id="MainScreemTable" class="table table-striped display nowrap" cellspacing="0" style="min-width: 100%; font-size: 12px"></table>
+					</div>
+					<!-- TABLE 2 -->
+					<div class="col-lg-6 col-md-6">
+						<div class="text_table1">
+							<span style="color: #5c6bc0"> XE CHỦ HÀNG</span>
+						</div>
+						<table id="MainScreemTable1" class="table table-striped display nowrap" cellspacing="0" style="min-width: 100%; font-size: 12px"></table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Modal chọn tàu -->
+<div class="modal fade" id="vessel-modal" tabindex="-1" role="dialog" aria-labelledby="groups-modalLabel-1" aria-hidden="true" data-whatever="id" style="padding-left: 2%; padding-top: 2%">
+	<div class="modal-dialog" role="document" style="min-width: 1024px !important">
+		<div class="modal-content" style="border-radius: 4px">
+			<div class="modal-header">
+				<h5 class="modal-title text-primary" id="groups-modalLabel-1">
+					Danh mục tàu
+				</h5>
+				<button id="VesselSearch" class="btn btn-outline-warning btn-sm btn-loading mr-1" data-loading-text="<i class='la la-spinner spinner'></i>Nạp dữ liệu" title="Nạp dữ liệu">
+					<span class="btn-icon"><i class="ti-search"></i>Nạp dữ liệu</span>
+				</button>
+			</div>
+			<div class="modal-body" style="padding: 0px 15px 15px 15px">
+				<div class="row mb-0 border-e border-top-0 pb-1 pt-3">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<div class="row">
+							<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+								<div class="row form-group">
+									<label class="col-md-2 col-sm-4 col-xs-4 col-form-label">Tàu</label>
+									<input id="VesselNameFilter" class="col-md-8 col-sm-10 col-xs-10 form-control form-control-sm" placeholder="Tên tàu" type="text" />
+								</div>
+							</div>
+							<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+								<div class="row form-group">
+									<label class="col-md-2 col-sm-2 col-xs-2 col-form-label">Năm</label>
+									<div class="col-md-8 col-sm-10 col-xs-10 input-group input-group-sm">
+										<select id="YearFilter" data-width="100%" data-style="btn-default btn-sm" title="Năm" style="
+                        width: 80%;
+                        border-radius: 2px;
+                        border-color: rgba(0, 0, 0, 0.1);
+                      ">
+											<% for (let i = 2016; i < 2026; i++){ %>
+											<option value="<%= i %>"><%= i %></option>
+											<% } %>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+								<div class="row form-group">
+									<label class="radio radio-success ml-5 mt-1">
+										<input type="radio" checked name="VesselFilter" class="css-checkbox" value="1" />
+										<span class="input-span"></span>Đến cảng
+									</label>
+
+									<label class="radio radio-success ml-3 mt-1 mr-3">
+										<input type="radio" name="VesselFilter" class="css-checkbox" value="2" />
+										<span class="input-span"></span>Rời cảng
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row ibox-footer border-top-0 mt-3">
+					<div class="col-md-12 col-sm-12 col-xs-12 table-responsive">
+						<table id="VesselTable" class="table table-striped display nowrap" cellspacing="0" style="width: 99.5%">
+							<thead>
+								<tr style="width: 100%">
+									<th col-name="STT">STT</th>
+									<th col-name="VoyageKey"></th>
+									<th col-name="VesselID">Mã tàu</th>
+									<th col-name="VesselName">Tên tàu</th>
+									<th col-name="InboundVoyage">Chuyến nhập</th>
+									<th col-name="OutboundVoyage">Chuyến xuất</th>
+									<th col-name="ETA">ETA</th>
+									<th col-name="ETD">ETD</th>
+									<th col-name="Status">Status</th>
+									<th col-name="InLane">Lane nhập</th>
+									<th col-name="OutLane">Lane xuất</th>
+								</tr>
+							</thead>
+							<tbody></tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<div style="margin: 0 auto !important">
+					<button class="btn btn-sm btn-rounded btn-gradient-blue btn-labeled btn-labeled-left btn-icon" id="apply-vessel" data-dismiss="modal">
+						<span class="btn-label"><i class="ti-check"></i></span>Xác nhận
+					</button>
+					<button class="btn btn-sm btn-rounded btn-gradient-peach btn-labeled btn-labeled-left btn-icon" data-dismiss="modal">
+						<span class="btn-label"><i class="ti-close"></i></span>Đóng
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	$(document).ready(function() {
+		let arrTable = []
+		// TẠO CÁC TABLE
+		let data = <%- JSON.stringify(dataList|| []) %>;
+
+		// columm table1
+		var _columns = [{
+				data: "",
+				name: "STT",
+				title: "STT",
+				className: "text-center editor-cancel ",
+				targets: 0,
+				render: function(data, type, row, meta) {
+					return meta.row + 1;
+				},
+			},
+			{
+				data: "PPP",
+				name: "Phân bố",
+				title: "Phân bố",
+				className: "text-center editor-cancel ",
+				targets: 1,
+				render: function(data, type, row, meta) {
+					if (data || row.checked)
+						return `<input style="width:20px;height:20px" class="checkcheck" type="checkbox" checked/>`
+					else
+						return `<input style="width:20px;height:20px" class="checkcheck" type="checkbox"/>`
+				},
+			},
+			{
+				data: "DeviceID",
+				name: "Số xe",
+				title: "Số xe",
+				className: "text-center editor-cancel ",
+				targets: 2,
+				render: function(data, type, row, meta) {
+					return row.DeviceID;
+				},
+			},
+			{
+				data: "isLease",
+				name: "Thuê",
+				title: "Thuê",
+				className: "text-center editor-cancel ",
+				targets: 3,
+				render: function(data, type, row, meta) {
+					return row.isLease == 1 ? "Thuê" : "Nội bộ";
+				},
+			},
+		];
+		// column table 2
+		var _columns1 = [{
+				data: "STT",
+				name: "STT",
+				title: "STT",
+				className: "text-center editor-cancel ",
+				targets: 0,
+				render: function(data, type, row, meta) {
+					return meta.row + 1;
+				},
+			},
+			{
+				data: "DeviceID",
+				name: "Số xe",
+				title: "Số xe",
+				className: "text-center",
+				targets: 1,
+			},
+			{
+				data: "PersonalName",
+				name: "Tên tài xế",
+				title: "Tên tài xế",
+				className: "text-center",
+				targets: 2,
+			},
+			{
+				data: "PersonalID",
+				name: "CCCD/SĐT",
+				title: "CCCD/SĐT",
+				className: "text-center",
+				targets: 3,
+
+			},
+			{
+				data: "Remark",
+				name: "Ghi chú",
+				title: "Ghi chú",
+				className: "text-center",
+				targets: 4,
+			},
+		];
+		// Tạo table1
+
+		var TblMain = $("#MainScreemTable");
+		var dataTbl = TblMain.newDataTable({
+			scrollY: "55vh",
+			columnDefs: _columns,
+			order: [
+				[0, "asc"]
+			],
+			paging: false,
+			keys: true,
+			autoFill: {
+				focus: "focus",
+			},
+			select: {
+				style: "single",
+				info: false,
+			},
+			buttons: [],
+			rowReorder: false,
+		});
+		let datatable1 = data.filter(item => {
+			return item.DeviceTypeID == 'YT'
+		})
+		$("#MainScreemTable").dataTable().fnAddData(datatable1);
+		// Tạo table 2
+		let TblMain1 = $("#MainScreemTable1");
+		var dataTbl1 = TblMain1.newDataTable({
+			scrollY: "55vh",
+			columnDefs: _columns1,
+			order: [
+				[0, "asc"]
+			],
+			paging: false,
+			keys: true,
+			autoFill: {
+				focus: "focus",
+			},
+			select: {
+				style: "single",
+				info: false,
+			},
+			buttons: [],
+			rowReorder: false,
+		});
+		TblMain1.editableTableWidget()
+
+		$('#addrow').on('click', function() {
+			TblMain1.addRows();
+		});
+		let arrDataTable1 = []
+		let arrDataTable2 = []
+
+		// Sự kiện nhấn nút Save
+		$("#save").on('click', function() {
+			let arrTable = []
+			let arrDataTable1 = []
+			let arrDataTable2 = []
+			if (!$("#VoyageKey").val()) {
+				toastr["error"]("Xin vui lòng chọn tàu");
+
+			}
+			if ($("#VoyageKey").val()) {
+				// Xử lý datatable1
+
+				$(".checkcheck:checked").each(function() {
+					let tr = $(this).closest('tr');
+					arrTable.push($("#MainScreemTable").DataTable().row(tr).data())
+
+				})
+				var newData = TblMain1.DataTable().rows().data().toArray();
+				arrTable.forEach(item => {
+					let obj = {
+						VoyageKey: $("#VoyageKey").val(),
+						DeviceID: item.DeviceID,
+						PersonalName: "",
+						PersonalID: "",
+						isLease: item.isLease,
+						Remark: "",
+						CreatedBy: "",
+						ModifiedBy: "",
+						UpdateTime: "",
+						CreateTime: moment().format('YYYY-MM-DD HH:mm:ss')
+					}
+					arrDataTable1.push(obj)
+				})
+				// xử lý data table 2
+				newData.forEach(item => {
+					let obj = {
+						VoyageKey: $("#VoyageKey").val(),
+						DeviceID: item.DeviceID,
+						PersonalName: item.PersonalName,
+						PersonalID: item.PersonalID,
+						isLease: 2,
+						Remark: item.Remark,
+						CreatedBy: "",
+						ModifiedBy: "",
+						UpdateTime: "",
+						CreateTime: moment().format('YYYY-MM-DD HH:mm:ss')
+					}
+					arrDataTable2.push(obj)
+				})
+
+				let arrFinalData = [...arrDataTable1, ...arrDataTable2]
+
+				$.ajax({
+					url: "/Planning/TruckPlanning/save",
+					dataType: 'json',
+					data: {
+						data: arrFinalData,
+						VoyageKey: $("#VoyageKey").val()
+					},
+					type: 'POST',
+					success: function(data) {
+						console.log("chekdata", data)
+						if (data.errCode == 0) {
+							toastr['success']("Lưu dữ liệu thành công");
+						}
+
+					},
+					error: function(err) {
+						toastr["error"]("Error!");
+
+					}
+				});
+			}
+		})
+		$('#delete').on('click', function() {
+			TblMain1.DataTable().rows('.selected').remove().draw(false);
+			TblMain1.updateSTT(0);
+		});
+		// On click nạp data
+		$("#loaddata").on('click', function() {
+			if (!$("#VoyageKey").val()) {
+				toastr["error"]("Xin vui lòng chọn tàu");
+			} else {
+				$.ajax({
+					url: "/Planning/TruckPlanning/getTruckPlanning",
+					dataType: 'json',
+					data: {
+						VoyageKey: $("#VoyageKey").val()
+					},
+					type: 'GET',
+					success: function(data) {
+						let a = []
+						if (data.errCode == 0 && data?.result?.length > 0) {
+							let checkSucess = data?.result?.filter(item => {
+								return item.checked != null
+							}).concat(data?.result?.filter(item => {
+								return item.isLease == 2
+							}))
+							if (checkSucess?.length > 0) {
+								toastr['success']("Load dữ liệu thành công");
+							}
+							$("#MainScreemTable").dataTable().fnClearTable();
+							$("#MainScreemTable1").dataTable().fnClearTable();
+							if (data.result.length > 0) {
+								$("#MainScreemTable").dataTable().fnAddData(data.result.filter((item) => {
+									return item.isLease != 2
+								}))
+							}
+							let arrDataRight = data.result.filter(item => {
+								return item.isLease == 2
+							})
+							if (arrDataRight.length > 0) {
+								$("#MainScreemTable1").dataTable().fnAddData(arrDataRight)
+							}
+							if (checkSucess?.length == 0) {
+								toastr["error"]("Không có dữ liệu vui lòng chọn xe cho tàu");
+							}
+						}
+					},
+					error: function(err) {}
+				});
+			}
+		})
+		// Modal hiển thị chọn tàu
+		$("#chooseVessel").on("click", function() {
+			$("#vessel-modal").modal("show");
+			$("#VesselSearch").trigger("click");
+			sumNumRows = 0;
+			$("#YearFilter").val(new Date().getFullYear());
+		});
+		//   Nút xóa dữ liệu thông tin tàu
+		$("#nochooseVessel").on("click", function() {
+			$("#VesselName").val("");
+		});
+		// // làm màng hình chọn tàu
+		$(document).ready(function() {
+			var _vesselColumns = ["STT", "VoyageKey", "VesselID", "VesselName", "InboundVoyage", "OutboundVoyage", "ETA", "ETD", "Status", "InLane", "OutLane"],
+				tblVessel = $("#VesselTable"),
+				vesselModal = $("#vessel-modal");
+
+			//   /* Initial vessel table */
+			tblVessel.newDataTable({
+				scrollY: "30vh",
+				columnDefs: [{
+						type: "num",
+						className: "text-center",
+						targets: _vesselColumns.indexOf("STT"),
+					},
+					{
+						className: "text-center",
+						targets: _vesselColumns.getIndexs(["VesselName", "InboundVoyage", "OutboundVoyage", "ETA", "ETD", "InLane", "OutLane"]),
+					},
+					{
+						className: "hiden-input",
+						targets: _vesselColumns.getIndexs(["VoyageKey", "VesselID", "Status"]),
+					},
+				],
+				order: [
+					[_vesselColumns.indexOf("STT"), "asc"]
+				],
+				paging: false,
+				keys: true,
+				autoFill: {
+					focus: "focus",
+				},
+				select: {
+					style: "single",
+					info: false,
+				},
+				buttons: [],
+				rowReorder: false,
+				arrayColumns: _vesselColumns,
+			});
+
+			$("#vessel-modal").on("shown.bs.modal", function(e) {
+				$($.fn.dataTable.tables(true)).DataTable().columns.adjust();
+			});
+
+			$("#VesselSearch").on("click", function() {
+				tblVessel.waitingLoad();
+				var formData = {
+					filter: {
+						Status: {
+							operation: 'in',
+							value: $("input[type='radio'][name='VesselFilter']:checked").val() == 1 ? [0, 1] : [2, 3, 4, 5, 6]
+						},
+						VesselName: {
+							operation: 'like',
+							value: $('#VesselNameFilter').val()
+						}
+					}
+				};
+
+				$.ajax({
+					url: "/Report/BaoCao_nxtau/loadVesselVisit",
+					dataType: "json",
+					data: formData,
+					type: "POST",
+					success: function(data) {
+						var rows = [];
+						tblVessel.dataTable().fnClearTable();
+						if (data.data.length > 0) {
+							for (i = 0; i < data.data.length; i++) {
+								var rData = data.data[i],
+									r = [];
+								$.each(_vesselColumns, function(idx, colname) {
+									var val = "";
+									switch (colname) {
+										case "STT":
+											val = i + 1;
+											break;
+										case "ETA":
+										case "ETD":
+											val = getDateTime(rData[colname]);
+											break;
+										default:
+
+											val = (rData[colname] || rData[colname] === 0 ? rData[colname] : '');
+											break;
+									}
+									r.push(val);
+								});
+								rows.push(r);
+							}
+						}
+						tblVessel.dataTable().fnClearTable();
+						if (rows.length > 0) {
+							tblVessel.dataTable().fnAddData(rows);
+						}
+					},
+					error: function(err) {
+						tblVessel.dataTable().fnClearTable();
+						console.log(err);
+					},
+				});
+			});
+
+			// điền dữ liệu vào trong các trường khi nhấn 2 lần vào bảng
+			$(document).on("dblclick", "#VesselTable tbody tr", function() {
+				var tblVesselSelectedRows = tblVessel
+					.getSelectedRows()
+					.data()
+					.toArray()[0];
+				let VoyageKey = tblVesselSelectedRows[_vesselColumns.indexOf("VoyageKey")]
+				let VesselName = tblVesselSelectedRows[_vesselColumns.indexOf("VesselName")]
+				let InboundVoyage = tblVesselSelectedRows[_vesselColumns.indexOf("InboundVoyage")]
+				let OutboundVoyage = tblVesselSelectedRows[_vesselColumns.indexOf("OutboundVoyage")]
+				let InLane = tblVesselSelectedRows[_vesselColumns.indexOf("InLane")]
+				let OutLane = tblVesselSelectedRows[_vesselColumns.indexOf("OutLane")]
+				let ETA = tblVesselSelectedRows[_vesselColumns.indexOf("ETA")]
+				let ETD = tblVesselSelectedRows[_vesselColumns.indexOf("ETD")]
+				$("#VoyageKey").val(VoyageKey);
+				$("#ETA").val(ETA)
+				$("#ETD").val(ETD)
+				$("#VesselName").val(
+					VesselName + " / " + InboundVoyage + " /" + OutboundVoyage
+				);
+
+				$("#search").trigger("click");
+				vesselModal.modal("hide");
+			});
+			$(document).on("click", "#VesselTable tbody tr", function() {
+				$('#VesselTable tbody tr.selected').removeClass('selected');
+				$(this).addClass('selected');
+			});
+			//Nhấn xác nhận trong bảng chọn tàu sẽ điền dữ liệu vào các trường
+			$("#apply-vessel").on("click", function() {
+				var tblVesselSelectedRows = tblVessel
+					.getSelectedRows()
+					.data()
+					.toArray()[0];
+				let VoyageKey = tblVesselSelectedRows[_vesselColumns.indexOf("VoyageKey")]
+				let VesselName = tblVesselSelectedRows[_vesselColumns.indexOf("VesselName")]
+				let InboundVoyage = tblVesselSelectedRows[_vesselColumns.indexOf("InboundVoyage")]
+				let OutboundVoyage = tblVesselSelectedRows[_vesselColumns.indexOf("OutboundVoyage")]
+				let InLane = tblVesselSelectedRows[_vesselColumns.indexOf("InLane")]
+				let OutLane = tblVesselSelectedRows[_vesselColumns.indexOf("OutLane")]
+				let ETA = tblVesselSelectedRows[_vesselColumns.indexOf("ETA")]
+				let ETD = tblVesselSelectedRows[_vesselColumns.indexOf("ETD")]
+				$("#VoyageKey").val(VoyageKey);
+				$("#ETA").val(ETA)
+				$("#ETD").val(ETD)
+				$("#VesselName").val(
+					VesselName + " / " + InboundVoyage + " / " + OutboundVoyage
+				);
+			});
+		});
+
+		//
+	});
+</script>
+<script src="/assets/vendors/bootstrap-select/dist/js/bootstrap-select.min.js"></script>

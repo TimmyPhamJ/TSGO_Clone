@@ -6,35 +6,16 @@
 	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1" />
 	<title>GATE [CEH]</title>
 	<!-- REQUIRED STYLES -->
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic" rel="stylesheet" type="text/css" />
 	<link href="assets/vendors/themify-icons/css/themify-icons.css" rel="stylesheet" />
-	<!-- <link href="/assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" /> -->
+	<link href="/assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
 	<link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-	<!-- REQUIRED PLUGINS -->
-	<link rel="stylesheet" type="text/css" href="/assets/css/manes.css" />
-	<link href="/assets/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-	<link href="/assets/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
-	<link href="/assets/css/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
-	<link href="/assets/css/select2.min.css" rel="stylesheet" type="text/css" />
-	<link href="/assets/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
-	<link href="/assets/css/daterangepicker.css" rel="stylesheet" type="text/css" />
-	<!-- <link href="/assets/css/all.css" rel="stylesheet" type="text/css"> -->
-	<link href="/assets/css/dataTables.min.css" rel="stylesheet" type="text/css" />
-	<link href="/assets/css/flag-css.min.css" rel="stylesheet" type="text/css" />
-	<link href="/assets/css/fullcalendar.min.css" rel="stylesheet" type="text/css" />
-	<!-- main.min.css - WISEBOARD CORE CSS -->
 	<link href="/assets/css/main.min-1.css" rel="stylesheet" type="text/css" />
-	<!-- plugins.min.css - ALL PLUGINS CUSTOMIZATIONS -->
-	<link href="/assets/css/plugins.min.css" rel="stylesheet" type="text/css" />
-	<link href="/assets/css/toastr.min.css" rel="stylesheet" type="text/css" />
-	<!-- admin.min.css - ADMIN LAYOUT -->
-	<!-- theme-default.min.css - DEFAULT THEME -->
-	<!-- <link href="https://hientruongtest.sp-itc.com.vn/assets/css/theme-default.min.css" rel="stylesheet" type="text/css"> -->
-	<!-- custom css -->
+	<link href="/assets/vendors/toastr/toastr.min.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" type="text/css" href="/assets/css/manes.css" />
 	<link href="/assets/css/gate-custom.css" media="screen and (min-width: 601px)" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" media="screen and (max-width: 600px)" href="/assets/css/gate-mobile.css" />
 	<link rel="stylesheet" type="text/css" href="/assets/css/jquery-ui.css" />
-	<script src="/assets/js/socket.io.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
 	<!-- <script src="https://hientruongtest.sp-itc.com.vn/assets/js/ContainerValidator.js"></script> -->
 	<style type="text/css">
 		.activeHover {
@@ -100,10 +81,6 @@
 			font-size: 1vw;
 		}
 
-		/*#row1{
-        height: 85vh!important;
-    }*/
-
 		#printOutModal_New {
 			width: 300px;
 			height: 500px;
@@ -122,8 +99,7 @@
 		#changeSearch:hover {
 			color: burlywood;
 		}
-	</style>
-	<style type="text/css">
+
 		.jqstooltip {
 			position: absolute;
 			left: 0px;
@@ -147,6 +123,11 @@
 			font: 10px arial, san serif;
 			text-align: left;
 		}
+
+		.page-dashboard {
+			font-family: apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+				"Helvetica Neue", Arial, OpenSans, sans-serif !important;
+		}
 	</style>
 </head>
 
@@ -163,10 +144,6 @@
 			<div class="m-titleinfo-content">
 				<button class="btn border-inset" id="GateSelected" style="min-width: 75px; color: #fff">/</button>
 				<div class="DivChooseGate" id="btnGate" style="align-items: center; justify-content: center; display: flex;">
-					<!-- <button type="button" style="margin-right: 5px; margin-left: 5px; margin-bottom: 0px;  color: #fff" 
-                    class="btn border-inset" value="I">IN</button>
-                <button type="button" style="margin-right: 5px; margin-left: 5px; margin-bottom: 0px;  color: #fff" 
-                    class="btn border-inset" value="O">OUT</button> -->
 				</div>
 			</div>
 			<!-- sidebar -->
@@ -234,8 +211,8 @@
 										<input type="text" class="form-control rounded" id="txtBLNo" readonly="" placeholder="Số vận đơn/Booking" />
 									</div>
 									<div class="form-group col-xs-6 col-sm-6 col-md-6">
-										<label for="txtInvNo">Số hóa đơn</label>
-										<input type="text" class="form-control rounded" id="txtInvNo" readonly="" placeholder="Số hóa đơn" />
+										<label for="txtInvoiceNo">Số hóa đơn</label>
+										<input type="text" class="form-control rounded" id="txtInvoiceNo" readonly="" placeholder="Số hóa đơn" />
 									</div>
 								</div>
 								<div class="row">
@@ -575,7 +552,7 @@
 								padding-right: 5pt;
 								padding-left: 5pt;
 								vertical-align: middle;">
-									<p style="text-align: center; font-size: 13pt;"><span style="font-weight: bold;">LOẠI HÀNG</span></p>
+									<p style="text-align: center; font-size: 15pt;"><span style="font-weight: bold;">LOẠI HÀNG</span></p>
 								</td>
 								<td colspan="5" style="width: 80pt;
 								border-right-style: solid;
@@ -587,7 +564,7 @@
 								padding-right: 5pt;
 								padding-left: 5pt;
 								vertical-align: middle;">
-									<p style="text-align: center; font-size: 13pt;"><span style="font-weight: bold;">SỐ LƯỢNG</span></p>
+									<p style="text-align: center; font-size: 15pt;"><span style="font-weight: bold;">SỐ LƯỢNG</span></p>
 								</td>
 								<td colspan="5" style="width: 90pt;
 								border-right-style: solid;
@@ -599,7 +576,7 @@
 								padding-right: 5pt;
 								padding-left: 5pt;
 								vertical-align: middle;">
-									<p style="text-align: center; font-size: 13pt;"><span style="font-weight: bold;">TRỌNG LƯỢNG</span></p>
+									<p style="text-align: center; font-size: 15pt;"><span style="font-weight: bold;">TRỌNG LƯỢNG</span></p>
 								</td>
 								<td colspan="12" style="width: 170pt;
 								border-right-style: solid;
@@ -611,7 +588,7 @@
 								padding-right: 5pt;
 								padding-left: 5pt;
 								vertical-align: middle;">
-									<p style="text-align: center; font-size: 13pt;"><span style="font-weight: bold;">HIỆN TRẠNG HÀNG HÓA</span></p>
+									<p style="text-align: center; font-size: 15pt;"><span style="font-weight: bold;">HIỆN TRẠNG HÀNG HÓA</span></p>
 								</td>
 							</tr>
 							<tr id="dataInPhieuVC">
@@ -626,7 +603,7 @@
 								padding-right: 5pt;
 								padding-left: 5pt;
 								vertical-align: middle;">
-									<p style="text-align: center; font-size: 11pt;">
+									<p style="text-align: center; font-size: 13pt;">
 										<span id="mOutItemCode"></span>
 									</p>
 								</td>
@@ -639,7 +616,7 @@
 								padding-right: 5pt;
 								padding-left: 5pt;
 								vertical-align: middle;">
-									<p style="text-align: center; font-size: 10pt;">
+									<p style="text-align: center; font-size: 13pt;">
 										<span id="mOutQuantity"></span>
 									</p>
 								</td>
@@ -652,7 +629,7 @@
 								padding-right: 5pt;
 								padding-left: 5pt;
 								vertical-align: middle;">
-									<p style="text-align: center; font-size: 10pt;">
+									<p style="text-align: center; font-size: 13pt;">
 										<span id="mOutMcWeight"></span>
 									</p>
 								</td>
@@ -665,13 +642,13 @@
 								padding-right: 5pt;
 								padding-left: 5pt;
 								vertical-align: middle;">
-									<p style="text-align: center; font-size: 10pt;">
+									<p style="text-align: center; font-size: 13pt;">
 										<span id="mOutRemark"></span>
 									</p>
 								</td>
 							</tr>
 						</table>
-						<table style="width: 920px; margin-top: 130px;">
+						<table style="width: 920px; margin-top: 10px;">
 							<tr style="height: 30px;">
 								<td colspan="2">
 									<p style="margin-bottom: 0px; text-align: center; font-size: 13pt;">
@@ -794,9 +771,6 @@
 								<span style=" width: 60%;display: block;text-align: left;" id="pInPrintBy"></span>
 							</div>
 							<div style="display: flex; flex-direction: row; justify-content: flex-start;align-items: center;">
-								<!-- <div style="font-size: 0.8em; width: 100%; display: flex;flex-direction: row;">
-									<span>Tải eEIR tại <a style="font-size: 1.2em;" href="https://eport.sp-itc.com.vn/">https://vietnamhub.vn</a></span>
-								</div> -->
 							</div>
 							<div style="display: flex; flex-direction: row; justify-content: flex-start;align-items: center; padding-top: 10pt; margin-left: 15pt;">
 								<div style="font-size: 0.65em; width: 40%; display: flex;flex-direction: row;">
@@ -862,14 +836,10 @@
 									<button style="float: right;" class="btn btn-primary" id="submit_reprint">Nạp dữ liệu</button>
 								</div>
 							</div>
-							<!-- <label for="loadReprint">Nạp dữ liệu</label>
-                      <input type="text" name="datetimes" id="loadReprint">
-                      <label for="search-reprint">Tìm theo Container</label>
-                      <input type="text" name="" id="search-reprint"> -->
 						</div>
 						<div style="width: 100%">
 							<p style="text-align: right;margin-top: 6px; padding-top: 6px; border-top: 1px solid #ccc"><span>Số dòng: </span><b id="reprint_rowcount">0</b></p>
-							<table class="table table-striped table-bordered" id="rePrintTable" cellspacing="0">
+							<table class="table table-striped table-bordered" id="rePrintTable" style="width: 100%; ">
 								<thead>
 									<tr>
 										<!-- <th style="width: 10%">I/O</th> -->
@@ -883,30 +853,17 @@
 										<th>Vị trí</th>
 										<th>Time In</th>
 										<th>Time Out</th>
-										<th style="display: none"></th>
-										<th style="display: none"></th>
-										<th style="display: none"></th>
-										<th style="display: none"></th>
-										<th style="display: none"></th>
-										<th style="display: none"></th>
-										<th style="display: none"></th>
-										<th style="display: none"></th>
-										<th style="display: none"></th>
-										<th style="display: none"></th>
-										<th style="display: none"></th>
-										<th style="display: none"></th>
-										<th style="display: none"></th>
-										<th style="display: none"></th>
-										<th style="display: none"></th>
-										<th style="display: none"></th>
-										<th style="display: none"></th>
-										<th style="display: none"></th>
-										<th style="display: none"></th>
-										<th style="display: none"></th>
-										<th style="display: none"></th>
-										<th style="display: none"></th>
-										<th style="display: none"></th>
-										<th style="display: none"></th>
+										<th style="display: none">c_CommodityDescription</th>
+										<th style="display: none">c_POD</th>
+										<th style="display: none">c_ShipperName</th>
+										<th style="display: none">c_Remark</th>
+										<th style="display: none">c_InboundVoyage</th>
+										<th style="display: none">c_OutboundVoyage</th>
+										<th style="display: none">c_ATB</th>
+										<th style="display: none">c_Sequence</th>
+										<th style="display: none">c_IssueDate</th>
+										<th style="display: none">c_VesselName</th>
+										<th style="display: none">c_UserName</th>
 									</tr>
 								</thead>
 								<tbody style="height: calc(60vh - 100px)">
@@ -950,51 +907,25 @@
 			</div>
 		</div>
 	</div>
-	<!-- CONTENT ENDS -->
-	<!-- CONTENT WRAPPER ENDS -->
-	<!-- FOOTER STARTS -->
-	<!-- <div class="footer">&copy; Copyright 2016 <span class="divider">|</span> <span class="hidden-xs">Wiseboard theme by The Next Theme</span> <span class="divider hidden-xs">|</span> All rights reserved.</div> -->
-	<!-- style="position: fixed;left: 0;bottom: 0; width: 100%" -->
-	<!-- FOOTER ENDS -->
-	<!-- REQUIRED SCRIPTS -->
-	<!-- <script src="https://hientruongtest.sp-itc.com.vn/assets/js/jquery.min.js"></script> -->
+
 	<script src="/assets/js/jquery.min.js"></script>
 	<script src="/assets/js/bootstrap.min.js"></script>
 	<script src="/assets/js/jquery-ui.min.js"></script>
-	<!-- REQUIRED PLUGINS -->
-	<script src="/assets/js/jquery.slimscroll.min.js"></script>
-	<script src="/assets/js/basil.min.js"></script>
-	<script src="/assets/js/bootstrap-switch.min.js"></script>
-	<script src="/assets/js/jquery.succinct.min.js"></script>
-	<script src="/assets/js/bootstrap-select.min.js"></script>
-	<script src="/assets/js/select2.full.min.js"></script>
 	<script src="/assets/js/moment.min.js"></script>
-	<script src="/assets/js/daterangepicker.js"></script>
-	<script src="/assets/js/jquery.searchable.js"></script>
-	<script src="/assets/js/jquery.flot.js"></script>
-	<script src="/assets/js/jquery.flot.resize.js"></script>
-	<script src="/assets/js/jquery.flot.pie.js"></script>
-	<script src="/assets/js/jquery.flot.time.js"></script>
-	<script src="/assets/js/jquery.flot.orderBars.js"></script>
-	<script src="/assets/js/jquery.flot.tooltip.min.js"></script>
-	<script src="/assets/js/jquery.sparkline.min.js"></script>
-	<script src="/assets/js/icheck.min.js"></script>
-	<script src="/assets/js/datatables.min.js"></script>
-	<script type="text/javascript" src="/assets/js/key_table.min.js"></script>
-	<script type="text/javascript" src="/assets/js/autofill.min.js"></script>
-	<script type="text/javascript" src="/assets/js/scroller.min.js"></script>
-	<script type="text/javascript" src="/assets/js/select.min.js"></script>
-	<script type="text/javascript" src="/assets/js/buttons.min.js"></script>
-	<script src="/assets/js/jquery.easypiechart.min.js"></script>
-	<script src="/assets/js/fullcalendar.min.js"></script>
-	<script type="text/javascript" src="/assets/js/toastr.min.js"></script>
+	<script src="/assets/vendors/toastr/toastr.min.js"></script>
 	<script type="text/javascript" src="/assets/js/main.js"></script>
-	<!-- main.min.js - WISEBOARD CORE SCRIPT -->
-	<!-- admin.min.js - GENERAL CONFIGURATION SCRIPT FOR THE PAGES -->
-	</script>
-
 	<script type="text/javascript">
 		$(document).ready(function() {
+			var socket = io();
+			socket.on('connect', function(msg) {
+				socket.emit('login', {
+					pathname:location.pathname,
+					access_token:localStorage.getItem('access_token')||'',
+				});
+				socket.on('reload_gate', function(rt_data){
+					LoadGateList();
+				});
+			});
 			let GateList = <%- JSON.stringify(locals.GateList || []) %>;
 			var gbGateType = "";
 			var gbGateName = "";
@@ -1036,7 +967,7 @@
 				var dataSend = {
 					EIRNo: myEIRNo,
 					SoPin: mySoPin,
-					// TypeGate: gbGateType
+					TypeGate: gbGateType
 				};
 				$.ajax({
 					type: "POST",
@@ -1074,14 +1005,14 @@
 						"/" +
 						(iData.OutboundVoyage ? iData.OutboundVoyage : "....")
 					);
-					$("#dtpETA").val(iData.ETB ? iData.ETB : gbGateType === "O" ? moment(iData.ETB).format("YYYY-MM-DD HH:mm:ss") : "");
-					$("#dtpETD").val(iData.ETD ? iData.ETD : gbGateType === "O" ? moment(iData.ETD).format("YYYY-MM-DD HH:mm:ss") : "");
-					$("#dtpIssueDate").val(iData.IssueDate ? moment(iData.IssueDate).format("YYYY-MM-DD HH:mm:ss") : gbGateType === "O" ? moment(iData.IssueDate).format("YYYY-MM-DD HH:mm:ss") : "");
-					$("#dtpExpDate").val(iData.ExpDate ? iData.ExpDate : gbGateType === "O" ? moment(iData.ExpDate).format("YYYY-MM-DD HH:mm:ss") : "");
+					$("#dtpETA").val(iData.ETB || "");
+					$("#dtpETD").val(iData.ETD || "");
+					$("#dtpIssueDate").val(iData.IssueDate || "");
+					$("#dtpExpDate").val(iData.ExpDate || "");
 					$("*[id*=txtBLNo]:visible").each(function() {
 						$(this).val(iData.BillOfLading ? iData.BillOfLading : iData.BookingNo);
 					});
-					$("#txtInvNo").val(iData.InvNo ? iData.InvNo : iData.InvDraftNo);
+					$("#txtInvoiceNo").val(iData.InvoiceNo ? iData.InvoiceNo : iData.DraftNo);
 					$("#txtTransitMode").val(iData.TransitID);
 					$("#txtPOD").val(
 						(iData.POD ? iData.POD : "....") +
@@ -1095,11 +1026,11 @@
 					$("#txtCargoWeight").val(iData.McWeight ? iData.McWeight : 0);
 					$("#txtDriver_PhoneNo").val(iData.Phone_Number);
 					$("#txtTruckNo").val(iData.TruckNo);
-					$("#txtTLDK").val(iData.trailer_weight ? iData.trailer_weight : "");
-					$("#txtTTCPDK").val(iData.allowed_trailer_weight);
+					$("#txtTLDK").val(iData.Trailer_Weight ? iData.Trailer_Weight : "");
+					$("#txtTTCPDK").val(iData.Allowed_Trailer_Weight);
 					$("#txttrailers_number").val(iData.RM_No);
-					$("#txtTLRM").val(iData.romooc_weight ? iData.romooc_weight : "");
-					$("#txtTTCPRM").val(iData.allowed_romooc_weight);
+					$("#txtTLRM").val(iData.Romooc_Weight ? iData.Romooc_Weight : "");
+					$("#txtTTCPRM").val(iData.Allowed_Romooc_Weight);
 					$("#txtRemark").val(iData.Remark);
 					$("#txtTurn").val(iData.Sequence);
 				} else {
@@ -1121,6 +1052,7 @@
 				layTLXe();
 			});
 
+			//Thoilc(*Note)-Nhập thông tin remooc lấy trọng lượng
 			$("#txttrailers_number").keydown(function(e) {
 				if (e.keyCode == 13) {
 					layTLRm();
@@ -1210,19 +1142,21 @@
 				// arrTimer.length = 0;
 				var dataSend = {
 					...dataGlobal,
+					InOut: ((dataGlobal.JobModeID == 'NGTH' || dataGlobal.JobModeID == 'LAYN') ? 'O' : 'I'),
 					Block: $("#txtPostion").val(),
 					TTTX: $("#txtTTTX").val(),
 					Driver_PhoneNo: $("#txtDriver_PhoneNo").val(),
 					TruckNo: $("#txtTruckNo").val(),
-					trailer_weight: $("#txtTLDK").val(),
-					allowed_trailer_weight: $("#txtTTCPDK").val(),
+					Trailer_Weight: $("#txtTLDK").val(),
+					Allowed_Trailer_Weight: $("#txtTTCPDK").val(),
 					RemoocNo: $("#txttrailers_number").val(),
-					romooc_weight: $("#txtTLRM").val(),
-					allowed_romooc_weight: $("#txtTTCPRM").val(),
+					Romooc_Weight: $("#txtTLRM").val(),
+					Allowed_Romooc_Weight: $("#txtTTCPRM").val(),
 					GateName: gbGateName,
 					Note: $("#txtRemark").val(),
 					TypeGate: gbGateType,
 				};
+				// console.log("==========",dataSend);
 				$.ajax({
 					type: "POST",
 					dataType: "json",
@@ -1252,14 +1186,14 @@
 								});
 								$('#pInTruckNo').html(dataSend.TruckNo);
 								$('#pInBlock').html(dataSend.Block ? dataSend.Block : '');
-								$('#pInJobModeName').html(dataSend.JobModeID ? dataSend.JobModeID : '');
+								$('#pInJobModeName').html(dataSend.JobModeName ? dataSend.JobModeName : '');
 								$('#pInBBNo').html(dataSend.ClassID === 1 ? dataSend.BillOfLading : dataSend.BookingNo);
 								$('#pInItemCode').html(dataSend.ItemID ? dataSend.ItemID : '');
 								$('#pInConsignee').html(dataSend.ShipperName ? dataSend.ShipperName : '');
-								$('#pInVessel').html(dataSend.VesselName ? dataSend.VesselName : '');
+								$('#pInVessel').html(dataSend.VesselName ? dataSend.VesselName + " / " + dataSend.InboundVoyage + " / " + dataSend.OutboundVoyage : '');
 								$('#pInPOD').html(dataSend.POD ? dataSend.POD : '');
 								$('#pInPrintOn').html(moment().format("YYYY-MM-DD HH:mm:ss"));
-								$('#pInPrintBy').html(JSON.parse(localStorage.getItem('user_info')).UserName);
+								$('#pInPrintBy').html(dataSend.UserName);
 								$('#pInHotline').html('HOTLINE: 0896466903');
 								PrintElem('printInModal');
 								// myTimer();
@@ -1267,10 +1201,9 @@
 								//Thoilc(*Note)-Remove trên lưới
 								$('.listDLGate tbody').find(`tr#${dataSend.rowguid}`).remove();
 								cleanDATA();
-
 								$('#mOutPinSeq').html(dataSend.PinCode + "/" + dataSend.Sequence);
 								$('#mOutEirNo').html(dataSend.EirNo);
-								$('#mOutIssueDate').html(dataSend.IssueDate ? moment(dataSend.IssueDate).format("DD/MM/YYYY HH:mm:ss") : '');
+								$('#mOutIssueDate').html(dataSend.IssueDate || '');
 								$('#mOutShipperName').html(dataSend.ShipperName ? dataSend.ShipperName : '');
 								$('#mOutVesselName').html(dataSend.VesselName + "/" + dataSend.InboundVoyage + "/" + dataSend.OutboundVoyage);
 								$('#mOutATB').html(dataSend.ATB ? moment(dataSend.ATB).format("DD/MM/YYYY HH:mm:ss") : '');
@@ -1279,14 +1212,13 @@
 								$('#mOutQuantity').html(dataSend.Quantity ? dataSend.Quantity : 0);
 								$('#mOutMcWeight').html(dataSend.McWeight ? dataSend.McWeight : 0);
 								$('#mOutRemark').html(dataSend.Note ? dataSend.Note : '');
-								$('#mCurrenDate').html(moment().format("DD/MM/YYYY"));
-								$('#mOutUserName').html(JSON.parse(localStorage.getItem('user_info')).UserName);
+								$('#mCurrenDate').html(moment().format("DD/MM/YYYY HH:mm:ss"));
+								$('#mOutUserName').html(dataSend.UserName);
 								PrintElem('printOutModal');
 								// myTimer();
 							}
 						} else {
 							toastr["error"](dataGet.data.iMessage);
-							cleanDATA();
 						}
 					},
 					error: function(dataGet) {
@@ -1403,12 +1335,6 @@
 						if (dataGet.data.iStatus) {
 							var dataAll = dataGet.data.iPayload;
 							dataTruckFill = dataAll;
-							// arrTimer = dataAll.map(item => {
-							// 	return {
-							// 		TruckNo: item.TruckNo,
-							// 		startTime: Math.floor(Math.abs(moment() - moment(item.StartDate, 'YYYY-MM-DD HH:mm:ss')) / 1000)
-							// 	}
-							// });
 							for (var i = 0; i < dataAll.length; i++) {
 								var row, cell;
 								$('.listDLGate tbody').append(function() {
@@ -1417,7 +1343,6 @@
 										'<td style="width: 25%" id="' + (dataAll[i].TruckNo ? dataAll[i].TruckNo : '') + '" class="col_TruckNo">' + (dataAll[i].TruckNo ? dataAll[i].TruckNo : '') + '</td>' +
 										'<td style="width: 45%" id="' + (dataAll[i].ClassID === 1 ? dataAll[i].BillOfLading : dataAll[i].BookingNo) + '" class="col_BBNo">' + (dataAll[i].ClassID === 1 ? dataAll[i].BillOfLading : dataAll[i].BookingNo) + '</td>' +
 										'<td style="width: 20%" class="col_dateTimer" startdate="' + dataAll[i].StartDate + '"></td>' +
-										// '<td style="width: 20%" class="col_dateTimer">' + moment((dataAll[i].StartDate ? dataAll[i].StartDate : '')).format('YYYY-MM-DD HH:mm:ss') + '</td>' +
 										'<td class="col_EIRNo" style="display: none">' + (dataAll[i].EirNo ? dataAll[i].EirNo : '') + '</td>'
 									row = '<tr id="' + (dataAll[i].rowguid) + '">' + cell + '</tr>';
 									return row;
@@ -1434,28 +1359,6 @@
 					}
 				});
 			}
-
-			//Thoilc(*Note)-setTimeout::myTimer thiết lập timeout nội bộ hàm::giải quyết tiến trình bị treo khi mỗi lần thời gian tăng
-			// function myTimer() {
-			// 	if (arrTimer.length == 0) return;
-			// 	setInterval(() => {
-			// 		for (var i = 0; i < arrTimer.length; i++) {
-			// 			var startTime = arrTimer[i].startTime;
-			// 			var hour = Math.floor(startTime / (60 * 60));
-			// 			var minute = Math.floor((startTime - (hour * 3600)) / 60);
-			// 			var seconds = startTime - ((hour * 3600) + (minute * 60));
-			// 			if (hour < 10)
-			// 				hour = "0" + hour;
-			// 			if (minute < 10)
-			// 				minute = "0" + minute;
-			// 			if (seconds < 10)
-			// 				seconds = "0" + seconds;
-			// 			// console.log(`${hour}:${minute}:${seconds}`);
-			// 			arrTimer[i].startTime++;
-			// 			$('#datatable-vertical tbody').find(`tr#${arrTimer[i].TruckNo}`).find("td:eq(3)").text(`${hour}:${minute}:${seconds}`);
-			// 		}
-			// 	}, 1000);
-			// }
 
 			const myInterval = myTimer();
 
@@ -1534,7 +1437,8 @@
 			function layTLXe() {
 				var iGatePlate = $('#txtTruckNo').val();
 				var dataSend = {
-					license_plate: iGatePlate,
+					License_Plate: iGatePlate,
+					VoyageKey: dataGlobal.VoyageKey
 				};
 				$.ajax({
 					type: 'POST',
@@ -1544,8 +1448,8 @@
 					success: function(dataGet) {
 						let dataNew = dataGet.data;
 						if (dataNew.iStatus) {
-							$('#txtTLDK').val(dataNew.iPayload[0].trailer_weight);
-							$('#txtTTCPDK').val(dataNew.iPayload[0].allowed_trailer_weight);
+							$('#txtTLDK').val(dataNew.iPayload[0].Trailer_Weight);
+							$('#txtTTCPDK').val(dataNew.iPayload[0].Allowed_Trailer_Weight);
 							iLoadTruckRM = true;
 						} else {
 							if (dataNew.iBacklst) {
@@ -1589,8 +1493,8 @@
 					success: function(dataGet) {
 						let dataNew = dataGet.data;
 						if (dataNew.iStatus) {
-							$('#txtTLRM').val(dataNew.iPayload[0].romooc_weight);
-							$('#txtTTCPRM').val(dataNew.iPayload[0].allowed_romooc_weight);
+							$('#txtTLRM').val(dataNew.iPayload[0].Romooc_Weight);
+							$('#txtTTCPRM').val(dataNew.iPayload[0].Allowed_Romooc_Weight);
 							iLoadTruckRM = true;
 						} else {
 							toastr['error'](dataNew.iMessage);
@@ -1614,8 +1518,9 @@
 					data: dataSend,
 					url: '/gate/loadDataGate',
 					success: function(dataGet) {
-						let dataAll = dataGet.data.iPayload;
-						if (dataAll.length) {
+						let data = dataGet.data;
+						if (data.iStatus) {
+							let dataAll = dataGet.data.iPayload;
 							$("#reprint_rowcount").html(dataAll.length);
 							let result = '';
 							for (var i = 0; i < dataAll.length; i++) {
@@ -1639,16 +1544,26 @@
 									'<td class="c_Sequence" style="display:none;">' + (dataAll[i].Sequence ? dataAll[i].Sequence : '') + '</td>' +
 									'<td class="c_IssueDate" style="display:none;">' + (dataAll[i].IssueDate ? moment(dataAll[i].IssueDate).format("DD/MM/YYYY HH:mm:ss") : '') + '</td>' +
 									'<td class="c_VesselName" style="display:none;">' + (dataAll[i].VesselName ? dataAll[i].VesselName : '') + '</td>' +
+									'<td class="c_UserName" style="display:none;">' + (dataAll[i].UserName ? dataAll[i].UserName : '') + '</td>' +
 									'<td class="c_TimeIn">' + (dataAll[i].StartDate ? dataAll[i].StartDate : '') + '</td>' +
 									'<td class="c_TimeOut">' + (dataAll[i].FinishDate ? dataAll[i].FinishDate : '') + '</td>';
 								row = '<tr id="' + dataAll[i].rowguid + '">' + cell + '</tr>';
 								result += row;
 							};
+
+							//Haolv(*Note)-jquery detect scroll bar is show
 							$('#rePrintTable tbody').html(result);
+							var tbody = $('#rePrintTable tbody')[0]; // need real DOM Node, not jQuery wrapper
+							var hasVerticalScrollbar = tbody.scrollHeight > tbody.clientHeight;
+							if (hasVerticalScrollbar) {
+								$('#rePrintTable thead').css('width', 'calc(100% - 18px)');
+							} else {
+								$('#rePrintTable thead').css('width', '100%');
+							}
 							toastr['success'](dataGet.data.iMessage);
 						} else {
 							$("#reprint_rowcount").html(0);
-							toastr['error'](dataGet.data.iMessage);
+							toastr['error'](data.iMessage);
 						};
 					},
 					error: function(dataError) {
@@ -1671,6 +1586,8 @@
 				//Thoilc(*Note)-Chặn không cho in khi TimeOut = null
 				if (!$('#rePrintTable tbody .m-row-selected').children('td.c_TimeOut').html()) {
 					document.getElementById("btnRePrintOut").setAttribute("disabled", "");
+				} else {
+					document.getElementById("btnRePrintOut").removeAttribute("disabled", "");
 				}
 			});
 
@@ -1684,10 +1601,10 @@
 					$('#pInBBNo').html(chooseData.children('td.c_BBNo').html());
 					$('#pInItemCode').html(chooseData.children('td.c_CommodityDescription').html());
 					$('#pInConsignee').html(chooseData.children('td.c_CusName').html());
-					$('#pInVessel').html(chooseData.children('td.c_VesselName').html());
+					$('#pInVessel').html(chooseData.children('td.c_VesselName').html() + " / " + chooseData.children('td.c_InboundVoyage').html() + " / " + chooseData.children('td.c_OutboundVoyage').html());
 					$('#pInPOD').html(chooseData.children('td.c_POD').html());
 					$('#pInPrintOn').html(moment().format("YYYY-MM-DD HH:mm:ss"));
-					$('#pInPrintBy').html(JSON.parse(localStorage.getItem('user_info')).UserName);
+					$('#pInPrintBy').html(chooseData.children('td.c_UserName').html());
 					$('#pInHotline').html('HOTLINE: 0896466903');
 					PrintElem('printInModal');
 				} else {
@@ -1711,8 +1628,8 @@
 					$('#mOutQuantity').html(chooseData.children('td.c_Quantity').html());
 					$('#mOutMcWeight').html(chooseData.children('td.c_McWeight').html());
 					$('#mOutRemark').html(chooseData.children('td.c_Remark').html());
-					$('#mCurrenDate').html(moment().format("DD/MM/YYYY"));
-					$('#mOutUserName').html(JSON.parse(localStorage.getItem('user_info')).UserName);
+					$('#mCurrenDate').html(moment().format("DD/MM/YYYY HH:mm:ss"));
+					$('#mOutUserName').html(chooseData.children('td.c_UserName').html());
 					PrintElem('printOutModal');
 				} else {
 					// document.getElementById("btnRePrintOut").setAttribute("disabled", "");
@@ -1721,16 +1638,27 @@
 			});
 
 			//Thoilc(*Note)-PrintElem
+			//Link::https://hoanguyenit.com/fix-image-not-showing-in-print-preview.html
 			function PrintElem(elem) {
 				var mywindow = window.open('', 'PRINT');
+				var is_chrome = Boolean(mywindow.chrome);
 				mywindow.document.write('<html><head><title>' + document.title + '</title>');
 				mywindow.document.write('</head><body >');
 				mywindow.document.write(document.getElementById(elem).innerHTML);
 				mywindow.document.write('</body></html>');
 				mywindow.document.close(); // necessary for IE >= 10
-				mywindow.focus(); // necessary for IE >= 10*/
-				mywindow.print();
-				mywindow.close();
+				if (is_chrome) {
+					mywindow.onload = function() { // wait until all resources loaded
+						mywindow.focus(); // necessary for IE >= 10
+						mywindow.print(); // change window to mywindow
+						mywindow.close(); // change window to mywindow
+					};
+				} else {
+					mywindow.document.close(); // necessary for IE >= 10
+					mywindow.focus(); // necessary for IE >= 10
+					mywindow.print();
+					mywindow.close();
+				}
 				return true;
 			}
 		});

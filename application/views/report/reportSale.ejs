@@ -1,0 +1,1105 @@
+<script>
+	document.title = "Doanh thu hóa đơn";
+</script>
+<script src="/assets/js/bootstrap-select.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<style></style>
+<!-- main screen -->
+<div class="row">
+	<div class="col-xl-12" style="font-size: 12px">
+		<div class="ibox collapsible-box">
+			<i class="la la-angle-double-up dock-right"></i>
+			<!-- Title Name -->
+			<div class="ibox-head">
+				<div class="ibox-title">DOANH THU HÓA ĐƠN</div>
+				<div class="button-bar-group mr-3">
+					<button id="search" class="btn btn-outline-warning btn-sm btn-loading mr-1" data-loading-text="<i class='la la-spinner spinner'></i>Nạp dữ liệu" title="Nạp dữ liệu">
+						<span class="btn-icon"><i class="ti-search"></i>Nạp dữ liệu</span>
+					</button>
+
+					<button id="Export" class="btn btn-outline-success btn-sm mr-1" data-loading-text="<i class='la la-spinner spinner'></i>Export" title="Export">
+						<span class="btn-icon"><i class="ti-export"></i>Export</span>
+					</button>
+				</div>
+			</div>
+			<!-- filter and chart -->
+			<div class="ibox-body pt-0 pb-0 bg-f9 border-e">
+				<div class="row ibox mb-0 border-e pb-1 pt-1">
+					<!-- Phần truy vấn -->
+					<div style="border-right: 1px solid #E5E5E5;" class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<!-- row checkbox -->
+						<div class="row form-group mt-3">
+							<div class="col-sm-4 col-lg-4 col-form-label">
+								<label class=" radio radio-info">
+									<input type="radio" name="typeof" class="css-checkbox" value="ALL" checked />
+									<span class="input-span"></span>Tất cả
+								</label>
+							</div>
+							<div class="col-sm-4 col-lg-4 col-form-label">
+								<label class=" radio radio-info">
+									<input type="radio" name="typeof" class="css-checkbox" value="CAS" />
+									<span class="input-span"></span>Thu ngay
+								</label>
+							</div>
+							<div class="col-sm-4 col-lg-4 col-form-label">
+								<label class=" radio radio-info">
+									<input type="radio" name="typeof" class="css-checkbox" value="CRE" />
+									<span class="input-span"></span>Thu sau
+								</label>
+							</div>
+						</div>
+						<!-- row ngày lệnh -->
+						<div class="row form-group mt-3  mb-0">
+							<div class="col-xl-3 col-form-label ">
+								<label class="mb-3">Ngày lệnh</label>
+							</div>
+							<div class="col-xl-9 input-group-sm">
+								<div class="input-group">
+									<input class="form-control form-control-sm" id="getIn" type="text" autocomplete="off" placeholder="" value="" />
+									<span class="ml-3 mr-3 mt-2">∼</span>
+									<input class="form-control form-control-sm" id="getOut" type="text" autocomplete="off" placeholder="" value="" />
+								</div>
+							</div>
+						</div>
+						<!-- row tàu chuyến -->
+						<div class="row form-group mb-0">
+							<div class="form-group col-lg-3">
+								<label class="mb-0 mt-1">Tàu/chuyến</label>
+							</div>
+							<div class="form-group input-group col-lg-9">
+								<input id="VoyageKey" class="form-control form-control-sm" type="text" hidden="" />
+								<input id="VesselName" class="form-control form-control-sm input-required" id="shipid" placeholder="Tàu/chuyến" type="text" readonly>
+								<span id="chooseVessel" class="input-group-addon bg-white btn mobile-hiden text-warning" style="padding: 0 .5rem" title="chọn tàu" data-toggle="modal" data-target="#ship-modal">
+									<i class="ti-search"></i>
+								</span>
+								<span id="nochooseVessel" class="input-group-addon bg-white btn mobile-hiden text-warning" style="padding: 0 .5rem" title="chọn tàu" data-toggle="modal" data-target="#ship-modal">
+									<i class="ti-close"></i>
+								</span>
+							</div>
+						</div>
+						<!-- row DTTT -->
+						<div class="row form-group  mb-0">
+							<div class="form-group col-lg-3">
+								<label class="mb-0 mt-1">ĐTTT</label>
+							</div>
+							<div class="form-group input-group col-lg-9">
+								<input class="form-control form-control-sm input-required" id="c-CusID" placeholder="ĐTTT" type="text" readonly>
+								<!-- <input id="c-CusID" placeholder="ĐTTT" style="border-radius: 5px; padding-left: 7.5px; border-color: rgba(0, 0, 0, .1); border-width: 1px; height: 2rem; margin-left: 1rem;" type="text" class="col-xl-8"> -->
+								<span class="input-group-addon bg-white btn mobile-hiden text-warning" title="Chọn đối tượng thanh toán" data-toggle="modal" data-target="#payer-modal" onclick="setTimeout(()=>{$('#search-payer').DataTable().draw()},200)" style="border-radius: 5px; padding-left: 7.5px; border-color: rgba(0, 0, 0, .1); border-width: 1px; padding: 0 0.5rem;">
+									<i class="ti-search"></i>
+								</span>
+								<span id="nochooCus" class="input-group-addon bg-white btn mobile-hiden text-warning" style="padding: 0 .5rem" title="chọn tàu" data-toggle="modal" data-target="#ship-modal">
+									<i class="ti-close"></i>
+								</span>
+							</div>
+						</div>
+						<!-- row hình thức -->
+						<div class="row form-group  mb-0">
+							<div class="form-group col-lg-3">
+								<label class="mb-0 mt-1">Hình thức</label>
+							</div>
+							<div class="form-group col-lg-9">
+								<select style="min-height: 28px !important;border: 1px solid #E5E5E5;" id="payment_type" name="payment_type" class="selectpicker col-lg-12" data-style="btn-default btn-sm" data-width="100%" required="">
+									<option value="" selected>*</option>
+									<% result.forEach((item) => { %>
+									<option style="font-size: 12px" value="<%=item.PaymentMethod%>">
+										<%= item.PaymentMethod %>
+									</option>
+									<% }); %>
+								</select>
+							</div>
+						</div>
+						<!-- row loại tiền -->
+						<div class="row form-group  mb-0">
+							<div class="form-group col-lg-3">
+								<label class="mb-0 mt-1">Loại tiền</label>
+							</div>
+							<div class="form-group col-lg-9">
+								<select style="min-height: 28px !important;border: 1px solid #E5E5E5" id="currencyid" name="currencyid" class="selectpicker col-lg-12" data-style="btn-default btn-sm" data-width="100%" required="">
+									<option value="VND" selected>VND</option>
+									<option value="USD">USD</option>
+								</select>
+							</div>
+						</div>
+						<!-- row loại hóa đơn -->
+						<div class="row form-group mb-0">
+							<div class="form-group col-lg-3">
+								<label class="mb-0 mt-1 ">Loại HĐ</label>
+							</div>
+							<div class="form-group col-lg-9 ">
+								<select style="min-height: 28px !important;border: 1px solid #E5E5E5" id="adjust-type" name="adjust-type" class="selectpicker col-lg-12" data-style="btn-default btn-sm bg-white" data-width="100%" required="">
+									<option value="" selected>* (Tất cả)</option>
+									<option value="0">Hóa đơn gốc</option>
+									<option value="1">HĐ thay thế</option>
+									<option value="2">HĐ điều chỉnh tăng</option>
+									<option value="3">HĐ điều chỉnh giảm</option>
+									<option value="4">HĐ điều chỉnh thông tin</option>
+								</select>
+							</div>
+						</div>
+						<!-- row lập bởi -->
+						<div class="row form-group mb-1">
+							<div class="form-group col-lg-3">
+								<label class="mb-0 mt-1">Lập bởi</label>
+							</div>
+							<div class="form-group col-lg-9">
+								<input style="color: #9F9CB0;" id="createdBy" name="CreatedBy" class="form-control form-control-sm" type="text" placeholder="Người lập hoá đơn" autocomplete="on">
+							</div>
+						</div>
+						<!-- row tổng tiền -->
+						<div class="row form-group">
+							<label class="col-lg-5 col-sm-5 col-form-label font-bold">Tổng tiền (VNĐ)</label>
+							<label style="border-bottom: dashed 1px #34495F;text-align: right;" id="cItemVND" class="col-sm-7 col-lg-6 col-form-label font-bold">
+								<span style="color: #34495F;">0</span>
+							</label>
+						</div>
+						<!-- row tổng tiền -->
+						<div class="row form-group">
+							<label class="col-lg-5 col-sm-5 col-form-label font-bold">Tổng tiền (USD)</label>
+							<label style="border-bottom: dashed 1px #34495F ;text-align: right;" id="cItemUSD" class="col-sm-7 col-lg-6 col-form-label font-bold">
+								<span style="color: #34495F;">0</span>
+							</label>
+						</div>
+						<!-- row tổng tiền -->
+					</div>
+					<!-- Phần table và chart -->
+					<div class="col-xl-8 col-lg-12 col-md-12 col-sm-12 col-xs-12 mt-8">
+						<div class="mt-3" style="display: flex;align-items: center;justify-content: center;">
+							<span style="font-weight: bold;font-size: 12px;">BIỂU ĐỒ DOANH THU HÓA ĐƠN</span>
+						</div>
+
+						<div class="mt-3" style="display: flex;align-items: center;justify-content: center;">
+							<canvas class="row" id="myChart" style="width:100%;max-width:650px;height: 320px;"></canvas>
+						</div>
+					</div>
+
+					<!-- Phần table -->
+					<div style="overflow: auto;" class="row">
+						<div class="row ibox-footer border-top-0">
+							<div class="col-md-12 col-sm-12 col-xs-12 table-responsive" id="TableMain">
+								<table id="MainScreemTable" class="table table-striped display nowrap" cellspacing="0" style="min-width: 98%">
+									<thead></thead>
+									<tbody></tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+</div>
+</div>
+<!-- Modal chọn tàu -->
+<div class="modal fade" id="vessel-modal" tabindex="-1" role="dialog" aria-labelledby="groups-modalLabel-1" aria-hidden="true" data-whatever="id" style="padding-left: 2%; padding-top: 2%">
+	<div class="modal-dialog" role="document" style="min-width: 1024px !important">
+		<div class="modal-content" style="border-radius: 4px">
+			<div class="modal-header">
+				<h5 class="modal-title text-primary" id="groups-modalLabel-1">
+					Danh mục tàu
+				</h5>
+				<button id="VesselSearch" class="btn btn-outline-warning btn-sm btn-loading mr-1" data-loading-text="<i class='la la-spinner spinner'></i>Nạp dữ liệu" title="Nạp dữ liệu">
+					<span class="btn-icon"><i class="ti-search"></i>Nạp dữ liệu</span>
+				</button>
+			</div>
+			<div class="modal-body" style="padding: 0px 15px 15px 15px">
+				<div class="row mb-0 border-e border-top-0 pb-1 pt-3">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<div class="row">
+							<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+								<div class="row form-group">
+									<label class="col-md-2 col-sm-4 col-xs-4 col-form-label">Tàu</label>
+									<input id="VesselNameFilter" class="col-md-8 col-sm-10 col-xs-10 form-control form-control-sm" placeholder="Tên tàu" type="text" />
+								</div>
+							</div>
+							<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+								<div class="row form-group">
+									<label class="col-md-2 col-sm-2 col-xs-2 col-form-label">Năm</label>
+									<div class="col-md-8 col-sm-10 col-xs-10 input-group input-group-sm">
+										<select id="YearFilter" data-width="100%" data-style="btn-default btn-sm" title="Năm" style="
+                        width: 80%;
+                        border-radius: 2px;
+                        border-color: rgba(0, 0, 0, 0.1);
+                      ">
+											<% for (let i = 2016; i < 2026; i++){ %>
+											<option value="<%= i %>"><%= i %></option>
+											<% } %>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+								<div class="row form-group">
+									<label class="radio radio-success ml-5 mt-1">
+										<input type="radio" checked name="VesselFilter" class="css-checkbox" value="1" />
+										<span class="input-span"></span>Đến cảng
+									</label>
+
+									<label class="radio radio-success ml-3 mt-1 mr-3">
+										<input type="radio" name="VesselFilter" class="css-checkbox" value="2" />
+										<span class="input-span"></span>Rời cảng
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row ibox-footer border-top-0 mt-3">
+					<div class="col-md-12 col-sm-12 col-xs-12 table-responsive">
+						<table id="VesselTable" class="table table-striped display nowrap" cellspacing="0" style="width: 99.5%">
+							<thead>
+								<tr style="width: 100%">
+									<th col-name="STT">STT</th>
+									<th col-name="VoyageKey"></th>
+									<th col-name="VesselID">Mã tàu</th>
+									<th col-name="VesselName">Tên tàu</th>
+									<th col-name="InboundVoyage">Chuyến nhập</th>
+									<th col-name="OutboundVoyage">Chuyến xuất</th>
+									<th col-name="ETA">ETA</th>
+									<th col-name="ETD">ETD</th>
+									<th col-name="Status">Status</th>
+									<th col-name="InLane">Lane nhập</th>
+									<th col-name="OutLane">Lane xuất</th>
+								</tr>
+							</thead>
+							<tbody></tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<div style="margin: 0 auto !important">
+					<button class="btn btn-sm btn-rounded btn-gradient-blue btn-labeled btn-labeled-left btn-icon" id="apply-vessel" data-dismiss="modal">
+						<span class="btn-label"><i class="ti-check"></i></span>Xác nhận
+					</button>
+					<button class="btn btn-sm btn-rounded btn-gradient-peach btn-labeled btn-labeled-left btn-icon" data-dismiss="modal">
+						<span class="btn-label"><i class="ti-close"></i></span>Đóng
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Modal ĐTTT -->
+<div class="modal fade" id="payer-modal" tabindex="3" role="dialog" aria-labelledby="groups-modalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-mw" role="document" style="min-width: 960px;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="groups-modalLabel">
+					Chọn đối tượng chủ hàng
+				</h5>
+			</div>
+			<div class="modal-body" style="padding: 10px 3px;">
+				<div class="table-responsive">
+					<table id="search-payer" class="table table-striped display nowrap table-popup single-row-select" cellspacing="0" style="width: 99.9%;">
+						<thead>
+							<tr>
+								<th>STT</th>
+								<th>Mã ĐT</th>
+								<th>MST</th>
+								<th>Tên</th>
+								<th>Địa chỉ</th>
+								<th>HTTT</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+			</div>
+			<div class="modal-footer" style="position: relative; padding: 22px 15px !important;">
+				<button type="button" id="select-payer" class="btn btn-sm btn-outline-primary" data-dismiss="modal">
+					<i class="fa fa-check"></i>
+					Chọn
+				</button>
+				<button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">
+					<i class="fa fa-close"></i>
+					Đóng
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	$(document).ready(function() {
+		const arrInit = [10, 20, 30]
+		xValues = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+		window.myLineChart = new Chart("myChart", {
+			type: "bar",
+			data: {
+				labels: xValues,
+				datasets: [{
+
+				}]
+			},
+			options: {
+				legend: {
+					display: false
+				},
+				title: {
+					display: true,
+
+				},
+				scales: {
+					yAxes: [{
+						ticks: {
+							beginAtZero: true,
+							max: 100000000,
+							min: 0,
+							// stepSize: 50,
+							callback: function(value, index, values) {
+								if (parseInt(value) >= 1000) {
+									return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+								} else {
+									return value;
+								}
+							}
+						},
+
+
+					}]
+				}
+			}
+		});
+		$("#getIn").val(moment().startOf("day").format("YYYY-MM-DD HH:mm:ss"));
+		$("#getOut").val(moment().endOf("day").format("YYYY-MM-DD HH:mm:ss"));
+		$("#getIn, #getOut").datetimepicker({
+			controlType: "select",
+			oneLine: true,
+			dateFormat: "yy-mm-dd",
+			timeFormat: "HH:mm:ss",
+			onSelect: function(dateText) {
+				$(this).val(moment(dateText).format("YYYY-MM-DD HH:mm:ss"));
+			},
+		});
+		var _columns = [{
+				data: "",
+				name: "STT",
+				title: "STT",
+				className: "text-center editor-cancel ",
+				targets: 0,
+				render: function(data, type, row, meta) {
+					return meta.row + 1;
+				},
+
+			},
+			{
+				data: "InvoiceNo",
+				name: "Số HĐ",
+				title: "Số HĐ",
+				className: "text-center editor-cancel ",
+				targets: 1,
+			},
+			{
+				data: "InvoiceDate",
+				name: "Ngày HĐ",
+				title: "Ngày HĐ",
+				className: "text-center editor-cancel ",
+				targets: 2,
+				render: function(data, type, row) {
+					return row.InvoiceDate ? moment(row.InvoiceDate).format("DD-MM-YYYY HH:mm:ss") : "";
+				},
+			},
+			{
+				data: "",
+				name: "Số lệnh",
+				title: "Số lệnh",
+				className: "text-center editor-cancel ",
+				targets: 3,
+			},
+			{
+				data: "TRFCodeName",
+				name: "Phương án",
+				title: "Phương án",
+				className: "text-center editor-cancel ",
+				targets: 4,
+
+			},
+			{
+				data: "PinCode",
+				name: "Số Pincode",
+				title: "Số Pincode",
+				className: "text-center editor-cancel ",
+				targets: 5,
+
+			},
+			{
+				data: "",
+				name: "Hạn lệnh",
+				title: "Hạn lệnh",
+				className: "text-center autocomplete",
+				targets: 6,
+				render: function(data, type, row) {
+					return row.ExpDate ? moment(row.ExpDate).format("DD-MM-YYYY HH:mm:ss") : "";
+				},
+
+
+			},
+			{
+				data: "",
+				name: "Diễn giải",
+				title: "Diễn giải",
+				className: "text-left",
+				targets: 7,
+				render: function(data, type, row) {
+					return `${row.TRFDesc?row.TRFDesc:""} ${row.TRFDescMore?row.TRFDescMore:""}`;
+				},
+			},
+
+			{
+				data: "Quantity",
+				name: "Số lượng",
+				title: "Số lượng",
+				className: "text-center",
+				targets: 8,
+
+			},
+			{
+				data: "",
+				name: "Thành tiền",
+				title: "Thành tiền",
+				className: "text-right ",
+				targets: 9,
+				render: function(data, type, row) {
+					return row.Amount ? row.Amount.toLocaleString() : "";
+				},
+				// Amount
+			},
+			{
+				data: "",
+				name: "Chiết khấu",
+				title: "Chiết khấu",
+				className: "text-center",
+				targets: 10,
+				render: function(data, type, row) {
+					return row.DiscountAmount ? row.DiscountAmount : "";
+				},
+			},
+			{
+				data: "VatRate",
+				name: "%Thuế",
+				title: "%Thuế",
+				className: "text-center",
+				targets: 11,
+
+			},
+			{
+				data: "",
+				name: "Tiền thuế",
+				title: "Tiền thuế",
+				className: "text-right",
+				targets: 12,
+				render: function(data, type, row) {
+					return row.VatAmount ? row.VatAmount.toLocaleString() : "";
+				},
+				// VatAmount
+			},
+			{
+				data: "",
+				name: "Tổng tiền",
+				title: "Tổng tiền",
+				className: "text-right",
+				targets: 13,
+				render: function(data, type, row) {
+					return row.TotalAmount ? row.TotalAmount.toLocaleString() : "";
+				},
+				// TotalAmount
+			},
+			{
+				data: "",
+				name: "Loại hóa đơn",
+				title: "Loại hóa đơn",
+				className: "text-center",
+				targets: 14,
+				render: function(data, type, row) {
+					return row.PaymentTypeID == "CAS" ? "THU NGAY" : "THU SAU";
+				},
+
+			},
+			{
+				data: "",
+				name: "HTTT",
+				title: "HTTT",
+				className: "text-center",
+				targets: 15,
+				render: function(data, type, row) {
+					return row.PaymentMethod;
+				},
+			},
+			{
+				data: "TaxCode",
+				name: "MST",
+				title: "MST",
+				className: "text-center",
+				targets: 16,
+			},
+			{
+				data: "",
+				name: "ĐTTT",
+				title: "ĐTTT",
+				className: "text-left",
+				targets: 17,
+				render: function(data, type, row) {
+					return `${row.CusName?row.CusName:""}`;
+				},
+
+			},
+			{
+				data: "CreatedBy",
+				name: "Lập bởi",
+				title: "Lập bởi",
+				className: "text-center",
+				targets: 18,
+			},
+			{
+				data: "Remark",
+				name: "Ghi chú",
+				title: "Ghi chú",
+				className: "text-center",
+				targets: 19,
+			},
+
+		];
+		let TblMain = $("#MainScreemTable");
+		var dataTbl = TblMain.newDataTable({
+			scrollY: "55vh",
+			columnDefs: _columns,
+			order: [
+				[0, "asc"]
+			],
+			paging: false,
+			keys: true,
+			autoFill: {
+				focus: "focus",
+			},
+			select: {
+				style: "single",
+				info: false,
+			},
+			buttons: [],
+			rowReorder: false,
+		});
+		// Hiển thị modal chọn tàu
+		$("#chooseVessel").on("click", function() {
+			$("#vessel-modal").modal("show");
+			$("#VesselSearch").trigger("click");
+			sumNumRows = 0;
+			$("#YearFilter").val(new Date().getFullYear());
+		});
+		//   Nút xóa dữ liệu thông tin tàu
+		$("#nochooseVessel").on("click", function() {
+			$("#VesselName").val("");
+			$("#VoyageKey").val("");
+		});
+		// làm màng hình chọn tàu
+		$(document).ready(function() {
+			var _vesselColumns = [
+					"STT",
+					"VoyageKey",
+					"VesselID",
+					"VesselName",
+					"InboundVoyage",
+					"OutboundVoyage",
+					"ETA",
+					"ETD",
+					"Status",
+					"InLane",
+					"OutLane",
+				],
+				tblVessel = $("#VesselTable"),
+				vesselModal = $("#vessel-modal");
+			/* Initial vessel table */
+			tblVessel.newDataTable({
+				scrollY: "30vh",
+				columnDefs: [{
+						type: "num",
+						className: "text-center",
+						targets: _vesselColumns.indexOf("STT"),
+					},
+					{
+						className: "text-center",
+						targets: _vesselColumns.getIndexs(["VesselName", "InboundVoyage", "OutboundVoyage", "ETA", "ETD", "InLane", "OutLane"]),
+					},
+					{
+						className: "hiden-input",
+						targets: _vesselColumns.getIndexs(["VoyageKey", "VesselID", "Status"]),
+					},
+				],
+				order: [
+					[_vesselColumns.indexOf("STT"), "asc"]
+				],
+				paging: false,
+				keys: true,
+				autoFill: {
+					focus: "focus",
+				},
+				select: {
+					style: "single",
+					info: false,
+				},
+				buttons: [],
+				rowReorder: false,
+				arrayColumns: _vesselColumns,
+			});
+
+			$("#vessel-modal").on("shown.bs.modal", function(e) {
+				$($.fn.dataTable.tables(true)).DataTable().columns.adjust();
+			});
+			$("#VesselSearch").on("click", function() {
+				tblVessel.waitingLoad();
+				var formData = {
+					filter: {
+						Status: {
+							operation: 'in',
+							value: $("input[type='radio'][name='VesselFilter']:checked").val() == 1 ? [0, 1] : [2, 3, 4, 5, 6]
+						},
+						VesselName: {
+							operation: 'like',
+							value: $('#VesselNameFilter').val()
+						}
+					}
+
+				};
+				$.ajax({
+					url: "/Planning/YardPlanning/loadVesselVisit",
+					dataType: "json",
+					data: formData,
+					type: "POST",
+					success: function(data) {
+						var rows = [];
+						tblVessel.dataTable().fnClearTable();
+						if (data.data.length > 0) {
+							for (i = 0; i < data.data.length; i++) {
+								var rData = data.data[i],
+									r = [];
+								$.each(_vesselColumns, function(idx, colname) {
+									var val = "";
+									switch (colname) {
+										case "STT":
+											val = i + 1;
+											break;
+										case "ETA":
+										case "ETD":
+											val = getDateTime(rData[colname]);
+											break;
+										default:
+											val = rData[colname] ? rData[colname] : "";
+											break;
+									}
+									r.push(val);
+								});
+								rows.push(r);
+							}
+						}
+						tblVessel.dataTable().fnClearTable();
+						if (rows.length > 0) {
+							tblVessel.dataTable().fnAddData(rows);
+						}
+					},
+					error: function(err) {
+						tblVessel.dataTable().fnClearTable();
+					},
+				});
+			});
+			// điền dữ liệu vào trong các trường khi nhấn 2 lần vào bảng
+			$(document).on("dblclick", "#VesselTable tbody tr", function() {
+				var tblVesselSelectedRows = tblVessel
+					.getSelectedRows()
+					.data()
+					.toArray()[0];
+				let VoyageKey = tblVesselSelectedRows[_vesselColumns.indexOf("VoyageKey")]
+				let VesselName = tblVesselSelectedRows[_vesselColumns.indexOf("VesselName")]
+				let InboundVoyage = tblVesselSelectedRows[_vesselColumns.indexOf("InboundVoyage")]
+				let OutboundVoyage = tblVesselSelectedRows[_vesselColumns.indexOf("OutboundVoyage")]
+				let InLane = tblVesselSelectedRows[_vesselColumns.indexOf("InLane")]
+				let OutLane = tblVesselSelectedRows[_vesselColumns.indexOf("OutLane")]
+				let ETA = tblVesselSelectedRows[_vesselColumns.indexOf("ETA")]
+				let ETD = tblVesselSelectedRows[_vesselColumns.indexOf("ETD")]
+				$("#VoyageKey").val(VoyageKey);
+				$("#VesselName").val(
+					VesselName + " / " + InboundVoyage + " / " + OutboundVoyage
+				);
+
+				$("#search").trigger("click");
+				vesselModal.modal("hide");
+			});
+			$(document).on("click", "#VesselTable tbody tr", function() {
+				$('#VesselTable tbody tr.selected').removeClass('selected');
+				$(this).addClass('selected');
+			});
+			//Nhấn xác nhận trong bảng chọn tàu sẽ điền dữ liệu vào các trường
+			$("#apply-vessel").on("click", function() {
+				var tblVesselSelectedRows = tblVessel
+					.getSelectedRows()
+					.data()
+					.toArray()[0];
+				let VoyageKey = tblVesselSelectedRows[_vesselColumns.indexOf("VoyageKey")]
+				let VesselName = tblVesselSelectedRows[_vesselColumns.indexOf("VesselName")]
+				let InboundVoyage = tblVesselSelectedRows[_vesselColumns.indexOf("InboundVoyage")]
+				let OutboundVoyage = tblVesselSelectedRows[_vesselColumns.indexOf("OutboundVoyage")]
+				let InLane = tblVesselSelectedRows[_vesselColumns.indexOf("InLane")]
+				let OutLane = tblVesselSelectedRows[_vesselColumns.indexOf("OutLane")]
+				let ETA = tblVesselSelectedRows[_vesselColumns.indexOf("ETA")]
+				let ETD = tblVesselSelectedRows[_vesselColumns.indexOf("ETD")]
+				$("#VoyageKey").val(VoyageKey);
+				$("#VesselName").val(
+					VesselName + " / " + InboundVoyage + " / " + OutboundVoyage
+				);
+			});
+		});
+		// Modal DTTT
+		let _colPayer = ["STT", "CusID", "TaxCode", "CusName", "Address", "PaymentTypeID"];
+		$('#search-payer').DataTable({
+			paging: true,
+			scroller: {
+				displayBuffer: 12,
+				boundaryScale: 0.5
+			},
+			columnDefs: [{
+					type: "num",
+					className: 'text-center',
+					targets: [0]
+				},
+				{
+					render: function(data, type, full, meta) {
+						return "<div class='wrap-text width-250'>" + data + "</div>";
+					},
+					targets: _colPayer.getIndexs(["CusName", "Address"])
+				}
+			],
+			buttons: [],
+			infor: false,
+			scrollY: '45vh'
+		});
+
+		function load_payer() {
+			var tblPayer = $('#search-payer');
+			tblPayer.waitingLoad();
+			$.ajax({
+				url: "/Planning/YardPlanning/loadPayer",
+				dataType: 'json',
+				type: 'POST',
+				success: function(data) {
+					var rows = [];
+					if (data.payers && data.payers.length > 0) {
+						payers = data.payers;
+
+						var i = 0;
+						$.each(payers, function(index, rData) {
+							var r = [];
+							$.each(_colPayer, function(idx, colname) {
+								var val = "";
+								switch (colname) {
+									case "STT":
+										val = i + 1;
+										break;
+									case "PaymentTypeID":
+										val = !rData[colname] ? "" : (rData[colname] == "M" ? "Thu ngay" : "Thu sau");
+										break;
+									default:
+										val = rData[colname] ? rData[colname] : "";
+										break;
+								}
+								r.push(val);
+							});
+							i++;
+							rows.push(r);
+						});
+					}
+
+					tblPayer.dataTable().fnClearTable();
+					if (rows.length > 0) {
+						tblPayer.dataTable().fnAddData(rows);
+					}
+				},
+				error: function(err) {
+					tblPayer.dataTable().fnClearTable();
+					toastr["error"]("Có lỗi xảy ra! Vui lòng liên hệ với kỹ thuật viên! <br/>Cảm ơn!");
+				}
+			});
+		};
+		load_payer();
+		$(document).on('click', '#search-payer tbody tr', function() {
+			$("#search-payer").DataTable().rows('.m-row-selected').nodes().to$().removeClass("m-row-selected");
+			$($("#search-payer").DataTable().row($(this)).node()).addClass("m-row-selected");
+		});
+
+		$('#select-payer').on('click', function() {
+			var r = $('#search-payer tbody').find('tr.m-row-selected').first();
+			var cid = $(r).find('td:eq(' + _colPayer.indexOf("CusID") + ')').text();
+			var cname = $(r).find('td:eq(' + _colPayer.indexOf("CusName") + ')').text();
+			if (!cid) {
+				e.preventDefault();
+				return false;
+			}
+			$('#c-CusID').val($(r).find('td:eq(' + _colPayer.indexOf("CusID") + ')').text());
+			$('#c-CusID').val(cid + '/' + cname);
+			$('#c-CusID').trigger("change");
+		});
+
+		$('#search-payer').on('dblclick', 'tbody tr td', function(e) {
+			var r = $(this).parent();
+			var cid = $(r).find('td:eq(' + _colPayer.indexOf("CusID") + ')').text();
+			var cname = $(r).find('td:eq(' + _colPayer.indexOf("CusName") + ')').text();
+			if (!cid) {
+				e.preventDefault();
+				return false;
+			}
+			$('#c-CusID').val($(r).find('td:eq(' + _colPayer.indexOf("CusID") + ')').text());
+			$('#c-CusID').val(cid + '/' + cname);
+			$('#payer-modal').modal("toggle");
+			$('#taxcode').trigger("change");
+		});
+		$("#nochooCus").on("click", function() {
+			$("#c-CusID").val("")
+		})
+		// Sự kiện nạp dữ liệu
+		$("#search").on("click", function() {
+			let checkTypeMoney = $("#currencyid").val()
+			let check_input = $("input[type='radio'][name='typeof']:checked").val()
+			console.log("checkoption", check_input)
+			$.ajax({
+				url: "/Report/reportSale/getDataInvoice",
+				dataType: "json",
+				type: "GET",
+				data: {
+					checkOption: check_input,
+					timeIn: $("#getIn").val(),
+					timeOut: $("#getOut").val(),
+					VoyageKey: $("#VoyageKey").val(),
+					CusID: $("#c-CusID").val().search("/") > 0 ? ($("#c-CusID").val()).split("/")[0].trim() : $("#c-CusID").val(),
+					PaymentMethod: $("#payment_type").val(),
+					CurrencyCode: $("#currencyid").val(),
+					createdBy: $("#createdBy").val()
+				},
+				success: function(data) {
+					$("#MainScreemTable").dataTable().fnClearTable();
+					var rows = [];
+					if (data?.result?.length > 0) {
+						toastr['success']("Load dữ liệu thành công");
+						data?.result?.forEach((item, index) => {
+							rows.push({
+								...item
+							});
+						});
+						let totalMoney = data?.result.reduce((init, item) => {
+							return init + item.TotalAmount
+						}, 0)
+						if (checkTypeMoney == "VND") {
+							totalMoney = totalMoney.toLocaleString();
+							$("#cItemVND").html(totalMoney ? totalMoney : 0)
+							$("#cItemUSD").html(0)
+						}
+						if (checkTypeMoney == "USD") {
+							// totalMoney = totalMoney.toLocaleString()
+							$("#cItemUSD").html(totalMoney ? totalMoney.toFixed(2) : 0)
+							$("#cItemVND").html(0)
+						}
+					}
+					if (rows.length > 0) {
+						$("#MainScreemTable").dataTable().fnAddData(rows);
+
+					} else {
+						$("#MainScreemTable").dataTable().fnClearTable();
+						toastr['error']("Không có dữ liệu");
+						$("#cItemVND").html(0)
+						$("#cItemUSD").html(0)
+
+					}
+					// Xử lý data đổ ra chart
+					let monthIn = new Date($("#getIn").val()).getMonth() + 1;
+					let monthOut = new Date($("#getOut").val()).getMonth() + 1
+					let yearIn = new Date($("#getIn").val()).getFullYear()
+					let yearOut = new Date($("#getOut").val()).getFullYear()
+					if (window.myLineChart) {
+						window.myLineChart.destroy();
+					}
+					let checkString = ""
+					if (checkTypeMoney == "VND") {
+						checkString = "Doanh thu (VND)"
+					}
+					if (checkTypeMoney == "USD") {
+						checkString = "Doanh thu (USD)"
+					}
+					// Trường hợp doanh thu trong 1 năm
+					if (yearIn == yearOut) {
+						let dataChart = []
+						// Xử lý doanh thu của từng tháng
+						for (let i = monthIn; i <= monthOut; i++) {
+							let sum = 0
+							data?.result.forEach(item => {
+								if (i == new Date(item.InvoiceDate).getMonth() + 1) {
+									sum = sum + item.TotalAmount
+								}
+
+							})
+							dataChart.push(sum)
+						}
+						for (let i = 1; i <= 12; i++) {
+							if (i < monthIn) {
+								dataChart = [0, ...dataChart]
+							}
+							if (i > monthOut) {
+								dataChart = [...dataChart, 0]
+							}
+						}
+						// Vẽ chart
+						window.myLineChart = new Chart("myChart", {
+							type: "bar",
+							data: {
+								labels: xValues,
+								datasets: [{
+									backgroundColor: ["#DD0000", "#DD0000", "#DD0000", "#DD0000", "#DD0000", "#DD0000", "#DD0000", "#DD0000", "#DD0000", "#DD0000", "#DD0000"],
+									data: dataChart,
+									label: "Tổng"
+								}]
+							},
+							options: {
+								legend: {
+									display: false
+								},
+								title: {
+									display: true,
+
+								},
+								tooltips: {
+									callbacks: {
+										label: function(t, d) {
+											var xLabel = d.datasets[t.datasetIndex].label;
+											var yLabel = t.yLabel >= 1000 ? t.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : t.yLabel;
+											return xLabel + ': ' + yLabel;
+										}
+									}
+								},
+								scales: {
+									yAxes: [{
+										scaleLabel: {
+											display: true,
+											labelString: checkString
+										},
+										ticks: {
+											callback: function(value, index, values) {
+												if (parseInt(value) >= 1000) {
+													return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+												} else {
+													return value;
+												}
+											}
+										}
+
+									}],
+									xAxes: [{
+										scaleLabel: {
+											display: true,
+											labelString: 'Tháng',
+										},
+
+									}],
+
+								}
+
+							}
+
+						});
+
+					}
+					// Trường hợp doanh thu trong các năm khác nhau
+					if (yearIn != yearOut) {
+						let arrX = []
+						let dataChartYear = []
+						// Xử lý doanh thu của các năm
+						for (let i = yearIn; i <= yearOut; i++) {
+							arrX = [...arrX, i]
+							let sum = 0
+							data?.result.forEach(item => {
+								if (i == new Date(item.InvoiceDate).getFullYear()) {
+									sum = sum + item.TotalAmount
+								}
+							})
+							dataChartYear.push(sum)
+						}
+						// Vẽ chart
+						window.myLineChart = new Chart("myChart", {
+							type: "bar",
+							data: {
+								labels: arrX,
+								datasets: [{
+									backgroundColor: ["#DD0000", "#DD0000", "#DD0000", "#DD0000", "#DD0000", "#DD0000", "#DD0000", "#DD0000", "#DD0000", "#DD0000", "#DD0000"],
+									data: dataChartYear,
+									label: "Tổng"
+
+								}]
+							},
+							options: {
+								legend: {
+									display: false,
+								},
+								title: {
+									display: true,
+
+								},
+								tooltips: {
+									callbacks: {
+										label: function(t, d) {
+											var xLabel = d.datasets[t.datasetIndex].label;
+											var yLabel = t.yLabel >= 1000 ? t.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : t.yLabel;
+											return xLabel + ': ' + yLabel;
+										}
+									}
+								},
+								scales: {
+									yAxes: [{
+										scaleLabel: {
+											display: true,
+											labelString: checkString,
+
+										},
+										ticks: {
+											callback: function(value, index, values) {
+												if (parseInt(value) >= 1000) {
+													return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+												} else {
+													return value;
+												}
+											}
+										}
+
+
+									}],
+									xAxes: [{
+										scaleLabel: {
+											display: true,
+											labelString: 'Năm'
+										}
+									}],
+
+								}
+							}
+						});
+					}
+				},
+				error: function(error) {
+					console.log(error);
+				},
+			});
+		})
+		// Sự kiện xuất Excel 
+		$("#Export").on("click", function() {
+			let obj = {
+				checkOption: $("input[type='radio'][name='typeof']:checked").val(),
+				timeIn: $("#getIn").val(),
+				timeOut: $("#getOut").val(),
+				VoyageKey: $("#VoyageKey").val(),
+				CusID: $("#c-CusID").val().search("/") > 0 ? ($("#c-CusID").val()).split("/")[0].trim() : $("#c-CusID").val(),
+				PaymentMethod: $("#payment_type").val(),
+				CurrencyCode: $("#currencyid").val(),
+				createdBy: $("#createdBy").val()
+			}
+			window.open(`/Report/reportSale/exportExcel?checkOption=${obj.checkOption}&timeIn=${obj.timeIn}&timeOut=${obj.timeOut}&VoyageKey=${obj.VoyageKey}&CusID=${obj.CusID}&PaymentMethod=${obj.PaymentMethod}&CurrencyCode=${obj.CurrencyCode}&createdBy=${obj.createdBy}`)
+
+		})
+	})
+</script>

@@ -1,9 +1,11 @@
 #rePrinting {
   overflow: hidden;
 }
+
 .m-row-selected {
   background: #00bfff !important;
 }
+
 #selectLangContent {
   width: 100%;
   display: flex;
@@ -11,6 +13,7 @@
   justify-content: space-between;
   flex-wrap: wrap;
 }
+
 #selectLangContent .m-lang-item {
   width: 33%;
   display: flex;
@@ -21,17 +24,21 @@
   padding: 15px 0px;
   border: 3px ridge #000;
 }
+
 #selectLangContent .m-lang-item img {
   width: 50%;
 }
+
 #rePrintHeader {
   height: 50px;
 }
+
 #rePrintHeader label {
   font-size: 1.4em;
   font-weight: bold;
   margin-right: 0.5em;
 }
+
 #rePrintHeader input {
   width: 30%;
   height: 100%;
@@ -39,15 +46,18 @@
   padding-left: 0.3em;
   margin-right: 1em;
 }
+
 #rePrintTable {
   table-layout: fixed;
   margin: auto;
 }
+
 #rePrintTable thead {
   display: table;
   width: 100%;
   width: calc(100% - 18px);
 }
+
 #rePrintTable tbody {
   height: calc(60vh - 50px);
   overflow: auto;
@@ -55,37 +65,46 @@
   display: block;
   width: 100%;
 }
+
+#rePrintTable thead tr,
 #rePrintTable tbody tr {
   display: table;
   width: 100%;
   table-layout: fixed;
 }
+
 .form-group {
   padding-right: 4px !important;
   padding-left: 4px !important;
   margin-bottom: 2px !important;
 }
+
 .form-group label {
   margin-bottom: 2px !important;
   font-size: 0.9vw;
 }
+
 .form-group .form-control.rounded {
   padding-top: 2px !important;
   padding-bottom: 2px !important;
   height: 3.2vh !important;
 }
+
 .panel-heading {
   border-top-left-radius: 0.8vh;
   border-top-right-radius: 0.8vh;
   padding: 0px 5px !important;
 }
+
 .panel-title {
   padding: 0px !important;
 }
+
 .content-wrapper {
   overflow: hidden !important;
   z-index: -3;
 }
+
 #gate-maincontent {
   margin-top: 10px;
   display: inline-block;
@@ -93,6 +112,7 @@
   float: right;
   margin-right: 10px;
 }
+
 #gate-sidebar {
   position: relative;
   margin-top: -35px;
@@ -101,6 +121,7 @@
   padding-top: 45px;
   z-index: 1;
 }
+
 #gate-sidebar:before {
   content: "";
   position: absolute;
@@ -112,28 +133,34 @@
   background: #0b4660;
   box-shadow: 2px 2px 8px;
 }
+
 .m-sidebar-btn {
   border-bottom: 2px groove;
   padding: 10px 0;
   text-align: center;
   cursor: pointer;
 }
+
 .m-sidebar-btn:nth-child(1) {
   border-top: 2px groove;
   border-bottom: 2px groove;
 }
+
 .m-sidebar-btn span {
   font-size: 1em;
   display: block;
   color: #fff;
   font-weight: bold;
 }
+
 .m-sidebar-btn img {
   width: 50px;
 }
+
 .m-header {
   height: 45px;
 }
+
 .m-header .m-titleinfo-lg {
   z-index: 3;
   text-align: center;
@@ -142,6 +169,7 @@
   width: 20%;
   position: relative;
 }
+
 .m-header .m-titleinfo-lg:before {
   content: "";
   left: -20%;
@@ -156,13 +184,16 @@
   transform: skewX(-30deg);
   box-shadow: 3px 3px 10px;
 }
+
 .m-header .m-titleinfo-lg b {
   color: #fff;
   font-size: 2.5rem;
 }
+
 .m-header .m-titleinfo-lg #mobile-menu {
   display: none;
 }
+
 .m-header .m-titleinfo-content {
   width: 100%;
   height: 40px;
@@ -171,6 +202,7 @@
   z-index: 2;
   margin-top: -45px;
 }
+
 .m-header .m-titleinfo-content:before {
   content: "";
   width: 100%;
@@ -181,9 +213,11 @@
   left: 0;
   z-index: -1;
 }
+
 .m-header .m-titleinfo-content * {
   float: right;
 }
+
 /* #orderInfo-panel {
   height: calc(100vh - 65px);
 }
@@ -196,18 +230,23 @@
 #contList-panel {
   height: 81vh;
 }
+
 #checkInfo-panel {
   height: 19.5vh;
 }
+
 #printInModal {
   text-align: center;
 }
+
 #printInModal div span {
   font-size: 1.8em;
 }
+
 #printOutModal {
   display: none;
 }
+
 #printOutModal #eirBackground {
   width: 100vw;
   height: 50vh;
@@ -216,6 +255,7 @@
   background-size: contain;
   background-position: top center;
 }
+
 #printInModal {
   width: 300px;
   height: 500px;
@@ -225,4 +265,5 @@
   top: 30%;
   left: 30%;
 }
+
 /*# sourceMappingURL=gate-custom.css.map */

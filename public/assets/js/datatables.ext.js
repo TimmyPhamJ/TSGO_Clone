@@ -17,6 +17,7 @@ var _selectionSoure;
 	});
 	$.pasteCell = function (callback) {
 		$.fn.dataTable.ext.errMode = 'none';
+		//console.log(123);
 		var allowPaste = true;
 		var foundContent = false;
 		if (typeof (callback) == "function") {
@@ -40,7 +41,8 @@ var _selectionSoure;
 		}
 		// Handle paste event
 		function doPaste(e) {
-			if (allowPaste == true && $(e.target).is("td")) {     // conditionally set allowPaste to false in situations where you want to do regular paste instead
+			console.log(e.target, $(e.target).parent().is("td"));
+			if (allowPaste == true && ($(e.target).is("td") || $(e.target).parent().is("td"))) {     // conditionally set allowPaste to false in situations where you want to do regular paste instead
 				// Check for event.clipboardData support
 				if (e.clipboardData.items) { // Chrome
 					// Get the items from the clipboard
@@ -547,7 +549,7 @@ $.fn.extend({
 
 							rconf.render = function (data, type, row, conf) {
 								var bdt = null;
-								(conf.settings.aoColumns[conf.col].list(row)||[]).map((item, ii) => {
+								(conf.settings.aoColumns[conf.col].list(row) || []).map((item, ii) => {
 									if (data == item.label) {
 										if (item.label != item.value)
 											tbl.DataTable().cell(conf.row, conf.col).data(item.value)
@@ -569,7 +571,7 @@ $.fn.extend({
 					if ((opt.columnDefs[ii].className + '').indexOf('date') != -1) {
 						opt.columnDefs[ii].render = function (data, type, row, conf) {
 							if (data) {
-								return rder(coverDate(data).format('YYYY-MM-DD HH:mm:ss'), type, row, conf);
+								return rder(moment(data).format('YYYY-MM-DD HH:mm:ss'), type, row, conf);
 							}
 							else {
 								return '';

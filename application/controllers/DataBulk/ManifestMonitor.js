@@ -31,10 +31,21 @@ router.post('/setStatus', auth, function (req, res, next) {
         res.status(200).json({data});
     }).catch((error)=>{
         console.log(error);
-        res.status(200).json({error});
+        res.status(200).json({deny:error});
     });
     
 });
+
+router.post('/editTally', auth, function (req, res, next) {
+    BulkModel.editTally(req).then((data)=>{
+        res.status(200).json({data});
+    }).catch((error)=>{
+        console.log(error);
+        res.status(200).json({deny:error});
+    });
+    
+});
+
 router.post('/loadTallyJob', auth, function (req, res, next) {
     BulkModel.loadTallyJob(req).then((data)=>{
         res.status(200).json({data});

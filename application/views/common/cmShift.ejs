@@ -1,0 +1,329 @@
+<script>
+  document.title = "Ca làm việc";
+</script>
+
+<div class="row">
+  <div class="col-xl-12">
+    <div class="ibox collapsible-box">
+      <div class="ibox-head">
+        <div class="ibox-title">Ca làm việc</div>
+        <div class="button-bar-group">
+          <button
+            id="delete"
+            class="btn btn-outline-danger btn-sm mr-1"
+            data-loading-text="<i class='la la-spinner spinner'></i>Xóa dữ liệu"
+            title="Xóa những dòng đang chọn">
+            <span class="btn-icon"><i class="fa fa-trash"></i>Xóa dòng</span>
+          </button>
+          <button
+            id="addrow"
+            class="btn btn-outline-success btn-sm mr-1"
+            title="Thêm dòng mới">
+            <span class="btn-icon"><i class="fa fa-plus"></i>Thêm dòng</span>
+          </button>
+          <button
+            id="save"
+            class="btn btn-outline-primary btn-sm mr-1"
+            data-loading-text="<i class='la la-spinner spinner'></i>Lưu dữ liệu"
+            title="Lưu dữ liệu">
+            <span class="btn-icon"><i class="fa fa-save"></i>Lưu</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="row ibox-body">
+        <div class="col-md-12 col-sm-12 col-xs-12 table-responsive">
+          <div id="tablecontent">
+            <table
+              id="contenttable"
+              class="table table-striped display nowrap"
+              cellspacing="0"
+              style="width: 99.8%"></table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function () {
+        //  var WorkerGroupTypeList = <%- JSON.stringify(locals.WorkerGroupTypeList || []) %>;
+        var ShiftList = <%- JSON.stringify(locals.ShiftList || []) %>;
+        // console.log("list",ShiftList);
+  		// var TimeList = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
+  		// console.log(TimeList);
+  	var _columns = [
+  			{ width: "80px", data: "STT", name: "STT", title: "STT", className: "text-center  editor-cancel", targets: 0 },
+  			// { data: "WorkerGroupType", name: "WorkerGroupType", title: "Loại tổ đội", className: "text-center autocomplete",list: WorkerGroupTypeList.map((itm)=>{return {value:itm.WorkerGroupType, label:itm.WorkerGroupTypeName}}), targets: 1 },
+            { data: "ShiftID", name: "ShiftID", title: "Mã ca làm việc", className: "text-center", targets: 1 },
+  			// { data: "FromTime", name: "FromTime", title: "Bắt đầu từ", className: "text-center autocomplete",list: TimeList.map(item => {
+  			// return {
+  			// 	value: item,
+  			// 	label: item
+  			// }}), targets:2 },
+  			// { data: "ToTime", name: "ToTime", title: "Kết thúc vào", className: "text-center autocomplete",list: TimeList.map(item => {
+  			// return {
+  			// 	value: item,
+  			// 	label: item
+  			// }}), targets:3 },
+  			{ data: "FromTime", name: "FromTime", title: "Bắt đầu từ", className: "text-center ", targets:2 },
+  			{ data: "ToTime", name: "ToTime", title: "Kết thúc vào", className: "text-center", targets:3 },
+            { data: "Remark", name: "Remark", title: "Ghi chú ca", className: "text-center", targets:4 },
+  			{ data: "rowguid", name: "rowguid", title: "rowguid", visible: false, targets: 6 },
+  		],
+  		tbl = $('#contenttable'),
+  		dataList = <%- JSON.stringify(locals.dataList || []) %>;
+
+  		// console.log("datalist",dataList);
+
+             _columns=_columns.map((itm,ii)=>{return {...itm,targets:ii}});
+
+  	var dataTbl = tbl.newDataTable({
+  		scrollY: '55vh',
+  		columnDefs: _columns,
+  		data: dataList.map((itm, ii) => { return { ...itm, STT: ii + 1 } }),
+  		order: [[0, 'asc']],
+  		paging: false,
+  		keys: true,
+  		autoFill: {
+  			focus: 'focus',
+  		},
+  		select: true,
+  		rowReorder: false
+  	});
+
+  	tbl.editableTableWidget();
+
+  	$('#addrow').on('click', function () {
+  		tbl.addRows();
+  	});
+
+  	$('#delete').on('click', function () {
+  		if (tbl.getSelectedRows().length == 0) {
+  			$('.toast').remove();
+  			toastr["info"]("Vui lòng chọn các dòng dữ liệu để xóa!");
+  		} else {
+  			tbl.confirmDelete(function (selectedData) {
+  				postDel(selectedData);
+  			});
+  		}
+  	});
+
+  	$('#save').on('click', function () {
+  		if (tbl.DataTable().rows('.addnew, .editing').data().toArray().length == 0) {
+  			$('.toast').remove();
+  			toastr["info"]("Không có dữ liệu thay đổi!");
+  		} else {
+  			var newData = tbl.DataTable().rows('.addnew, .editing').data().toArray();
+
+  			for (i = 0; i < newData.length; i++) {
+  				if (!newData[i]['rowguid']){
+  					for (j = 0; j < dataList.length; j++) {
+  						if (newData[i]['ShiftID'] == dataList[j]['ShiftID']) {
+  							toastr['error']("Đã tồn tại mã: " + newData[i]['ShiftID']);
+  							return;
+  						}
+  						if(newData[i]['FromTime']===dataList[j]['FromTime']){
+  							toastr['error']("Đã tồn tại: " + newData[i]['FromTime']);
+  							return;
+  						}
+  						if ((newData[i]['FromTime'] < dataList[j]['ToTime'])) {
+  							toastr['error']("Thời gian không phù hợp");
+  							return;
+  						}
+  					}
+  					// var fromTime = parseInt(newData[i]['FromTime']);
+  					// var toTime = parseInt(newData[i]['ToTime']);
+  					// if (fromTime < 0 || fromTime > 23 || toTime < 0 || toTime > 23) {
+  					// 	toastr.error("Thời gian ca phải nằm trong khoảng từ 0 đến 23");
+  					// 	return;
+  					// }
+
+  					// var fromTime = parseFloat(newData[i]['FromTime']);
+  					// var toTime = parseFloat(newData[i]['ToTime']);
+
+  					// //Tách giờ và phút
+  					// var fromHour = Math.floor(fromTime);
+  					// var formMinute = Math.round((fromTime - fromHour)*60);
+
+  					// var toHour = Math.floor(toTime);
+  					// var toMinute = Math.round((toTime - toHour)*60);
+
+  					// // Xử lý trường hợp phút vượt quá 60
+  					//   if (fromMinute >= 60) {
+  					//     fromHour += 1;
+  					//     fromMinute = 0;
+  					//   }
+
+  					//   if (toMinute >= 60) {
+  					//     toHour += 1;
+  					//     toMinute = 0;
+  					//   }
+
+  					// //Kiểm tra giờ và phút
+  					// if(fromHour < 0 || fromHour > 23 || fromMinute < 0 || fromMinute >= 60 || toHour < 0 || toHour > 23 || toMinute < 0 || toMinute >= 60){
+  					// 	toastr.error("Thời gian ca phải nằm trong khoảng từ 0 đến 23");
+  					// 	return;
+  					// }
+
+  					// Tách giờ và phút từ chuỗi hh:mm
+  					var fromTimeParts = newData[i]['FromTime'].split(':');
+  					var toTimeParts = newData[i]['ToTime'].split(':');
+
+  					// Kiểm tra định dạng của FromTime
+  					if (!/^\d{2}:\d{2}$/.test(newData[i]['FromTime'])) {
+  						toastr.error("Định dạng Bắt đầu vào không hợp lệ. Vui lòng nhập theo định dạng hh:mm");
+  						return;
+  					}
+
+  					// Kiểm tra định dạng của ToTime
+  					if (!/^\d{2}:\d{2}$/.test(newData[i]['ToTime'])) {
+  						toastr.error("Định dạng Kết thúc vào không hợp lệ. Vui lòng nhập theo định dạng hh:mm");
+  						return;
+  					}
+
+  					var fromHour = parseInt(fromTimeParts[0],10);
+  					var fromMinute = parseInt(fromTimeParts[1],10);
+
+  					var toHour = parseInt(toTimeParts[0],10);
+  			  		var toMinute = parseInt(toTimeParts[1],10);
+
+  					// Kiểm tra giờ và phút có hợp lệ hay không
+  				 	if (isNaN(fromHour) || fromHour < 0 || fromHour > 23 || isNaN(fromMinute) || fromMinute < 0 || fromMinute > 59 || isNaN(toHour) || toHour < 0 || toHour > 23 || isNaN(toMinute) || toMinute < 0 || toMinute > 59) {
+    					toastr.error("Thời gian không hợp lệ");
+    					return;
+  					}
+
+  					//Xử lý trường hợp phút vượt quá 59
+  					if(fromMinute >= 60){
+  						fromHour += Math.floor(fromMinute / 60);
+    					fromMinute = fromMinute % 60;
+  					}
+
+  			  		if (toMinute >= 60) {
+    						toHour += Math.floor(toMinute / 60);
+    						toMinute = toMinute % 60;
+  					}
+
+  					// Kiểm tra giờ và phút
+  			  		if (fromHour < 0 || fromHour > 23 || fromMinute < 0 || fromMinute > 59 || toHour < 0 || toHour > 23 || toMinute < 0 || toMinute > 59) {
+    					toastr.error("Thời gian không hợp lệ");
+    					return;
+  					}
+
+  			  		// var formattedFromTime = ('0' + fromHour).slice(-2) + '.' + ('0' + fromMinute).slice(-2);
+  					// var formattedToTime = ('0' + toHour).slice(-2) + '.' + ('0' + toMinute).slice(-2);
+  				}
+  			}
+
+  			$.confirm({
+  				title: 'Thông báo!',
+  				type: 'orange',
+  				icon: 'fa fa-warning',
+  				content: 'Tất cả các thay đổi sẽ được lưu lại!\nTiếp tục?',
+  				buttons: {
+  					ok: {
+  						text: 'Xác nhận lưu',
+  						btnClass: 'btn-warning',
+  						keys: ['Enter'],
+  						action: function () {
+  							saveData();
+  						}
+  					},
+  					cancel: {
+  						text: 'Hủy bỏ',
+  						btnClass: 'btn-default',
+  						keys: ['ESC']
+  					}
+  				}
+  			});
+  		}
+  	});
+
+
+  	//save functions
+  	function saveData() {
+  		var newData = tbl.DataTable().rows('.addnew, .editing').data().toArray();
+
+  		if (newData.length > 0) {
+  			var fnew = {
+  				'data': newData
+  			};
+  			postSave(fnew);
+  		}
+  	}
+
+  	function postSave(formData) {
+  		var saveBtn = $('#save');
+  		saveBtn.button('loading');
+  		$('.ibox.collapsible-box').blockUI();
+
+  		$.ajax({
+  			url: "/Common/cmShift/save",
+  			dataType: 'json',
+  			data: formData,
+  			type: 'POST',
+  			success: function (datas) {
+  				saveBtn.button('reset');
+  				$('.ibox.collapsible-box').unblock();
+  				if (!datas.data) {
+  					toastr["error"]('Cập nhật dữ liệu thất bại !!');
+  					return;
+  				}
+  				if (datas.data) {
+  					toastr["success"]('Cập nhật dữ liệu thành công !!');
+  					tbl.DataTable().rows('.addnew').nodes().to$().removeClass("addnew");
+  					tbl.DataTable().rows('.editing').nodes().to$().removeClass("editing");
+  					tbl.updateSTT(0);
+  				}
+
+  			},
+  			error: function (err) {
+  				toastr["error"]("Error!");
+  				saveBtn.button('reset');
+  				$('.ibox.collapsible-box').unblock();
+  				console.log(err);
+  			}
+  		});
+  	}
+
+  	function postDel(rows) {
+  		$('.ibox.collapsible-box').blockUI();
+  		var delBtn = $('#delete');
+  		delBtn.button('loading');
+  		var delShift = rows;
+  		var formdata = {
+  			'data': delShift,
+  		};
+  		$.ajax({
+  			url: "/Common/cmShift/delete",
+  			dataType: 'json',
+  			data: formdata,
+  			type: 'POST',
+  			success: function (output) {
+  				delBtn.button('reset');
+  				$('.ibox.collapsible-box').unblock();
+  				var data = output.data;
+  				if (output.error && output.error.length > 0) {
+  					for (var i = 0; i < output.error.length; i++) {
+  						toastr["error"](output.error[i]);
+  					}
+  				}
+
+  				if (data) {
+  					tbl.DataTable().rows('.selected').remove().draw(false);
+  					tbl.updateSTT(0);
+  				}
+
+  			},
+  			error: function (err) {
+  				delBtn.button('reset');
+  				$('.ibox.collapsible-box').unblock();
+  				toastr["error"]("Error!");
+  				console.log(err);
+  			}
+  		});
+  	}
+  });
+</script>

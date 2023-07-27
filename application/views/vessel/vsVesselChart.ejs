@@ -1,749 +1,735 @@
 <script>
-  document.title = "Giám sát kế hoạch tàu";
+	document.title = "Giám sát cầu bến";
 </script>
-<script src="/path/to/jquery.min.js"></script>
-<script src="/path/to/jquery.fn.gantt.js"></script>
-<link
-  href="/assets/vendors/bootstrap-select/dist/css/bootstrap-select.min.css"
-  rel="stylesheet"
-/>
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-  integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
-  crossorigin="anonymous"
-  referrerpolicy="no-referrer"
-/>
+<link href="/assets/vendors/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
+<link href="/assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+<link href="/assets/vendors/line-awesome/css/line-awesome.min.css" rel="stylesheet" />
+<link href="/assets/vendors/themify-icons/css/themify-icons.css" rel="stylesheet" />
+<!-- <link href="/public/assets/fonts/fontawesome-free-6.4.0-web/css/all.css" rel="stylesheet" type='text/css' />
+<link href="/public/assets/fonts/fontawesome-free-6.4.0-web/css/fontawesome.css" rel="stylesheet" type='text/css' /> -->
+
 <style>
-  @media (max-width: 767px) {
-    .f-text-right {
-      text-align: right;
-    }
-  }
-  .no-pointer {
-    pointer-events: none;
-  }
-  .ibox .ibox-footer {
-    padding: 10px 25px 5px 25px;
-  }
-  .modal_input {
-    border-bottom: dotted 1px;
-    width: 70%;
-  }
-  .cash_input {
-    border-bottom: dotted 1px;
-    width: 60%;
-  }
-  label {
-    padding-right: 0px !important;
-  }
+	@media (max-width: 767px) {
+		.f-text-right {
+			text-align: right;
+		}
+	}
+
+	.no-pointer {
+		pointer-events: none;
+	}
+
+	.ibox .ibox-footer {
+		padding: 10px 25px 5px 25px;
+	}
+
+	.modal_input {
+		border-bottom: dotted 1px;
+		width: 70%;
+	}
+
+	.cash_input {
+		border-bottom: dotted 1px;
+		width: 60%;
+	}
+
+	label {
+		padding-right: 0px !important;
+	}
 </style>
 <style>
-  .header-content {
-    display: flex;
-    gap: 1px;
-    font-size: 20px;
-    margin-bottom: 20px;
-    /* font-weight: 500; */
-  }
-  .header-content-one {
-    margin-right: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .contaniner {
-    margin-top: 50px;
+	.header-content {
+		display: flex;
+		gap: 1px;
+		font-size: 20px;
+		margin-bottom: 20px;
+	}
 
-    overflow: auto;
-    display: flex;
-  }
-  table,
-  th,
-  td {
-    border: 1px solid #ccc;
-    min-width: 30px;
-  }
-  th {
-    width: 10px !important;
-    height: 10px !important;
-  }
-  td {
-    width: 30px !important;
-    height: 30px !important;
-  }
-  .description {
-    margin-right: 20px;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    font-weight: 500;
-    font-size: 14px;
-  }
-  .checktime {
-    display: flex;
-    justify-content: space-between;
-  }
-  .header-date {
-    display: flex;
-    border-top: 1px solid #ccc;
-    margin-bottom: 10px;
-    padding-top: 15px;
-    width: fit-content;
-    border-left: 1px solid #ccc;
-  }
-  .header-date_item {
-    min-width: 360px;
+	.header-content-one {
+		margin-right: 100px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-left: 10px;
+	}
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    font-weight: 500;
-    opacity: 0.8;
-  }
-  .index_time {
-    display: flex;
-  }
-  .index_hour {
-    display: flex;
-    min-width: 360px;
-    justify-content: space-between;
-  }
-  .index_time-hour {
-    width: 30px;
-    position: relative;
-    font-size: 12px;
-  }
-  span.index_time-hour.index_time-hour-22::after {
-    display: block;
-    content: "";
-    position: absolute;
-    top: -60px;
-    left: 30px;
-    width: 1px;
-    height: 82px;
-    bottom: 19px;
-    background-color: #ccc;
-  }
-  .main_container {
-    padding: 10px;
-    box-shadow: 5px 10px 8px #888888;
-    background-color: #fff;
-  }
-  .option {
-    display: flex;
-  }
-  i.fa-regular.fa-calendar {
-    margin-right: 18px;
-    font-size: 30px;
-  }
-  .line {
-    width: 20px;
-    height: 2px;
-    background-color: #08c;
-  }
-  .description_date {
-    font-size: 14px;
-  }
-  .berth_container {
-    display: flex;
-    flex-direction: column;
-    margin-top: 65px;
-  }
-  .berth_item {
-    width: 150px;
-    /* height: 110px;  */
+	.contaniner {
+		margin-top: 50px;
+		overflow: auto;
+		display: flex;
+	}
 
-    border-top: 1px solid #ccc;
-    border-left: 1px solid #ccc;
-    display: flex;
-    justify-content: space-around;
-  }
-  .berth_item-index {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: space-around;
-  }
-  .name_berth {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .index-meter {
-    font-size: 12px;
-  }
-  .wrapp_table {
-    position: relative;
-  }
-  .check_opacity {
-    display: block;
-  }
-  .header_content-title {
-    font-size: 16px;
-    font-weight: 500;
-    font-family: apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-      "Helvetica Neue", Arial, sans-serif;
-    padding-top: 6px;
-    padding-left: 5px;
-    margin-bottom: 25px;
-  }
-  .note {
-    width: 30px;
-    height: 20px;
-  }
-  .note_check {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    align-items: center;
-  }
-  .note_check-yellow {
-    background-color: #ffc107;
-  }
-  .note_check-blue {
-    background-color: #5dc6ed;
-  }
-  .note_check-green {
-    background-color: #3af3a9;
-  }
-  /* .text_infomation{
+	table,
+	th,
+	td {
+		border: 1px solid #ccc;
+		min-width: 30px;
+	}
+
+	th {
+		width: 10px !important;
+		height: 10px !important;
+	}
+
+	td {
+		width: 30px !important;
+		height: 30px !important;
+	}
+
+	.description {
+		margin-right: 40px;
+		font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+		font-weight: 500;
+		font-size: 14px;
+	}
+
+	.checktime {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	.header-date {
+		display: flex;
+		/* border-top: 1px solid #ccc; */
+		margin-bottom: 10px;
+		width: 100%;
+		border-left: 1px solid #ccc;
+	}
+
+	.header-date_item {
+		min-width: 360px;
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 14px;
+		font-weight: 500;
+		margin-top: 15px;
+	}
+
+	.index_time {
+		display: flex;
+	}
+
+	.index_hour {
+		display: flex;
+		min-width: 360px;
+		justify-content: space-between;
+	}
+
+	.index_time-hour {
+		width: 30px;
+		position: relative;
+		font-size: 12px;
+	}
+
+	span.index_time-hour.index_time-hour-22::after {
+		display: block;
+		content: "";
+		position: absolute;
+		top: -60px;
+		left: 30px;
+		width: 1px;
+		height: 82px;
+		bottom: 19px;
+		background-color: #ccc;
+	}
+
+	.main_container {
+		padding: 10px;
+		box-shadow: 5px 10px 8px #ccc;
+		background-color: #fff;
+	}
+
+	.option {
+		display: flex;
+	}
+
+	i.fa-regular.fa-calendar {
+		margin-right: 18px;
+		font-size: 30px;
+	}
+
+	.line {
+		width: 20px;
+		height: 2px;
+		background-color: #08c;
+	}
+
+	.description_date {
+		font-size: 14px;
+	}
+
+	.berth_container {
+		display: flex;
+		flex-direction: column;
+		margin-top: 65px;
+	}
+
+	.berth_item {
+		width: 150px;
+		border-top: 1px solid #ccc;
+		display: flex;
+		justify-content: space-around;
+	}
+
+	.berth_item-index {
+		display: flex;
+		align-items: center;
+		flex-direction: column;
+		justify-content: space-around;
+		margin-right: -15px;
+		margin-top: 30px;
+	}
+
+	.name_berth {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.index-meter {
+		font-size: 11px;
+	}
+
+	.wrapp_table {
+		position: relative;
+	}
+
+	.check_opacity {
+		display: block;
+	}
+
+	.header_content-title {
+		font-size: 16px;
+		font-weight: 500;
+		font-family: apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+			"Helvetica Neue", Arial, sans-serif;
+		padding-top: 6px;
+		padding-left: 5px;
+		margin-bottom: 25px;
+	}
+
+	.note {
+		width: 30px;
+		height: 20px;
+	}
+
+	.note_check {
+		display: flex;
+		gap: 10px;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.note_check-yellow {
+		background-color: #ffc107;
+	}
+
+	.note_check-blue {
+		background-color: #5dc6ed;
+	}
+
+	.note_check-green {
+		background-color: #3af3a9;
+	}
+
+	/* .text_infomation{
     color:white
   } */
 </style>
 <div>
-  <div class="main_container">
-    <!-- Header -->
-    <div class="header_content-title">GIÁM SÁT KẾ HOẠCH TÀU</div>
-    <div class="header-content">
-      <div class="header-content-one">
-        <i class="fa-regular fa-calendar"></i>
-        <div>
-          <span class="description">Ngày tàu</span>
-        </div>
-      </div>
+	<div class="main_container">
+		<!-- Header -->
+		<div class="header_content-title">GIÁM SÁT CẦU BẾN</div>
+		<div class="header-content">
+			<div class="header-content-one">
+				<i class="fa fa-regular fa-calendar"></i>
+				<div style="margin-top: -3px;" class="date_vessel">
+					<span class="description">Ngày tàu</span>
+				</div>
+			</div>
 
-      <div>
-        <span class="description">Tình trạng tàu:</span>
-      </div>
-      <div class="option">
-        <div class="note_check">
-          <!-- <input type="checkbox" /> -->
-          <div class="note note_check-yellow"></div>
-          <span class="description">Tàu kế hoạch</span>
-        </div>
-        <div class="note_check">
-          <div class="note note_check-blue"></div>
-          <span class="description">Tàu cập cảng</span>
-        </div>
-        <div class="note_check">
-          <div class="note note_check-green"></div>
-          <span class="description">Tàu rời cảng</span>
-        </div>
-      </div>
-    </div>
+			<div style="margin-top: -2px;" class="check_des">
+				<span class="description">Tình trạng tàu:</span>
+			</div>
+			<div class="option">
+				<div class="note_check">
+					<!-- <input type="checkbox" /> -->
+					<div class="note note_check-yellow"></div>
+					<span class="description">Tàu kế hoạch</span>
+				</div>
+				<div class="note_check">
+					<div class="note note_check-blue"></div>
+					<span class="description">Tàu cập cảng</span>
+				</div>
+				<div class="note_check">
+					<div class="note note_check-green"></div>
+					<span class="description">Tàu rời cảng</span>
+				</div>
+			</div>
+		</div>
 
-    <div class="checktime">
-      <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
-        <div class="row form-group">
-          <label class="col-sm-5 col-form-label text-left"
-            >Thời gian bắt đầu</label
-          >
-          <div class="col-lg-7 col-sm-7 input-group input-group-sm">
-            <div class="input-group">
-              <input
-                class="form-control form-control-sm input-required"
-                id="TIMEIN"
-                type="text"
-                autocomplete="off"
-                placeholder="Thời gian bắt đầu"
-                value=""
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+		<div class="checktime">
+			<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+				<div class="row form-group">
+					<label class="col-sm-4 col-form-label text-left">Thời gian bắt đầu</label>
+					<div class="col-lg-6 col-sm-7 input-group input-group-sm">
+						<div class="input-group">
+							<input class="form-control form-control-sm input-required" id="TIMEIN" type="text" autocomplete="off" placeholder="Thời gian bắt đầu" value="" />
+						</div>
+					</div>
+				</div>
+			</div>
 
-      <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
-        <div class="row form-group">
-          <label class="col-sm-5 col-form-label text-right"
-            >Thời gian kết thúc</label
-          >
-          <div class="col-lg-7 col-sm-7 input-group input-group-sm">
-            <div class="input-group">
-              <input
-                class="form-control form-control-sm input-required"
-                id="TIMEOUT"
-                autocomplete="off"
-                type="text"
-                placeholder="Thời gian kết thúc"
-                value=""
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+			<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+				<div class="row form-group">
+					<label class="col-sm-4 col-form-label text-left">Thời gian kết thúc</label>
+					<div class="col-lg-6 col-sm-7 input-group input-group-sm">
+						<div class="input-group">
+							<input class="form-control form-control-sm input-required" id="TIMEOUT" autocomplete="off" type="text" placeholder="Thời gian kết thúc" value="" />
+						</div>
+					</div>
+				</div>
+			</div>
 
-      <div class="button-bar-group mr-3">
-        <button
-          id="search"
-          class="btn btn-outline-warning btn-sm btn-loading mr-1"
-          data-loading-text="<i class='la la-spinner spinner'></i>Nạp dữ liệu"
-          title="Nạp dữ liệu"
-        >
-          <span class="btn-icon"><i class="ti-search"></i>Nạp dữ liệu</span>
-        </button>
-      </div>
-    </div>
-    <!-- Container -->
-    <div class="contaniner">
-      <!-- Bearth Container -->
-      <div class="berth_container"></div>
+			<div class="button-bar-group mr-3">
+				<button id="search" class="btn btn-outline-warning btn-sm btn-loading mr-1" data-loading-text="<i class='la la-spinner spinner'></i>Nạp dữ liệu" title="Nạp dữ liệu">
+					<span class="btn-icon"><i class="ti-search"></i>Nạp dữ liệu</span>
+				</button>
+			</div>
+		</div>
+		<!-- Container -->
+		<div class="contaniner">
+			<!-- Bearth Container -->
+			<div class="berth_container"></div>
 
-      <!-- 
+			<!-- 
       Table Container -->
-      <div class="table_container">
-        <div class="header-date"></div>
-        <div class="index_time"></div>
-        <div class="wrapp_table">
-          <table id="tbl-vessel-timeline">
-            <tbody></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Modal -->
-  <div
-    class="modal fade"
-    id="v_info"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="groups-modalLabel-1"
-    aria-hidden="true"
-    data-whatever="id"
-    style="padding: auto; padding-top: 4%"
-  >
-    <div class="modal-dialog" role="document">
-      <div class="modal-content" style="border-radius: 4px">
-        <div class="modal-header">
-          <h5 class="modal-title text-primary" id="groups-modalLabel-1">
-            Chi tiết tàu
-          </h5>
-        </div>
-        <div class="modal-body" style="padding: 0px 15px 15px 15px">
-          <div class="row ibox-footer border-top-0 mt-3" id="v_info_ctn"></div>
-        </div>
-        <div class="modal-footer">
-          <div style="margin: 0 auto !important">
-            <button
-              class="btn btn-sm btn-rounded btn-gradient-peach btn-labeled btn-labeled-left btn-icon"
-              id="FinishBulkJob"
-            >
-              <span class="btn-label"><i class="ti-close"></i></span>Đóng
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+			<div class="table_container">
+				<div class="header-date"></div>
+				<div class="index_time"></div>
+				<div class="wrapp_table">
+					<table id="tbl-vessel-timeline">
+						<tbody></tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal -->
+	<div class="modal fade" id="v_info" tabindex="-1" role="dialog" aria-labelledby="groups-modalLabel-1" aria-hidden="true" data-whatever="id" style="padding: auto; padding-top: 4%">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content" style="border-radius: 4px">
+				<div class="modal-header">
+					<h5 class="modal-title text-primary" id="groups-modalLabel-1">
+						Chi tiết tàu
+					</h5>
+				</div>
+				<div class="modal-body" style="padding: 0px 15px 15px 15px">
+					<div class="row ibox-footer border-top-0 mt-3" id="v_info_ctn"></div>
+				</div>
+				<div class="modal-footer">
+					<div style="margin: 0 auto !important">
+						<button class="btn btn-sm btn-rounded btn-gradient-peach btn-labeled btn-labeled-left btn-icon" id="FinishBulkJob">
+							<span class="btn-label"><i class="ti-close"></i></span>Đóng
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 <!-- Drop down list -->
-
 <script type="text/javascript">
-  $(document).ready(function () {
-    // Hàm list date giữa hai khoảng
+	$(document).ready(function() {
+		// Hàm list date giữa hai khoảng
+		function getDates(startDate, endDate) {
+			const dates = [];
+			let currentDate = new Date(startDate);
+			while (currentDate <= endDate) {
+				dates.push(new Date(currentDate));
+				currentDate.setDate(currentDate.getDate() + 1);
+			}
+			return dates;
+		}
+		// end
+		$("#TIMEIN").val(moment().add(-7, "day").format("YYYY-MM-DD"));
+		$("#TIMEOUT").val(moment().add(7, "day").format("YYYY-MM-DD"));
 
-    function getDates(startDate, endDate) {
-      const dates = [];
-      let currentDate = new Date(startDate);
+		$(".button-bar-group").click(async function() {
+			// API Vessel
+			var col;
+			try {
+				col_data_berth = await renderBerth();
+			} catch (error) {
+				return;
+			}
+			const element = $(".check_display");
+			element.remove();
+			let from = $("#TIMEIN").val();
+			let to = $("#TIMEOUT").val();
+			// Call API vessel
+			$.ajax({
+				url: "/Vessel/vsVesselChart/get",
+				dataType: "json",
+				data: {
+					FROMTIME: from,
+					TOTIME: to
+				},
+				type: "POST",
+				success: (data) => {
+					// Draw Berth
+					$(".berth_container").html("");
+					if (data?.DATA?.length > 0) {
+						toastr["success"]("Load dữ liệu thành công");
+						col_data_berth?.data_berth.map((item, index) => {
+							let bert_width =
+								Math.round((item?.PosTo - item?.PosFrom) / 10) * 30;
+							let html_span = "";
+							for (let i = item?.PosFrom; i < item?.PosTo; i++) {
+								if (i % 20 == 0 && i != 0) {
+									html_span += `<span class="index-meter">${i}</span>`;
+								}
+							}
 
-      while (currentDate <= endDate) {
-        dates.push(new Date(currentDate));
-        currentDate.setDate(currentDate.getDate() + 1);
-      }
+							let i = index;
+							$(".berth_container").append(
+								`<div style="height:${bert_width}px"class="berth_item-${i} berth_item">
+                 					 <div style="font-size:15px;font-weight:500" class="name_berth">${item.BerthID}</div>`
+							);
+							$(`.berth_item-${i}`).append(
+								`<div class="berth_item-index">${html_span}</div>`
+							);
+						});
 
-      return dates;
-    }
-    // end
-    $("#TIMEIN").val(moment().add(-7, "day").format("YYYY-MM-DD"));
-    $("#TIMEOUT").val(moment().add(7, "day").format("YYYY-MM-DD"));
+						// process data vessel
+						let arrDate = [];
+						let arrDisload = data.disload;
+						$.each(data.DATA, function(index, value) {
+							value.values.forEach((item) => {
+								arrDate.push(
+									new Date(moment(item.dataObj.vdata.ETB).format("YYYY-MM-DD")),
+									new Date(moment(item.dataObj.vdata.ETD).format("YYYY-MM-DD"))
+								);
+							});
+						});
+						for (let i = 0; i < arrDate.length / 2; i++) {
+							$(".contaniner")
+								.off("click", `.berth_card-${i}`)
+								.on("click", `.berth_card-${i}`, function() {
+									$(`.contaniner .check_index${i}`).toggle("check_opacity");
+								});
+						}
+						// max and min date
+						let max_time = new Date(Math.max.apply(null, arrDate));
+						let min_time = new Date(Math.min.apply(null, arrDate));
+						// list date with min and max
+						const startDate = new Date(min_time);
+						const endDate = new Date(max_time);
 
-    $(".button-bar-group").click(async function () {
-      // API Vessel
-      var col;
-      try {
-        col_data_berth = await renderBerth();
-      } catch (error) {
-        return;
-      }
-      const element = $(".check_display");
-      element.remove();
+						const dateArray = getDates(startDate, endDate);
 
-      let from = $("#TIMEIN").val();
-      let to = $("#TIMEOUT").val();
-      // Call API vessel
-      $.ajax({
-        url: "/Vessel/vsVesselChart/get",
-        dataType: "json",
-        data: { FROMTIME: from, TOTIME: to },
-        type: "POST",
-        success: (data) => {
-          console.log(data);
-          // Draw Berth
+						let list_date = [];
+						$.each(dateArray, function(index, value) {
+							list_date.push(moment(value).format("DD-MM-YYYY"));
+						});
+						var date = new Date(min_time);
+						var yesterday = new Date(date.getTime());
+						yesterday.setDate(date.getDate() - 1);
+						var date1 = new Date(max_time);
 
-          $(".berth_container").html("");
-          if (data?.DATA?.length > 0) {
-            col_data_berth?.data_berth.map((item, index) => {
-              let bert_width =
-                Math.round((item?.PosTo - item?.PosFrom) / 10) * 30;
-              let html_span = "";
-              for (let i = item?.PosFrom; i < item?.PosTo; i++) {
-                if (i % 20 == 0) {
-                  html_span += `<span class="index-meter">${i}</span>`;
-                }
-              }
+						var tomorow = new Date(date1.getTime());
+						tomorow.setDate(date1.getDate() + 1);
 
-              let i = index;
-              $(".berth_container").append(
-                `<div style="height:${bert_width}px"class="berth_item-${i} berth_item">
-                  <div class="name_berth">${item.BerthID}</div>`
-              );
-              $(`.berth_item-${i}`).append(
-                `<div class="berth_item-index">${html_span}</div>`
-              );
-            });
-          }
+						var tomorow1 = new Date(date1.getTime());
+						tomorow1.setDate(date1.getDate() + 2);
 
-          // process data vessel
+						list_date = [moment(yesterday).format("DD-MM-YYYY"), ...list_date, moment(tomorow).format("DD-MM-YYYY"), moment(tomorow1).format("DD-MM-YYYY")]
+						$("#tbl-vessel-timeline tbody").html("");
+						$(".header-date").html("");
+						$(".index_time").html("");
+						// render Header date and render time hour
+						list_date.forEach((item) => {
+							$(".header-date").append(
+								`<div class="header-date_item"> ${item}</div>`
+							);
+							$(".header-date").css("border-top", "1px solid #ccc")
+							$(".index_time").append(
+								`<div class="index_hour">
+									<span class="index_time-hour">2</span>
+									<span class="index_time-hour" >4</span>
+									<span class="index_time-hour">6</span>
+									<span class="index_time-hour">8</span>
+									<span class="index_time-hour">10</span>
+									<span class="index_time-hour">12</span>
+									<span class="index_time-hour">14</span>
+									<span class="index_time-hour">16</span>
+									<span class="index_time-hour">18</span>
+									<span class="index_time-hour">20</span>
+									<span class="index_time-hour index_time-hour-22  ">22</span>
+									<span class="index_time-hour  "></span>
+									</div>`
+							);
+						});
+						// Drawl Table
 
-          let arrDate = [];
-          let arrDisload = data.disload;
-          $.each(data.DATA, function (index, value) {
-            value.values.forEach((item) => {
-              arrDate.push(
-                new Date(moment(item.dataObj.vdata.ETB).format("YYYY-MM-DD")),
-                new Date(moment(item.dataObj.vdata.ETD).format("YYYY-MM-DD"))
-              );
-            });
-          });
+						let arrVessel = [];
+						let distancePixel = () => {
+							data?.DATA.forEach(async (item) => {
+								item.values.forEach(async (data) => {
+									let formattedDate_start = moment(data?.dataObj?.vdata?.ETB).utc().format("YYYY-MM-DD HH:mm");
 
-          for (let i = 0; i < arrDate.length / 2; i++) {
-            $(".contaniner")
-              .off("click", `.berth_card-${i}`)
-              .on("click", `.berth_card-${i}`, function () {
-                $(`.contaniner .check_index${i}`).toggle("check_opacity");
-              });
-          }
+									let check = moment(min_time).format("YYYY-MM-DD");
 
-          // max and min date
-          let max_time = new Date(Math.max.apply(null, arrDate));
-          let min_time = new Date(Math.min.apply(null, arrDate));
+									let a = moment(formattedDate_start); //now
+									let b = moment(check);
+									// format endate
+									let formattedDate_end = moment(data.dataObj.vdata.ETD).utc().format("YYYY-MM-DD HH:mm");
 
-          // list date with min and max
-          const startDate = new Date(min_time);
-          const endDate = new Date(max_time);
+									let c = moment(formattedDate_end);
+									let d = moment(check);
+									// Tính khoảng cách thời gian giữa bắt đầu và kết thúc của tàu vs mốc đầu tiên
+									let left = a.diff(b, "hours") / 2 - 1;
+									let right = c.diff(d, "hours") / 2 - 1;
+									let dis = 0;
+									let load = 0;
+									arrDisload.forEach((item) => {
+										if (item?.VoyageKey == data.dataObj.vdata.VoyageKey) {
+											if (item?.Cellar == 1) {
+												if (item.BookingNo) {
+													dis++;
+												}
+											} else {
+												if (item.BillOfLading) {
+													load++;
+												}
+											}
+										}
+									});
 
-          const dateArray = getDates(startDate, endDate);
+									arrVessel.push({
+										left: left,
+										right: right,
+										berth: data.dataObj.vdata.BerthID,
+										bitt: data.dataObj.vdata.BittID,
+										name: data.dataObj.name,
+										from: moment(data?.dataObj?.vdata?.ETB).utc().format("DD-MM-YYYY HH:mm"),
+										to: moment(data.dataObj.vdata.ETD).utc().format("DD-MM-YYYY HH:mm"),
+										OprID: data.dataObj.vdata.OprID,
+										sumnhap: data.dataObj.vdata.sumnhap,
+										sumxuat: data.dataObj.vdata.sumxuat,
+										alongsize: data.dataObj.vdata.AlongSide,
+										inbound: data.dataObj.vdata.InboundVoyage,
+										outbound: data.dataObj.vdata.OutboundVoyage,
+										status: data.dataObj.vdata.Status,
+										dis: dis,
+										load: load,
+										loa: data.dataObj.vdata.LOA,
+									});
+								});
+							});
+						};
+						distancePixel();
+						// Vẽ lưới table
+						for (var i = 0; i < col_data_berth.col; i++) {
+							let tr = $("<tr>");
+							width_l = list_date?.length;
+							if (list_date?.length <= 2) {
+								width_l = width_l + 2;
+							}
+							if (list_date?.length == 1) {
+								width_l = width_l + 2;
+							}
+							if (list_date?.length < 1) {
+								width_l = 0;
+							}
+							for (var j = 0; j < width_l * 12; j++) {
+								tr.append("<td></td>");
+							}
+							$("#tbl-vessel-timeline tbody").append(tr);
+						}
+						// render ra vị trí con tàu
+						arrVessel.map(async (item, index) => {
+							let result_bitt = await renderBitt(item.berth, item.bitt);
+							let height_item = 0;
+							let a = 0
+							for (i = 0; i < col_data_berth?.data_berth.length; i++) {
+								if (item.berth == col_data_berth?.data_berth[i].BerthID) {
+									a = col_data_berth?.data_berth[i].PosFrom
+									break;
+								}
+								height_item += col_data_berth?.data_berth[i]?.PosTo - col_data_berth?.data_berth[i]?.PosFrom;
+							}
+							// Tính toán vị trí con tàu 
+							width_item = (item.right - item.left) * 30;
+							left_item = item.left * 30 + 360;
+							let top = (height_item / 10) * 30 + (result_bitt.result[0]?.CoordX - a) * 3;
 
-          let list_date = [];
-          $.each(dateArray, function (index, value) {
-            list_date.push(moment(value).format("DD-MM-YYYY"));
-          });
+							let height_vesel = result_bitt.result[0]?.CoordY - result_bitt.result[0]?.CoordX;
+							let height_vesel_final = item.loa * 3;
+							let total_width = width_item + left_item + 2;
+							let height_information = height_vesel / 2 - 12;
+							// render con tàu vào lưới
+							let t = index;
+							let color_imfomation = "";
+							let color = "";
+							let boatside = "";
+							let color_boatside = "";
 
-          $("#tbl-vessel-timeline tbody").html("");
-          $(".header-date").html("");
-          $(".index_time").html("");
-          // render Header date and render time hour
-          list_date.forEach((item) => {
-            $(".header-date").append(
-              `<div class="header-date_item"> ${item}</div>`
-            );
-            $(".index_time").append(
-              `<div class="index_hour">
-                  <span class="index_time-hour">2</span>
-                  <span class="index_time-hour" >4</span>
-                  <span class="index_time-hour">6</span>
-                  <span class="index_time-hour">8</span>
-                  <span class="index_time-hour">10</span>
-                  <span class="index_time-hour">12</span>
-                  <span class="index_time-hour">14</span>
-                  <span class="index_time-hour">16</span>
-                  <span class="index_time-hour">18</span>
-                  <span class="index_time-hour">20</span>
-                  <span class="index_time-hour index_time-hour-22  ">22</span>
-                  <span class="index_time-hour  "></span>
-                </div>`
-            );
-          });
-          // Drawl Table
+							if (item.alongsize == "L") {
+								boatside = "CẬP MẠN TRÁI";
+							}
+							if (item.alongsize == "R") {
+								boatside = "CẬP MẠN PHẢI";
+							}
 
-          let arrVessel = [];
-          let distancePixel = () => {
-            data?.DATA.forEach(async (item) => {
-              item.values.forEach(async (data) => {
-                let formattedDate_start = moment(
-                  data?.dataObj?.vdata?.ETB
-                ).format("YYYY-MM-DD HH:mm");
+							if (item.status == 0) {
+								color = "#ffc107";
+								color_boatside = "#f39c1285";
+							}
 
-                let check = moment(min_time).format("YYYY-MM-DD");
-
-                let a = moment(formattedDate_start); //now
-                let b = moment(check);
-                // format endate
-                let formattedDate_end = moment(data.dataObj.vdata.ETD).format(
-                  "YYYY-MM-DD HH:mm"
-                );
-
-                let c = moment(formattedDate_end);
-                let d = moment(check);
-                // Tính khoảng cách thời gian giữa bắt đầu và kết thúc của tàu vs mốc đầu tiên
-                let left = a.diff(b, "hours") / 2 - 1;
-                let right = c.diff(d, "hours") / 2 - 1;
-                let dis = 0;
-                let load = 0;
-                arrDisload.forEach((item) => {
-                  if (item?.VoyageKey == data.dataObj.vdata.VoyageKey) {
-                    if (item?.Cellar == 1) {
-                      if (item.BookingNo) {
-                        dis++;
-                      }
-                    } else {
-                      if (item.BillOfLading) {
-                        load++;
-                      }
-                    }
-                  }
-                });
-
-                arrVessel.push({
-                  left: left,
-                  right: right,
-                  berth: data.dataObj.vdata.BerthID,
-                  bitt: data.dataObj.vdata.BittID,
-                  name: data.dataObj.name,
-                  from: moment(data?.dataObj?.vdata?.ETB).format(
-                    "DD-MM-YYYY HH:mm"
-                  ),
-                  to: moment(data.dataObj.vdata.ETD).format("DD-MM-YYYY HH:mm"),
-                  OprID: data.dataObj.vdata.OprID,
-                  sumnhap: data.dataObj.vdata.sumnhap,
-                  sumxuat: data.dataObj.vdata.sumxuat,
-                  alongsize: data.dataObj.vdata.AlongSide,
-                  inbound: data.dataObj.vdata.InboundVoyage,
-                  outbound: data.dataObj.vdata.OutboundVoyage,
-                  status: data.dataObj.vdata.Status,
-                  dis: dis,
-                  load: load,
-                  loa: data.dataObj.vdata.LOA,
-                });
-              });
-            });
-          };
-          distancePixel();
-
-          for (var i = 0; i < col_data_berth.col; i++) {
-            let tr = $("<tr>");
-            width_l = list_date?.length;
-            if (list_date?.length <= 2) {
-              width_l = width_l + 2;
-            }
-            if (list_date?.length < 2) {
-              width_l = 0;
-            }
-            for (var j = 0; j < width_l * 12; j++) {
-              tr.append("<td></td>");
-            }
-            $("#tbl-vessel-timeline tbody").append(tr);
-          }
-          // render ra vị trí con tàu
-
-          arrVessel.map(async (item, index) => {
-            let result_bitt = await renderBitt(item.berth, item.bitt);
-
-            let height_item = 0;
-            for (i = 0; i < col_data_berth?.data_berth.length; i++) {
-              if (item.berth == col_data_berth?.data_berth[i].BerthID) {
-                break;
-              }
-              height_item +=
-                col_data_berth?.data_berth[i]?.PosTo -
-                col_data_berth?.data_berth[i]?.PosFrom;
-            }
-
-            // Tính toán vị trí con tàu nằm
-            width_item = (item.right - item.left) * 30;
-            left_item = item.left * 30;
-            let top =
-              (height_item / 10) * 30 + result_bitt.result[0].CoordX * 3;
-
-            let height_vesel =
-              result_bitt.result[0].CoordY - result_bitt.result[0].CoordX;
-            let height_vesel_final = item.loa * 3;
-            let total_width = width_item + left_item + 2;
-            let height_information = height_vesel / 2 - 12;
-            // render con tàu vào lưới
-            let t = index;
-            let color_imfomation = "";
-            let color = "";
-            let boatside = "";
-            let color_boatside = "";
-
-            if (item.alongsize == "L") {
-              boatside = "CẬP MẠN TRÁI";
-            }
-            if (item.alongsize == "R") {
-              boatside = "CẬP MẠN PHẢI";
-            }
-
-            if (item.status == 0) {
-              color = "#ffc107";
-              color_boatside = "#f39c1285";
-            }
-
-            if (item.status == 1) {
-              color = "#5dc6ed";
-              color_boatside = "#007bff5c";
-            }
-            if (item.status == 2) {
-              color = " #3af3a9";
-              color_boatside = "#28a7456b";
-            }
-
-            $(".wrapp_table").append(
-              `
-
-              <div style="cursor: pointer; height:${
-                item.loa * 3
-              }px; width:${width_item}px; position:absolute;left:${left_item}px;top:${top}px; background-color:${color}" class="check_display berth_card-${t}">
-                 <div style="display:flex;align-items:center; width:100%;background-color:${color_boatside};color:#CC0000;font-weight:600;height:30px">
-                  <span style="padding-left:8px;font-size: 15px">${boatside}</span>
-                  </div>
-                <div style="height:${
-                  height_vesel_final - 40
-                }px;display:flex;flex-direction:column; align-items:center;justify-content:center;color:black;font-weight:500;padding-left:10px;padding-right:10px;font-size: 15px; ">
-                  <span>Tên tàu: ${item.name}</span>
-                  <div>
-                    
-                    <span>ImVoy: ${item.inbound}/</span>
-                    <span>ExVoy: ${item.outbound}</span>
-                    </div>
-                  <div>DIS/LOAD: ${item.dis}/${item.load}</div>
-                  
-
-              </div>
-                <div style="font-weight:500; font-size:15px; display:none; width:220px ;position:absolute; top:0; left:${
-                  width_item + 2
-                }px; height:auto;" class="check_display check_index${t}">
-                    <div style="display:flex; align-items:center; justify-content:center;color:black;background-color:#ccc;height:30px">
-
-                      <div style="">THÔNG TIN CHI TIẾT</div>
-                      </div>
-                    <div style="padding-top:10px;padding-bottom:10px;text-align:left; color:black;display:flex; align-items:center; justify-content:center;background-color:white;box-shadow: 5px 10px 8px #888888">
-                      <div>
+							if (item.status == 1) {
+								color = "#5dc6ed";
+								color_boatside = "#007bff5c";
+							}
+							if (item.status == 2) {
+								color = " #3af3a9";
+								color_boatside = "#28a7456b";
+							}
+							$(".wrapp_table").append(
+								`
+									<div style="cursor: pointer; height:${item.loa * 3}px; width:${width_item}px; position:absolute;left:${left_item}px;top:${top}px; background-color:${color}" class="check_display berth_card-${t}">
+										<div style="display:flex;align-items:center; width:100%;background-color:${color_boatside};color:#CC0000;font-weight:600;height:30px">
+										<span style="padding-left:8px;font-size: 15px">${boatside}</span>
+										</div>
+										<div style="height:${height_vesel_final - 40}px;display:flex;flex-direction:column; align-items:center;justify-content:center;color:black;font-weight:500;padding-left:10px;padding-right:10px;font-size: 15px;text-align: center ">
+										<span>Tên tàu: ${item.name}</span>
+										<div>                   
+											<span>ImVoy: ${item.inbound}/</span>
+											<span>ExVoy: ${item.outbound}</span>
+											</div>
+										<div>DIS/LOAD: ${item.dis}/${item.load}</div>
+									</div>
+										<div style="font-weight:500; font-size:15px; display:none; width:220px ;position:absolute; top:0; left:${width_item + 2}px; height:auto;" class="check_display check_index${t}">
+											<div style="display:flex; align-items:center; justify-content:center;color:black;background-color:#ccc;height:30px">
+											<div style="">THÔNG TIN CHI TIẾT</div>
+											</div>
+											<div style="padding-top:10px;padding-bottom:10px;text-align:left; color:black;display:flex; align-items:center; justify-content:center;background-color:white;box-shadow: 5px 10px 8px #888888">
+											<div>
+												<div>Tên tàu: ${item.name}</div>
+												<div>ETB: ${item.from}</div>
+												<div>ETD: ${item.to}</div>
+												<div>BERTH: ${item.berth}</div>
+												<div>BITT: ${item.bitt}</div>
+												<div>LOA: ${item.loa}</div>                       
+												</div>
+											</div>
+						
+										</div>
+						
+										</div>
+				 				 `
+							);
+						});
 
 
-                        <div>Tên tàu: ${item.name}</div>
-                        <div>ETB: ${item.from}</div>
-                        <div>ETD: ${item.to}</div>
-                        <div>BERTH: ${item.berth}</div>
-                        <div>BITT: ${item.bitt}</div>
-                        <div>LOA: ${item.loa}</div>
-                        
-                        </div>
-                      </div>
+					} else {
+						$("#tbl-vessel-timeline tbody").html("");
+						$(".header-date").html("");
+						$(".index_time").html("");
+						$(".header-date").css("border-top", "none")
+						toastr["error"]("Không có dữ liệu!!")
+					}
 
-                </div>
+				},
 
-                </div>
-              `
-            );
-          });
-        },
+				error: function(err) {
 
-        error: function (err) {},
-      });
-    });
+					toastr["error"]("Load dữ liệu thất bại !!")
+				},
+			});
+		});
 
-    $(document).on("click", "#FinishBulkJob", function () {
-      $("#v_info").modal("hide");
-    });
+		$(document).on("click", "#FinishBulkJob", function() {
+			$("#v_info").modal("hide");
+		});
 
-    $("#TIMEIN,#TIMEOUT").datepicker({
-      dateFormat: "yy-mm-dd",
-      timeFormat: "hh:mm:ss",
-    });
-    //function call API bitt
-    function renderBitt(berth_ID, bitt_ID) {
-      return new Promise((resolve, reject) => {
-        $.ajax({
-          url: "/Vessel/vsVesselChart/get-bitt",
-          dataType: "json",
-          type: "GET",
-          data: {
-            berth_ID: berth_ID,
-            bitt_ID: bitt_ID,
-          },
-          success: function (data) {
-            resolve(data);
-          },
-          error: function (error) {
-            console.log(error);
-            reject();
-          },
-        });
-      });
-    }
-    //function call API berth
-    function renderBerth() {
-      // call API berth
-      var col = 0;
-      return new Promise((resolve, reject) => {
-        $.ajax({
-          url: "/Vessel/vsVesselChart/get-berth",
-          dataType: "json",
-          type: "GET",
-          success: function (data) {
-            let total = data.result.reduce((total, num) => {
-              return total + (num.PosTo - num.PosFrom);
-            }, 0);
+		$("#TIMEIN,#TIMEOUT").datepicker({
+			dateFormat: "yy-mm-dd",
+			timeFormat: "hh:mm:ss",
+		});
+		//function call API bitt
+		function renderBitt(berth_ID, bitt_ID) {
+			return new Promise((resolve, reject) => {
+				$.ajax({
+					url: "/Vessel/vsVesselChart/get-bitt",
+					dataType: "json",
+					type: "GET",
+					data: {
+						berth_ID: berth_ID,
+						bitt_ID: bitt_ID,
+					},
+					success: function(data) {
+						resolve(data);
+					},
+					error: function(error) {
+						console.log(error);
+						reject();
+					},
+				});
+			});
+		}
+		//function call API berth
+		function renderBerth() {
+			// call API berth
+			var col = 0;
+			return new Promise((resolve, reject) => {
+				$.ajax({
+					url: "/Vessel/vsVesselChart/get-berth",
+					dataType: "json",
+					type: "GET",
+					success: function(data) {
+						let total = data.result.reduce((total, num) => {
+							return total + (num.PosTo - num.PosFrom);
+						}, 0);
 
-            col = Math.round(total / 10);
-            console.log("checkcol", col);
-            let obj = {
-              col: col,
-              data_berth: data?.result,
-            };
-            resolve(obj);
-          },
-          error: function (error) {
-            console.log(error);
-            reject();
-          },
-        });
-      });
-    }
+						col = Math.round(total / 10);
+						let obj = {
+							col: col,
+							data_berth: data?.result,
+						};
+						resolve(obj);
+					},
+					error: function(error) {
+						console.log(error);
+						reject();
+					},
+				});
+			});
+		}
 
-    function renderDisload(voyageKey) {
-      return new Promise((resolve, reject) => {
-        $.ajax({
-          url: "/Vessel/vsVesselChart/get-disload",
-          dataType: "json",
-          type: "GET",
-          data: {
-            voyageKey: voyageKey,
-          },
-          success: function (data) {
-            resolve(data);
-          },
-          error: function (error) {
-            console.log(error);
-            reject();
-          },
-        });
-      });
-    }
-  });
+		function renderDisload(voyageKey) {
+			return new Promise((resolve, reject) => {
+				$.ajax({
+					url: "/Vessel/vsVesselChart/get-disload",
+					dataType: "json",
+					type: "GET",
+					data: {
+						voyageKey: voyageKey,
+					},
+					success: function(data) {
+						resolve(data);
+					},
+					error: function(error) {
+						console.log(error);
+						reject();
+					},
+				});
+			});
+		}
+	});
 </script>
 <link href="/assets/lichtau/lichtau.css" rel="stylesheet" />
 <script src="/assets/lichtau/lichtau.js"></script>

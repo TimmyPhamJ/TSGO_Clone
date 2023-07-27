@@ -1,10 +1,7 @@
-const { log } = require("console");
 var express = require("express");
 var router = express.Router();
 var auth = require("../../middlewares/authentication");
-const GateModel = require("../../models/GateModel.js");
-// const RemoocModel = require("../../models/GateModel.js");
-// const CarBackLstModel = require("../../models/CarBackLstModel.js");
+const GateModel = require("../../models/gate_model.js");
 
 //Thoilc(*Note)-Load trang
 router.get("/", auth, async function (req, res, next) {
@@ -19,7 +16,7 @@ router.post("/getView", auth, async function async(req, res, next) {
       res.status(200).json({ data });
     })
     .catch((error) => {
-      console.log(error);
+      // console.log(error);
       res.status(200).json({ error });
     });
 });
@@ -42,7 +39,7 @@ router.post("/saveGate", auth, async function async(req, res, next) {
       res.status(200).json({ data });
     })
     .catch((error) => {
-      // console.log(error);
+      //  console.log(error);
       res.status(200).json({ error });
     });
 });
@@ -99,6 +96,7 @@ router.post("/loadCarTable", auth, async function async(req, res, next) {
       res.status(200).json({ data });
     })
     .catch((error) => {
+      // console.log(error);
       res.status(200).json({ error });
     });
 });

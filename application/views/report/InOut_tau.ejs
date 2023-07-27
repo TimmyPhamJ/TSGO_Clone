@@ -1,5 +1,18 @@
 <link rel="stylesheet" href="/public/assets/css/bootstrap-select.min.css" />
 <style>
+  @media print {
+    @page {
+      size: auto; /* Kích thước trang tự động */
+      margin: 0; /* Xóa lề in mặc định */
+      transform: scale(0.8); /* Thiết lập tỷ lệ thu nhỏ mặc định là 80% */
+      transform-origin: top left; /* Điểm gốc áp dụng tỷ lệ thu nhỏ */
+    }
+    body {
+      margin: 0; /* Xóa lề in mặc định cho phần thân trang */
+    }
+  }
+</style>
+<style>
   #MainScreemTable_wrapper
     .dataTables_scroll
     #cell-context-1
@@ -33,49 +46,6 @@
     margin-left: 7px;
     font-size: 12px;
     font-style: italic;
-  }
-  .checkbox,
-  .radio {
-    position: relative;
-    margin-bottom: 0;
-    cursor: pointer;
-    padding-left: 25px;
-    font-weight: 400;
-    min-height: 30.59px;
-    width: 102px;
-    padding-top: 5px;
-    text-align: left;
-  }
-  .radio label {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .input-span {
-    margin-right: 10px;
-  }
-  .radio-info input ~ .input-span {
-    margin-top: 5px;
-  }
-  .col {
-    -ms-flex-preferred-size: 0;
-    flex-basis: 0;
-    -ms-flex-positive: 1;
-    flex-grow: 1;
-    max-width: 5%;
-  }
-  .row {
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-    margin-right: -15px;
-    margin-left: -15px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
   }
 </style>
 
@@ -114,14 +84,13 @@
       </div>
 
       <div class="ibox-body pt-0 pb-0 bg-f9 border-e">
-        <div class="row ibox mb-0 border-e pb-0 pt-0">
-          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mt-2">
-            <div class="row center-content">
-              <div class="col-12">
-                <!-- Hàng thứ nhất -->
+        <div class="row ibox mb-0 border-e pb-1 pt-3">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="row">
+              <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 mb-3">
                 <div class="row">
-                  <div class="col">
-                    <label class="radio radio-info d-block">
+                  <div class="col-10">
+                    <label class="mt-1 radio radio-info">
                       <input
                         checked
                         type="radio"
@@ -130,18 +99,17 @@
                         value="1" />
                       <span class="input-span"></span>Nhập tàu
                     </label>
-                  </div>
-                  <div class="col-10">
+
                     <input
                       id="VoyageKey"
                       class="form-control form-control-sm input-required"
                       type="text"
                       hidden />
-                    <label
-                      class="ml-3"
-                      style="width: 5.5rem; margin-top: 0.4rem"
+
+                    <label class="ml-3" style="margin-top: 0.4rem"
                       >Thông tin tàu:</label
                     >
+
                     <input
                       id="VesselName"
                       placeholder="Tên tàu | Chuyến nhập | Chuyến xuất"
@@ -152,7 +120,7 @@
                         border-color: rgba(0, 0, 0, 0.1);
                         border-width: 1px;
                         height: 2rem;
-                        width: 21.5rem;
+                        width: calc(100% - 250px);
                       "
                       type="text" />
 
@@ -171,13 +139,25 @@
                       title="Bỏ chọn">
                       <i class="ti-close"></i>
                     </button>
+                  </div>
+                  <div class="col-12 mt-2">
+                    <label class="mt-1 radio radio-info">
+                      <input
+                        type="radio"
+                        name="ClassID"
+                        class="css-checkbox"
+                        value="2" />
+                      <span class="input-span"></span>Xuất tàu
+                    </label>
 
-                    <label class="ml-3" style="width: 4rem; margin-top: 0.4rem"
+                    <label
+                      class="ml-4"
+                      style="width: 5.5rem; margin-top: 0.4rem"
                       >ETA/ETD:</label
                     >
                     <input
-                      id="ETAD"
-                      placeholder="ETA/ETD"
+                      id="ETA"
+                      placeholder="ETA"
                       style="
                         border-radius: 5px;
                         margin-left: 1rem;
@@ -185,11 +165,30 @@
                         border-color: rgba(0, 0, 0, 0.1);
                         border-width: 1px;
                         height: 2rem;
-                        width: 21.5rem;
                       "
                       type="text" />
+                    <input
+                      id="ETD"
+                      placeholder="ETD"
+                      style="
+                        border-radius: 5px;
+                        margin-left: 1rem;
+                        padding-left: 7.5px;
+                        border-color: rgba(0, 0, 0, 0.1);
+                        border-width: 1px;
+                        height: 2rem;
+                      "
+                      type="text" />
+                  </div>
+                </div>
+              </div>
 
-                    <label class="ml-3" style="width: 4rem; margin-top: 0.4rem"
+              <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 mb-3">
+                <div class="row">
+                  <div class="col-12">
+                    <label
+                      class="ml-6"
+                      style="width: 5.5rem; margin-top: 0.4rem"
                       >Chủ hàng:</label
                     >
                     <input
@@ -197,7 +196,7 @@
                       placeholder="Chủ Hàng"
                       style="
                         border-radius: 5px;
-                        margin-left: 1rem;
+                        margin-left: 0.5rem;
                         padding-left: 7.5px;
                         border-color: rgba(0, 0, 0, 0.1);
                         border-width: 1px;
@@ -206,126 +205,42 @@
                       "
                       type="text" />
                   </div>
-                </div>
-
-                <!-- Hàng thứ hai -->
-                <div class="row mt-2">
-                  <div class="col">
-                    <label class="radio radio-info d-block">
-                      <input
-                        type="radio"
-                        name="ClassID"
-                        class="css-checkbox"
-                        style="margin-bottom: 0.4rem"
-                        value="2" />
-                      <span
-                        class="input-span"
-                        style="margin-bottom: 0.4rem"></span
-                      >Xuất tàu
-                    </label>
-                  </div>
-                  <div class="col-10">
+                  <div class="ml-3 mt-2">
                     <label
-                      class="ml-3"
-                      style="
-                        width: 5.5rem;
-                        margin-top: 0.4rem;
-                        margin-bottom: 0.4rem;
-                      "
-                      hidden
-                      >Số Vận Đơn:</label
-                    >
-                    <input
-                      id="BillOfLading"
-                      placeholder="Số Vận đơn"
-                      style="
-                        border-radius: 5px;
-                        margin-left: 1rem;
-                        padding-left: 7.5px;
-                        border-color: rgba(0, 0, 0, 0.1);
-                        border-width: 1px;
-                        height: 2rem;
-                        width: 10.5rem;
-                        margin-bottom: 0.4rem;
-                      "
-                      type="text"
-                      hidden />
-
-                    <label
-                      class="ml-3"
-                      style="
-                        width: 5.5rem;
-                        margin-top: 0.4rem;
-                        margin-bottom: 0.4rem;
-                      "
-                      hidden
-                      >Số Booking:</label
-                    >
-                    <input
-                      id="BookingNo"
-                      placeholder="Số Booking"
-                      style="
-                        border-radius: 5px;
-                        margin-left: 1rem;
-                        padding-left: 7.5px;
-                        border-color: rgba(0, 0, 0, 0.1);
-                        border-width: 1px;
-                        height: 2rem;
-                        width: 10.5rem;
-                        margin-bottom: 0.4rem;
-                      "
-                      hidden
-                      type="text" />
-
-                    <label
-                      class="ml-3"
-                      style="
-                        width: 4rem;
-                        margin-top: 0.4rem;
-                        margin-bottom: 0.4rem;
-                      "
+                      class="ml-6"
+                      style="width: 5.5rem; margin-top: 0.4rem"
                       >Cẩu bờ:</label
                     >
                     <select
                       id="Caubo"
                       style="
                         border-radius: 5px;
-                        margin-left: 1rem;
+                        margin-left: 0.5rem;
                         border-color: rgba(0, 0, 0, 0.1);
                         border-width: 1px;
                         height: 2rem;
                         width: 10.5rem;
                         margin-bottom: 0.4rem;
-                      ">
-                      <option value="option1">Option 1</option>
-                      <option value="option2">Option 2</option>
-                      <option value="option3">Option 3</option>
-                    </select>
+                      "
+                      required></select>
 
                     <label
                       class="ml-3"
-                      style="
-                        width: 4rem;
-                        margin-top: 0.4rem;
-                        margin-bottom: 0.4rem;
-                      "
+                      style="width: 5.5rem; margin-top: 0.4rem"
                       >Cẩu bãi:</label
                     >
                     <select
                       id="Caubai"
                       style="
                         border-radius: 5px;
-                        margin-left: 1rem;
+                        margin-left: 0.5rem;
                         border-color: rgba(0, 0, 0, 0.1);
                         border-width: 1px;
                         height: 2rem;
                         width: 10.5rem;
                         margin-bottom: 0.4rem;
-                      ">
-                      <option value="option1">Option 1</option>
-                      <option value="option2">Option 2</option>
-                      <option value="option3">Option 3</option>
-                    </select>
+                      "
+                      required></select>
 
                     <label
                       class="ml-3"
@@ -340,17 +255,14 @@
                       id="Worker"
                       style="
                         border-radius: 5px;
-                        margin-left: 1rem;
+                        margin-left: 0.5rem;
                         border-color: rgba(0, 0, 0, 0.1);
                         border-width: 1px;
                         height: 2rem;
-                        width: 9.5rem;
+                        width: 10.5rem;
                         margin-bottom: 0.4rem;
-                      ">
-                      <option value="option1">Option 1</option>
-                      <option value="option2">Option 2</option>
-                      <option value="option3">Option 3</option>
-                    </select>
+                      "
+                      required></select>
                   </div>
                 </div>
               </div>
@@ -373,25 +285,32 @@
               <tr style="width: 100%">
                 <th col-name="STT">STT</th>
                 <th col-name="VoyageKey"></th>
+                <th col-name="ClassID"></th>
                 <th col-name="BillOfLading">Số vận đơn</th>
-                <th col-name="">Phương án</th>
-                <th col-name="">Phương thức</th>
-                <th col-name="">Hàng hóa</th>
-                <th col-name="">ĐVT</th>
-                <th col-name="">Số lượng</th>
-                <th col-name="">Trọng lượng</th>
+                <th col-name="CusName">Chủ hàng</th>
+                <th col-name="JobModeName">Phương án</th>
+                <th col-name="MethodID">Phương thức</th>
+                <th col-name="ItemName">Hàng hóa</th>
+                <th col-name="UnitName">ĐVT</th>
+                <th col-name="TotalQuantity">Số lượng</th>
+                <th col-name="TotalMcWeight">Trọng lượng</th>
                 <th col-name="">Thể tích</th>
-                <th col-name="">Khách hàng</th>
-                <th col-name="">Tên khách hàng</th>
-                <th col-name="">Cẩu bờ</th>
-                <th col-name="">Cẩu bãi</th>
-                <th col-name="">Tổ đội công nhân</th>
+                <th col-name="CreateTime">Ngày hoàn tất</th>
+                <th col-name="DeviceID"></th>
+                <th col-name="DeviceTypeID"></th>
+                <th col-name="Dbo">Cẩu bờ</th>
+                <th col-name="Dbai">Cẩu bãi</th>
+                <th col-name="WorkerGroupID"></th>
+                <th col-name="WorkerGroupName">Tổ đội công nhân</th>
                 <th col-name="POL">POL</th>
                 <th col-name="POD">POD</th>
                 <th col-name="FPOD">FPOD</th>
-                <th col-name="">TLHQ</th>
+                <th col-name="TLHQ">TLHQ</th>
                 <th col-name="">Loại hình</th>
-                <th col-name="">Ghi chú</th>
+                <th col-name="Note">Ghi chú</th>
+                <th col-name="NationName"></th>
+                <th col-name="ATA"></th>
+                <th col-name="CargoTypeName"></th>
               </tr>
             </thead>
           </table>
@@ -540,6 +459,842 @@
   </div>
 </div>
 
+<!-- xem thử bảng báo cáo -->
+<div
+  class="modal fade"
+  id="report-modal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="groups-modalLabel-1"
+  aria-hidden="true"
+  data-whatever="id"
+  style="padding-left: 2%; padding-top: 2%">
+  <div
+    class="modal-dialog"
+    role="document"
+    style="min-width: 1366px !important">
+    <div class="modal-content" style="border-radius: 4px">
+      <div class="modal-header">
+        <h5 class="modal-title text-primary" id="groups-modalLabel-1">
+          Biên Bản Kiểm Nhận Hàng Với Tàu
+        </h5>
+      </div>
+      <div
+        id="exportreport"
+        class="modal-body"
+        style="padding: 0px 15px 15px 15px">
+        <div>
+          <table
+            id="ReportTable"
+            class="display"
+            cellspacing="0"
+            style="width: 99.5%">
+            <table
+              id="HeaderReport"
+              style="
+                page-break-inside: avoid;
+                width: 100%;
+                border-collapse: collapse;
+              ">
+              <tr>
+                <td
+                  colspan="3"
+                  rowspan="2"
+                  height="84"
+                  align="center"
+                  valign="middle">
+                  <b
+                    ><font face="Times New Roman" size="2" color="#000000"
+                      >C&Ocirc;NG TY C&#7892; PH&#7846;N<br />X&#7870;P D&#7904;
+                      V&Agrave; D&#7882;CH V&#7908; C&#7842;NG S&Agrave;I
+                      G&Ograve;N</font
+                    ></b
+                  >
+                </td>
+                <td colspan="4" rowspan="2" align="center" valign="middle">
+                  <b
+                    ><font face="Times New Roman" size="2" color="#000000"
+                      >C&#7896;NG H&Ograve;A X&Atilde; H&#7896;I CH&#7910;
+                      NGH&#296;A VI&#7878;T NAM<br />VIETNAM SOCIALIST
+                      REPUBLIC<br />&#272;&#7897;c l&#7853;p - T&#7921; do -
+                      H&#7841;nh ph&uacute;c<br />Independence - Freedom -
+                      Happiness</font
+                    ></b
+                  >
+                </td>
+              </tr>
+              <tr></tr>
+              <tr>
+                <td height="21" align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="7" height="42" align="center" valign="bottom">
+                  <b
+                    ><font face="Times New Roman" size="2" color="#000000"
+                      >GI&#7844;Y KI&#7874;M NH&#7852;N H&Agrave;NG V&#7898;I
+                      T&Agrave;U<br />TALLY REPORT</font
+                    ></b
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td height="21" align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+              </tr>
+              <tr>
+                <td height="21" align="left" valign="middle">
+                  <b
+                    ><font face="Times New Roman" size="2" color="#000000"
+                      >T&ecirc;n t&agrave;u :</font
+                    ></b
+                  >
+                </td>
+                <td align="left" valign="middle">
+                  <font
+                    face="Times New Roman"
+                    size="2"
+                    color="#000000"
+                    id="ShipName"></font>
+                </td>
+                <td align="left" valign="middle">
+                  <b
+                    ><font face="Times New Roman" size="2" color="#000000"
+                      >Qu&#7889;c t&#7883;ch :</font
+                    ></b
+                  >
+                </td>
+                <td align="left" valign="middle">
+                  <font
+                    face="Times New Roman"
+                    size="2"
+                    color="#000000"
+                    id="NationName"></font>
+                </td>
+                <td align="left" valign="middle">
+                  <b
+                    ><font face="Times New Roman" size="2" color="#000000"
+                      >C&#7853;p b&#7871;n ng&agrave;y :</font
+                    ></b
+                  >
+                </td>
+                <td align="left" valign="middle">
+                  <font
+                    face="Times New Roman"
+                    size="2"
+                    color="#000000"
+                    id="DateArr"></font>
+                </td>
+              </tr>
+              <tr>
+                <td height="21" align="left" valign="middle">
+                  <b
+                    ><font face="Times New Roman" size="2" color="#000000"
+                      >H&agrave;ng :</font
+                    ></b
+                  >
+                </td>
+                <td align="left" valign="middle">
+                  <font
+                    face="Times New Roman"
+                    size="2"
+                    color="#000000"
+                    id="CargoName"></font>
+                </td>
+                <td align="left" valign="middle">
+                  <b
+                    ><font face="Times New Roman" size="2" color="#000000"
+                      >M&aacute;ng s&#7889; :</font
+                    ></b
+                  >
+                </td>
+                <td align="left" valign="middle">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="middle">
+                  <b
+                    ><font face="Times New Roman" size="2" color="#000000"
+                      >Ph&#432;&#417;ng th&#7913;c giao nh&#7853;n :</font
+                    ></b
+                  >
+                </td>
+                <td align="left" valign="middle">
+                  <font
+                    face="Times New Roman"
+                    size="2"
+                    color="#000000"
+                    id="Method"></font>
+                </td>
+              </tr>
+              <tr>
+                <td height="21" align="left" valign="middle">
+                  <b
+                    ><font face="Times New Roman" size="2" color="#000000"
+                      >Ca t&#7915; :</font
+                    ></b
+                  >
+                </td>
+                <td align="left" valign="middle">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="middle">
+                  <b
+                    ><font face="Times New Roman" size="2" color="#000000"
+                      >&#272;&#7871;n :</font
+                    ></b
+                  >
+                </td>
+                <td align="left" valign="middle">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="middle">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="middle">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+              </tr>
+              <tr>
+                <td height="21" align="left" valign="middle">
+                  <b
+                    ><font face="Times New Roman" size="2" color="#000000"
+                      >T&ecirc;n ng&#432;&#7901;i bi&ecirc;n h&agrave;ng :</font
+                    ></b
+                  >
+                </td>
+                <td align="left" valign="middle">
+                  <font face="Times New Roman" size="2" color="#000000"></font>
+                </td>
+                <td align="left" valign="middle">
+                  <b
+                    ><font face="Times New Roman" size="2" color="#000000"
+                      >MSC&#272; :</font
+                    ></b
+                  >
+                </td>
+                <td align="left" valign="middle">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="middle">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="middle">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+              </tr>
+              <tr>
+                <td height="21" align="left" valign="middle">
+                  <b
+                    ><font face="Times New Roman" size="2" color="#000000"
+                      >T&#7893; c&ocirc;ng nh&acirc;n x&#7871;p d&#7905; :</font
+                    ></b
+                  >
+                </td>
+                <td align="left" valign="left">
+                  <font
+                    face="Times New Roman"
+                    size="2"
+                    color="#000000"
+                    id="WorkerGroup"></font>
+                </td>
+                <td align="left" valign="middle">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="middle">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="middle">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="middle">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+              </tr>
+              <tr>
+                <td height="21" align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+              </tr>
+            </table>
+
+            <table id="BodyReport" style="width: 99.5%">
+              <tr>
+                <td
+                  style="
+                    border-top: 0.75pt solid #000000;
+                    border-bottom: 0.75pt solid #000000;
+                    border-left: 0.75pt solid #000000;
+                    border-right: 0.75pt solid #000000;
+                  "
+                  height="63"
+                  align="center"
+                  valign="middle">
+                  <b
+                    ><font face="Times New Roman" size="2" color="#000000"
+                      >S&#7889; v&#7853;n &#273;&#417;n/ Booking No</font
+                    ></b
+                  >
+                </td>
+                <td
+                  style="
+                    border-top: 0.75pt solid #000000;
+                    border-bottom: 0.75pt solid #000000;
+                    /* border-left: 0.75pt solid #000000; */
+                    border-right: 0.75pt solid #000000;
+                  "
+                  align="center"
+                  valign="middle">
+                  <b
+                    ><font face="Times New Roman" size="2" color="#000000"
+                      >K&yacute; Hi&#7879;u M&atilde;<br />Marks No</font
+                    ></b
+                  >
+                </td>
+                <td
+                  style="
+                    border-top: 0.75pt solid #000000;
+                    border-bottom: 0.75pt solid #000000;
+                    /* border-left: 0.75pt solid #000000; */
+                    border-right: 0.75pt solid #000000;
+                  "
+                  align="center"
+                  valign="middle">
+                  <b
+                    ><font face="Times New Roman" size="2" color="#000000"
+                      >Lo&#7841;i H&agrave;ng<br />Description</font
+                    ></b
+                  >
+                </td>
+                <td
+                  style="
+                    border-top: 0.75pt solid #000000;
+                    border-bottom: 0.75pt solid #000000;
+                    /* border-left: 0.75pt solid #000000; */
+                    border-right: 0.75pt solid #000000;
+                  "
+                  align="center"
+                  valign="middle">
+                  <b
+                    ><font face="Times New Roman" size="2" color="#000000"
+                      >S&#7889; L&#432;&#7907;ng (Bao Ki&#7879;n)<br />Number of
+                      packages</font
+                    ></b
+                  >
+                </td>
+                <td
+                  style="
+                    border-top: 0.75pt solid #000000;
+                    border-bottom: 0.75pt solid #000000;
+                    /* border-left: 0.75pt solid #000000; */
+                    border-right: 0.75pt solid #000000;
+                  "
+                  align="center"
+                  valign="middle">
+                  <b
+                    ><font face="Times New Roman" size="2" color="#000000"
+                      >C&#7897;ng<br />Total</font
+                    ></b
+                  >
+                </td>
+                <td
+                  style="
+                    border-top: 0.75pt solid #000000;
+                    border-bottom: 0.75pt solid #000000;
+                    /* border-left: 0.75pt solid #000000; */
+                    border-right: 0.75pt solid #000000;
+                  "
+                  align="center"
+                  valign="middle">
+                  <b
+                    ><font face="Times New Roman" size="2" color="#000000"
+                      >Kh&#7889;i L&#432;&#7907;ng (T&#7845;n)<br />Gross
+                      Weight</font
+                    ></b
+                  >
+                </td>
+                <td
+                  style="
+                    border-top: 0.75pt solid #000000;
+                    border-bottom: 0.75pt solid #000000;
+                    /* border-left: 0.75pt solid #000000; */
+                    border-right: 0.75pt solid #000000;
+                  "
+                  align="center"
+                  valign="middle">
+                  <b
+                    ><font face="Times New Roman" size="2" color="#000000"
+                      >Ghi Ch&uacute;<br />Remarks</font
+                    ></b
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td
+                  style="
+                    border-top: 0.75pt solid #000000;
+                    border-bottom: 0.75pt solid #000000;
+                    border-left: 0.75pt solid #000000;
+                    border-right: 0.75pt solid #000000;
+                  "
+                  height="21"
+                  align="center"
+                  valign="middle">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td
+                  style="
+                    border-top: 0.75pt solid #000000;
+                    border-bottom: 0.75pt solid #000000;
+                    border-left: 0.75pt solid #000000;
+                    border-right: 0.75pt solid #000000;
+                  "
+                  align="center"
+                  valign="middle">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td
+                  style="
+                    border-top: 0.75pt solid #000000;
+                    border-bottom: 0.75pt solid #000000;
+                    border-left: 0.75pt solid #000000;
+                    border-right: 0.75pt solid #000000;
+                  "
+                  align="center"
+                  valign="middle">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td
+                  style="
+                    border-top: 0.75pt solid #000000;
+                    border-bottom: 0.75pt solid #000000;
+                    border-left: 0.75pt solid #000000;
+                    border-right: 0.75pt solid #000000;
+                  "
+                  align="center"
+                  valign="middle">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td
+                  style="
+                    border-top: 0.75pt solid #000000;
+                    border-bottom: 0.75pt solid #000000;
+                    border-left: 0.75pt solid #000000;
+                    border-right: 0.75pt solid #000000;
+                  "
+                  align="center"
+                  valign="middle">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td
+                  style="
+                    border-top: 0.75pt solid #000000;
+                    border-bottom: 0.75pt solid #000000;
+                    border-left: 0.75pt solid #000000;
+                    border-right: 0.75pt solid #000000;
+                  "
+                  align="center"
+                  valign="middle">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td
+                  style="
+                    border-top: 0.75pt solid #000000;
+                    border-bottom: 0.75pt solid #000000;
+                    border-left: 0.75pt solid #000000;
+                    border-right: 0.75pt solid #000000;
+                  "
+                  align="center"
+                  valign="middle">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+              </tr>
+              <tr>
+                <td height="21" align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+              </tr>
+            </table>
+            <table
+              id="FooterReport"
+              style="
+                page-break-inside: avoid;
+                width: 100%;
+                border-collapse: collapse;
+              ">
+              <tr>
+                <td colspan="3" height="21" align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    >Ch&#432;&#7899;ng nh&#7853;n s&#7889; h&agrave;ng ghi
+                    tr&ecirc;n l&agrave; &#273;&uacute;ng</font
+                  >
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3" height="21" align="left" valign="middle">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    >Certified exact above mentioned number of packages</font
+                  >
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td colspan="2" align="center" valign="bottom" id="Nt">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    >C&#7843;ng S&agrave;i G&ograve;n, ng&agrave;y
+                    &hellip;&hellip;..th&aacute;ng
+                    &hellip;&hellip;.n&#259;m&hellip;&hellip;..</font
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td height="21" align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3" height="21" align="center" valign="bottom">
+                  <b
+                    ><font face="Times New Roman" size="2" color="#000000"
+                      >&#272;&#7840;I DI&#7878;N C&#7910;A T&Agrave;U</font
+                    ></b
+                  >
+                </td>
+                <td align="left" valign="bottom">
+                  <b
+                    ><font face="Times New Roman" size="2" color="#000000"
+                      ><br /></font
+                  ></b>
+                </td>
+                <td align="left" valign="bottom">
+                  <b
+                    ><font face="Times New Roman" size="2" color="#000000"
+                      ><br /></font
+                  ></b>
+                </td>
+                <td colspan="2" align="center" valign="bottom">
+                  <b
+                    ><font face="Times New Roman" size="2" color="#000000"
+                      >&#272;&#7840;I DI&#7878;N C&#7910;A C&#7842;NG</font
+                    ></b
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3" height="21" align="center" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    >Ship's Tallyman</font
+                  >
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td colspan="2" align="center" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    >Docks office representative</font
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3" height="21" align="center" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    >H&#7885; v&agrave; T&ecirc;n</font
+                  >
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td colspan="2" align="center" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    >H&#7885; v&agrave; T&ecirc;n</font
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3" height="21" align="center" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    >(K&yacute; t&ecirc;n)</font
+                  >
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td align="left" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    ><br
+                  /></font>
+                </td>
+                <td colspan="2" align="center" valign="bottom">
+                  <font face="Times New Roman" size="2" color="#000000"
+                    >(K&yacute; t&ecirc;n)</font
+                  >
+                </td>
+              </tr>
+            </table>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div style="margin: 0 auto !important">
+          <button
+            class="btn btn-sm btn-rounded btn-gradient-blue btn-labeled btn-labeled-left btn-icon"
+            id="export"
+            data-dismiss="modal">
+            <span class="btn-label"><i class="ti-check"></i></span>Export
+          </button>
+          <button
+            class="btn btn-sm btn-rounded btn-gradient-peach btn-labeled btn-labeled-left btn-icon"
+            data-dismiss="modal">
+            <span class="btn-label"><i class="ti-close"></i></span>Đóng
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
   //   Nút chọn tàu
   $("#chooseVessel").on("click", function () {
@@ -552,7 +1307,9 @@
   //   Nút xóa dữ liệu thông tin tàu
   $("#nochooseVessel").on("click", function () {
     $("#VesselName").val("");
-    $("#ETAD").val("");
+    // $("#ETAD").val("");
+    $("#ETA").val("");
+    $("#ETD").val("");
   });
 
   // làm màng hình chọn tàu
@@ -626,7 +1383,13 @@
       tblVessel.waitingLoad();
       var formData = {
         filter: {
-          Status: $("input[type='radio'][name='VesselFilter']:checked").val(),
+          Status: {
+            operation: "in",
+            value:
+              $("input[type='radio'][name='VesselFilter']:checked").val() == 1
+                ? [0, 1]
+                : [2, 3, 4, 5, 6],
+          },
           VesselName: {
             operation: "like",
             value: $("#VesselNameFilter").val(),
@@ -693,14 +1456,21 @@
         (InLane = tblVesselSelectedRows[_vesselColumns.indexOf("InLane")]),
         (OutLane = tblVesselSelectedRows[_vesselColumns.indexOf("OutLane")]),
         (ETA = tblVesselSelectedRows[_vesselColumns.indexOf("ETA")]),
-        (ETD = tblVesselSelectedRows[_vesselColumns.indexOf("ETD")]),
-        $("#VoyageKey").val(VoyageKey);
+        (ETD = tblVesselSelectedRows[_vesselColumns.indexOf("ETD")]);
+      $("#VoyageKey").val(VoyageKey);
       $("#VesselName").val(
         VesselName + " | " + InboundVoyage + " | " + OutboundVoyage
       );
-      $("#ETAD").val(ETA + " - " + ETD);
+      // $("#ETAD").val(ETA + " - " + ETD);
+      $("#ETA").val(ETA);
+      $("#ETD").val(ETD);
       $("#search").trigger("click");
       vesselModal.modal("hide");
+    });
+
+    $(document).on("click", "#VesselTable tbody tr", function () {
+      $("#VesselTable tbody tr.selected").removeClass("selected");
+      $(this).addClass("selected");
     });
 
     //Nhấn xác nhận trong bảng chọn tàu sẽ điền dữ liệu vào các trường
@@ -724,7 +1494,9 @@
       $("#VesselName").val(
         VesselName + " | " + InboundVoyage + " | " + OutboundVoyage
       );
-      $("#ETAD").val(ETA + " - " + ETD);
+      // $("#ETAD").val(ETA + " - " + ETD);
+      $("#ETA").val(ETA);
+      $("#ETD").val(ETD);
     });
   });
 
@@ -735,9 +1507,15 @@
       url: "/Report/BaoCao_nxtau/Device",
       method: "POST",
       success: function (response) {
+        // console.log("Caubo", response.data); // Kiểm tra dữ liệu trả về từ API
         // Xóa các option hiện tại trong select Caubo
         $("#Caubo").empty();
-        console.log("Caubo", response.data); // Kiểm tra dữ liệu trả về từ API
+
+        // Thêm option mặc định "Chọn cẩu bờ" với giá trị null
+        var defaultOption = $("<option></option>")
+          .val(null)
+          .text("Chọn cẩu bờ");
+        $("#Caubo").append(defaultOption);
 
         // Lặp qua dữ liệu trả về từ API
         for (var i = 0; i < response.data.length; i++) {
@@ -766,7 +1544,13 @@
       success: function (response) {
         // Xóa các option hiện tại trong select Caubai
         $("#Caubai").empty();
-        console.log("Caubai", response.data); // Kiểm tra dữ liệu trả về từ API
+        // console.log("Caubai", response.data); // Kiểm tra dữ liệu trả về từ API
+
+        // Thêm option mặc định "Chọn cẩu bãi" với giá trị null
+        var defaultOption = $("<option></option>")
+          .val(null)
+          .text("Chọn cẩu bãi");
+        $("#Caubai").append(defaultOption);
 
         // Lặp qua dữ liệu trả về từ API
         for (var i = 0; i < response.data.length; i++) {
@@ -795,7 +1579,13 @@
       success: function (response) {
         // Xóa các option hiện tại trong select Worker
         $("#Worker").empty();
-        console.log("worker", response.data); // Kiểm tra dữ liệu trả về từ API
+        // console.log("worker", response.data); // Kiểm tra dữ liệu trả về từ API
+
+        // Thêm option mặc định "Chọn tổ đội công nhân" với giá trị null
+        var defaultOption = $("<option></option>")
+          .val("")
+          .text("Chọn đội công nhân");
+        $("#Worker").append(defaultOption);
 
         // Lặp qua dữ liệu trả về từ API
         for (var i = 0; i < response.data.length; i++) {
@@ -809,15 +1599,784 @@
         console.log(error);
       },
     });
+  });
 
+  $(document).ready(function () {
+    var _columns = [
+        {
+          name: "STT",
+          title: "STT",
+          className: "text-center editor-cancel",
+          targets: 0,
+          render: function (data, type, row, meta) {
+            return meta.row + 1;
+          },
+        },
+        {
+          data: "VoyageKey",
+          name: "VoyageKey",
+          title: "VoyageKey",
+          visible: false,
+          targets: 1,
+        },
+        {
+          data: "ClassID",
+          name: "ClassID",
+          title: "ClassID",
+          visible: false,
+          targets: 2,
+        },
+        {
+          data: "BillOfLading",
+          name: "BillOfLading",
+          title: "Số vấn đơn/Booking",
+          className: "text-center",
+          targets: 3,
+          render: (data, type, row) => {
+            return row.BillOfLading || row.BookingNo;
+          },
+        },
+        {
+          data: "CusName",
+          name: "CusName",
+          title: "Chủ hàng",
+          className: "text-center",
+          targets: 4,
+        },
+        {
+          data: "JobModeName",
+          name: "JobModeName",
+          title: "Phương án",
+          className: "text-center",
+          targets: 5,
+        },
+        {
+          data: "MethodID",
+          name: "MethodID",
+          title: "Phương thức",
+          className: "text-center",
+          targets: 6,
+        },
+        {
+          data: "ItemName",
+          name: "ItemName",
+          title: "Hàng hóa",
+          className: "text-center",
+          targets: 7,
+        },
+        {
+          data: "UnitName",
+          name: "UnitName",
+          title: "ĐVT",
+          className: "text-center",
+          targets: 8,
+        },
+        {
+          data: "TotalQuantity",
+          name: "TotalQuantity",
+          title: "Số lượng",
+          className: "text-center",
+          targets: 9,
+        },
+        {
+          data: "TotalMcWeight",
+          name: "TotalMcWeight",
+          title: "Trọng lượng",
+          className: "text-center",
+          targets: 10,
+          render: function (data, type, row) {
+            return row.TotalMcWeight ? row.TotalMcWeight.toFixed(3) : "";
+          },
+        },
+        {
+          data: "CreateTime",
+          name: "CreateTime",
+          title: "Ngày hoàn tất",
+          className: "text-center",
+          targets: 12,
+          render: function (data, type, row) {
+            if (type === "display" || type === "filter") {
+              if (data) {
+                var formattedDate = moment(
+                  data,
+                  "YYYY-MM-DD HH:mm:ss.SSS"
+                ).format("DD-MM-YYYY HH:mm:ss");
+                return formattedDate;
+              } else {
+                return "";
+              }
+            }
+            return data;
+          },
+        },
+        {
+          data: "DeviceID",
+          name: "DeviceID",
+          title: "DeviceID",
+          visible: false,
+          targets: 13,
+        },
+        {
+          data: "DeviceTypeID",
+          name: "DeviceTypeID",
+          title: "DeviceTypeID",
+          visible: false,
+          targets: 14,
+        },
+        {
+          data: "DeviceName",
+          name: "Dbo",
+          title: "Cẩu bờ",
+          className: "text-center",
+          targets: 15,
+          render: function (data, type, row) {
+            if (row.DeviceTypeID === "QC") {
+              return row.DeviceName;
+            } else {
+              return "";
+            }
+          },
+        },
+        {
+          data: "DeviceName",
+          name: "Dbai",
+          title: "Cẩu bãi",
+          className: "text-center",
+          targets: 16,
+          render: function (data, type, row) {
+            if (row.DeviceTypeID === "FL") {
+              return row.DeviceName;
+            } else {
+              return "";
+            }
+          },
+        },
+        {
+          data: "WorkerGroupID",
+          name: "WorkerGroupID",
+          title: "WorkerGroupID",
+          visible: false,
+          targets: 17,
+        },
+        {
+          data: "WorkerGroupName",
+          name: "WorkerGroupName",
+          title: "Tổ đội công nhân",
+          className: "text-center",
+          targets: 18,
+        },
+        {
+          data: "POL",
+          name: "POL",
+          title: "POL",
+          className: "text-center",
+          targets: 19,
+        },
+        {
+          data: "POD",
+          name: "POD",
+          title: "POD",
+          className: "text-center",
+          targets: 20,
+        },
+        {
+          data: "FPOD",
+          name: "FPOD",
+          title: "FPOD",
+          className: "text-center",
+          targets: 21,
+        },
+        {
+          data: "TLHQ",
+          name: "TLHQ",
+          title: "TLHQ",
+          className: "text-center",
+          targets: 22,
+          render: function (data, type, row) {
+            if ((data = 0)) {
+              return "Chưa thanh lý";
+            } else if ((data = 1)) {
+              return "Đã thanh lý";
+            } else {
+              return data;
+            }
+          },
+        },
+        {
+          data: "Note",
+          name: "Note",
+          title: "Ghi chú",
+          className: "text-center",
+          targets: 24,
+        },
+        {
+          data: "NationName",
+          name: "NationName",
+          title: "NationName",
+          visible: false,
+          targets: 25,
+        },
+        {
+          data: "ATA",
+          name: "ATA",
+          title: "ATA",
+          visible: false,
+          targets: 26,
+        },
+        {
+          data: "CargoTypeName",
+          name: "CargoTypeName",
+          title: "CargoTypeName",
+          visible: false,
+          targets: 27,
+        },
+      ],
+      TblMain = $("#MainScreemTable");
+
+    var dataTbl = TblMain.newDataTable({
+      scrollY: "55vh",
+      columnDefs: _columns,
+      order: [[0, "asc"]],
+      paging: false,
+      keys: true,
+      autoFill: {
+        focus: "focus",
+      },
+      select: {
+        style: "single",
+        info: false,
+      },
+      buttons: [],
+      rowReorder: false,
+    });
+    // console.log("colum", _columns[3]);
     //Biến đổi cột BLO/BN thành cột giá trị động
     $('input[name="ClassID"]').change(function () {
       var selectedValue = $(this).val();
+      // console.log(selectedValue);
       if (selectedValue === "1") {
-        $('th[col-name="BillOfLading"]').text("Số vận đơn");
+        TblMain.DataTable().column(3).header().textContent = "Số vận đơn";
       } else if (selectedValue === "2") {
-        $('th[col-name="BillOfLading"]').text("Booking no");
+        TblMain.DataTable().column(3).header().textContent = "Số Booking";
       }
     });
+
+    $("#importFile").on("click", function () {
+      var VoyageKey = $("#VoyageKey").val();
+      if (VoyageKey === "") {
+        toastr["error"]("Vui lòng chọn tàu trước khi load dữ liệu");
+        return;
+      }
+
+      var workerGroupID = ""; // Khởi tạo biến workerGroupID
+      var deviceID = ""; // Khởi tạo biến deviceID
+
+      // Lấy giá trị của select Worker nếu có giá trị được chọn
+      if ($("#Worker").val()) {
+        workerGroupID = $("#Worker").val();
+      }
+
+      if ($("#Caubai").val()) {
+        deviceID = $("#Caubai").val();
+        $("#Caubo").val(null); // Thiết lập giá trị của #Caubo về null
+      } else {
+        deviceID = $("#Caubo").val();
+        $("#Caubai").val(null); // Thiết lập giá trị của #Caubai về null
+      }
+
+      var fromData = {
+        VoyageKey: $("#VoyageKey").val(),
+        filter: {
+          ClassID: $("input[type='radio'][name='ClassID']:checked").val(),
+          WorkerGroupID: workerGroupID, // Gán giá trị của select Worker vào trường WorkerGroupID
+          DeviceID: deviceID,
+        },
+      };
+      enter(fromData);
+      $("#MainScreemTable").waitingLoad();
+    });
+
+    let enter = (fromData) => {
+      $("#MainScreemTable").dataTable().fnClearTable();
+      $.ajax({
+        url: "/Report/BaoCao_nxtau/get",
+        dataType: "json",
+        data: fromData,
+        type: "POST",
+        success: function (data) {
+          // console.log("data nè", data);
+          var rows = [];
+          if (data.data.length > 0) {
+            for (var i = 0; i < data.data.length; i++) {
+              var rData = data.data[i];
+              rows.push({ ...rData });
+            }
+          }
+          if (rows.length > 0) {
+            $("#MainScreemTable").dataTable().fnAddData(rows);
+          } else {
+            $("#MainScreemTable").dataTable().fnClearTable();
+          }
+        },
+        error: function (err) {
+          console.log(err);
+        },
+      });
+    };
+  });
+
+  // Tìm kiếm theo chủ hàng
+  $("#Customer").on("input", function () {
+    var inputValue = $(this).val().trim();
+
+    // Lọc các dòng trong bảng dựa trên giá trị nhập vào
+    $("#MainScreemTable tbody tr")
+      .hide()
+      .filter(function () {
+        var columnValue = $(this).find("td:nth-child(3)").text().trim(); // Cột "Chủ hàng" là cột thứ 3
+        return columnValue.indexOf(inputValue) !== -1;
+      })
+      .show();
+  });
+
+  var exportClicked = false;
+
+  $("#Export").on("click", function () {
+    exportClicked = true;
+    var voyageKey = $("#VoyageKey").val();
+    var allRowData = $("#MainScreemTable").DataTable().data().toArray();
+    var selectedWorker = $("#Worker").val();
+    var importFileClicked = false;
+
+    $("#importFile").on("click", function () {
+      importFileClicked = true;
+    });
+
+    if (!voyageKey) {
+      toastr["error"]("Vui lòng chọn tàu!");
+      return;
+    }
+
+    // if (!selectedWorker) {
+    //   toastr["error"]("Vui lòng chọn tổ đội công nhân!");
+    //   return;
+    // }
+
+    if (!importFileClicked && allRowData.length === 0) {
+      toastr["error"]("Vui lòng nạp dữ liệu!");
+      return;
+    }
+
+    // Các xử lý khác sau khi điều kiện được thỏa mãn
+    $("#report-modal").modal("show");
+
+    // $("#report-modal").modal("show");
+
+    var shipName = $("#VesselName").val();
+    var nationName = allRowData[0].NationName;
+    var dateArr = allRowData[0].ATA;
+    var cargoName = allRowData[0].ItemName;
+    var method = allRowData[0].MethodID;
+    // var workerGroup = allRowData[0].WorkerGroupName;
+
+    var workerGroup;
+
+    if (selectedWorker === "") {
+      workerGroup = ""; // Thiết lập workerGroup thành chuỗi rỗng nếu selectedWorker là null
+    } else if (allRowData.length > 0) {
+      workerGroup = allRowData[0].WorkerGroupName; // Gán giá trị của allRowData[0].WorkerGroupName cho workerGroup nếu allRowData có phần tử
+    } else {
+      workerGroup = ""; // Thiết lập workerGroup thành chuỗi rỗng nếu allRowData không có phần tử
+    }
+
+    if (dateArr) {
+      var formattedDate = moment(dateArr).format("DD-MM-YYYY HH:mm:ss");
+      dateArr = formattedDate;
+    }
+
+    $("#ShipName").text(shipName);
+    $("#NationName").text(nationName);
+    $("#DateArr").text(dateArr);
+    $("#CargoName").text(cargoName);
+    $("#Method").text(method);
+    $("#WorkerGroup").text(workerGroup);
+
+    // Lấy số lượng dòng trong bảng
+    var rowCount = allRowData.length;
+
+    // Xóa các dòng hiện tại trong bảng
+    $("#BodyReport tr").slice(1).remove();
+
+    // Duyệt qua các dòng và điền giá trị vào các ô tương ứng
+    var sumQuantity = 0;
+    var sumTotal = 0;
+    var sumWeight = 0;
+
+    // Duyệt qua các dòng và điền giá trị vào các ô tương ứng
+    for (var i = 0; i < rowCount; ++i) {
+      var row = allRowData[i];
+      //Tạo một dòng mới
+      var newRow = $("<tr>");
+
+      // Tạo các ô và điền giá trị vào
+      var noCell = $("<td>")
+        .attr({
+          style:
+            // "border-top: 1px solid #000000;border-bottom: 1px solid #000000;border-left: 1px solid #000000;border-right: 1px solid #000000;",
+            "border-bottom: 0.75pt solid #000000;border-left: 0.75pt solid #000000;border-right: 0.75pt solid #000000;",
+          height: "21",
+          align: "center",
+          valign: "middle",
+        })
+        .html(
+          "<font face='Times New Roman' size='2' color='#000000'>" +
+            (row.BillOfLading || row.BookingNo) +
+            "</font>"
+        );
+
+      var masknoCell = $("<td>")
+        .attr({
+          style:
+            ";border-bottom: 0.75pt solid #000000;border-right: 0.75pt solid #000000;",
+          height: "21",
+          align: "center",
+          valign: "middle",
+        })
+        .html(
+          "<font face='Times New Roman' size='2' color='#000000'>" +
+            row.CargoTypeID +
+            "</font>"
+        );
+
+      var descriptionCell = $("<td>")
+        .attr({
+          style:
+            ";border-bottom: 0.75pt solid #000000;border-right: 0.75pt solid #000000;",
+          height: "21",
+          align: "center",
+          valign: "middle",
+        })
+        .html(
+          "<font face='Times New Roman' size='2' color='#000000'>" +
+            row.CargoTypeName +
+            "</font>"
+        );
+
+      var quantityCell = $("<td>")
+        .attr({
+          style:
+            ";border-bottom: 0.75pt solid #000000;border-right: 0.75pt solid #000000;",
+          height: "21",
+          align: "center",
+          valign: "middle",
+        })
+        .html(
+          "<font face='Times New Roman' size='2' color='#000000'>" +
+            row.TotalQuantity +
+            "</font>"
+        );
+
+      var totalCell = $("<td>")
+        .attr({
+          style:
+            ";border-bottom: 0.75pt solid #000000;border-right: 0.75pt solid #000000;",
+          height: "21",
+          align: "center",
+          valign: "middle",
+        })
+        .html(
+          "<font face='Times New Roman' size='2' color='#000000'>" +
+            row.TotalQuantity +
+            "</font>"
+        );
+
+      var weightCell = $("<td>")
+        .attr({
+          style:
+            ";border-bottom: 0.75pt solid #000000;border-right: 0.75pt solid #000000;",
+          height: "21",
+          align: "center",
+          valign: "middle",
+        })
+        .html(
+          "<font face='Times New Roman' size='2' color='#000000'>" +
+            row.TotalMcWeight.toFixed(3) +
+            "</font>"
+        );
+
+      var noteCell = $("<td>")
+        .attr({
+          style:
+            ";border-bottom: 0.75pt solid #000000;border-right: 0.75pt solid #000000;",
+          height: "21",
+          align: "center",
+          valign: "middle",
+        })
+        .html(
+          "<font face='Times New Roman' size='2' color='#000000'>" +
+            row.Note +
+            "</font>"
+        );
+
+      newRow.append(
+        noCell,
+        masknoCell,
+        descriptionCell,
+        quantityCell,
+        totalCell,
+        weightCell,
+        noteCell
+      );
+
+      // Thêm dòng mới vào bảng
+      $("#BodyReport").append(newRow);
+      // Tính toán giá trị tổng
+      sumQuantity += row.TotalQuantity;
+      sumTotal += row.TotalQuantity;
+      sumWeight += row.TotalMcWeight;
+    }
+
+    // Thêm dòng tổng vào bảng
+    var totalRow = $("<tr>");
+
+    var emptyCell = $("<td>")
+      .attr({
+        style:
+          "border-bottom: 0.75pt solid #000000;border-left: 0.75pt solid #000000;",
+        height: "22",
+        align: "center",
+        valign: "middle",
+      })
+      .html("<font color='#000000'><br /></font>");
+
+    var totalLabelCell = $("<td>")
+      .attr({
+        style: "border-bottom: 0.75pt solid #000000;",
+        align: "center",
+        valign: "middle",
+      })
+      .html(
+        "<b><font face='Times New Roman' size='2' color='#000000'>Tổng cộng:<br />Gross Total</font></b>"
+      );
+
+    var emptyCell2 = $("<td>")
+      .attr({
+        style:
+          "border-bottom: 0.75pt solid #000000;border-right: 0.75pt solid #000000;",
+        height: "22",
+        align: "center",
+        valign: "middle",
+      })
+      .html("<font color='#000000'><br /></font>");
+
+    var sumQuantityCell = $("<td>")
+      .attr({
+        style:
+          "border-bottom: 0.75pt solid #000000;border-right: 0.75pt solid #000000;",
+        align: "center",
+        valign: "middle",
+        sdval: "0",
+      })
+      .html(
+        "<b><font  face='Times New Roman' size='2' color='#000000' id='SumSL'></font></b>"
+      );
+
+    var sumTotalCell = $("<td>")
+      .attr({
+        style:
+          "border-bottom: 0.75pt solid #000000;border-right: 0.75pt solid #000000;",
+        align: "center",
+        valign: "middle",
+        sdval: "0",
+      })
+      .html(
+        "<b><font  face='Times New Roman' size='2' color='#000000' id='SumW'></font></b>"
+      );
+
+    var sumWeightCell = $("<td>")
+      .attr({
+        style:
+          "border-bottom: 0.75pt solid #000000;border-right: 0.75pt solid #000000;",
+        align: "center",
+        valign: "middle",
+        sdval: "0",
+      })
+      .html(
+        "<b><font face='Times New Roman' size='2' color='#000000' id='SumsL'></font></b>"
+      );
+    var emptyCell3 = $("<td>")
+      .attr({
+        style:
+          "border-bottom: 0.75pt solid #000000;border-right: 0.75pt solid #000000;",
+        height: "22",
+        align: "center",
+        valign: "middle",
+      })
+      .html("<font color='#000000'><br /></font>");
+
+    totalRow.append(
+      emptyCell,
+      totalLabelCell,
+      emptyCell2,
+      sumQuantityCell,
+      sumTotalCell,
+      sumWeightCell,
+      emptyCell3
+    );
+
+    // Thêm dòng tổng vào bảng
+    $("#BodyReport").append(totalRow);
+
+    // Đặt giá trị tổng vào các phần tử HTML
+    $("#SumSL").text(sumQuantity);
+    $("#SumW").text(sumTotal);
+    $("#SumsL").text(sumWeight);
+
+    // Tạo ngày tháng
+    var currentDate = new Date();
+    var day = currentDate.getDate();
+    var month = currentDate.getMonth() + 1;
+    var year = currentDate.getFullYear();
+    var formattedDate =
+      "Cảng Sài Gòn, Ngày " + day + " tháng " + month + " năm " + year;
+
+    $("#Nt").html(
+      "<font face='Times New Roman' size='2' color='#000000'>" +
+        formattedDate +
+        "</font>"
+    );
+  });
+
+  $("#export").on("click", function () {
+    var shipName = $("#VesselName").val();
+    var selectedWorker = $("#Worker").val();
+    var allRowData = $("#MainScreemTable").DataTable().data().toArray();
+    var rowCount = allRowData.length;
+    var nationName = allRowData[0].NationName;
+    var dateArr = allRowData[0].ATA;
+    var itemName = allRowData[0].ItemName;
+    var method = allRowData[0].MethodID;
+    // var workerGroup = allRowData[0].WorkerGroupName;
+    var classID = $("input[name='ClassID']:checked").val();
+
+    var workerGroup;
+
+    if (selectedWorker === "") {
+      workerGroup = ""; // Thiết lập workerGroup thành chuỗi rỗng nếu selectedWorker là null
+    } else if (allRowData.length > 0) {
+      workerGroup = allRowData[0].WorkerGroupName; // Gán giá trị của allRowData[0].WorkerGroupName cho workerGroup nếu allRowData có phần tử
+    } else {
+      workerGroup = ""; // Thiết lập workerGroup thành chuỗi rỗng nếu allRowData không có phần tử
+    }
+
+    var sumQuantity = 0;
+    var sumTotal = 0;
+    var sumWeight = 0;
+
+    var query = {
+      shipName: shipName,
+      classID: classID,
+      nationName: nationName,
+      dateArr: dateArr,
+      itemName: itemName,
+      method: method,
+      workerGroup: workerGroup,
+      rowCount: rowCount,
+    };
+
+    for (var i = 0; i < rowCount; ++i) {
+      var row = allRowData[i];
+      var billOfLading = row.BillOfLading || row.BookingNo;
+      var cargoType = row.CargoTypeID;
+      var cargoTypeName = row.CargoTypeName;
+      var quantity = row.TotalQuantity;
+      var total = row.TotalQuantity;
+      var weight = row.TotalMcWeight;
+      var note = row.Note;
+
+      sumQuantity += quantity;
+      sumTotal += total;
+      sumWeight += weight;
+
+      query["billOfLading" + i] = billOfLading;
+      query["cargoType" + i] = cargoType;
+      query["cargoTypeName" + i] = cargoTypeName;
+      query["quantity" + i] = quantity;
+      query["total" + i] = total;
+      query["weight" + i] = weight;
+      query["note" + i] = note;
+    }
+
+    query["sumQuantity"] = sumQuantity;
+    query["sumTotal"] = sumTotal;
+    query["sumWeight"] = sumWeight;
+
+    var queryString = $.param(query); // Chuyển đổi object thành query parameters
+
+    var downloadUrl = "/Report/BaoCao_nxtau/export?" + queryString;
+
+    var vesselName = $("#VesselName").val().replace(" | ", "_");
+
+    var currentDate = new Date();
+    var day = String(currentDate.getDate()).padStart(2, "0");
+    var month = String(currentDate.getMonth() + 1).padStart(2, "0");
+    var year = String(currentDate.getFullYear());
+    var hours = String(currentDate.getHours()).padStart(2, "0");
+    var minutes = String(currentDate.getMinutes()).padStart(2, "0");
+    var seconds = String(currentDate.getSeconds()).padStart(2, "0");
+
+    var fileName =
+      "BC_NHAP_XUAT_TAU_" +
+      vesselName +
+      "_" +
+      day +
+      month +
+      year +
+      "_" +
+      hours +
+      minutes +
+      seconds +
+      ".xlsx";
+
+    var downloadLink = document.createElement("a");
+    downloadLink.href = downloadUrl;
+    downloadLink.download = fileName;
+    downloadLink.target = "_blank";
+
+    downloadLink.addEventListener("click", function () {
+      console.log("File đang được tải xuống...");
+      toastr.info("File đang được tải xuống...");
+    });
+
+    downloadLink.addEventListener("load", function () {
+      console.log("File đã tải về thành công!");
+      toastr.success("File đã tải về thành công!");
+    });
+
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+  });
+
+  $("#Print").on("click", function () {
+    // Trigger the click event on the "#export" element
+    $("#Export").trigger("click");
+
+    // Wait for a short period of time before printing
+    setTimeout(function () {
+      var modalContent = $("#exportreport").html();
+      var printWindow = window.open("", "", "width=800, height=600");
+      printWindow.document.open();
+      printWindow.document.write(
+        "<html><head><title>Print</title></head><body>" +
+          modalContent +
+          "</body></html>"
+      );
+      printWindow.document.close();
+      printWindow.print();
+
+      // Hide the modal
+      $("#report-modal").modal("hide");
+    }, 500);
   });
 </script>

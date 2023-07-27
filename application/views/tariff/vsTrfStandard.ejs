@@ -1,33 +1,35 @@
 <link href="/assets/vendors/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
 <style>
 	@media (max-width: 767px) {
-		.f-text-right    {
+		.f-text-right {
 			text-align: right;
 		}
 	}
-	.no-pointer{
+
+	.no-pointer {
 		pointer-events: none;
 	}
 
-	#contenttable_wrapper .dataTables_scroll #cell-context-0 .dropdown-menu  .dropdown-item .sub-text,
-	#contenttable_wrapper .dataTables_scroll #cell-context-1 .dropdown-menu  .dropdown-item .sub-text,
-	#contenttable_wrapper .dataTables_scroll #cell-context-2 .dropdown-menu  .dropdown-item .sub-text,
-	#contenttable_wrapper .dataTables_scroll #cell-context-3 .dropdown-menu  .dropdown-item .sub-text,
-	#contenttable_wrapper .dataTables_scroll #cell-context-4 .dropdown-menu  .dropdown-item .sub-text,
-	#contenttable_wrapper .dataTables_scroll #cell-context-5 .dropdown-menu  .dropdown-item .sub-text,
-	#contenttable_wrapper .dataTables_scroll #cell-context-6 .dropdown-menu  .dropdown-item .sub-text,
-	#contenttable_wrapper .dataTables_scroll #cell-context-7 .dropdown-menu  .dropdown-item .sub-text,
-	#contenttable_wrapper .dataTables_scroll #cell-context-9 .dropdown-menu  .dropdown-item .sub-text{
+	#contenttable_wrapper .dataTables_scroll #cell-context-0 .dropdown-menu .dropdown-item .sub-text,
+	#contenttable_wrapper .dataTables_scroll #cell-context-1 .dropdown-menu .dropdown-item .sub-text,
+	#contenttable_wrapper .dataTables_scroll #cell-context-2 .dropdown-menu .dropdown-item .sub-text,
+	#contenttable_wrapper .dataTables_scroll #cell-context-3 .dropdown-menu .dropdown-item .sub-text,
+	#contenttable_wrapper .dataTables_scroll #cell-context-4 .dropdown-menu .dropdown-item .sub-text,
+	#contenttable_wrapper .dataTables_scroll #cell-context-5 .dropdown-menu .dropdown-item .sub-text,
+	#contenttable_wrapper .dataTables_scroll #cell-context-6 .dropdown-menu .dropdown-item .sub-text,
+	#contenttable_wrapper .dataTables_scroll #cell-context-7 .dropdown-menu .dropdown-item .sub-text,
+	#contenttable_wrapper .dataTables_scroll #cell-context-9 .dropdown-menu .dropdown-item .sub-text {
 		margin-left: 7px;
 		font-size: 12px;
 		font-style: italic;
 	}
 
-	.row .collapsible-box .ibox .btn-group{
+	.row .collapsible-box .ibox .btn-group {
 		width: 328px;
 	}
 
-	.btn-group-sm>.btn, .btn-sm{
+	.btn-group-sm>.btn,
+	.btn-sm {
 		border-radius: 5px;
 	}
 </style>
@@ -41,14 +43,10 @@
 					<button id="addrow" class="btn btn-outline-success btn-sm mr-1" title="Thêm dòng mới">
 						<span class="btn-icon"><i class="fa fa-plus"></i>Thêm dòng</span>
 					</button>
-					<button id="save" class="btn btn-outline-primary btn-sm mr-1" 
-										data-loading-text="<i class='la la-spinner spinner'></i>Lưu dữ liệu" 
-										title="Lưu dữ liệu">
+					<button id="save" class="btn btn-outline-primary btn-sm mr-1" data-loading-text="<i class='la la-spinner spinner'></i>Lưu dữ liệu" title="Lưu dữ liệu">
 						<span class="btn-icon"><i class="fa fa-save"></i>Lưu</span>
 					</button>
-					<button id="delete" class="btn btn-outline-danger btn-sm mr-1" 
-										data-loading-text="<i class='la la-spinner spinner'></i>Xóa dữ liệu" 
-										title="Xóa những dòng đang chọn">
+					<button id="delete" class="btn btn-outline-danger btn-sm mr-1" data-loading-text="<i class='la la-spinner spinner'></i>Xóa dữ liệu" title="Xóa những dòng đang chọn">
 						<span class="btn-icon"><i class="fa fa-trash"></i>Xóa dòng</span>
 					</button>
 				</div>
@@ -60,13 +58,12 @@
 							<label class="mr-3">Mẫu</label>
 							<select id="trfStandardFilter" name="trfStandardFilter" class="selectpicker" data-style="btn-default btn-sm" title="-- Chọn mẫu biểu cước --">
 								<% for(var i=0; i < locals.loadTrfStandardGroup.length; i++) { %>
-                                    <option>
-										<%- locals.loadTrfStandardGroup[i].ApplyDate+'-'+locals.loadTrfStandardGroup[i].ExpireDate+'-'+locals.loadTrfStandardGroup[i].Remark %>
-									</option>
-                                <% } %>
+								<option>
+									<%- locals.loadTrfStandardGroup[i].ApplyDate+'-'+locals.loadTrfStandardGroup[i].ExpireDate+'-'+locals.loadTrfStandardGroup[i].Remark %>
+								</option>
+								<% } %>
 							</select>
-							<button id="addNewTariff" class="btn btn-outline-success btn-sm ml-3" style="max-height: 5rem;" 
-										title="Thêm biểu cước chuẩn mới">
+							<button id="addNewTariff" class="btn btn-outline-success btn-sm ml-3" style="max-height: 5rem;" title="Thêm biểu cước chuẩn mới">
 								<span class="btn-icon"><i class="fa fa-plus"></i>Thêm biểu cước chuẩn mới</span>
 							</button>
 						</div>
@@ -75,22 +72,22 @@
 			</div>
 			<div class="ibox-body pt-0 pb-1 bg-f9 border-e">
 				<form id='samplesTariffForm'>
-				<div class="row ibox mb-0 border-e pb-1 pt-3">
-					<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-						<div class="row ml-2">
-							<label class="col-form-label">Hiệu lực từ</label>
-							<input id="ApplyDate" class="form-control form-control-sm" placeholder="" type="text" style="height: 25px; width: 125px; margin-left: 10px; margin-right: 10px; margin-top: 2px;border-radius: 5px;">
-							<label class="col-form-label">đến</label>
-							<input id="ExpireDate" class="form-control form-control-sm" placeholder="" type="text" style="height: 25px; width: 125px; margin-left: 10px; margin-right: 10px; margin-top: 2px; border-radius: 5px;">
+					<div class="row ibox mb-0 border-e pb-1 pt-3">
+						<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+							<div class="row ml-2">
+								<label class="col-form-label">Hiệu lực từ</label>
+								<input id="ApplyDate" class="form-control form-control-sm" placeholder="" type="text" style="height: 25px; width: 125px; margin-left: 10px; margin-right: 10px; margin-top: 2px;border-radius: 5px;">
+								<label class="col-form-label">đến</label>
+								<input id="ExpireDate" class="form-control form-control-sm" placeholder="" type="text" style="height: 25px; width: 125px; margin-left: 10px; margin-right: 10px; margin-top: 2px; border-radius: 5px;">
+							</div>
+						</div>
+						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+							<div class="row ml-2">
+								<label class="col-form-label">Tham chiếu</label>
+								<input id="Remark" class="form-control form-control-sm" placeholder="Tham chiếu" type="text" style="height: 25px; width: 335px; border-radius: 5px; margin-top: 2px; margin-left: 10px;">
+							</div>
 						</div>
 					</div>
-					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-						<div class="row ml-2">
-							<label class="col-form-label">Tham chiếu</label>
-							<input id="Remark" class="form-control form-control-sm" placeholder="Tham chiếu" type="text" style="height: 25px; width: 335px; border-radius: 5px; margin-top: 2px; margin-left: 10px;">
-						</div>
-					</div>
-				</div>
 				</form>
 			</div>
 			<div class="row ibox-body">
@@ -104,7 +101,7 @@
 	</div>
 </div>
 
-<!-- Add more row modal --> 
+<!-- Add more row modal -->
 <div class="modal fade" id="add-row-modal" tabindex="-1" role="dialog" aria-labelledby="groups-modalLabel-1" aria-hidden="true" data-whatever="id" style="padding-left: 14%; top: 200px">
 	<div class="modal-dialog" role="document" style="width: 300px!important">
 		<div class="modal-content" style="border-radius: 4px">
@@ -117,7 +114,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<div  style="margin: 0 auto!important;">
+				<div style="margin: 0 auto!important;">
 					<button class="btn btn-sm btn-rounded btn-gradient-blue btn-labeled btn-labeled-left btn-icon" id="apply-add-row" data-dismiss="modal">
 						<span class="btn-label"><i class="ti-check"></i></span>Xác nhận</button>
 					<button class="btn btn-sm btn-rounded btn-gradient-peach btn-labeled btn-labeled-left btn-icon" data-dismiss="modal">
@@ -129,38 +126,38 @@
 </div>
 
 <script type="text/javascript">
-	$(document).ready(function () {
-		var tbl 			= $('#contenttable'),
-			itemList 	= {},
-			unitList 	= {},
-			trfCodesList 	= {},
+	$(document).ready(function() {
+		var tbl = $('#contenttable'),
+			itemList = {},
+			unitList = {},
+			trfCodesList = {},
 			trfStandardList = {},
-			methodList	 	= {},
-			transitList		= {},
-			jobTypeList 	= {},
-			jobModeList 	= {},
-			classList 		= {},
-			serviceList		= {},
-			carTypeList		= {},
-			parentMenuList 	= {},
-			cargoTypeList 	= {},
-			invRateList		= {};
+			methodList = {},
+			transitList = {},
+			jobTypeList = {},
+			jobModeList = {},
+			classList = {},
+			serviceList = {},
+			carTypeList = {},
+			parentMenuList = {},
+			cargoTypeList = {},
+			invRateList = {};
 
-			itemList = <%- JSON.stringify(locals.itemList||[])%>;
-			unitList = <%- JSON.stringify(locals.unitList||[])%>;
-			trfStandardList = <%- JSON.stringify(locals.trfStandardList||[])%>;
-			trfCodesList = <%- JSON.stringify(locals.trfCodesList||[])%>;
-			methodList = <%- JSON.stringify(locals.methodList||[])%>;
-			transitList = <%- JSON.stringify(locals.transitList||[])%>;
-			jobTypeList = <%- JSON.stringify(locals.jobTypeList||[])%>;
-			jobModeList = <%- JSON.stringify(locals.jobModeList||[])%>;
-			classList = <%- JSON.stringify(locals.classList||[])%>;
-			serviceList = <%- JSON.stringify(locals.serviceList||[])%>;
-			carTypeList = <%- JSON.stringify(locals.carTypeList||[])%>;
-			invRateList = <%- JSON.stringify(locals.invRateList||[])%>;
-			cargoTypeList = <%- JSON.stringify(locals.cargoTypeList||[])%>;
+		itemList = <%- JSON.stringify(locals.itemList||[])%>;
+		unitList = <%- JSON.stringify(locals.unitList||[])%>;
+		trfStandardList = <%- JSON.stringify(locals.trfStandardList||[])%>;
+		trfCodesList = <%- JSON.stringify(locals.trfCodesList||[])%>;
+		methodList = <%- JSON.stringify(locals.methodList||[])%>;
+		transitList = <%- JSON.stringify(locals.transitList||[])%>;
+		jobTypeList = <%- JSON.stringify(locals.jobTypeList||[])%>;
+		jobModeList = <%- JSON.stringify(locals.jobModeList||[])%>;
+		classList = <%- JSON.stringify(locals.classList||[])%>;
+		serviceList = <%- JSON.stringify(locals.serviceList||[])%>;
+		carTypeList = <%- JSON.stringify(locals.carTypeList||[])%>;
+		invRateList = <%- JSON.stringify(locals.invRateList||[])%>;
+		cargoTypeList = <%- JSON.stringify(locals.cargoTypeList||[])%>;
 
-	
+
 
 		$('.ApplyDate').each((key, val) => {
 			let text = $(val).text();
@@ -171,55 +168,286 @@
 			let text = $(val).text();
 			$(val).text(getDateTime(text));
 		});
-        $('#addrow').on('click', function () {
+		$('#addrow').on('click', function() {
 			tbl.addRows();
 		});
-		function getSQLDateTimeFormat(date){
+
+		function getSQLDateTimeFormat(date) {
 			if (date.length <= 10)
 				date += ' 00:00:00';
 
-        	if (date.substring(2,3) == '/')
-        		return date.substring(6,10) + '-' + date.substring(3,5) + '-' + date.substring(0,2) + date.substring(10, date.length);
-        	else
-        		return date;
-        }
+			if (date.substring(2, 3) == '/')
+				return date.substring(6, 10) + '-' + date.substring(3, 5) + '-' + date.substring(0, 2) + date.substring(10, date.length);
+			else
+				return date;
+		}
 
-		var _columns = [
-				{ width: "80px", data: "STT", name: "STT", title: "STT", className: "text-center  editor-cancel", targets: 0 },
-				{ data: "TRFCode", name: "TRFCode", title: "Mã biểu cước", className: "text-center autocomplete",list: trfCodesList.map((itm)=>{return {value:itm.TRFCode, label:itm.TRFCodeName}}), targets: 1 },
-				{ data: "TRFDesc", name: "TRFDesc", title: "Diễn giải", className: "text-center", targets:2 },
-				{ data: "ClassID", name: "ClassID", title: "Hướng", className: "text-center autocomplete",list: [{ClassID:'*', ClassName:'*'}].concat(classList).map((itm)=>{return {value:itm.ClassID, label:itm.ClassName}}), targets:3 },
-				{ data: "IsLocalForeign", name: "IsLocalForeign", title: "Nội/Ngoại", className: "text-center autocomplete",list: [{value:'*', label:'*'},{value:'L',label:'Nội'},{value:'F',label:'Ngoại'}], targets:4 },
-				{ data: "JobModeID", name: "JobModeID", title: "Phương án", className: "text-center autocomplete",list: [{JobModeID:'*', JobModeName:'*'}].concat(jobModeList).map((itm)=>{return {value:itm.JobModeID, label:itm.JobModeName}}), targets:5 },
-				
-                { data: "MethodID", name: "MethodID", title: "Phương thức", className: "text-center autocomplete",list: [{MethodID:'*', MethodName:'*'}].concat(methodList).map((itm)=>{return {value:itm.MethodID, label:itm.MethodName}}), targets:6 },
-				{ data: "JobTypeID", name: "JobTypeID", title: "Loại công việc", className: "text-center autocomplete",list: [{JobTypeID:'*', JobTypeName:'*'}].concat(jobTypeList).map((itm)=>{return {value:itm.JobTypeID, label:itm.JobTypeName}}), targets:7 },
-				{ data: "ServiceID", name: "ServiceID", title: "Dịch vụ", className: "text-center autocomplete",list: [{ServiceID:'*', ServiceName:'*'}].concat(serviceList).map((itm)=>{return {value:itm.ServiceID, label:itm.ServiceName}}), targets:8 },
-                { data: "TransitID", name: "TransitID", title: "Loại hình vận chuyển", className: "text-center autocomplete",list: [{TransitID:'*', TransitName:'*'}].concat(transitList).map((itm)=>{return {value:itm.TransitID, label:itm.TransitName}}), targets:9 },
-				
-                { data: "CargoTypeID", name: "CargoTypeID", title: "Nhóm hàng hóa", className: "text-center autocomplete",list: [{CargoTypeID:'*', CargoTypeName:'*'}].concat(cargoTypeList).map((itm)=>{return {value:itm.CargoTypeID, label:itm.CargoTypeName}}), targets:10 },
-                { data: "ItemID", name: "ItemID", title: "Hàng hóa", className: "text-center autocomplete",list: [{ItemID:'*', ItemName:'*'}].concat(itemList).map((itm)=>{return {value:itm.ItemID, label:itm.ItemName}}), targets:11 },
-				{ data: "FormGRT", name: "FormGRT", title: "Từ GRT", className: "text-center data-type-numeric", targets:12 },
-                { data: "ToGRT", name: "ToGRT", title: "Đến GRT", className: "text-center data-type-numeric", targets:13 },
-                
-                { data: "UnitID", name: "UnitID", title: "ĐVT", className: "text-center autocomplete",list: [{UnitID:'*', UnitName:'*'}].concat(unitList).map((itm)=>{return {value:itm.UnitID, label:itm.UnitName}}), targets:14 },
-				{ data: "RateID", name: "RateID", title: "Loại tiền", className: "text-center autocomplete",list: invRateList.map((itm)=>{return {value:itm.RateID, label:itm.RateID}}), targets:15 },
-				
-                { data: "Price", name: "Price", title: "Giá", className: "text-center data-type-numeric", targets:16 },
-				{ data: "VAT", name: "VAT", title: "VAT", className: "text-center data-type-numeric", targets:17},
-				{ data: "IncludeVAT", name: "IncludeVAT", title: "Đã bao gồm thuế", className: "text-center data-type-checkbox", targets:18 },
-				{ data: "rowguid", name: "rowguid", title: "rowguid", visible: false, targets: 19 }
+		var _columns = [{
+					width: "80px",
+					data: "STT",
+					name: "STT",
+					title: "STT",
+					className: "text-center  editor-cancel",
+					targets: 0
+				},
+				{
+					data: "TRFCode",
+					name: "TRFCode",
+					title: "Mã biểu cước",
+					className: "text-center autocomplete",
+					list: trfCodesList.map((itm) => {
+						return {
+							value: itm.TRFCode,
+							label: itm.TRFCodeName
+						}
+					}),
+					targets: 1
+				},
+				{
+					data: "TRFDesc",
+					name: "TRFDesc",
+					title: "Diễn giải",
+					className: "text-center",
+					targets: 2
+				},
+				{
+					data: "ClassID",
+					name: "ClassID",
+					title: "Hướng",
+					className: "text-center autocomplete",
+					list: [{
+						ClassID: '*',
+						ClassName: '*'
+					}].concat(classList).map((itm) => {
+						return {
+							value: itm.ClassID,
+							label: itm.ClassName
+						}
+					}),
+					targets: 3
+				},
+				{
+					data: "IsLocalForeign",
+					name: "IsLocalForeign",
+					title: "Nội/Ngoại",
+					className: "text-center autocomplete",
+					list: [{
+						value: '*',
+						label: '*'
+					}, {
+						value: 'L',
+						label: 'Nội'
+					}, {
+						value: 'F',
+						label: 'Ngoại'
+					}],
+					targets: 4
+				},
+				{
+					data: "JobModeID",
+					name: "JobModeID",
+					title: "Phương án",
+					className: "text-center autocomplete",
+					list: [{
+						JobModeID: '*',
+						JobModeName: '*'
+					}].concat(jobModeList).map((itm) => {
+						return {
+							value: itm.JobModeID,
+							label: itm.JobModeName
+						}
+					}),
+					targets: 5
+				},
+
+				{
+					data: "MethodID",
+					name: "MethodID",
+					title: "Phương thức",
+					className: "text-center autocomplete",
+					list: [{
+						MethodID: '*',
+						MethodName: '*'
+					}].concat(methodList).map((itm) => {
+						return {
+							value: itm.MethodID,
+							label: itm.MethodName
+						}
+					}),
+					targets: 6
+				},
+				{
+					data: "JobTypeID",
+					name: "JobTypeID",
+					title: "Loại công việc",
+					className: "text-center autocomplete",
+					list: [{
+						JobTypeID: '*',
+						JobTypeName: '*'
+					}].concat(jobTypeList).map((itm) => {
+						return {
+							value: itm.JobTypeID,
+							label: itm.JobTypeName
+						}
+					}),
+					targets: 7
+				},
+				{
+					data: "ServiceID",
+					name: "ServiceID",
+					title: "Dịch vụ",
+					className: "text-center autocomplete",
+					list: [{
+						ServiceID: '*',
+						ServiceName: '*'
+					}].concat(serviceList).map((itm) => {
+						return {
+							value: itm.ServiceID,
+							label: itm.ServiceName
+						}
+					}),
+					targets: 8
+				},
+				{
+					data: "TransitID",
+					name: "TransitID",
+					title: "Loại hình vận chuyển",
+					className: "text-center autocomplete",
+					list: [{
+						TransitID: '*',
+						TransitName: '*'
+					}].concat(transitList).map((itm) => {
+						return {
+							value: itm.TransitID,
+							label: itm.TransitName
+						}
+					}),
+					targets: 9
+				},
+
+				{
+					data: "CargoTypeID",
+					name: "CargoTypeID",
+					title: "Nhóm hàng hóa",
+					className: "text-center autocomplete",
+					list: [{
+						CargoTypeID: '*',
+						CargoTypeName: '*'
+					}].concat(cargoTypeList).map((itm) => {
+						return {
+							value: itm.CargoTypeID,
+							label: itm.CargoTypeName
+						}
+					}),
+					targets: 10
+				},
+				{
+					data: "ItemID",
+					name: "ItemID",
+					title: "Hàng hóa",
+					className: "text-center autocomplete",
+					list: [{
+						ItemID: '*',
+						ItemName: '*'
+					}].concat(itemList).map((itm) => {
+						return {
+							value: itm.ItemID,
+							label: itm.ItemName
+						}
+					}),
+					targets: 11
+				},
+				{
+					data: "FormGRT",
+					name: "FormGRT",
+					title: "Từ GRT",
+					className: "text-center data-type-numeric",
+					targets: 12
+				},
+				{
+					data: "ToGRT",
+					name: "ToGRT",
+					title: "Đến GRT",
+					className: "text-center data-type-numeric",
+					targets: 13
+				},
+
+				{
+					data: "UnitID",
+					name: "UnitID",
+					title: "ĐVT",
+					className: "text-center autocomplete",
+					list: [{
+						UnitID: '*',
+						UnitName: '*'
+					}].concat(unitList).map((itm) => {
+						return {
+							value: itm.UnitID,
+							label: itm.UnitName
+						}
+					}),
+					targets: 14
+				},
+				{
+					data: "CurrencyCode",
+					name: "CurrencyCode",
+					title: "Loại tiền",
+					className: "text-center autocomplete",
+					list: invRateList.map((itm) => {
+						return {
+							value: itm.RateID,
+							label: itm.RateID
+						}
+					}),
+					targets: 15
+				},
+
+				{
+					data: "Price",
+					name: "Price",
+					title: "Giá",
+					className: "text-center data-type-numeric",
+					targets: 16
+				},
+				{
+					data: "VAT",
+					name: "VAT",
+					title: "VAT",
+					className: "text-center data-type-numeric",
+					targets: 17
+				},
+				{
+					data: "IncludeVAT",
+					name: "IncludeVAT",
+					title: "Đã bao gồm thuế",
+					className: "text-center data-type-checkbox",
+					targets: 18
+				},
+				{
+					data: "rowguid",
+					name: "rowguid",
+					title: "rowguid",
+					visible: false,
+					targets: 19
+				}
 			],
 			tbl = $('#contenttable'),
 			dataList = <%- JSON.stringify(locals.dataList || []) %>;
-		
-            //_columns=_columns.map((itm,ii)=>{return {...itm,targets:ii}});
-            console.log(_columns);
+
+		//_columns=_columns.map((itm,ii)=>{return {...itm,targets:ii}});
+		console.log(_columns);
 		var dataTbl = tbl.newDataTable({
 			scrollY: '55vh',
 			columnDefs: _columns,
-			data: dataList.map((itm, ii) => { return { ...itm, STT: ii + 1 } }),
-			order: [[0, 'asc']],
+			data: dataList.map((itm, ii) => {
+				return {
+					...itm,
+					STT: ii + 1
+				}
+			}),
+			order: [
+				[0, 'asc']
+			],
 			paging: false,
 			keys: true,
 			autoFill: {
@@ -236,152 +464,159 @@
 		$('#ApplyDate, #ExpireDate').datepicker({
 			controlType: 'select',
 			oneLine: true,
-			dateFormat: 'yy-mm-dd',	
+			dateFormat: 'yy-mm-dd',
 		});
 
-		$('#ExpireDate').on('focus', function(){
-			$(window).keyup(function (e) {
-				if (e.which == 56){
+		$('#ExpireDate').on('focus', function() {
+			$(window).keyup(function(e) {
+				if (e.which == 56) {
 					$('#ExpireDate').val('*');
 				}
 			});
 		});
 
 
-       	/* Save event */
-       	$('#save').on('click', function(){
-            if(tbl.DataTable().rows( '.addnew, .editing' ).data().toArray().length == 0){
-            	$('.toast').remove();
-            	toastr["info"]("Không có dữ liệu thay đổi!");
-            }else{
-           		if (!($("#ApplyDate").val())){
-           			toastr['error']('Vui lòng nhập thời gian bắt đầu hiệu lực!');
-           			return;
-           		}   
+		/* Save event */
+		$('#save').on('click', function() {
+			if (tbl.DataTable().rows('.addnew, .editing').data().toArray().length == 0) {
+				$('.toast').remove();
+				toastr["info"]("Không có dữ liệu thay đổi!");
+			} else {
+				if (!($("#ApplyDate").val())) {
+					toastr['error']('Vui lòng nhập thời gian bắt đầu hiệu lực!');
+					return;
+				}
 
-           		if (!($("#ExpireDate").val())){
-           			toastr['error']('Vui lòng nhập thời gian kết thúc hiệu lực!');
-           			return;
-           		}   
+				if (!($("#ExpireDate").val())) {
+					toastr['error']('Vui lòng nhập thời gian kết thúc hiệu lực!');
+					return;
+				}
 
-            	var newData = tbl.getAddNewData();
+				var newData = tbl.getAddNewData();
 
-            	if (newData.length > 0){
-					for (i = 0; i < newData.length; i++){
-						if (newData[i]['TRFCode'] == ''){
+				if (newData.length > 0) {
+					for (i = 0; i < newData.length; i++) {
+						if (newData[i]['TRFCode'] == '') {
 							toastr['error']("Vui lòng chọn Mã biểu cước!");
 							return;
 						}
-						
-						if (newData[i]['TRFDesc'] == ''){
+
+						if (newData[i]['TRFDesc'] == '') {
 							toastr['error']("Vui lòng nhập Tên biểu cước cho Mã biểu cước: " + newData[i]['TRFCode']);
 							return;
-						}
-						else{
-							for (j = 0; j < trfStandardList.length; j++){
-								if (newData[i]['TRFCode'] == trfStandardList[j]['TRFCode']){
-									if (newData[i]['TRFDesc'] == trfStandardList[j]['TRFDesc']){
+						} else {
+							for (j = 0; j < trfStandardList.length; j++) {
+								if (newData[i]['TRFCode'] == trfStandardList[j]['TRFCode']) {
+									if (newData[i]['TRFDesc'] == trfStandardList[j]['TRFDesc']) {
 										toastr['error']("Đã tồn tại tên '" + newData[i]['TRFDesc'] + "'' tương ứng với Mã biểu cước: " + newData[i]['TRFCode']);
 										return;
 									}
 								}
 							}
-						}												
+						}
 
-						if (newData[i]['MethodID'] == ''){
+						if (newData[i]['MethodID'] == '') {
 							toastr['error']("Vui lòng chọn Phương thức vận chuyển cho Mã biểu cước: " + newData[i]['TRFCode']);
 							return;
 						}
 
-						if (newData[i]['TransitName'] == ''){
+						if (newData[i]['TransitName'] == '') {
 							toastr['error']("Vui lòng chọn Loại hình vận chuyển cho Mã biểu cước: " + newData[i]['TRFCode']);
 							return;
 						}
 
 
-						if (newData[i]['JobTypeID'] == ''){
+						if (newData[i]['JobTypeID'] == '') {
 							toastr['error']("Vui lòng chọn Loại công việc cho Mã biểu cước: " + newData[i]['TRFCode']);
 							return;
 						}
 
-						if (newData[i]['JobModeID'] == ''){
+						if (newData[i]['JobModeID'] == '') {
 							toastr['error']("Vui lòng chọn Phương án cho Mã biểu cước: " + newData[i]['TRFCode']);
 							return;
 						}
 
-						if (newData[i]['ClassID'] == ''){
+						if (newData[i]['ClassID'] == '') {
 							toastr['error']("Vui lòng chọn Loại nhập xuất cho Mã biểu cước: " + newData[i]['TRFCode']);
 							return;
 						}
 
-						if (newData[i]['Price'] == ''){
+						if (newData[i]['Price'] == '') {
 							toastr['error']("Vui lòng nhập Giá cho Mã biểu cước: " + newData[i]['TRFCode']);
 							return;
-						}
-						else{
-							if (!($.isNumeric(newData[i]['Price']))){
+						} else {
+							if (!($.isNumeric(newData[i]['Price']))) {
 								toastr['error']("Vui lòng nhập Giá hợp lệ cho Mã biểu cước: " + newData[i]['TRFCode']);
 								return;
 							}
 						}
 
-						if (newData[i]['ServiceID'] == ''){
+						if (newData[i]['ServiceID'] == '') {
 							toastr['error']("Vui lòng chọn Dịch vụ cho Mã biểu cước: " + newData[i]['TRFCode']);
 							return;
 						}
 
-						if (newData[i]['CarTypeID'] == ''){
+						if (newData[i]['CarTypeID'] == '') {
 							toastr['error']("Vui lòng chọn Loại xe cho Mã biểu cước: " + newData[i]['TRFCode']);
 							return;
 						}
 
 
-						if (newData[i]['RateID'] == ''){
+						if (newData[i]['CurrencyCode'] == '') {
 							toastr['error']("Vui lòng chọn Tỷ giá cho Mã biểu cước: " + newData[i]['TRFCode']);
 							return;
 						}
 
-						if (newData[i]['VAT'] == ''){
+						if (newData[i]['VAT'] == '') {
 							toastr['error']("Vui lòng nhập VAT cho Mã biểu cước: " + newData[i]['TRFCode']);
 							return;
 						}
 					}
 				}
 
-            	$.confirm({
-		            title: 'Thông báo!',
-		            type: 'orange',
-		            icon: 'fa fa-warning',
-		            content: 'Tất cả các thay đổi sẽ được lưu lại!\nTiếp tục?',
-		            buttons: {
-		                ok: {
-		                    text: 'Xác nhận lưu',
-		                    btnClass: 'btn-warning',
-		                    keys: ['Enter'],
-		                    action: function(){
-		                        saveData();
-		                    }
-		                },
-		                cancel: {
-		                    text: 'Hủy bỏ',
-		                    btnClass: 'btn-default',
-		                    keys: ['ESC']
-		                }
-		            }
-		        });
-            }
-        });
+				$.confirm({
+					title: 'Thông báo!',
+					type: 'orange',
+					icon: 'fa fa-warning',
+					content: 'Tất cả các thay đổi sẽ được lưu lại!\nTiếp tục?',
+					buttons: {
+						ok: {
+							text: 'Xác nhận lưu',
+							btnClass: 'btn-warning',
+							keys: ['Enter'],
+							action: function() {
+								saveData();
+							}
+						},
+						cancel: {
+							text: 'Hủy bỏ',
+							btnClass: 'btn-default',
+							keys: ['ESC']
+						}
+					}
+				});
+			}
+		});
 
 
-        //save functions
-        function saveData(){        	
-			var newData = tbl.DataTable().rows( '.addnew, .editing' ).data().toArray();
+		//save functions
+		function saveData() {
+			var newData = tbl.DataTable().rows('.addnew, .editing').data().toArray();
 
-			if(newData.length > 0){
-				var ApplyDate	= getSQLDateTimeFormat($("#ApplyDate").val()),
-					ExpireDate 	= ($("#ExpireDate").val() == '*' ? '*' : getSQLDateTimeFormat($("#ExpireDate").val())),
-					Remark 		= $("#Remark").val();
-                newData=newData.map(itm=>{return {...itm,...{ApplyDate,ExpireDate,Remark}}})
+			if (newData.length > 0) {
+				var ApplyDate = getSQLDateTimeFormat($("#ApplyDate").val()),
+					ExpireDate = ($("#ExpireDate").val() == '*' ? '*' : getSQLDateTimeFormat($("#ExpireDate").val())),
+					Remark = $("#Remark").val();
+				newData = newData.map(itm => {
+					return {
+						...itm,
+						...{
+							ApplyDate,
+							ExpireDate,
+							Remark
+						}
+					}
+				})
 				var fnew = {
 					'action': 'add',
 					'data': newData,
@@ -393,66 +628,66 @@
 			}
 		}
 
-		function postSave(formData){
+		function postSave(formData) {
 			var saveBtn = $('#save');
 			saveBtn.button('loading');
-        	$('.ibox.collapsible-box').blockUI();
+			$('.ibox.collapsible-box').blockUI();
 
 			$.ajax({
-                url: "/Tariff/trfStandard/save",
-                dataType: 'json',
-                data: formData,
-                type: 'POST',
-                success: function (data) {
-                    if(!data.data) {
-                        toastr["error"]('Không thể cập nhật dữ liệu !');
-                        return;
-                    }
-                    toastr["success"]("Cập nhật thành công!");
-                    tbl.DataTable().rows( '.editing' ).nodes().to$().removeClass("editing");
-                    tbl.DataTable().rows( '.addnew' ).nodes().to$().removeClass("addnew");
-                    tbl.updateSTT(0);
-                    //location.reload();
-                    loadData();
+				url: "/Tariff/trfStandard/save",
+				dataType: 'json',
+				data: formData,
+				type: 'POST',
+				success: function(data) {
+					if (!data.data) {
+						toastr["error"]('Không thể cập nhật dữ liệu !');
+						return;
+					}
+					toastr["success"]("Cập nhật thành công!");
+					tbl.DataTable().rows('.editing').nodes().to$().removeClass("editing");
+					tbl.DataTable().rows('.addnew').nodes().to$().removeClass("addnew");
+					tbl.updateSTT(0);
+					//location.reload();
+					loadData();
 
-                    saveBtn.button('reset');
-        			$('.ibox.collapsible-box').unblock();
-                },
-                error: function(err){
-                	toastr["error"]("Error!");
-                	saveBtn.button('reset');
-                	$('.ibox.collapsible-box').unblock();
-                	console.log(err);
-                }
-            });
+					saveBtn.button('reset');
+					$('.ibox.collapsible-box').unblock();
+				},
+				error: function(err) {
+					toastr["error"]("Error!");
+					saveBtn.button('reset');
+					$('.ibox.collapsible-box').unblock();
+					console.log(err);
+				}
+			});
 		}
 
 		/* Delete event */
-		$('#delete').on('click', function () {
-        	if(tbl.getSelectedRows().length == 0){
-            	$('.toast').remove();
-            	toastr["info"]("Vui lòng chọn các dòng dữ liệu để xóa!");
-            }else{
-            	tbl.confirmDelete(function(selectedData){
-            		postDel(selectedData);
-            	});
-            }
-        });
-		 
-		function postDel(rows){
+		$('#delete').on('click', function() {
+			if (tbl.getSelectedRows().length == 0) {
+				$('.toast').remove();
+				toastr["info"]("Vui lòng chọn các dòng dữ liệu để xóa!");
+			} else {
+				tbl.confirmDelete(function(selectedData) {
+					postDel(selectedData);
+				});
+			}
+		});
+
+		function postDel(rows) {
 			$('.ibox.collapsible-box').blockUI();
-			
-			var delTRFStandard = rows.map(p=>p[_columns.indexOf("rowguid")]);
+
+			var delTRFStandard = rows.map(p => p[_columns.indexOf("rowguid")]);
 			var delBtn = $('#delete');
 			delBtn.button('loading');
 
-			for (i = 0; i < delTRFStandard.length; i++){
-				for (j = 0; j < trfStandardList.length; j++){
-					if (delTRFStandard[i] == trfStandardList[j]['rowguid']){
-						trfStandardList.splice(j,1);
+			for (i = 0; i < delTRFStandard.length; i++) {
+				for (j = 0; j < trfStandardList.length; j++) {
+					if (delTRFStandard[i] == trfStandardList[j]['rowguid']) {
+						trfStandardList.splice(j, 1);
 					}
 				}
-			}	
+			}
 
 			var formdata = {
 				'action': 'delete',
@@ -464,24 +699,24 @@
 				dataType: 'json',
 				data: formdata,
 				type: 'POST',
-				success: function (output) {
+				success: function(output) {
 					delBtn.button('reset');
 					var data = output.result;
-	                if(data.error && data.error.length > 0){
-	                	for (var i = 0; i < data.error.length; i++) {
-	                		toastr["error"]('Không thể xóa!');
-	                	}
-	                }
+					if (data.error && data.error.length > 0) {
+						for (var i = 0; i < data.error.length; i++) {
+							toastr["error"]('Không thể xóa!');
+						}
+					}
 
-	                if(data.data){
-	                	for (var i = 0; i < data.success.length; i++) {
-	                		toastr["success"]( "Xóa thành công!" );
-	                		loadData();
-	                	}
-	                }
+					if (data.data) {
+						for (var i = 0; i < data.success.length; i++) {
+							toastr["success"]("Xóa thành công!");
+							loadData();
+						}
+					}
 					$('.ibox.collapsible-box').unblock();
 				},
-				error: function(err){
+				error: function(err) {
 					delBtn.button('reset');
 					$('.ibox.collapsible-box').unblock();
 					console.log(err);
@@ -489,66 +724,76 @@
 			});
 		}
 
-function loadData(){
-    var formData = {
-            'filter': {
-                'ApplyDate': $('#ApplyDate').val(),
-                'ExpireDate': $("#ExpireDate").val(),
-                'Remark': $('#Remark').val(),
-            }
-        };
-    $.ajax({
-        url: "/Tariff/trfStandard/get",
-        dataType: 'json',
-        data: formData,
-        type: 'POST',
-        success: function (data) {
-            tbl.dataTable().fnClearTable();
-            if(data.data.length > 0){
-                tbl.dataTable().fnAddData(data.data.map((itm,ii)=>{return {...itm,STT:ii+1}}));
-            }
-        },
-        error: function(err){
-            console.log(err);
-        }
-    });
-}
+		function loadData() {
+			var formData = {
+				'filter': {
+					'ApplyDate': $('#ApplyDate').val(),
+					'ExpireDate': $("#ExpireDate").val(),
+					'Remark': $('#Remark').val(),
+				}
+			};
+			$.ajax({
+				url: "/Tariff/trfStandard/get",
+				dataType: 'json',
+				data: formData,
+				type: 'POST',
+				success: function(data) {
+					tbl.dataTable().fnClearTable();
+					if (data.data.length > 0) {
+						tbl.dataTable().fnAddData(data.data.map((itm, ii) => {
+							return {
+								...itm,
+								STT: ii + 1
+							}
+						}));
+					}
+				},
+				error: function(err) {
+					console.log(err);
+				}
+			});
+		}
 		/* Filter */
-		$('#trfStandardFilter').on('change', function(){
-			var val 		= $('select[name=trfStandardFilter]').val();		
-            let split=(val).split('-');		
-            let FromDay 	= moment(split[0],'DD/MM/YYYY').format('YYYY-MM-DD'),
-				ToDay 		= moment(split[1],'DD/MM/YYYY').format('YYYY-MM-DD'),
-				Remark 		= (split[2]).trim();
+		$('#trfStandardFilter').on('change', function() {
+			var val = $('select[name=trfStandardFilter]').val();
+			let split = (val).split('-');
+			let FromDay = moment(split[0], 'DD/MM/YYYY').format('YYYY-MM-DD'),
+				ToDay = moment(split[1], 'DD/MM/YYYY').format('YYYY-MM-DD'),
+				Remark = (split[2]).trim();
 			$('#ApplyDate').val((FromDay));
 			$("#ExpireDate").val((ToDay));
 			$('#Remark').val(Remark);
 
 			var formData = {
-					'filter': {
-                        'ApplyDate': (FromDay == '' ? '' : getSQLDateTimeFormat(FromDay)),
-                        'ExpireDate': (ToDay == '*' ? '*' : getSQLDateTimeFormat(ToDay)),
-                        'Remark': Remark,
-                    }
-				};
-				$.ajax({
-					url: "/Tariff/trfStandard/get",
-					dataType: 'json',
-					data: formData,
-					type: 'POST',
-					success: function (data) {
-						tbl.dataTable().fnClearTable();
-			        	if(data.data.length > 0){
-							tbl.dataTable().fnAddData(data.data.map((itm,ii)=>{return {...itm,STT:ii+1}}));
-			        	}
-					},
-					error: function(err){
-						console.log(err);
+				'filter': {
+					'ApplyDate': (FromDay == '' ? '' : getSQLDateTimeFormat(FromDay)),
+					'ExpireDate': (ToDay == '*' ? '*' : getSQLDateTimeFormat(ToDay)),
+					'Remark': Remark,
+				}
+			};
+			$.ajax({
+				url: "/Tariff/trfStandard/get",
+				dataType: 'json',
+				data: formData,
+				type: 'POST',
+				success: function(data) {
+					tbl.dataTable().fnClearTable();
+					if (data.data.length > 0) {
+						tbl.dataTable().fnAddData(data.data.map((itm, ii) => {
+							return {
+								...itm,
+								STT: ii + 1
+							}
+						}));
 					}
-				});
+				},
+				error: function(err) {
+					console.log(err);
+				}
+			});
 		});
 
-		$("#addNewTariff").on('click', function(){
+		$("#addNewTariff").on('click', function() {
 			$("#samplesTariffForm").trigger('reset');
 			$("#trfStandardFilter").val('');
 			$("#trfStandardFilter").selectpicker('refresh');

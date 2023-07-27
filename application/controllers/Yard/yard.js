@@ -6,13 +6,20 @@ const VesselModel = require('../../models/VesselModel.js');
 const YardModel = require('../../models/YardModel.js');
 router.get('/', auth, async function (req, res, next) {
     let loadVesselVisit = await VesselModel.loadVesselVisit(req);
-    let loadWorkerGroup = await CommonModel.loadWorkerGroup(req);
-    let loadDevice = await CommonModel.loadDevice(req);
+    let loadWorkerGroup = await CommonModel.loadWorkerGroup(req);    
+    let loadDevice = await CommonModel.loadDevice({...req,body:{filter:{DeviceTypeID:{operation:'!=',value:'YT'}}}});
     //console.log(loadVesselVisit);
     res.loadOnce('yard/yard', {loadVesselVisit,loadWorkerGroup,loadDevice});
 });
-router.post('/loadTallyData', auth, async function (req, res, next) {
-    YardModel.loadTallyData(req).then((data)=>{
+router.post('/loadXuatTauData', auth, async function (req, res, next) {
+    YardModel.loadXuatTauData(req).then((data)=>{
+        res.status(200).json({data});
+    }).catch((error)=>{
+        res.status(200).json({error});
+    });
+});
+router.post('/loadNhapTauData', auth, async function (req, res, next) {
+    YardModel.loadNhapTauData(req).then((data)=>{
         res.status(200).json({data});
     }).catch((error)=>{
         res.status(200).json({error});

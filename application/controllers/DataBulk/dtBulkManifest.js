@@ -36,6 +36,7 @@ router.post('/getLaneSearch', auth, function (req, res, next) {
     });
     
 });
+
 router.post('/loadVesselVisit', auth, function (req, res, next) {
     VesselModel.loadVesselVisit(req).then((data)=>{
         res.status(200).json({data});
@@ -52,8 +53,17 @@ router.post('/get', auth, function (req, res, next) {
         console.log(error);
         res.status(200).json({error});
     });
-    
 });
+
+router.post('/getStock', auth, function (req, res, next) {
+    BulkModel.getStock(req).then((data)=>{
+        res.status(200).json({data});
+    }).catch((error)=>{
+        console.log(error);
+        res.status(200).json({error});
+    });
+});
+
 router.post('/save', auth, async function (req, res, next) {
     BulkModel.saveBulkManifest(req).then((data)=>{
         res.status(200).json({data});
@@ -62,6 +72,7 @@ router.post('/save', auth, async function (req, res, next) {
         res.status(200).json({error});
     });
 });
+
 router.post('/delete', auth, async function (req, res, next) {
     BulkModel.deleteBulkManifest(req).then((data)=>{
         res.status(200).json({data});
@@ -69,4 +80,5 @@ router.post('/delete', auth, async function (req, res, next) {
         res.status(200).json({error});
     });
 });
+
 module.exports = router;

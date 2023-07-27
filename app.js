@@ -33,7 +33,7 @@ console.log = (...err) => {
       stacks[1] || ""
     );
 };
-
+console.error=console.log;
 // view engine setup
 app.set("views", [
   path.join(__dirname, "application/views/"),

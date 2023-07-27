@@ -1,0 +1,1095 @@
+<script>
+	document.title = "Báo cáo tồn kho bãi";
+</script>
+<link href="/assets/vendors/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
+<style>
+	/* Thoilc(*Note)::Xoá bỏ đường viền trên lưới */
+	.dataTable tfoot tr th {
+		border: none !important;
+		text-align: center !important;
+	}
+
+	.excel-text {
+		mso-number-format: "@";
+	}
+
+	.excel-number {
+		mso-number-format: "#,##0";
+	}
+
+	.excel-float {
+		mso-number-format: "#,##0.00";
+	}
+</style>
+
+<!-- main screem -->
+<div class="row">
+	<div class="col-xl-12" style="font-size: 12px">
+		<div class="ibox collapsible-box">
+			<i class="la la-angle-double-up dock-right"></i>
+			<div class="ibox-head">
+				<div class="ibox-title">BÁO CÁO TỒN KHO BÃI</div>
+				<div class="button-bar-group mr-3">
+					<button id="importFile" class="btn btn-outline-warning btn-sm btn-loading mr-1" data-loading-text="<i class='la la-spinner spinner'></i>Nạp dữ liệu" title="Nạp dữ liệu">
+						<span class="btn-icon"><i class="ti-search"></i>Nạp dữ liệu</span>
+					</button>
+
+					<button id="Print" class="btn btn-outline-dark btn-sm btn-loading mr-1" data-loading-text="<i class='la la-spinner spinner'></i>Print" title="Print">
+						<span class="btn-icon"><i class="ti-printer"></i>In</span>
+					</button>
+
+					<button id="Export" class="btn btn-outline-success btn-sm mr-1" data-loading-text="<i class='la la-spinner spinner'></i>Export" title="Export">
+						<span class="btn-icon"><i class="ti-export"></i>Export</span>
+					</button>
+				</div>
+			</div>
+
+			<div class="ibox-body pt-0 pb-0 bg-f9 border-e">
+				<div class="row ibox mb-0 border-e pb-1 pt-1">
+					<div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-xs-12">
+						<div class="row col-xl-12" id="row-transfer-left">
+							<div class="col-xl-3 p-0">
+								<div class="col-xl-12 mt-3 p-0">
+									<label style="font-size: 15px;margin-top: 0.4rem;">Đến ngày</label>
+								</div>
+								<div class="col-xl-12 mt-1 p-0">
+									<input style="border-radius: 5px; padding-left: 7.5px; border-color: rgba(0, 0, 0, .1); border-width: 1px; height: 2rem; width: 12rem" class="form-control form-control-sm input-required width_date hasDatepicker" id="getIn" type="text" autocomplete="off" placeholder="" value="">
+								</div>
+							</div>
+							<div class="col-xl-9">
+								<div class="col-xl-12 mt-3">
+									<div class="input-group">
+										<input id="VoyageKey" class="form-control form-control-sm" type="text" hidden="">
+										<label style="width: 5.5rem; margin-top: 0.4rem">Thông tin tàu</label>
+										<input id="VesselName" placeholder="Tên tàu/Chuyến nhập/Chuyến xuất" style="border-radius: 5px;margin-left: 1rem;padding-left: 7.5px;border-color: rgba(0, 0, 0, .1);border-width: 1px;height: 2rem;" type="text" class="col-xl-7">
+										<button id="chooseVessel" class="btn btn-success btn-icon-only btn-circle btn-sm btn-air ml-2" style="height: 1.65rem; width: 1.65rem" title="Chọn tàu">
+											<i class="ti-plus"></i>
+										</button>
+										<button id="nochooseVessel" class="btn btn-danger btn-icon-only btn-circle btn-sm btn-air ml-2" style="height: 1.65rem; width: 1.65rem" title="Bỏ chọn">
+											<i class="ti-close"></i>
+										</button>
+									</div>
+								</div>
+								<div class="col-xl-12 mt-3">
+									<div class="input-group" style="padding-top: 0.4rem;">
+										<label style="width: 5.5rem; margin-top: 0.4rem">Chủ hàng</label>
+										<!-- <input id="cusID" placeholder="Chủ hàng" style="border-radius: 5px; padding-left: 7.5px; border-color: rgba(0, 0, 0, .1); border-width: 1px; height: 2rem; margin-left: 1rem; margin-bottom: 0.4rem;" type="text" class="col-xl-9"> -->
+										<input id="c-CusID" placeholder="Chủ hàng" style="border-radius: 5px; padding-left: 7.5px; border-color: rgba(0, 0, 0, .1); border-width: 1px; height: 2rem; margin-left: 1rem;" type="text" class="col-xl-8">
+										<span class="input-group-addon bg-white btn mobile-hiden text-warning" title="Chọn đối tượng thanh toán" data-toggle="modal" data-target="#payer-modal" onclick="setTimeout(()=>{$('#search-payer').DataTable().draw()},200)" style="border-radius: 5px; padding-left: 7.5px; border-color: rgba(0, 0, 0, .1); border-width: 1px; height: 2rem; padding: 0 0.5rem;">
+											<i class="ti-search"></i>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-7 col-lg-7 col-md-12 col-sm-12 col-xs-12">
+						<div class="row col-xl-12 col-lg-6 col-md-6 col-sm-12 col-xs-12 mt-3" id="row-transfer-left">
+							<div class="col-xl-4 col-lg-2 col-md-2 col-sm-4 col-xs-4">
+								<label>Hướng</label>
+								<select id="classID" style="
+                                            border-radius: 5px;
+                                            margin-left: 2.7rem;
+                                            border-color: rgba(0, 0, 0, 0.1);
+                                            border-width: 1px;
+                                            height: 2rem;
+                                            margin-bottom: 0.4rem;
+                                            width: 8.2rem;
+                                          " required="">
+									<option value="">Chọn hướng</option>
+									<option value="1">Nhập</option>
+									<option value="2">Xuất</option>
+								</select>
+							</div>
+							<div class="col-xl-4 col-lg-2 col-md-2 col-sm-4 col-xs-4">
+								<label>Loại hàng</label>
+								<select id="cargoTypeID" style="
+                                border-radius: 5px;
+                                margin-left: 2.7rem;
+                                border-color: rgba(0, 0, 0, 0.1);
+                                border-width: 1px;
+                                height: 2rem;
+                                margin-bottom: 0.4rem;
+                                max-width: calc(100% - 91px);
+                                width: 109px;
+                              " required="">
+									<option value="">Chọn loại hàng</option>
+									<option value="BH">Bách hóa</option>
+									<option value="HB">Hàng bao</option>
+									<option value="HCK">Hàng cồng kềnh</option>
+									<option value="HX">Hàng xá</option>
+									<option value="ST">Sắt thép</option>
+								</select>
+							</div>
+							<div class="col-xl-4 col-lg-2 col-md-2 col-sm-4 col-xs-4">
+								<label>Nội/Ngoại</label>
+								<select id="isLocal" style="
+                                border-radius: 5px;
+                                margin-left: 1.5rem;
+                                border-color: rgba(0, 0, 0, 0.1);
+                                border-width: 1px;
+                                height: 2rem;
+                                margin-bottom: 0.4rem;
+                              " required="">
+									<option value="">Chọn nội/ngoại</option>
+									<option value="L">Nội</option>
+									<option value="F">Ngoại</option>
+								</select>
+							</div>
+						</div>
+						<div class="row col-xl-12 col-lg-6 col-md-6 col-sm-12 col-xs-12 mt-3" id="row-transfer-left">
+							<div class="col-xl-4 col-lg-2 col-md-2 col-sm-4 col-xs-4">
+								<label style="margin-top: 0.4rem">Trạng thái</label>
+								<select id="staTus" style="
+                                border-radius: 5px;
+                                margin-left: 1.5rem;
+                                border-color: rgba(0, 0, 0, 0.1);
+                                border-width: 1px;
+                                height: 2rem;
+                                margin-bottom: 0.4rem;
+                              " required="">
+									<option value="">Chọn trạng thái</option>
+								</select>
+							</div>
+							<div class="col-xl-8 col-lg-4 col-md-4 col-sm-8 col-xs-8">
+								<label>Số ngày tồn bãi</label>
+								<select id="selectDay" style="
+                                            border-radius: 5px;
+                                            margin-left: 0.5rem;
+                                            border-color: rgba(0, 0, 0, 0.1);
+                                            border-width: 1px;
+                                            height: 2rem;
+                                            margin-bottom: 0.4rem;
+                                          " required="">
+
+									<option value="gt">﹥＝</option>
+									<option value="lt">﹤</option>
+									<option value="eq">＝</option>
+								</select>
+								<input id="numDay" placeholder="0" style="
+                                            border-radius: 5px;
+                                            margin-left: 0.5rem;
+                                            border-color: rgba(0, 0, 0, 0.1);
+                                            border-width: 1px;
+                                            height: 2rem;
+                                            margin-bottom: 0.4rem;
+                                            width: 50px;
+                                        " type="number" value="1">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row ibox-footer border-top-0">
+				<!-- Bảng hiển thị -->
+				<div class="col-md-12 col-sm-12 col-xs-12 table-responsive" id="TableMain">
+					<table id="MainScreemTable" class="table table-striped display nowrap" cellspacing="0" style="min-width: 100%">
+						<thead></thead>
+						<tbody></tbody>
+						<tfoot>
+							<tr style="color:red; font-size:13px">
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right">Hàng nhập ngoại:</th>
+								<th class="text-right"></th>
+								<th class="text-right">0</th>
+								<th class="text-right" colspan="3"></th>
+							</tr>
+							<tr style="color:red; font-size:13px">
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right">Hàng nhập nội:</th>
+								<th class="text-right"></th>
+								<th class="text-center">0</th>
+								<th class="text-right" colspan="3"></th>
+							</tr>
+							<tr style="color:red; font-size:13px">
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right">Hàng xuất ngoại:</th>
+								<th class="text-right"></th>
+								<th class="text-center">0</th>
+								<th class="text-right" colspan="3"></th>
+							</tr>
+							<tr style="color:red; font-size:13px">
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right">Hàng xuất nội:</th>
+								<th class="text-right"></th>
+								<th class="text-center">0</th>
+								<th class="text-right" colspan="3"></th>
+							</tr>
+							<tr style="color:red; font-size:15px">
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right"></th>
+								<th class="text-right">T/c tồn:</th>
+								<th class="text-right"></th>
+								<th class="text-center">0</th>
+								<th class="text-right" colspan="3"></th>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- bảng chọn tàu -->
+<div class="modal fade" id="vessel-modal" tabindex="-1" role="dialog" aria-labelledby="groups-modalLabel-1" aria-hidden="true" data-whatever="id" style="padding-left: 2%; padding-top: 2%">
+	<div class="modal-dialog" role="document" style="min-width: 1024px !important">
+		<div class="modal-content" style="border-radius: 4px">
+			<div class="modal-header">
+				<h5 class="modal-title text-primary" id="groups-modalLabel-1">
+					Danh mục tàu
+				</h5>
+				<button id="VesselSearch" class="btn btn-outline-warning btn-sm btn-loading mr-1" data-loading-text="<i class='la la-spinner spinner'></i>Nạp dữ liệu" title="Nạp dữ liệu">
+					<span class="btn-icon"><i class="ti-search"></i>Nạp dữ liệu</span>
+				</button>
+			</div>
+			<div class="modal-body" style="padding: 0px 15px 15px 15px">
+				<div class="row mb-0 border-e border-top-0 pb-1 pt-3">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<div class="row">
+							<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+								<div class="row form-group">
+									<label class="col-md-2 col-sm-4 col-xs-4 col-form-label">Tàu</label>
+									<input id="VesselNameFilter" class="col-md-8 col-sm-10 col-xs-10 form-control form-control-sm" placeholder="Tên tàu" type="text" />
+								</div>
+							</div>
+							<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+								<div class="row form-group">
+									<label class="col-md-2 col-sm-2 col-xs-2 col-form-label">Năm</label>
+									<div class="col-md-8 col-sm-10 col-xs-10 input-group input-group-sm">
+										<select class="selectpicker" id="YearFilter" data-style="btn-default btn-sm" data-width="100%" title="Năm">
+											<% for (let i = 2016; i < 2026; i++){ %>
+											<option value="<%= i %>"><%= i %></option>
+											<% } %>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+								<div class="row form-group">
+									<label class="radio radio-success ml-5 mt-1">
+										<input type="radio" checked name="VesselFilter" class="css-checkbox" value="1" />
+										<span class="input-span"></span>Đến cảng
+									</label>
+
+									<label class="radio radio-success ml-3 mt-1 mr-3">
+										<input type="radio" name="VesselFilter" class="css-checkbox" value="2" />
+										<span class="input-span"></span>Rời cảng
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row ibox-footer border-top-0 mt-3">
+					<div class="col-md-12 col-sm-12 col-xs-12 table-responsive">
+						<table id="tblVessel" class="table table-striped display nowrap" cellspacing="0" style="width: 99.5%">
+							<thead>
+								<tr style="width: 100%">
+									<th col-name="STT">STT</th>
+									<th col-name="VoyageKey"></th>
+									<th col-name="VesselID">Mã tàu</th>
+									<th col-name="VesselName">Tên tàu</th>
+									<th col-name="InboundVoyage">Chuyến nhập</th>
+									<th col-name="OutboundVoyage">Chuyến xuất</th>
+									<th col-name="ETA">ETA</th>
+									<th col-name="ETD">ETD</th>
+									<th col-name="Status">Status</th>
+									<th col-name="InLane">Lane nhập</th>
+									<th col-name="OutLane">Lane xuất</th>
+								</tr>
+							</thead>
+							<tbody></tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<div style="margin: 0 auto !important">
+					<button class="btn btn-sm btn-rounded btn-gradient-blue btn-labeled btn-labeled-left btn-icon" id="apply-vessel" data-dismiss="modal">
+						<span class="btn-label"><i class="ti-check"></i></span>Xác nhận
+					</button>
+					<button class="btn btn-sm btn-rounded btn-gradient-peach btn-labeled btn-labeled-left btn-icon" data-dismiss="modal">
+						<span class="btn-label"><i class="ti-close"></i></span>Đóng
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--payer modal-->
+<div class="modal fade" id="payer-modal" tabindex="3" role="dialog" aria-labelledby="groups-modalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-mw" role="document" style="min-width: 960px;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="groups-modalLabel">
+					Chọn đối tượng chủ hàng
+				</h5>
+			</div>
+			<div class="modal-body" style="padding: 10px 3px;">
+				<div class="table-responsive">
+					<table id="search-payer" class="table table-striped display nowrap table-popup single-row-select" cellspacing="0" style="width: 99.9%;">
+						<thead>
+							<tr>
+								<th>STT</th>
+								<th>Mã ĐT</th>
+								<th>MST</th>
+								<th>Tên</th>
+								<th>Địa chỉ</th>
+								<th>HTTT</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+			</div>
+			<div class="modal-footer" style="position: relative; padding: 22px 15px !important;">
+				<button type="button" id="select-payer" class="btn btn-sm btn-outline-primary" data-dismiss="modal">
+					<i class="fa fa-check"></i>
+					Chọn
+				</button>
+				<button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">
+					<i class="fa fa-close"></i>
+					Đóng
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	// làm màn hình chọn tàu
+	$(document).ready(function() {
+		var _columns = [{
+				name: "STT",
+				title: "STT",
+				className: "text-center editor-cancel",
+				targets: 0,
+				render: function(data, type, row, meta) {
+					return meta.row + 1;
+				},
+			},
+			{
+				data: "Block",
+				name: "Block",
+				title: "Vị trí",
+				className: "text-center",
+				targets: 1,
+			},
+			{
+				data: "ClassID",
+				name: "ClassID",
+				title: "Hướng",
+				className: "text-center",
+				targets: 2,
+			},
+			{
+				data: "VesselName",
+				name: "VesselName",
+				title: "Tên tàu",
+				className: "text-center",
+				targets: 3,
+			},
+			{
+				data: "InboundVoyage",
+				name: "InboundVoyage",
+				title: "Chuyến nhập",
+				className: "text-center",
+				targets: 4,
+			},
+			{
+				data: "OutboundVoyage",
+				name: "OutboundVoyage",
+				title: "Chuyến xuất",
+				className: "text-center",
+				targets: 5,
+			},
+			{
+				data: "GetIn",
+				name: "GetIn",
+				title: "Ngày nhập kho",
+				className: "text-center",
+				targets: 6,
+			},
+			{
+				data: "BBNo",
+				name: "BBNo",
+				title: "Số vận đơn/booking",
+				className: "text-center",
+				targets: 7,
+			},
+			{
+				data: "CusID",
+				name: "CusID",
+				title: "Mã khách hàng",
+				className: "text-center",
+				targets: 8,
+			},
+			{
+				data: "CusName",
+				name: "CusName",
+				title: "Chủ hàng",
+				// className: "text-center",
+				targets: 9,
+			},
+			{
+				data: "ItemID",
+				name: "ItemID",
+				title: "Mã hàng hóa",
+				className: "text-center",
+				targets: 10,
+			},
+			{
+				data: "CargoTypeName",
+				name: "CargoTypeName",
+				title: "Loại hàng",
+				className: "text-center",
+				targets: 11,
+			},
+			{
+				data: "UnitName",
+				name: "UnitName",
+				title: "Đơn vị tính",
+				className: "text-center",
+				targets: 12,
+			},
+			// {
+			// 	data: "mnfPKGS",
+			// 	name: "mnfPKGS",
+			// 	title: "Số lượng mnf PKGS",
+			// 	className: "text-center",
+			// 	targets: 11,
+			// },
+			{
+				data: "mnfQuantity",
+				name: "mnfQuantity",
+				title: "Số lượng MNF",
+				className: "text-center",
+				targets: 13,
+				render: (data, type, row) => {
+					return row.mnfQuantity ? (row.mnfQuantity).toFixed(3) : "";
+				},
+			},
+			{
+				data: "CargoWeight",
+				name: "CargoWeight",
+				title: "Trọng lượng MNF",
+				className: "text-center",
+				targets: 14,
+				render: (data, type, row) => {
+					return row.CargoWeight ? (row.CargoWeight).toFixed(3) : "";
+				},
+			},
+			// {
+			// 	data: "stPKGS",
+			// 	name: "stPKGS",
+			// 	title: "Số lượng tồn PKGS",
+			// 	className: "text-center",
+			// 	targets: 14,
+			// },
+			{
+				data: "stQuantity",
+				name: "stQuantity",
+				title: "Số lượng tồn",
+				className: "text-center",
+				targets: 15,
+				render: (data, type, row) => {
+					return row.stQuantity ? (row.stQuantity).toFixed(3) : "";
+				},
+			},
+			{
+				data: "McWeight",
+				name: "McWeight",
+				title: "Trọng lượng tồn",
+				className: "text-center",
+				targets: 16,
+				render: (data, type, row) => {
+					return row.McWeight ? (row.McWeight).toFixed(3) : "";
+				},
+			},
+			{
+				data: "IsLocalForeign",
+				name: "IsLocalForeign",
+				title: "Nội/Ngoại",
+				className: "text-center",
+				targets: 17,
+			},
+			{
+				data: "TLHQ",
+				name: "TLHQ",
+				title: "Thanh lý hải quan",
+				className: "text-center",
+				targets: 18,
+			},
+			{
+				data: "Note",
+				name: "Note",
+				title: "Ghi chú",
+				className: "text-center",
+				targets: 19,
+			}
+		];
+
+		TblMain = $("#MainScreemTable");
+		var dataTbl = TblMain.newDataTable({
+			scrollY: "45vh",
+			columnDefs: _columns,
+			order: [
+				[0, "asc"]
+			],
+			scroller: {
+				displayBuffer: 20,
+				boundaryScale: 0.5,
+				loadingIndicator: true
+			},
+			paging: false,
+			keys: true,
+			autoFill: {
+				focus: "focus",
+			},
+			select: {
+				style: "single",
+				info: false,
+			},
+			buttons: [],
+			rowReorder: false,
+			footerCallback: function(row, datas, start, end, display) {
+				let sumWeightInGlobal = 0;
+				let sumWeightInLocal = 0;
+				let sumWeightOutGlobal = 0;
+				let sumWeightOutLocal = 0;
+				let sumTotal = 0;
+				var api = this.api();
+				var data = api.rows({
+					search: 'applied'
+				}).data().toArray();
+				if (data.length) {
+					sumWeightInGlobal = data.filter(p => p.ClassID === 'Nhập' && p.IsLocalForeign === 'Ngoại').reduce(function(sum, itm) {
+						return parseFloat(sum) + parseFloat(itm.McWeight);
+					}, 0);
+
+					let sumWeightInLocal = data.filter(p => p.ClassID === 'Nhập' && p.IsLocalForeign === 'Nội').reduce(function(sum, itm) {
+						return parseFloat(sum) + parseFloat(itm.McWeight);
+					}, 0);
+
+					let sumWeightOutGlobal = data.filter(p => p.ClassID === 'Xuất' && p.IsLocalForeign === 'Ngoại').reduce(function(sum, itm) {
+						return parseFloat(sum) + parseFloat(itm.McWeight);
+					}, 0);
+
+					let sumWeightOutLocal = data.filter(p => p.ClassID === 'Xuất' && p.IsLocalForeign === 'Nội').reduce(function(sum, itm) {
+						return parseFloat(sum) + parseFloat(itm.McWeight);
+					}, 0);
+
+					let sumTotal = sumWeightInGlobal + sumWeightInLocal + sumWeightOutGlobal + sumWeightOutLocal;
+
+					//Thoilc(*Note)
+					// api.table().footer()
+					// Step 1:$(api.table().footer()).find('tr:eq(0) th:eq(0)')
+					// Step 2:$('tr:eq(0) th:eq(0)', api.table().footer())
+					$(`tr:eq(0) th:eq(${_columns.filter(p => p.name == 'McWeight')[0].targets})`,
+						api.table().footer()).html(sumWeightInGlobal > 0 ? sumWeightInGlobal.toFixed(3) : 0);
+
+					$(`tr:eq(1) th:eq(${_columns.filter(p => p.name == 'McWeight')[0].targets})`,
+						api.table().footer()).html(sumWeightInLocal > 0 ? sumWeightInLocal.toFixed(3) : 0);
+
+					$(`tr:eq(2) th:eq(${_columns.filter(p => p.name == 'McWeight')[0].targets})`,
+						api.table().footer()).html(sumWeightOutGlobal > 0 ? sumWeightOutGlobal.toFixed(3) : 0);
+
+					$(`tr:eq(3) th:eq(${_columns.filter(p => p.name == 'McWeight')[0].targets})`,
+						api.table().footer()).html(sumWeightOutLocal ? sumWeightOutLocal.toFixed(3) : 0);
+
+					$(`tr:eq(4) th:eq(${_columns.filter(p => p.name == 'McWeight')[0].targets})`,
+						api.table().footer()).html(sumTotal > 0 ? sumTotal.toFixed(3) : 0);
+				} else {
+					$(`tr:eq(0) th:eq(${_columns.filter(p=>p.name == 'McWeight')[0].targets})`, api.table().footer()).html(0.000);
+					$(`tr:eq(1) th:eq(${_columns.filter(p=>p.name == 'McWeight')[0].targets})`, api.table().footer()).html(0.000);
+					$(`tr:eq(2) th:eq(${_columns.filter(p=>p.name == 'McWeight')[0].targets})`, api.table().footer()).html(0.000);
+					$(`tr:eq(3) th:eq(${_columns.filter(p=>p.name == 'McWeight')[0].targets})`, api.table().footer()).html(0.000);
+					$(`tr:eq(4) th:eq(${_columns.filter(p=>p.name == 'McWeight')[0].targets})`, api.table().footer()).html(0.000);
+				}
+			},
+		});
+		let _vesselColumns = ["STT", "VoyageKey", "VesselID", "VesselName", "InboundVoyage", "OutboundVoyage", "ETA", "ETD", "Status", "InLane", "OutLane"];
+		let vesselModal = $("#vessel-modal");
+		let tblVessel = $("#tblVessel");
+		let _colPayer = ["STT", "CusID", "TaxCode", "CusName", "Address", "PaymentTypeID"];
+
+		/* Initial vessel table */
+		tblVessel.newDataTable({
+			scrollY: '30vh',
+			columnDefs: [{
+					type: "num",
+					className: "text-center",
+					targets: _vesselColumns.indexOf('STT')
+				},
+				{
+					className: "text-center",
+					targets: _vesselColumns.getIndexs(["VesselName", "InboundVoyage", "OutboundVoyage", "ETA", "ETD", "InLane", "OutLane"])
+				},
+				{
+					className: "hiden-input",
+					targets: _vesselColumns.getIndexs(["VoyageKey", "VesselID", "Status"])
+				},
+			],
+			order: [
+				[_vesselColumns.indexOf('STT'), 'asc']
+			],
+			paging: false,
+			keys: true,
+			select: {
+				style: 'single',
+				info: false,
+			},
+			buttons: [],
+			rowReorder: false,
+			arrayColumns: _vesselColumns,
+		});
+
+		//------APPLY ITEMS FROM MODAL
+		$('#search-payer').DataTable({
+			paging: true,
+			scroller: {
+				displayBuffer: 12,
+				boundaryScale: 0.5
+			},
+			columnDefs: [{
+					type: "num",
+					className: 'text-center',
+					targets: [0]
+				},
+				{
+					render: function(data, type, full, meta) {
+						return "<div class='wrap-text width-250'>" + data + "</div>";
+					},
+					targets: _colPayer.getIndexs(["CusName", "Address"])
+				}
+			],
+			buttons: [],
+			infor: false,
+			scrollY: '45vh'
+		});
+
+		$('#vessel-modal').on('shown.bs.modal', function(e) {
+			$($.fn.dataTable.tables(true)).DataTable().columns.adjust();
+		});
+
+		$("#VesselSearch").on('click', function() {
+			tblVessel.waitingLoad();
+			var formData = {
+				filter: {
+					Status: {
+						operation: 'in',
+						value: $("input[type='radio'][name='VesselFilter']:checked").val() == 1 ? [0, 1] : [2, 3, 4, 5, 6]
+					},
+					VesselName: {
+						operation: 'like',
+						value: $('#VesselNameFilter').val()
+					}
+				}
+			};
+
+			$.ajax({
+				url: "/Planning/YardPlanning/loadVesselVisit",
+				dataType: 'json',
+				data: formData,
+				type: 'POST',
+				success: function(data) {
+					var rows = [];
+					tblVessel.dataTable().fnClearTable();
+					if (data.data.length > 0) {
+						for (i = 0; i < data.data.length; i++) {
+							var rData = data.data[i],
+								r = [];
+							$.each(_vesselColumns, function(idx, colname) {
+								var val = "";
+								switch (colname) {
+									case "STT":
+										val = i + 1;
+										break;
+									case "ETA":
+									case "ETD":
+										val = getDateTime(rData[colname]);
+										break;
+									default:
+										val = (rData[colname] ? rData[colname] : '');
+										break;
+								}
+								r.push(val);
+							});
+							rows.push(r);
+						}
+					}
+					tblVessel.dataTable().fnClearTable();
+					if (rows.length > 0) {
+						tblVessel.dataTable().fnAddData(rows);
+					}
+
+				},
+				error: function(err) {
+					tblVessel.dataTable().fnClearTable();
+					console.log(err);
+				}
+			});
+		});
+
+		//Nút chọn tàu
+		$("#chooseVessel").on("click", function() {
+			$("#vessel-modal").modal("show");
+			$("#VesselSearch").trigger("click");
+			sumNumRows = 0;
+			$("#YearFilter").val(new Date().getFullYear());
+		});
+
+		//Nút xóa dữ liệu thông tin tàu
+		$("#nochooseVessel").on("click", function() {
+			$("#VesselName").val("")
+			$("#VoyageKey").val("");
+		});
+
+		//Điền dữ liệu vào trong các trường khi nhấn 2 lần vào bảng
+		$(document).on("dblclick", "#tblVessel tbody tr", function() {
+			var tblVesselSelectedRows = tblVessel.getSelectedRows().data().toArray()[0],
+				VoyageKey = tblVesselSelectedRows[_vesselColumns.indexOf("VoyageKey")],
+				VesselName = tblVesselSelectedRows[_vesselColumns.indexOf("VesselName")],
+				InboundVoyage = tblVesselSelectedRows[_vesselColumns.indexOf("InboundVoyage")],
+				OutboundVoyage = tblVesselSelectedRows[_vesselColumns.indexOf("OutboundVoyage")],
+				InLane = tblVesselSelectedRows[_vesselColumns.indexOf("InLane")],
+				OutLane = tblVesselSelectedRows[_vesselColumns.indexOf("OutLane")],
+				ETA = tblVesselSelectedRows[_vesselColumns.indexOf("ETA")],
+				ETD = tblVesselSelectedRows[_vesselColumns.indexOf("ETD")];
+			$("#VoyageKey").val(VoyageKey);
+			$("#VesselName").val(VesselName + "/" + InboundVoyage + "/" + OutboundVoyage);
+			$("#ETA").val(ETA);
+			$("#ETD").val(ETD);
+			$("#search").trigger("click");
+			vesselModal.modal("hide");
+		});
+
+		$(document).on("click", "#tblVessel tbody tr", function() {
+			$('#tblVessel tbody tr.selected').removeClass('selected');
+			$(this).addClass('selected');
+		});
+
+		//Nhấn xác nhận trong bảng chọn tàu sẽ điền dữ liệu vào các trường
+		$("#apply-vessel").on("click", function() {
+			var tblVesselSelectedRows = tblVessel
+				.getSelectedRows()
+				.data()
+				.toArray()[0];
+			let VoyageKey = tblVesselSelectedRows[_vesselColumns.indexOf("VoyageKey")];
+			let VesselName = tblVesselSelectedRows[_vesselColumns.indexOf("VesselName")];
+			let InboundVoyage = tblVesselSelectedRows[_vesselColumns.indexOf("InboundVoyage")];
+			let OutboundVoyage = tblVesselSelectedRows[_vesselColumns.indexOf("OutboundVoyage")];
+			let InLane = tblVesselSelectedRows[_vesselColumns.indexOf("InLane")];
+			let OutLane = tblVesselSelectedRows[_vesselColumns.indexOf("OutLane")];
+			let ETA = tblVesselSelectedRows[_vesselColumns.indexOf("ETA")];
+			let ETD = tblVesselSelectedRows[_vesselColumns.indexOf("ETD")];
+			$("#VoyageKey").val(VoyageKey);
+			$("#VesselName").val(
+				VesselName + "/" + InboundVoyage + "/" + OutboundVoyage
+			);
+		});
+
+		//Thoilc(*Note)-Load dữ liệu hướng
+		$.ajax({
+			url: "/Common/cmClass/get",
+			method: "POST",
+			success: function(response) {
+				$("#classID").empty();
+				if (response.data.length) {
+					let defaultOption = $("<option></option>").val(null).text("Chọn hướng");
+					$("#classID").append(defaultOption);
+					response.data.map(item => {
+						let optValue = item.ClassID;
+						let optText = item.ClassName;
+						let option = $("<option></option>").val(optValue).text(optText);
+						$("#classID").append(option);
+					});
+				}
+			},
+			error: function(error) {
+				toastr["error"]("Có lỗi xảy ra! Vui lòng liên hệ với kỹ thuật viên! <br/>Cảm ơn!");
+			},
+		});
+
+		//Thoilc(*Note)-Load dữ liệu loại hàng
+		$.ajax({
+			url: "/common/cmCargoType/get",
+			method: "POST",
+			success: function(response) {
+				$("#cargoTypeID").empty();
+				if (response.data.length) {
+					let defaultOption = $("<option></option>").val(null).text("Chọn loại hàng");
+					$("#cargoTypeID").append(defaultOption);
+					response.data.map(item => {
+						let optValue = item.CargoTypeID;
+						let optText = item.CargoTypeName;
+						let option = $("<option></option>").val(optValue).text(optText);
+						$("#cargoTypeID").append(option);
+					});
+				}
+			},
+			error: function(error) {
+				toastr["error"]("Có lỗi xảy ra! Vui lòng liên hệ với kỹ thuật viên! <br/>Cảm ơn!");
+			},
+		});
+
+		//Thoilc(*Note)-Nạp dữ liệu
+		$("#importFile").on("click", function() {
+			let cusID = "",
+				classID = "",
+				cargoTypeID = "",
+				staTus = "",
+				isLocal = "",
+				selectDay = "",
+				numDay = "",
+				getIn = "",
+				voyageKey = "";
+			voyageKey = $("#VoyageKey").val();
+			getIn = $("#getIn").val();
+			cusID = $("#c-CusID").val().search("/") > 0 ? ($("#c-CusID").val()).split("/")[0].trim() : $("#c-CusID").val();
+			cargoTypeID = $("#cargoTypeID").val();
+			staTus = $("#staTus").val();
+			isLocal = $("#isLocal").val();
+			selectDay = $("#selectDay").val();
+			numDay = $("#numDay").val();
+			classID = $("#classID").val();
+			let dataSend = {
+				VoyageKey: voyageKey,
+				GetIn: getIn,
+				CusID: cusID,
+				cargoTypeID: cargoTypeID,
+				Status: staTus,
+				IsLocalForeign: isLocal,
+				selectDay: selectDay,
+				numDay: numDay,
+				ClassID: classID,
+			};
+			$.ajax({
+				url: "/Report/reportStock/getData",
+				dataType: "json",
+				data: dataSend,
+				type: "GET",
+				success: function(response) {
+					$("#MainScreemTable").dataTable().fnClearTable();
+					let data = response.data;
+					if (data.iStatus) {
+						toastr["success"](data.iMessage);
+						if (data.iPayload.length) {
+							$("#MainScreemTable").dataTable().fnAddData(data.iPayload);
+						} else {
+							$("#MainScreemTable").dataTable().fnClearTable();
+						}
+					} else {
+						toastr["error"](data.iMessage);
+						return false;
+					}
+				},
+				error: function(err) {
+					toastr["error"]("Phát sinh lỗi! Xem Log");
+					return false;
+				},
+			});
+			return true;
+		});
+
+		// Tìm kiếm theo chủ hàng
+		$("#Customer").on("input", function() {
+			var inputValue = $(this).val().trim();
+
+			// Lọc các dòng trong bảng dựa trên giá trị nhập vào
+			$("#MainScreemTable tbody tr")
+				.hide()
+				.filter(function() {
+					var columnValue = $(this).find("td:nth-child(3)").text().trim(); // Cột "Chủ hàng" là cột thứ 3
+					return columnValue.indexOf(inputValue) !== -1;
+				})
+				.show();
+		});
+
+		//Thoilc(*Note)-Export Excel 4Node
+		$("#Export").on("click", function() {
+			const encodeGetParams = p =>
+				Object.entries(p).map(kv => kv.map(encodeURIComponent).join("=")).join("&");
+			const params = {};
+			params['GetIn'] = $("#getIn").val();
+			params['VoyageKey'] = $("#VoyageKey").val();
+			params['CusID'] = $("#c-CusID").val().search("/") > 0 ? ($("#c-CusID").val()).split("/")[0].trim() : $("#c-CusID").val();
+			params['cargoTypeID'] = $("#cargoTypeID").val();
+			params['Status'] = $("#staTus").val();
+			params['IsLocalForeign'] = $("#isLocal").val();
+			params['selectDay'] = $("#selectDay").val();
+			params['numDay'] = $("#numDay").val();
+			params['ClassID'] = $("#classID").val();
+			window.open("/Report/reportStock/exportExcel?" + encodeGetParams(params));
+		});
+
+		//Thoilc(*Note)-View thời gian select
+		$("#getIn").val(moment().endOf('day').format('YYYY-MM-DD HH:mm:ss'));
+		$('#getIn').datetimepicker({
+			controlType: 'select',
+			oneLine: true,
+			dateFormat: 'yy-mm-dd',
+			timeFormat: "HH:mm:ss",
+			onSelect: function(dateText) {
+				$(this).val(moment(dateText).format('YYYY-MM-DD HH:mm:ss'))
+			}
+		});
+
+		$("#Print").on("click", function() {
+			toastr["info"]("Hiện tại chức năng này chưa được phát triển");
+		});
+
+		//Thoilc(*Note)-Tìm kiếm thông tin chủ hàng
+		function load_payer() {
+			var tblPayer = $('#search-payer');
+			tblPayer.waitingLoad();
+			$.ajax({
+				url: "/Planning/YardPlanning/loadPayer",
+				dataType: 'json',
+				type: 'POST',
+				data: {
+					type: 'SPN'
+				},
+				success: function(data) {
+					var rows = [];
+
+					if (data.payers && data.payers.length > 0) {
+						payers = data.payers;
+
+						var i = 0;
+						$.each(payers, function(index, rData) {
+							var r = [];
+							$.each(_colPayer, function(idx, colname) {
+								var val = "";
+								switch (colname) {
+									case "STT":
+										val = i + 1;
+										break;
+									case "PaymentTypeID":
+										val = !rData[colname] ? "" : (rData[colname] == "M" ? "Thu ngay" : "Thu sau");
+										break;
+									default:
+										val = rData[colname] ? rData[colname] : "";
+										break;
+								}
+								r.push(val);
+							});
+							i++;
+							rows.push(r);
+						});
+					}
+
+					tblPayer.dataTable().fnClearTable();
+					if (rows.length > 0) {
+						tblPayer.dataTable().fnAddData(rows);
+					}
+				},
+				error: function(err) {
+					tblPayer.dataTable().fnClearTable();
+					toastr["error"]("Có lỗi xảy ra! Vui lòng liên hệ với kỹ thuật viên! <br/>Cảm ơn!");
+				}
+			});
+		};
+
+		//Thoilc(*Note)-Load dữ liệu khi render
+		load_payer();
+		$(document).on('click', '#search-payer tbody tr', function() {
+			$("#search-payer").DataTable().rows('.m-row-selected').nodes().to$().removeClass("m-row-selected");
+			$($("#search-payer").DataTable().row($(this)).node()).addClass("m-row-selected");
+		});
+
+		$('#select-payer').on('click', function() {
+			var r = $('#search-payer tbody').find('tr.m-row-selected').first();
+			var cid = $(r).find('td:eq(' + _colPayer.indexOf("CusID") + ')').text();
+			var cname = $(r).find('td:eq(' + _colPayer.indexOf("CusName") + ')').text();
+			if (!cid) {
+				e.preventDefault();
+				return false;
+			}
+			$('#c-CusID').val($(r).find('td:eq(' + _colPayer.indexOf("CusID") + ')').text());
+			$('#c-CusID').val(cid + '/' + cname);
+			$('#c-CusID').trigger("change");
+		});
+
+		$('#search-payer').on('dblclick', 'tbody tr td', function(e) {
+			var r = $(this).parent();
+			var cid = $(r).find('td:eq(' + _colPayer.indexOf("CusID") + ')').text();
+			var cname = $(r).find('td:eq(' + _colPayer.indexOf("CusName") + ')').text();
+			if (!cid) {
+				e.preventDefault();
+				return false;
+			}
+			$('#c-CusID').val($(r).find('td:eq(' + _colPayer.indexOf("CusID") + ')').text());
+			$('#c-CusID').val(cid + '/' + cname);
+			$('#payer-modal').modal("toggle");
+			$('#taxcode').trigger("change");
+		});
+		//=================END SEARCH PAYER=================//
+	});
+</script>
+<script src="/assets/vendors/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
